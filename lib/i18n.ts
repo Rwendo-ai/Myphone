@@ -2,18 +2,21 @@ import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import * as Localization from 'expo-localization';
 
-import enCommon from '../locales/en/common.json';
-import enAuth from '../locales/en/auth.json';
-import enLearn from '../locales/en/learn.json';
-import enRwen from '../locales/en/rwen.json';
-import enAchievements from '../locales/en/achievements.json';
+import enCommon from '../data/speakers/english/locale/common.json';
+import enAuth from '../data/speakers/english/locale/auth.json';
+import enLearn from '../data/speakers/english/locale/learn.json';
+import enRwen from '../data/speakers/english/locale/rwen.json';
+import enAchievements from '../data/speakers/english/locale/achievements.json';
 
-import snCommon from '../locales/sn/common.json';
-import snAuth from '../locales/sn/auth.json';
-import snLearn from '../locales/sn/learn.json';
-import snRwen from '../locales/sn/rwen.json';
-import snAchievements from '../locales/sn/achievements.json';
+import snCommon from '../data/speakers/shona/locale/common.json';
+import snAuth from '../data/speakers/shona/locale/auth.json';
+import snLearn from '../data/speakers/shona/locale/learn.json';
+import snRwen from '../data/speakers/shona/locale/rwen.json';
+import snAchievements from '../data/speakers/shona/locale/achievements.json';
 
+// i18n resources are still keyed by ISO code for compatibility with i18next's
+// language conventions (en/sn). Each speaker pack's `isoCode` field maps from
+// the speaker pack ID ('english' / 'shona') to the i18n language key.
 export const SUPPORTED_LANGUAGES = ['en', 'sn'] as const;
 export type SupportedLanguage = (typeof SUPPORTED_LANGUAGES)[number];
 

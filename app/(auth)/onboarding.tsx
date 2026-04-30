@@ -198,6 +198,13 @@ export default function OnboardingScreen() {
     }
   }, [user, appLanguage, gender, birthYear, birthMonth, birthDay, path, ability, reasons, timeCommit, challenge, connection, companionType, compTopics, voiceKey]);
 
+  // The language being learned, derived from the speaker selection.
+  // English speaker → learning Shona. Shona speaker → learning English.
+  // (When more language courses are added, this will be derived from the
+  // explicitly chosen target course rather than this binary fallback.)
+  const learnedLangKey = appLanguage === 'shona' ? 'english' : 'shona';
+  const learnedLangName = t(`onboarding.languages.${learnedLangKey}.name`);
+
   const rwenPose =
     step === 'voice' || step === 'complete' ? 'victory' :
     step === 'path'                         ? 'arms_spread' :
@@ -288,7 +295,7 @@ export default function OnboardingScreen() {
 
         {step === 'learn_ability' && (
           <View style={styles.block}>
-            <ProgressHeader current={stepIndex} total={total} title={t('onboarding.step_learn_ability.title')} />
+            <ProgressHeader current={stepIndex} total={total} title={t('onboarding.step_learn_ability.title', { lang: learnedLangName })} />
             {ABILITY_IDS.map(id => <Card key={id} label={t(`onboarding.abilities.${id}.label`)} desc={t(`onboarding.abilities.${id}.desc`)} selected={ability === id} onPress={() => setAbility(id)} />)}
             <Nav onBack={goBack} onNext={() => goNext()} disabled={!ability} />
           </View>
@@ -296,7 +303,7 @@ export default function OnboardingScreen() {
 
         {step === 'learn_reasons' && (
           <View style={styles.block}>
-            <ProgressHeader current={stepIndex} total={total} title={t('onboarding.step_learn_reasons.title')} sub={t('onboarding.step_learn_reasons.sub')} />
+            <ProgressHeader current={stepIndex} total={total} title={t('onboarding.step_learn_reasons.title', { lang: learnedLangName })} sub={t('onboarding.step_learn_reasons.sub')} />
             <View style={styles.chips}>
               {LEARN_REASON_IDS.map(id => <Chip key={id} label={t(`onboarding.learn_reasons.${id}`)} selected={reasons.includes(id)}
                 onPress={() => setReasons(p => p.includes(id) ? p.filter(x => x !== id) : [...p, id])} />)}
@@ -323,7 +330,7 @@ export default function OnboardingScreen() {
 
         {step === 'learn_connection' && (
           <View style={styles.block}>
-            <ProgressHeader current={stepIndex} total={total} title={t('onboarding.step_learn_connection.title')} sub={t('onboarding.step_learn_connection.sub')} />
+            <ProgressHeader current={stepIndex} total={total} title={t('onboarding.step_learn_connection.title', { lang: learnedLangName })} sub={t('onboarding.step_learn_connection.sub')} />
             <TextInput style={styles.textarea}
               placeholder={t('onboarding.connection_placeholder')}
               placeholderTextColor="rgba(255,255,255,0.3)"

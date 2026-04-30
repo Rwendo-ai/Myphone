@@ -10,22 +10,23 @@ import { useSettings } from '../../lib/SettingsContext';
 import { useProgress } from '../../hooks/useProgress';
 import { useDailyXpGoal } from '../../lib/preferences';
 import { getUnitsForPack } from '../../data/lessons';
+import { getSpeaker } from '../../data/speakers';
 import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
 
 type TimeOfDay = 'morning' | 'afternoon' | 'evening';
 
-function getShonaGreeting(): { shona: string; timeKey: TimeOfDay; rwen: string } {
+function getTimeOfDay(): { time: TimeOfDay; rwenPose: string } {
   const hour = new Date().getHours();
-  if (hour < 12) return { shona: 'Mangwanani', timeKey: 'morning',   rwen: 'waving' };
-  if (hour < 17) return { shona: 'Masikati',   timeKey: 'afternoon', rwen: 'idle' };
-  return                 { shona: 'Manheru',   timeKey: 'evening',   rwen: 'idle' };
+  if (hour < 12) return { time: 'morning',   rwenPose: 'waving' };
+  if (hour < 17) return { time: 'afternoon', rwenPose: 'idle' };
+  return                 { time: 'evening',   rwenPose: 'idle' };
 }
 
 export default function HomeScreen() {
   const { t } = useTranslation('common');
   const { user } = useAuth();
-  const { activePack, learnedLanguage, theme } = useSettings();
+  const { activePack, learnedLanguage, theme, speaker, courses, activeCourseId } = useSettings();
   const { xp, streakDays, username, completedLessons, refresh } = useProgress();
   const { goal: dailyXpGoal } = useDailyXpGoal();
 
@@ -49,10 +50,22 @@ export default function HomeScreen() {
     }
   }
 
-  const greeting = getShonaGreeting();
-  const greetingEnglish = t(`home.greetings.${greeting.timeKey}`);
-  const tips = t('home.tips', { returnObjects: true }) as string[];
-  const tip = tips[completedCount % tips.length];
+  const { time: timeOfDay, rwenPose } = getTimeOfDay();
+
+  // Hero "big" word: comes from the language being learned (the active course's
+  // target). For non-language courses (AI Companion), big word is the user's
+  // own greeting in their speaker pack.
+  const activeCourse = courses.find(c => c.meta.id === activeCourseId);
+  const targetSpeakerId = activeCourse?.meta.targetLanguageId ?? speaker.id;
+  const targetSpeaker = getSpeaker(targetSpeakerId);
+  const heroBigWord = targetSpeaker.greetings[timeOfDay].word;
+
+  // Subtitle phrase: in the user's own speaker language.
+  const heroSubGreeting = speaker.greetings[timeOfDay].phrase;
+
+  // Tips: per-speaker, mirror-not-translate (see PRODUCT-DESIGN.md §4.6)
+  const tip = speaker.tips[completedCount % speaker.tips.length];
+
   const dailyXpProgress = Math.min((xp % dailyXpGoal) / dailyXpGoal, 1);
   const displayName = username || user?.email?.split('@')[0] || t('fallback_name');
 
@@ -64,13 +77,13 @@ export default function HomeScreen() {
         <LinearGradient colors={theme.gradient} style={styles.hero}>
           <View style={styles.heroTop}>
             <View>
-              <Text style={styles.greetingShona}>{greeting.shona}!</Text>
+              <Text style={styles.greetingShona}>{heroBigWord}!</Text>
               <Text style={styles.heroName}>{displayName}</Text>
               <Text style={styles.heroSub}>
-                {t('home.hero_sub', { greeting: greetingEnglish, day: streakDays > 0 ? streakDays : 1 })}
+                {t('home.hero_sub', { greeting: heroSubGreeting, day: streakDays > 0 ? streakDays : 1 })}
               </Text>
             </View>
-            <RwenImage pose={greeting.rwen as any} size={110} />
+            <RwenImage pose={rwenPose as any} size={110} />
           </View>
 
           {/* Stats row */}

@@ -16,7 +16,7 @@ import MultipleChoice from '../../components/exercises/MultipleChoice';
 
 import { DialogueLine } from '../../types/lesson';
 import { useSettings } from '../../lib/SettingsContext';
-import { getCurriculumLesson } from '../../data/curriculum';
+import { getCourseLesson } from '../../data/courses';
 
 type Phase = 'hook' | 'chunks' | 'pattern' | 'practice' | 'dialogue' | 'recall' | 'mission';
 
@@ -25,8 +25,8 @@ const PHASES: Phase[] = ['hook', 'chunks', 'pattern', 'practice', 'dialogue', 'r
 export default function LessonScreen() {
   const { t } = useTranslation('learn');
   const { id } = useLocalSearchParams<{ id: string }>();
-  const { activePack } = useSettings();
-  const lesson = getCurriculumLesson(activePack.id, id);
+  const { speaker, activeCourseId } = useSettings();
+  const lesson = getCourseLesson(activeCourseId, speaker.id, id);
   const { user } = useAuth();
 
   const [phase, setPhase] = useState<Phase>('hook');

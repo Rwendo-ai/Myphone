@@ -1,4 +1,6 @@
 import { supabase } from './supabase';
+import { SpeakerPack } from '../types/packs';
+import { english as defaultSpeaker } from '../data/speakers';
 
 const CLAUDE_API_URL = 'https://api.anthropic.com/v1/messages';
 const CLAUDE_KEY = process.env.EXPO_PUBLIC_CLAUDE_KEY ?? '';
@@ -112,7 +114,8 @@ function spokenLanguageName(packId: string): string {
 
 export function buildSystemPrompt(
   profile: UserProfile,
-  lessonContext?: string
+  lessonContext?: string,
+  speaker: SpeakerPack = defaultSpeaker,
 ): string {
   const name         = profile.display_name || 'friend';
   const learnedLang  = learnedLanguageName(profile.active_language_pack);
@@ -182,7 +185,11 @@ ${profile.companion_topics?.length ? `- ${name} enjoys talking about: ${profile.
   }
 
   // ── Core prompt ───────────────────────────────────────────────────────────
-  return `You are Rwen — a warm, witty chameleon who is ${name}'s companion in the Rwendo app.
+  // Per PRODUCT-DESIGN.md §3, the persona + guardrails are speaker-pack content
+  // (in the speaker's own language). The dynamic user-context block below is
+  // still English-template — Phase J (AI Companion content) translates the
+  // template to each speaker's language using speaker.aiSystemPrompt.contextTemplate.
+  return `${speaker.aiSystemPrompt.persona}
 
 WHO YOU ARE TALKING TO:
 - Name: ${name}${profile.gender ? ` (${profile.gender})` : ''}
@@ -194,17 +201,9 @@ ${pathContext}
 YOUR PERSONALITY — calibrated for ${name}:
 - Tone: ${toneDesc}
 - Conversational style: ${listenerDesc}
-- Always warm, never clinical or robotic
-- Culturally proud of Zimbabwe and Shona — you love sharing this culture
-- You NEVER say "As an AI..." or break character under any circumstances
-- You never shame mistakes — you reframe them as steps
 
-RESPONSE RULES — follow strictly:
-- 2-4 sentences maximum per response (unless ${name} asks for a detailed explanation)
-- Maximum 1 exclamation mark per response
-- No bullet points or lists in casual conversation
-- No walls of text
-${learnedLang !== 'English' ? `- Include 1-2 ${learnedLang} words or phrases naturally per response` : ''}
+${speaker.aiSystemPrompt.guardrails}
+${learnedLang !== 'English' ? `\n- Include 1-2 ${learnedLang} words or phrases naturally per response` : ''}
 ${lessonContext ? `
 LESSON MODE — ${name} is asking about: ${lessonContext}
 Give a focused, clear explanation in 2-3 sentences. Be specific to what they asked.
@@ -217,7 +216,8 @@ export async function sendMessage(
   userId: string,
   userMessage: string,
   history: ChatMessage[],
-  lessonContext?: string
+  speaker: SpeakerPack = defaultSpeaker,
+  lessonContext?: string,
 ): Promise<string> {
   // Save user message
   await supabase.from('conversations').insert({
@@ -230,10 +230,10 @@ export async function sendMessage(
   // Fetch full profile (cached)
   const profile = await fetchUserProfile(userId);
 
-  // Build personalised system prompt
+  // Build personalised system prompt — persona + guardrails come from the speaker pack
   const systemPrompt = profile
-    ? buildSystemPrompt(profile, lessonContext)
-    : `You are Rwen, a warm chameleon companion in the Rwendo language learning app. Be warm, brief (2-4 sentences), and encouraging.`;
+    ? buildSystemPrompt(profile, lessonContext, speaker)
+    : `${speaker.aiSystemPrompt.persona}\n\n${speaker.aiSystemPrompt.guardrails}`;
 
   // Call Claude
   const messages: ChatMessage[] = [
