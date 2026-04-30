@@ -5,6 +5,17 @@ import { english as defaultSpeaker } from '../data/speakers';
 const CLAUDE_API_URL = 'https://api.anthropic.com/v1/messages';
 const CLAUDE_KEY = process.env.EXPO_PUBLIC_CLAUDE_KEY ?? '';
 
+/**
+ * Phase M migration flag.
+ * Once supabase/functions/rwen-chat is deployed and verified, set this to
+ * `true` (or remove the legacy direct-Anthropic path entirely below) to
+ * route all chat calls through the Edge Function. Until then, the client
+ * uses the legacy direct call with EXPO_PUBLIC_CLAUDE_KEY.
+ *
+ * Removing the env var = mandatory before TestFlight / Play distribution.
+ */
+const USE_EDGE_FUNCTION = process.env.EXPO_PUBLIC_USE_EDGE_FUNCTIONS === '1';
+
 export interface ChatMessage {
   role: 'user' | 'assistant';
   content: string;
@@ -235,7 +246,21 @@ export async function sendMessage(
     ? buildSystemPrompt(profile, lessonContext, speaker)
     : `${speaker.aiSystemPrompt.persona}\n\n${speaker.aiSystemPrompt.guardrails}`;
 
-  // Call Claude
+  // ── Edge Function path (Phase M) ────────────────────────────────────────
+  if (USE_EDGE_FUNCTION) {
+    const { data, error } = await supabase.functions.invoke('rwen-chat', {
+      body: {
+        userMessage,
+        history,
+        systemPrompt,
+        lessonContext,
+      },
+    });
+    if (error) throw new Error(`rwen-chat: ${error.message}`);
+    return (data as { reply: string }).reply;
+  }
+
+  // ── Legacy direct-Anthropic path (pre-Phase M) ──────────────────────────
   const messages: ChatMessage[] = [
     ...history.slice(-20),
     { role: 'user', content: userMessage },
