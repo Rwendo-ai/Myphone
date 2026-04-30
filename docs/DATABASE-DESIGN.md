@@ -1,12 +1,13 @@
 # Rwendo — Database Design
-*Version: 2.0*
+*Version: 3.0 — three-pack architecture*
 *Last updated: 2026-04-30*
 
 ---
 
 ## UPDATE INSTRUCTIONS
 When updating this file, also update:
-- [ ] `PROJECT_OVERVIEW.md` → Database section
+- [ ] `PROJECT_OVERVIEW.md` → Pack Architecture + Database sections
+- [ ] `docs/PRODUCT-DESIGN.md` → §3 if pack model semantics change, §3.8 if migration changes
 - [ ] `docs/supabase-migrations/` → add new SQL file for schema changes
 - [ ] `lib/supabase.ts` → if connection config changes
 - [ ] `lib/progress.ts` → if progress-related queries change
@@ -16,26 +17,41 @@ When updating this file, also update:
 
 ## Architecture Overview
 
-Rwendo uses **one PostgreSQL database** (hosted on Supabase, Sydney region) with **seven core tables**.
+Rwendo uses **one PostgreSQL database** (hosted on Supabase, Sydney region). The schema is being upgraded from v2 (seven tables, pair-string pack model) to v3 (eight tables, three-pack composition model — see [docs/PRODUCT-DESIGN.md](./PRODUCT-DESIGN.md) §3).
 
 > One database. Multiple well-designed tables. This is correct architecture.
 > Do NOT create separate databases for different features.
 
 ```
-┌─────────────────────────────────────────────────────────┐
-│                  RWENDO DATABASE                        │
-│                                                         │
-│  profiles          — who the user is                    │
-│  available_packs   — product catalogue                  │
-│  user_packs        — what each user owns                │
-│  lesson_progress   — learning history                   │
-│  conversations     — AI chat history                    │
-│  parental_codes    — parent→child account linking       │
-│  subscriptions     — tier + usage + billing status      │
-│                                                         │
-│  + Functions, RLS policies, indexes                     │
-└─────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────┐
+│                  RWENDO DATABASE (v3)                           │
+│                                                                 │
+│  profiles          — who the user is                            │
+│  available_packs   — product catalogue (pack_kind: speaker /    │
+│                      course / jurisdiction / addon)             │
+│  user_packs        — what each user owns                        │
+│  jurisdictions     — legal/regional packs (NEW v3)              │
+│  lesson_progress   — learning history                           │
+│  conversations     — AI chat history                            │
+│  parental_codes    — parent→child account linking               │
+│  subscriptions     — tier + usage + billing status              │
+│                                                                 │
+│  + Functions, RLS policies, indexes                             │
+└─────────────────────────────────────────────────────────────────┘
 ```
+
+### v2 → v3 migration overview
+
+The v2 schema has the right shape but conflates two ideas: `available_packs` rows like `shona-english` are simultaneously "the language curriculum from English to Shona" AND "the runtime pack a user activates". v3 separates these:
+
+- A user's **speaker pack** comes from the new `profiles.speaker_pack_id` column.
+- A user's **course packs** come from the new `profiles.active_course_ids text[]` column (multiple courses now allowed: language + AI Companion).
+- A user's **jurisdiction pack** comes from the new `profiles.jurisdiction_id` column (FK to `jurisdictions`).
+- `available_packs` gains a `pack_kind` discriminator and stays the source of truth for purchasable products.
+
+Legacy fields (`profiles.app_language`, `profiles.active_language_pack_id`, `profiles.country_code`) are kept for one release as backward-compat shadows. Phase E.0 writes both old and new fields. A subsequent migration drops the legacy fields.
+
+See §10 for the migration plan and SQL.
 
 ---
 
@@ -52,11 +68,17 @@ The central user record. Everything about who this person is.
 | gender | text | male/female/nonbinary/prefer_not_to_say |
 | date_of_birth | date | Used for age verification |
 | age_range | text | Derived from DOB |
-| is_minor | boolean | true if under 18 |
-| app_language | text | en/sn — sets UI language |
+| is_minor | boolean | true if under jurisdiction.minAge |
+| **speaker_pack_id (v3)** | text | NEW. e.g. 'english', 'shona'. The single dominant choice that drives all readable text. Replaces app_language. |
+| **active_course_ids (v3)** | text[] | NEW. e.g. ['language-shona', 'ai-companion']. User can have multiple active courses. Replaces single active_language_pack_id. |
+| **jurisdiction_id (v3)** | text | NEW. FK to jurisdictions. Drives legal text, currency, age threshold, crisis resources. e.g. 'AU', 'GB', 'EU'. |
+| ~~app_language~~ | text | LEGACY v2. Shadowed by speaker_pack_id during migration; dropped in v3.1. |
+| ~~active_language_pack_id~~ | text | LEGACY v2. Shadowed by active_course_ids[0] during migration; dropped in v3.1. |
+| ~~country_code~~ | text | LEGACY v2. Shadowed by jurisdiction_id during migration; dropped in v3.1. |
+| ~~is_eu_customer~~ | boolean | LEGACY v2. Derive from jurisdictions.is_eu via join; dropped in v3.1. |
+| ~~is_uk_customer~~ | boolean | LEGACY v2. Same. |
 | onboarding_complete | boolean | false = force onboarding |
-| primary_path | text | learn/companion/travel |
-| active_language_pack_id | text | FK to available_packs |
+| primary_path | text | learn/companion/travel — informs which course pack to suggest first |
 | ability_level | text | beginner/basics/conversational/intermediate |
 | learning_reasons | text[] | Array of reason codes |
 | time_commitment | text | 5min/10min/20min/30min+ |
@@ -65,44 +87,46 @@ The central user record. Everything about who this person is.
 | companion_type | text | friend/emotional/work/study |
 | companion_topics | text[] | Topics user wants to discuss |
 | rwen_personality | jsonb | {serious_playful: 0-1, listener_talker: 0-1} |
-| rwen_voice_key | text | male_warm/male_energy/female_warm/female_clear |
+| rwen_voice_key | text | male_warm/male_energy/female_warm/female_clear — speaker-pack curated |
 | xp | integer | Total XP earned |
 | streak_days | integer | Current streak |
 | last_active_date | date | For streak calculation |
-| country_code | text | ISO 3166-1 alpha-2 (GB, AU, DE...) |
-| is_eu_customer | boolean | true for EU/EEA countries |
-| is_uk_customer | boolean | true for UK |
 | is_parent_account | boolean | Has child accounts |
 | parent_id | uuid | FK to profiles (if child account) |
-| terms_agreed_at | timestamptz | Legal consent timestamp |
-| privacy_agreed_at | timestamptz | Legal consent timestamp |
+| terms_agreed_at | timestamptz | Legal consent timestamp (per active jurisdiction) |
+| privacy_agreed_at | timestamptz | Legal consent timestamp (per active jurisdiction) |
 | age_confirmed_at | timestamptz | Legal consent timestamp |
 | ai_disclosed_at | timestamptz | Legal consent timestamp |
-| voice_consent_at | timestamptz | BIPA compliance |
+| voice_consent_at | timestamptz | BIPA compliance (only required for US-IL jurisdiction) |
 | created_at | timestamptz | Account creation |
 | updated_at | timestamptz | Last profile update |
 
-**Indexes:** id (PK), parent_id, country_code, active_language_pack_id
+**Indexes:** id (PK), parent_id, jurisdiction_id, speaker_pack_id, GIN on active_course_ids
 
 ---
 
 ### 2. available_packs
-The product catalogue. What can be purchased or unlocked.
+The product catalogue. What can be purchased or unlocked. **In v3 this becomes the catalogue of all three pack kinds** (speaker / course / jurisdiction) plus subscription-tier add-ons.
 
 | Column | Type | Notes |
 |---|---|---|
-| id | text | PK — e.g. 'shona-english', 'ai-companion-text' |
-| pack_type | text | language/feature/content/cultural |
-| name | text | Display name |
+| id | text | PK — e.g. 'speaker:english', 'course:language-shona', 'jurisdiction:AU', 'tier:text-ai' |
+| **pack_kind (v3)** | text | NEW. enum: 'speaker', 'course', 'jurisdiction', 'tier-addon'. Discriminator for the three-pack model. |
+| pack_type | text | LEGACY v2 — language/feature/content/cultural. Kept for one release; pack_kind is the new authority. |
+| name | text | Display name (in `languageOfRecord` of the pack — usually English) |
 | description | text | Marketing description |
-| spoken_language_id | text | 'english'/'shona' (language packs only) |
-| learned_language_id | text | 'shona'/'english' (language packs only) |
-| feature_key | text | 'ai_companion'/'travel'/'community' (feature packs) |
-| primary_color | text | Hex — pack theme |
+| **target_language_id (v3)** | text | For pack_kind='course' AND course_type='language'. e.g. 'shona' for the language-shona course. |
+| **course_type (v3)** | text | For pack_kind='course'. enum: 'language', 'ai-companion', 'travel'. Replaces feature_key. |
+| **available_for_speakers (v3)** | text[] | For pack_kind='course'. Which speaker variants exist. e.g. ['english', 'shona']. |
+| ~~spoken_language_id~~ | text | LEGACY v2. Drops in v3.1. |
+| ~~learned_language_id~~ | text | LEGACY v2. Renamed to target_language_id; stays as shadow column. |
+| ~~feature_key~~ | text | LEGACY v2. Subsumed by course_type + pack_kind. |
+| primary_color | text | Hex — pack theme (mostly for course packs) |
 | secondary_color | text | Hex — pack theme |
 | flag_emoji | text | Visual identifier |
-| revenuecat_product_id | text | Maps to RevenueCat product |
-| price_aud | decimal | Display price |
+| revenuecat_product_id | text | Maps to RevenueCat product. Speaker and jurisdiction packs are not purchasable (always free), so this is null for them. |
+| **prices_by_jurisdiction (v3)** | jsonb | NEW. e.g. `{"AU": 10.00, "GB": 5.99, "EU": 6.99, "US": 6.99}`. Replaces single price_aud. |
+| price_aud | decimal | LEGACY v2. Falls back when prices_by_jurisdiction missing for a region. |
 | is_free | boolean | Whether it's free |
 | is_subscription | boolean | Recurring vs one-time |
 | subscription_period | text | 'monthly'/'annual' |
@@ -113,15 +137,61 @@ The product catalogue. What can be purchased or unlocked.
 
 **RLS:** Anyone can read (it's a catalogue). Only service role can write.
 
-**Current packs:**
-- `shona-english` — Learn Shona (for English speakers)
-- `english-shona` — Dzidza ChiRungu (for Shona speakers)
-- `ai-companion-text` — Text AI $10/mo
-- `ai-companion-voice` — Voice AI $15/mo
-- `ai-companion-realtime` — Companion $25/mo
-- `ai-premium` — Premium $45/mo
-- `travel-zimbabwe` — Travel (coming soon)
-- `community` — Community (coming soon)
+**Current packs (v3 IDs):**
+
+Speaker packs (always free; bundled at v1):
+- `speaker:english`
+- `speaker:shona`
+
+Course packs:
+- `course:language-shona` — target=shona, available_for_speakers=['english', 'shona'] (sn variant is Shona-speaker reading material about their own language for review purposes; primarily english variant)
+- `course:language-english` — target=english, available_for_speakers=['shona'] for v1 (en speakers don't need a learn-English course)
+- `course:ai-companion` — type='ai-companion', no target_language; available_for_speakers=['english', 'shona']
+- `course:travel-zimbabwe` — type='travel', destination=ZW; coming soon
+
+Jurisdiction packs (always free; bundled at v1):
+- `jurisdiction:AU`, `jurisdiction:GB`, `jurisdiction:US`, `jurisdiction:EU`, `jurisdiction:ZW`
+
+Subscription tier add-ons (subsume the old AI-companion-text/voice/realtime packs):
+- `tier:text-ai` — $10/mo, unlocks Text AI on whatever course is active
+- `tier:voice` — $15/mo
+- `tier:companion` — $25/mo
+- `tier:premium` — $45/mo
+
+Legacy v2 IDs (`shona-english`, `english-shona`, `ai-companion-text`, etc.) survive as backward-compat aliases — see §10 migration for the decomposition view.
+
+---
+
+### 2.5. jurisdictions (NEW v3)
+Legal/regional pack catalogue. One row per jurisdiction.
+
+| Column | Type | Notes |
+|---|---|---|
+| id | text | PK. ISO 3166-1 alpha-2 ('AU', 'GB', 'US', 'EU', 'ZW') or pseudo-region ('EU' = bloc) |
+| name | text | Display name ('Australia', 'United Kingdom', 'European Union', 'Zimbabwe') |
+| country_codes | text[] | Which ISO codes this pack covers (EU pack covers all 27 EU members) |
+| extends | text | If this jurisdiction inherits unspecified fields from another. e.g. GB.extends='AU' until lawyer fills in UK-specific text. |
+| currency_code | text | ISO 4217 ('AUD', 'GBP', 'USD', 'EUR') |
+| currency_symbol | text | Display symbol ('A$', '£', '$', '€') |
+| min_age | integer | Minimum user age for this jurisdiction. AU=16, EU=16, GB=13, US=13, etc. Drops the hardcoded 18 in onboarding. |
+| cooling_off_days | integer | Statutory refund window. EU=14, GB=14, AU=0, US=0. |
+| voice_consent_required | boolean | BIPA-style explicit consent before mic use. Only true for US-IL. |
+| data_residency | text | Where user data must physically reside. 'EU', 'AU', 'US', 'global'. Influences Supabase region choice for that user's data. |
+| language_of_record | text | Which speaker pack the legal text is authored in. Defaults to 'english' for v1; some EU jurisdictions may need member-state languages. |
+| is_eu | boolean | true for the EU bloc and its member states |
+| is_uk | boolean | true for GB |
+| privacy_policy_md | text | Markdown body of Privacy Policy. ~5-15kb each. |
+| terms_of_service_md | text | Markdown body of Terms of Service. ~5-15kb each. |
+| crisis_resources | jsonb | Array of `{ name, phone, url, context }` per AI Companion design §2.2 |
+| consent_disclosures | jsonb | Speaker-language strings injected into onboarding consent checkboxes |
+| created_at | timestamptz | |
+| updated_at | timestamptz | |
+
+**RLS:** Anyone can read (it's a catalogue). Only service role can write.
+
+**Migration:** at v3 launch, this table holds 5 rows: AU (fully populated, lawyer-vetted) and GB/US/EU/ZW (each `extends='AU'` placeholder rows). The lawyer fills in per-region text pre-launch.
+
+**Why a separate table not a directory:** the legal text is large (~10kb each) and changes infrequently but importantly (every Privacy Policy revision is a legal event). Storing in DB lets us version it, track when each user agreed to which version (`profiles.privacy_agreed_at` + a future `consent_versions` audit log), and avoid forcing app updates for legal text revisions.
 
 ---
 
@@ -363,6 +433,182 @@ RevenueCat webhook secrets stored in Supabase Edge Function secrets, not tables.
 | 002-functions.sql | Early dev | add_xp and delete_user functions |
 | 003-consolidated-schema.sql | 2026-04-30 | Full expansion: packs, user_packs, subscriptions, parental_codes, new profile columns |
 | 004-account-management.sql | 2026-04-30 | EU cooling off, indexes, account controls, country detection |
+| **005-three-pack-architecture.sql** | Phase E.0 (next) | NEW jurisdictions table + new profile columns (speaker_pack_id, active_course_ids, jurisdiction_id) + available_packs.pack_kind + decomposition view for legacy IDs. See §10. |
+
+---
+
+## §10. v3 Migration plan (Phase E.0)
+
+The migration from v2 (pair-string pack model) to v3 (three-pack composition model) is non-destructive: legacy columns are preserved as shadow values for one release. Phase E.0 lands the schema + writes both old and new fields. A subsequent v3.1 migration drops the legacy columns once all clients have updated.
+
+### Schema changes
+
+```sql
+-- 005-three-pack-architecture.sql
+
+begin;
+
+-- ─── jurisdictions table (new) ──────────────────────────────────────────────
+create table public.jurisdictions (
+  id                       text primary key,           -- 'AU', 'GB', 'EU', etc.
+  name                     text not null,
+  country_codes            text[] not null,            -- e.g. ['AU'] or all 27 EU codes
+  extends                  text references public.jurisdictions(id),
+  currency_code            text not null,              -- ISO 4217
+  currency_symbol          text not null,
+  min_age                  integer not null default 13,
+  cooling_off_days         integer not null default 0,
+  voice_consent_required   boolean not null default false,
+  data_residency           text not null default 'global',
+  language_of_record       text not null default 'english',
+  is_eu                    boolean not null default false,
+  is_uk                    boolean not null default false,
+  privacy_policy_md        text,                       -- nullable while extends fallback applies
+  terms_of_service_md      text,
+  crisis_resources         jsonb not null default '[]',
+  consent_disclosures      jsonb not null default '{}',
+  created_at               timestamptz not null default now(),
+  updated_at               timestamptz not null default now()
+);
+
+alter table public.jurisdictions enable row level security;
+create policy "jurisdictions_read_all" on public.jurisdictions for select using (true);
+
+-- Seed v1 jurisdictions
+insert into public.jurisdictions (id, name, country_codes, currency_code, currency_symbol, min_age, cooling_off_days, is_eu, is_uk, language_of_record)
+values
+  ('AU', 'Australia',      array['AU'],                                                                                          'AUD', 'A$', 16, 0, false, false, 'english'),
+  ('GB', 'United Kingdom', array['GB'],                                                                                          'GBP', '£', 13, 14, false, true, 'english'),
+  ('US', 'United States',  array['US'],                                                                                          'USD', '$', 13, 0, false, false, 'english'),
+  ('EU', 'European Union', array['AT','BE','BG','CY','CZ','DE','DK','EE','ES','FI','FR','GR','HR','HU','IE','IT','LT','LU','LV','MT','NL','PL','PT','RO','SE','SI','SK'], 'EUR', '€', 16, 14, true, false, 'english'),
+  ('ZW', 'Zimbabwe',       array['ZW'],                                                                                          'USD', '$', 13, 0, false, false, 'english');
+
+update public.jurisdictions set extends = 'AU' where id in ('GB', 'US', 'EU', 'ZW');
+
+-- ─── available_packs.pack_kind (new) ────────────────────────────────────────
+alter table public.available_packs add column if not exists pack_kind text;
+alter table public.available_packs add column if not exists target_language_id text;
+alter table public.available_packs add column if not exists course_type text;
+alter table public.available_packs add column if not exists available_for_speakers text[];
+alter table public.available_packs add column if not exists prices_by_jurisdiction jsonb default '{}';
+
+-- Backfill pack_kind for existing rows
+update public.available_packs set pack_kind = 'course', course_type = 'language',
+       target_language_id = learned_language_id,
+       available_for_speakers = array[spoken_language_id]
+  where pack_type = 'language';
+update public.available_packs set pack_kind = 'tier-addon'
+  where id in ('ai-companion-text', 'ai-companion-voice', 'ai-companion-realtime', 'ai-premium');
+update public.available_packs set pack_kind = 'course', course_type = 'travel'
+  where id = 'travel-zimbabwe';
+
+-- Insert speaker packs (v3 — these didn't exist as catalogue rows before)
+insert into public.available_packs (id, pack_kind, name, is_free, is_active)
+values
+  ('speaker:english', 'speaker', 'English speaker pack', true, true),
+  ('speaker:shona',   'speaker', 'Shona speaker pack',   true, true);
+
+-- Insert jurisdiction packs as catalogue rows (so user_packs can reference them)
+insert into public.available_packs (id, pack_kind, name, is_free, is_active)
+values
+  ('jurisdiction:AU', 'jurisdiction', 'Australia',      true, true),
+  ('jurisdiction:GB', 'jurisdiction', 'United Kingdom', true, true),
+  ('jurisdiction:US', 'jurisdiction', 'United States',  true, true),
+  ('jurisdiction:EU', 'jurisdiction', 'European Union', true, true),
+  ('jurisdiction:ZW', 'jurisdiction', 'Zimbabwe',       true, true);
+
+-- Composite course IDs (the v3 'course:language-shona' alongside the legacy 'shona-english')
+insert into public.available_packs (id, pack_kind, course_type, target_language_id, available_for_speakers, name, is_free)
+values
+  ('course:language-shona',   'course', 'language',     'shona',   array['english','shona'], 'Learn Shona',   false),
+  ('course:language-english', 'course', 'language',     'english', array['shona'],            'Learn English', false),
+  ('course:ai-companion',     'course', 'ai-companion', null,      array['english','shona'], 'AI Companion',  false);
+
+-- ─── profiles new columns ───────────────────────────────────────────────────
+alter table public.profiles add column if not exists speaker_pack_id text;
+alter table public.profiles add column if not exists active_course_ids text[] default '{}';
+alter table public.profiles add column if not exists jurisdiction_id text references public.jurisdictions(id);
+
+-- Backfill from legacy columns
+update public.profiles set
+  speaker_pack_id = coalesce(speaker_pack_id, app_language),
+  jurisdiction_id = coalesce(jurisdiction_id,
+    case
+      when is_uk_customer then 'GB'
+      when is_eu_customer then 'EU'
+      when country_code = 'AU' then 'AU'
+      when country_code = 'US' then 'US'
+      when country_code = 'ZW' then 'ZW'
+      else 'AU'   -- safe default; user confirms during next onboarding pass
+    end),
+  active_course_ids = coalesce(
+    nullif(active_course_ids, '{}'),
+    case
+      when active_language_pack_id = 'shona-english'  then array['course:language-shona']
+      when active_language_pack_id = 'english-shona'  then array['course:language-english']
+      else '{}'
+    end
+  );
+
+create index if not exists idx_profiles_speaker_pack    on public.profiles(speaker_pack_id);
+create index if not exists idx_profiles_jurisdiction    on public.profiles(jurisdiction_id);
+create index if not exists idx_profiles_active_courses  on public.profiles using gin (active_course_ids);
+
+-- ─── user_packs.pack_id can now reference v3 IDs ────────────────────────────
+-- No schema change needed — pack_id is a text FK to available_packs.id and v3 added the new IDs.
+
+-- ─── decomposition view for backward-compat ─────────────────────────────────
+-- A read-time helper: takes a legacy pair-string and returns the v3 (speaker, course, jurisdiction) decomposition
+create or replace function public.decompose_legacy_pack(p_pair text, p_country text)
+returns table(speaker_pack_id text, course_id text, jurisdiction_id text)
+language sql stable as $$
+  select
+    case p_pair
+      when 'shona-english' then 'english'
+      when 'english-shona' then 'shona'
+      else 'english'
+    end,
+    case p_pair
+      when 'shona-english' then 'course:language-shona'
+      when 'english-shona' then 'course:language-english'
+      else 'course:language-shona'
+    end,
+    case
+      when p_country = 'GB' then 'GB'
+      when p_country in ('AT','BE','BG','CY','CZ','DE','DK','EE','ES','FI','FR','GR','HR','HU','IE','IT','LT','LU','LV','MT','NL','PL','PT','RO','SE','SI','SK') then 'EU'
+      when p_country = 'US' then 'US'
+      when p_country = 'ZW' then 'ZW'
+      else 'AU'
+    end;
+$$;
+
+commit;
+```
+
+### Application code migration (Phase E.0)
+
+1. **Read path**: `useSettings()` reads `profiles.speaker_pack_id`, `profiles.active_course_ids`, `profiles.jurisdiction_id` (with fallback to legacy fields if new ones are null — backward compat for users who logged in pre-migration).
+2. **Write path**: `setActivePack`, `setAppLanguage`, etc. write to BOTH the new and the legacy columns until v3.1 drops the legacy ones.
+3. **Onboarding**: writes new fields directly. Legacy fields are populated via a `before insert` trigger for one release.
+
+### v3.1 cleanup migration (one release after E.0 ships)
+
+```sql
+-- 006-drop-legacy-pack-columns.sql (lands ~1 month after 005)
+alter table public.profiles drop column app_language;
+alter table public.profiles drop column active_language_pack_id;
+alter table public.profiles drop column country_code;
+alter table public.profiles drop column is_eu_customer;
+alter table public.profiles drop column is_uk_customer;
+alter table public.available_packs drop column spoken_language_id;
+alter table public.available_packs drop column learned_language_id;
+alter table public.available_packs drop column feature_key;
+alter table public.available_packs drop column pack_type;
+alter table public.available_packs drop column price_aud;
+drop function public.decompose_legacy_pack(text, text);
+```
+
+The 1-month gap between 005 and 006 lets us catch any user who hasn't opened the app since pre-E.0 — their legacy columns get backfilled the next time they log in.
 
 ---
 

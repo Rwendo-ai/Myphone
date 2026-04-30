@@ -5,8 +5,7 @@
 
 ## What We Are Building
 A cross-platform mobile app (iOS + Android) built with React Native + Expo SDK 54.
-Rwendo is a gamified language learning app AND AI companion platform.
-Users choose at onboarding: Learn a Language, Create an AI Friend, or Travel (coming soon).
+Rwendo is a multi-language, multi-course, multi-jurisdiction product. Users choose at onboarding what language they speak (drives the whole UI) and which course(s) they're taking — Learn a Language, AI Companion (Replika-style relationship), or Travel.
 The mascot and companion is Rwen — a chameleon powered by Claude AI and ElevenLabs voice.
 
 **APP NAME:** Rwendo (Shona for "journey")
@@ -14,13 +13,31 @@ The mascot and companion is Rwen — a chameleon powered by Claude AI and Eleven
 
 ---
 
-## Language Pack Architecture
+## Pack Architecture (load-bearing — see [docs/PRODUCT-DESIGN.md](docs/PRODUCT-DESIGN.md) §3)
+
+The app is composed of three orthogonal pack types. A user's runtime experience is the **composition** of one piece from each:
+
 ```
-data/languages/  english.ts | shona.ts (standalone, reusable)
-data/packs.ts    shona-english (✅ 100 lessons) | english-shona (⬜ to author)
-Supabase         available_packs table seeded with 8 packs
+SPEAKER PACK     × COURSE PACK(s)         × JURISDICTION PACK
+"what I read in"   "what I'm doing"          "where I live"
+─────────────────────────────────────────────────────────────
+english            language-shona            AU
+shona              language-english          GB
+french (future)    ai-companion              US
+tagalog (future)   travel-zimbabwe           EU / ZW
 ```
-Adding a new language = add language file + pack entry + curriculum. Zero engine changes.
+
+Speaker pack drives ALL readable text in the app (UI strings, AI prompts, greetings, tips, narration). Course pack drives content (curriculum / starter cards / phrasebook), authored fresh per speaker. Jurisdiction pack drives legal text, currency, age threshold, crisis resources. **Static content only** — the only dynamic surface is Claude's live replies inside an open conversation.
+
+```
+data/speakers/{english,shona,...}/         locale, AI prompt, greetings, voices, tips
+data/courses/<course-id>/<speaker-id>/     curriculum / cards / phrasebook
+data/jurisdictions/{AU,GB,US,EU,ZW}/       privacy + ToS + currency + crisis lines
+```
+
+Adding a new language to the system = drop a single `data/speakers/<id>/` directory and contribute speaker variants to whichever courses you want.
+
+**v1 packs:** speakers `english` + `shona` populated; courses `language-shona`, `language-english`, `ai-companion` (each with English + Shona speaker variants); jurisdiction `AU` populated, others as `{ extends: 'AU' }` stubs.
 
 ---
 
@@ -65,9 +82,14 @@ Based on 10 SLA pillars. Max 3 new chunks per lesson. 5-7 min per lesson.
 ---
 
 ## Curriculum Status
-### shona-english — 100 lessons ✅ COMPLETE
-Modules 1-10, 10 lessons each, full 7-phase structure
-### english-shona — ⬜ curriculum to author (structure in place)
+### language-shona / english speaker variant — 100 lessons ✅ COMPLETE
+Modules 1-10, 10 lessons each, full 7-phase structure. Lives at `data/curriculum/shona-english/` today; moves to `data/courses/language-shona/english/curriculum/` in Phase E.0.
+### language-english / shona speaker variant — ⬜ curriculum to author (Phase K)
+Same lesson structure, target=English, native=Shona. Cultural framing rewritten from a Shona-speaker's perspective.
+### ai-companion / english speaker variant — ⬜ to author (Phase J)
+~50 starter cards + 6 Topic flows + memory schema + crisis triggers (English-speaker phrase list).
+### ai-companion / shona speaker variant — ⬜ to author (Phase J/K)
+Same, in Shona.
 
 ---
 
@@ -132,22 +154,29 @@ See: docs/DATABASE-DESIGN.md for full schema.
 
 ## ✅ DONE
 
+### Architecture (Phases A-D)
+- ✅ `bdf4dd7` Phase A: lesson schema rename `target`/`native` (was `shona`/`english`) — 1994 keys across 100 files
+- ✅ `afa9f66` Phase B: pack-aware curriculum loading via `getCurriculumLesson(packId, lessonId)`
+- ✅ `093b98b`/`2a160b6`/`66ca95c`/`9d208e3` Phase C: i18next + en locale extraction (~250 strings)
+- ✅ `e92e3f6` tsc cleanup — project type-clean
+- ✅ `8904538`/`74ab471` Phase D: Shona (sn) UI translation drafted with `__warnings`. Awaiting native review.
+- ✅ `42e5ccc` In-app App Language switcher (Profile → flips locale instant + persists)
+
 ### Core
 - Expo app running on Samsung S23 Ultra via phone hotspot WiFi
 - 5-tab navigation with elevated Rwen centre button
-- Language pack architecture (extensible to 100+ languages)
 - Auth: sign up (password validation + 4 consent checkboxes), sign in, sign out, session persists
 - Age gate: under 18 blocked, Family Plan teaser shown
-- Profile loads on login: theme, avatar, voice from Supabase
+- Profile loads on login: theme, avatar, voice, app_language from Supabase
 - Profile picture upload to Supabase Storage (avatars bucket)
 - Colour themes: 6 options, apply globally via SettingsContext
 - Rwen PNG poses: 8 poses, transparent WebP, used throughout app
 - Home dashboard: greeting, XP/streak, continue card, Rwen tip, quick access
 - Travel screen: coming soon teaser with 6 features, Victoria Falls spotlight
-- Profile tab: full settings hub, voice selector, legal links, sign out, delete account
+- Profile tab: full settings hub, voice selector, language switcher, legal links, sign out, delete account
 
 ### Learning
-- 100 lessons authored (shona-english, Modules 1-10, 7-phase Rwendo Method)
+- 100 lessons authored (language-shona / english speaker variant, Modules 1-10, 7-phase Rwendo Method)
 - 5 exercise types all working with key= fix (no stale state between questions)
 - XP saves to Supabase on lesson completion
 - Streak tracking (daily, updates on open)
@@ -155,53 +184,71 @@ See: docs/DATABASE-DESIGN.md for full schema.
 - Keyboard never hides text inputs
 
 ### AI & Voice
-- Claude Haiku with rich personalised system prompt ✅
+- Claude Haiku with rich personalised system prompt ✅ (currently English-only — Phase E.0 makes it speaker-driven)
 - Profile data fetched from Supabase (get_ai_prompt_data RPC) with 10min cache
 - Conversation history (last 40 messages) loaded from Supabase
 - ElevenLabs TTS: Rwen speaks ✅
 - ElevenLabs STT: user holds mic → transcribed → sent to Claude ✅
 - Voice on/off toggle in companion
-- 4 voice options selectable in Profile
+- 4 voice options selectable in Profile (currently global; Phase E.0 makes them speaker-pack-curated)
 - ElevenLabs Agent created and published
 - Supabase Edge Function rwen-conversation deployed (Claude webhook)
 
 ### Legal & Compliance
-- Privacy Policy (12 sections, Rwendo-specific)
-- Terms of Service (arbitration, liability cap, AI disclaimers)
+- Privacy Policy (12 sections, Rwendo-specific) — currently single English file; Phase E.0 + Phase N make this jurisdiction-driven
+- Terms of Service (arbitration, liability cap, AI disclaimers) — same
 - Both linked from sign-up and Profile
 - In-app AI disclosure on companion header
-- Age gate blocks under 18
+- Age gate blocks under 18 (currently hardcoded; Phase N reads from `jurisdiction.minAge`)
 
 ---
 
-## ⬜ TODO — Launch Requirements
+## ⬜ TODO — In Phase Order (per docs/PRODUCT-DESIGN.md §8)
 
-### 🔴 Critical
-1. **Code audit** — remove dead code, fix broken tabs, clean up (use Opus 4.7)
-2. **EAS Build** — required for:
-   - @elevenlabs/react-native real-time conversation (LiveKit native modules)
-   - App Store / Google Play submission
-3. **RevenueCat** — gate AI features by subscription tier
-4. **Apple Developer account** ($149 AUD/yr) + **Google Play Console** ($30 USD)
-5. **App Store assets** — icons all sizes, screenshots, descriptions
-6. **Lawyer review** of Privacy Policy + Terms of Service
-7. **Voice consent checkbox** before first mic use (BIPA legal requirement)
+### 🔴 Phase E.0 — Three-pack architecture refactor (CURRENT PRIORITY)
+The load-bearing restructure. Until this lands, every per-language fix is a band-aid that creates new leaks.
+- New types: `SpeakerPack`, `CoursePack`, `JurisdictionPack`, `RuntimePackContext`
+- New file layout: `data/speakers/<id>/`, `data/courses/<course-id>/<speaker-id>/`, `data/jurisdictions/<id>/`
+- Move `locales/<id>/` → `data/speakers/<id>/locale/`
+- Move `data/curriculum/shona-english/` → `data/courses/language-shona/english/curriculum/`
+- Move hardcoded English Claude prompt out of `lib/claude.ts` → `data/speakers/english/ai-system-prompt.ts`; author Shona equivalent
+- `useSettings()` exposes `{ speaker, courses[], jurisdiction, activeCourseId }`
+- Update onboarding to write `speaker_pack_id`, `active_course_ids`, `jurisdiction_id` (new columns)
+- Fix the leaks: parameterise onboarding learn-questions with `{{lang}}`, make home greeting hero pack-aware, AI prompt speaker-pack-driven, tips per-speaker
+- ~2 working days
 
-### 🟡 Important
-8. ElevenLabs real-time conversation (after EAS Build):
-   - voice-signed-url Edge Function
-   - @elevenlabs/react-native + LiveKit integration
-   - Replace push-to-talk UI with hands-free call UI
-9. English-Shona curriculum (100 lessons)
-10. Claude prompt builder using full onboarding profile (partially done)
-11. Supabase DPAs (supabase.com/dpa, check Anthropic + ElevenLabs terms)
+### 🔴 Critical post-E.0
+1. Phase E — Module gating + dev unlock flag + demo account script
+2. Phase F — Per-lesson AI conversation (Phase 8 of Rwendo Method)
+3. Phase G — Two-track Learn tab (Language / AI Companion as separate cards)
+4. Phase H — RevenueCat wiring (5 tiers + 5 jurisdictions' currency)
+5. Phase I — Onboarding refinements (largely subsumed by E.0)
+6. Phase J — AI Companion course content (starter cards + Topics + memory infra)
+7. Phase K — Second speaker variants (`language-english/shona/`, `ai-companion/shona/`)
+8. Phase L — In-app methodology screens
+9. Phase M — Move API keys server-side (HARD PREREQUISITE for any external testing)
+10. Phase N — Jurisdiction packs populated for non-AU regions (lawyer-fillable)
+
+### 🔴 External requirements (in parallel)
+- Native-Shona reviewer pass on the sn locale `__warnings` (Phase D follow-up)
+- **EAS Build** — for @elevenlabs/react-native real-time + App Store / Play Store submission
+- **Apple Developer account** ($149 AUD/yr) + **Google Play Console** ($30 USD)
+- **App Store assets** — icons all sizes, screenshots, descriptions
+- **Lawyer review** of Privacy Policy + Terms of Service per jurisdiction
+- **Voice consent checkbox** before first mic use (BIPA legal requirement, US Illinois)
+
+### 🟡 Important (post-launch v1.x)
+- ElevenLabs real-time conversation (after EAS Build): voice-signed-url Edge Function, hands-free call UI
+- Custom Shona voice clone (~$1-2k recording session) for the `shona` speaker pack
+- Forex alignment of pricing across jurisdictions
+- Supabase DPAs (supabase.com/dpa, check Anthropic + ElevenLabs terms)
 
 ### 🟢 Phase 2
-- Fastify backend (move API keys server-side)
+- Fastify backend (alternative to Edge Functions if Edge Function limits become a problem)
 - Sync.io avatar lipsync at Premium tier
-- ElevenLabs Conversational AI at Companion tier
-- Downloadable pack architecture (for 100+ languages)
-- Travel section content
+- ElevenLabs Conversational AI (Custom LLM webhook) at Companion tier
+- Downloadable pack architecture (lazy-load packs from Supabase Storage when there are 10+ speakers)
+- Travel section content (per-jurisdiction destination guides)
 - Community features
 - PostHog + Sentry
 - Children's Family Plan (parental consent flow)
@@ -233,10 +280,11 @@ lib/progress.ts               — XP/lesson Supabase functions
 lib/storage.ts                — Avatar upload to Supabase Storage
 hooks/useProgress.ts          — Progress hook
 
-data/curriculum/              — 100 lesson files (m01-l01 through m10-l10)
-data/lessons.ts               — Unit/lesson registry
-data/packs.ts                 — Language pack registry
-data/languages/               — english.ts, shona.ts
+data/curriculum/shona-english/   100 lesson files. Phase E.0 moves to data/courses/language-shona/english/curriculum/
+data/lessons.ts               — Unit/lesson registry (thin Lesson type for unit lists)
+data/packs.ts                 — Legacy pair registry. Phase E.0 deprecates in favour of the three-pack composition.
+data/languages/               — english.ts, shona.ts. Phase E.0 moves to data/speakers/{english,shona}/index.ts
+locales/{en,sn}/              — UI translation JSON. Phase E.0 moves to data/speakers/<id>/locale/
 constants/themes.ts           — 6 colour themes
 
 supabase/functions/rwen-conversation/ — Claude webhook Edge Function

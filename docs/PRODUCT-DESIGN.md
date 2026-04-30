@@ -2,53 +2,82 @@
 
 *Last updated: 2026-04-30. Owner: Ben.*
 
-This is the canonical design doc for **how Rwendo actually works** as a multi-language, multi-pack, multi-tier product. It covers four entangled topics:
+This is the canonical design doc for **how Rwendo actually works** as a multi-language, multi-course, multi-jurisdiction, multi-tier product. It covers five entangled topics:
 
-1. The two lesson tracks (Language curriculum + AI Companion as a relationship)
-2. The pack architecture that scales from 2 to 100 languages without 100 apps
-3. The i18n strategy that makes the whole UI flip into the user's spoken language
-4. The pricing model (4 free modules of starter pack, AI tiers, token-based overage)
+1. **The pack model** — three orthogonal pack types (speaker × course × jurisdiction) compose into one user experience. This is the load-bearing architecture; everything else is built on it.
+2. The two lesson tracks (Language curriculum + AI Companion as a relationship)
+3. The pricing model (4 free modules of starter pack, AI tiers, token-based overage)
+4. The static-content principle (only Claude's live replies are dynamic; every other byte the user reads is authored content sitting in a pack)
+5. Distribution & jurisdiction handling (per-region legal, currency, age thresholds)
 
-## Decision log (locked 2026-04-30)
+## Decision log
+
+### Locked 2026-04-30 (architecture)
+
+- **Pack model**: Rwendo runs on three orthogonal pack types that compose at runtime into a single user experience:
+  - **Speaker pack** — locale (UI strings), AI system prompt template, greetings, voice options, tips, narration, social conventions. Drives ALL readable text in the app. One active per user, set at signup.
+  - **Course pack** — curriculum (language courses) / starter cards + Topics (AI Companion) / phrasebook + cultural guide (Travel). Authored fresh per speaker because cultural framing differs from each starting point. One or more active per user, gated by entitlements.
+  - **Jurisdiction pack** — privacy-policy text, terms-of-service text, age threshold, currency, refund rights, crisis resources. One active per user, set by declared country at signup.
+- **Identifier convention**: composed IDs at runtime, not pair-strings. A user's runtime context is `speaker:english + course:[language-shona, ai-companion] + jurisdiction:AU`. Legacy `shona-english` etc. survive in `available_packs.id` as derived aliases for backward compatibility but new code keys on the three-part composition.
+- **Static vs dynamic**: every speaker / course / jurisdiction pack is STATIC content. The ONLY dynamic surface in the entire app is Claude's live replies inside an open conversation. Everything else — every label, prompt, greeting, ToS clause, currency symbol, voice clip — is authored content sitting in the right slot of the right pack.
+- **AI prompts are speaker-driven**: Claude is instructed in the speaker's language. A French speaker's Rwen has been told (in French) "you are a French-speaking companion called Rwen". A Shona speaker's Rwen is instructed in Shona. The persona shape is shared; the language of instruction flips.
+- **Bundle everything in v1**: every authored speaker pack, course pack, and jurisdiction pack ships in the binary. Lazy-loading from Supabase Storage is Phase 5+ work, when there are 10+ speaker packs to motivate it.
+- **Speakers at v1**: `english` and `shona` both populated. Adding any future speaker = drop in a single `data/speakers/<id>/` directory.
+- **Jurisdictions at v1**: ship `AU` populated (lawyer-reviewed pre-launch). Others (`GB`, `US`, `EU`, `ZW`) ship as `{ extends: 'AU' }` stubs that the lawyer fills in pre-launch per region.
+- **Currency**: per-jurisdiction. Forex alignment with live FX rates is a v1.x concern — initial pricing is locked per jurisdiction.
+
+### Locked 2026-04-30 (product)
 
 - **Pricing**: 5 tiers matching schema seed — Free, Text AI $10, Voice $15, Companion $25, Premium $45.
 - **Annual plans**: ship at launch alongside monthly. Standard 40% annual discount. Auto-renew default on.
 - **Overage**: token-based ("Rwen credits") priced at averaged cost-per-minute. Generic credit usable across text/voice/realtime.
-- **Free 4 modules**: applies *only* to the first language pack the user activates, ever. Subsequent packs are paid from day 1.
+- **Free 4 modules**: applies *only* to the first language course the user activates, ever. Subsequent course packs are paid from day 1.
 - **AI Companion**: not a 60-lesson curriculum. It's a relationship that grows with the user — open conversation, memory, depth levels. See §2.2.
 - **Phase 8 cadence**: 6 text exchanges (12 messages) OR 3 minutes voice — whichever comes first, unless the user ends earlier.
-- **Schema rename**: lesson types use `target` / `native` (not `shona` / `english`). Filenames stay as-is.
-- **Phase order**: strict sequential A → B → C ... no parallel work.
-- **Launch scope**: ship both `shona-english` *and* `english-shona` packs on day one. Plus the AI Companion track (relationship-based, not lesson-based) and an in-app methodology page.
-- **AI Companion track**: visible at launch. The conversation IS the product. Curriculum cards/topics are scaffolding, not gating.
-- **Translation**: AI-authored (Claude), verified by a second AI pass and a human spot-check.
+- **Schema rename**: lesson types use `target` / `native` (not `shona` / `english`). Filenames stay as-is. — DONE
+- **Phase order**: strict sequential A → B → C ... no parallel work for the code phases.
+- **Launch scope**: ship both `language-shona` and `language-english` course packs on day one (with English and Shona speaker variants of each), the AI Companion course pack (English + Shona speaker variants), AU jurisdiction populated, and an in-app methodology page.
+- **AI Companion course**: visible at launch. The conversation IS the product. Curriculum cards/topics are scaffolding, not gating.
+- **Translation workflow**: AI-authored (Claude), verified by a second AI pass and a human spot-check. Per-speaker authoring (not per-pair) — content for "Learn Shona authored for an English speaker" is a different artifact from "Learn Shona authored for a French speaker".
 - **RevenueCat**: confirmed. Free up to $2,500/mo MTR, 1% above. Negligible at our stage.
 
-Everything below is the design behind those decisions. Implementation has **not** started — the existing code partially matches the schema but does not match this design. See §8 (Implementation roadmap) at the end.
+Everything below is the design behind those decisions. **§3 is the load-bearing one** — read that first if you're new to the doc.
 
 ---
 
 ## 1. The reality check (current state)
 
-Before designing forward, here's what's actually in the codebase vs what the docs and schema imply:
+Before designing forward, here's what's actually in the codebase vs what the docs and schema imply.
 
-| Layer | Status | Gap |
+### What's working / done
+
+| Layer | Status | Notes |
 |---|---|---|
-| **`available_packs` table** | ✅ Well-designed. Distinguishes `pack_type='language'` vs `pack_type='feature'`. All pricing fields present. 8 packs seeded with correct prices. | None at the data layer — this is the most forward-looking piece. |
-| **`user_packs` table** | ✅ Tracks ownership with `is_active`, `expires_at`, monthly `usage_count` / `usage_limit`. | Code never inserts/reads from it. |
-| **`subscriptions` table** | ✅ Mirrors RevenueCat tier with quotas (`ai_messages_limit` etc.). Trigger creates a "free" record on signup. | Code never reads it. The Profile screen hardcodes "Free Plan". |
-| **`user_has_pack()` RPC** | ✅ Exists. | Never called. |
-| **`data/packs.ts`** | Only the 2 language packs. No feature packs. | Should mirror `available_packs` table or be replaced by a runtime fetch. |
-| **`data/languages/index.ts`** | Only `english` + `shona` registered. (`french.ts` exists but is unregistered.) | Adding a language = drop a file + add to index. Trivial. |
-| **`types/lesson.ts`** | **Hardcoded `shona: string` and `english: string` fields** on `Chunk`, `DialogueLine`, `PatternExample`. | This is the load-bearing problem. To support arbitrary pack pairs the schema needs `target` / `native` (or `learned` / `spoken`) keys instead of language names. |
-| **Curriculum (100 lesson files)** | All match the hardcoded shape. | Will need a migration when the type is renamed. Mechanical but unskippable. |
-| **Lesson engine** (`app/lesson/[id].tsx`) | Reads `chunk.shona` / `chunk.english` directly. | Same migration as above. |
-| **UI strings** | Every label is hardcoded English. Profile says `"Daily XP goal"`, Home says `"Talk to Rwen"`, etc. | No `t()` system. Needs i18next + JSON locale files. |
-| **Module gating** | Doesn't exist. Every lesson is unlocked for any signed-in user. | Needs an entitlement check at lesson entry, plus a "locked" UI state. |
-| **AI section per lesson** | Doesn't exist. The 7th phase is "Mission" (a journaling prompt). | New phase + Claude integration + locked overlay. |
-| **AI Companion track** | Doesn't exist as a curriculum. The Companion tab is a free-form chat. | New product surface: structured conversational lessons. |
+| **Lesson schema rename** | ✅ Done in commit `bdf4dd7`. `Chunk`, `PatternExample`, `DialogueLine`, `userChoices` use `target` / `native` keys. 1994 keys renamed across 100 curriculum files. |
+| **Pack-aware curriculum loading** | ✅ Done in `afa9f66`. `data/curriculum/<pack-id>/` directory + `getCurriculumLesson(packId, lessonId)` resolver. Lesson screen reads `activePack.id` from `useSettings()`. |
+| **i18n infrastructure** | ✅ Done in `093b98b`. `i18next` + `react-i18next` + `expo-localization` wired. `lib/i18n.ts` synchronous init. `setAppLanguage()` flips at runtime. |
+| **English locale (en) full extraction** | ✅ Done in `2a160b6` / `66ca95c` / `9d208e3`. Every hardcoded UI string in `app/` and `components/` extracted to `locales/en/{common,auth,learn,rwen,achievements}.json`. |
+| **Shona locale (sn) draft** | ✅ Drafted in `8904538` with per-file `__warnings` for native-speaker review. Awaiting native pass. Tip mirror-not-translate fix in `74ab471`. |
+| **In-app language switcher** | ✅ Done in `42e5ccc`. Profile → "App Language" flips locale instantly + persists to Supabase. |
+| **`available_packs` table** | ✅ Well-designed. `pack_type` column distinguishes `'language'` from `'feature'`/`'content'`/`'cultural'`. 8 packs seeded. The schema is **already three-pack-ready** — `pack_type` is the discriminator. |
+| **`user_packs`, `subscriptions`, `user_has_pack()` RPC** | ✅ Schema exists. | Code never inserts/reads. Module gating not yet wired. |
 
-**Tl;dr:** the schema is 6 months ahead of the code. This doc closes the gap.
+### Gaps the new pack model exposes
+
+| Layer | Gap |
+|---|---|
+| **No "speaker pack" entity in code** | A speaker pack should bundle UI locale + AI system prompt + greetings + voice options + tips + onboarding script. Today these are scattered: `locales/<id>/` (locale only), `lib/SettingsContext.tsx` (voice IDs hardcoded), `lib/claude.ts` + edge function (prompts hardcoded English), home tab (`getShonaGreeting` hardcoded Shona), tips array embedded in JSON. Need to consolidate into `data/speakers/<id>/`. |
+| **Course packs are implicit** | The schema's `pack_type='feature'` is unused; AI Companion has no content surface; Travel is hardcoded English. Need `data/courses/{language-shona,language-english,ai-companion,travel-zimbabwe}/<speaker-id>/` directory. |
+| **Per-pair curriculum is the wrong granularity** | Today curriculum is keyed by `<spoken>-<learned>` pair. Should be `data/courses/<course-id>/<speaker-id>/` — the course is the entity, the speaker is a variant of its content. Adding French = drop `english/`, `shona/`, `french/` sub-packs into each course; you don't author a separate `french-shona` AND `french-english` course in parallel namespaces. |
+| **No jurisdiction concept anywhere** | ToS/Privacy in `app/(legal)/` are single English files. Age check hardcoded 18. No currency model. EU/UK 14-day cooling-off lives in `subscriptions.cooling_off_ends_at` but all the surrounding text is one-language-only. Crisis resources for the AI Companion (per design §2.2) have no per-region storage. |
+| **AI prompts hardcoded English** | `lib/claude.ts` and `supabase/functions/rwen-conversation/index.ts` build prompts with English-language instructions. A Shona-speaking user gets an AI that's been told (in English) about them — works, but inconsistent with "everything readable is in the speaker's language". The system prompt template should live in `data/speakers/<id>/ai-system-prompt.ts`. |
+| **Onboarding hardcodes "Shona"** | `step_learn_ability.title` ("How much Shona do you know?"), `step_learn_reasons.title`, `step_learn_connection.{title,sub}`, the connection placeholder examples — all hardcode the en-speaker-learning-Shona direction. Should pull `learnedLanguage.name` from the active course. |
+| **Home greeting hero hardcodes Shona** | `getShonaGreeting()` always returns `Mangwanani`/`Masikati`/`Manheru`. The "big" hero word should be the active course's target language. |
+| **Module gating** | Doesn't exist. Every lesson is unlocked for any signed-in user. Phase E ships gating. |
+| **AI section per lesson (Phase 8)** | Doesn't exist. The 7th phase is "Mission" (a journaling prompt). Phase F ships per-lesson AI. |
+| **AI Companion course pack content** | Doesn't exist. The Companion tab is a free-form chat. Phase J ships starter cards + Topics + memory + depth levels per the §2.2 design. |
+
+**Tl;dr:** the schema is 6 months ahead of the code AND the data folder layout. This doc (specifically §3) defines the structure that closes the gap. Phase E.0 in §8 is the refactor that makes it real.
 
 ---
 
@@ -161,161 +190,300 @@ Total: ~2-3 days of structured writing. **Far less than 60 lessons** and far mor
 
 ---
 
-## 3. The pack architecture (real)
+## 3. The pack architecture (load-bearing)
 
-> "I want to do this with packs. So each lesson requires 2 packs — one speaking language and one learning language."
+> "Every pack and prompt really is just static and needs to be put in the right space. The only non-static element is when the AI talks with the person."
 
-The schema already gets this right. The code needs to catch up.
+This is the central concept of the app. Every other section assumes this model. **Read this section before doing any architectural work.**
 
-### 3.1 The two-pack contract
+### 3.1 The three pack types
 
-Every learner session at runtime resolves **two pack identifiers**:
+Rwendo runs on three orthogonal pack types. A user's runtime experience is the **composition** of one piece from each.
 
-- **`spoken_language_id`** — what the user reads/hears the UI in (chrome, instructions, Rwen's narration). Set once at signup.
-- **`active_language_pack_id`** — the curriculum being studied. Has its own `learned_language_id`. Defaults to whatever pack the user "starts" with.
-
-The curriculum ID encodes both: `'shona-english'` means "spoken=english, learned=shona". So one pack is one learning direction. To go in the opposite direction (Shona speaker learning English), you load the `'english-shona'` pack.
-
-**Examples:**
-
-| User's spoken | Wants to learn | Active pack | UI is in | Curriculum is in |
-|---|---|---|---|---|
-| English | Shona | `shona-english` | English | Shona vocab + English explanations |
-| Shona | English | `english-shona` | Shona | English vocab + Shona explanations |
-| English | French | `french-english` | English | French vocab + English explanations |
-| Spanish | Shona | `shona-spanish` | Spanish | Shona vocab + Spanish explanations |
-
-A pack is **always written for a specific (spoken, learned) pair**. Authors writing the english-shona curriculum are translating not only target words but also every cultural note and dialogue prompt into Shona.
-
-### 3.2 Why "two packs" matters technically
-
-Right now, `types/lesson.ts` has:
-
-```ts
-export interface Chunk {
-  shona: string;     // ← hardcoded
-  english: string;   // ← hardcoded
-  ...
-}
-```
-
-This needs to become:
-
-```ts
-export interface Chunk {
-  target: string;        // the word being learned
-  native: string;        // the user's spoken-language translation
-  literal?: string;      // morpheme-by-morpheme breakdown, in native
-  emoji: string;
-  phonetic: string;
-  ...
-}
-```
-
-Same for `DialogueLine`, `PatternExample`, etc. The lesson **author** authors per-pack — i.e. `m01-l01-mangwanani.ts` lives under `data/curriculum/shona-english/` and contains target=Shona, native=English. A future `data/curriculum/shona-french/m01-l01-mangwanani.ts` would have the same Shona target words but French in the `native` field.
-
-### 3.3 From 2 to 100 languages
-
-**Adding a new language to the system requires:**
-
-1. **A language definition** — `data/languages/<id>.ts` (script, flag, name, ISO code). One file, ~20 lines.
-2. **A UI translation** — `locales/<id>.json` (every UI string). AI-authored draft via Claude, second-AI verification pass, human spot-check. See §4.4 for the workflow.
-3. **One or more pack curricula** — `data/curriculum/<spoken>-<learned>/<lesson>.ts` per direction you want to support.
-4. **A row in `available_packs`** — already in DB, just needs the right `id`, `revenuecat_product_id`, and `price_aud`.
-5. **Voice configuration** — ElevenLabs voice IDs that can speak that language naturally. **This is a real gap for Shona** — see §3.5.
-
-**No native-app split.** It's one binary. The `i18next` instance switches namespace based on `profile.app_language`. The `LanguagePack` registry resolves `data/languages/<id>.ts` by ID. The lesson loader picks `data/curriculum/<active_pack_id>/...`.
-
-**Pack discovery:** Eventually, packs are not bundled into the app at all — they're downloaded from Supabase Storage on demand. Schema's `available_packs.cover_image_url` already hints at this. Phase 5+ (see roadmap).
-
-### 3.5 The Shona voice problem
-
-ElevenLabs has **no native Shona voice** in their library. The 4 voices currently configured (George, Charlie, Jessica, Alice) are all English voices. When Rwen speaks Shona today, it's an English voice mispronouncing Shona words — workable for English-speaking learners, but unacceptable for the Shona-speaking direction (`english-shona` pack).
-
-Three options, in order of cost/quality:
-
-| Option | Quality | Cost | Time |
+| Pack | What it contains | Active count per user | Set by |
 |---|---|---|---|
-| **Use ElevenLabs Multilingual v2 voices with Shona phonetic hints** | Mediocre — accent will be wrong, prosody off. Good enough for greetings, breaks down on longer prose. | Already in ElevenLabs subscription | Today |
-| **Train a custom voice clone with a native Shona speaker** | Excellent — the Rwen voice becomes a real person sounding native. | $1k-2k for the recording session + ElevenLabs Voice Cloning subscription | 2-4 weeks (find speaker, record 30 min, train, integrate) |
-| **Switch to a TTS provider with native Shona support** | Mixed — Google Cloud TTS has Shona but is robotic. Microsoft Azure has it. ResembleAI custom is high-quality. | Variable | 1-2 weeks integration |
+| **Speaker pack** | UI locale, AI system prompt template, greetings, voice options, tips, narration, social/formality conventions, fonts/scripts. | 1 | "What language do you speak?" at signup |
+| **Course pack** | Curriculum (language courses), starter cards + Topics + memory schema (AI Companion), phrasebook + cultural guide (Travel). Authored fresh per speaker. | 1 or more (entitlement-gated) | Path choice + purchases |
+| **Jurisdiction pack** | Privacy-policy text, terms-of-service text, age threshold, currency, refund rights, crisis resources, data residency disclosures. | 1 | Declared country at signup |
 
-**Recommendation:** Launch with Option 1 (multilingual v2) for the `english-shona` direction. Set aside a marketing/cost line item for Option 2 (custom Shona voice) within 3 months of launch — it's a real differentiator and the only way Shona-speakers will trust the product. A Zimbabwean-Shona native voice is also a strong cultural signal.
+A user is the join: `speaker × course[] × jurisdiction`. The runtime composes the experience from those three pieces.
 
-### 3.6 What other apps do
+### 3.2 Why this model
 
-For grounding, here's how the major players solve the 1-app-many-languages problem (so we don't reinvent):
+The previous version of this doc described a `(spoken, learned)` pair (`shona-english`, `english-shona`) and treated UI locale as a separate i18n concern. That model breaks the moment you ship the third language: tip content, AI prompts, onboarding question wording, terms-of-service text all start drifting because each lives in its own scattered place. The single pair-string also collapses two genuinely independent dimensions (what I read in vs what I'm learning), and ignores a third that the design needs from launch (where I live → what laws apply, what currency, what crisis resources).
 
-- **Duolingo (~40 UI languages, ~100 courses):** UI strings in JSON per language. Course content is an opaque blob loaded on demand from CDN. Course identifier is `<from>-<to>` like ours. You can run UI in language X while studying language Y (e.g., Spanish UI, Japanese course).
-- **Babbel (~14 UI languages, ~14 courses):** Identical pattern, smaller scope. Stricter pairing — UI language has to match "from" of course.
-- **Memrise:** Crowd-sourced courses with fixed UI (8 UI languages). Doesn't model "from→to" in UI; courses just declare their target language.
-- **Rosetta Stone:** Famously **does not** translate the lesson surface — uses immersion / images only. Their UI translates but lessons are picture-based. Rwendo deliberately doesn't go this route — chunks need glosses.
+The three-pack model fixes all three:
 
-**Conclusion:** Duolingo's "UI language separate from course pair" is the right precedent. We follow it.
+- **Speaker pack** centralises everything readable. Add a Tagalog speaker pack = drop in one directory and the whole app reads in Tagalog from sign-up forward.
+- **Course pack** is the entity that gets purchased. Variants per speaker live inside it as content artifacts, not separate products. "Learn Shona" is the SKU; the English-speaker variant and the French-speaker variant of that course are sub-folders of the same course.
+- **Jurisdiction pack** makes legal/regional concerns first-class instead of scattered if-statements. AU is populated v1; GB/US/EU/ZW ship as `{ extends: 'AU' }` stubs that the lawyer fills in pre-launch.
+
+### 3.3 The static-content principle
+
+Every byte in every speaker / course / jurisdiction pack is **static authored content**. The ONLY dynamic surface in the entire app is Claude's live replies inside an open conversation. Voice clips, transcripts, tips, prompts, ToS clauses, currency strings, age thresholds, lesson chunks, crisis line numbers — every one of these is a string sitting in a JSON or TS file in the right pack slot.
+
+This principle drives implementation:
+
+- No AI generation at runtime except inside the Companion conversation surface (and Phase 8 lesson conversations).
+- No translation-on-the-fly. If a string is in two languages, both are authored.
+- No region-detection magic at runtime. The user's `jurisdiction_id` is a column on `profiles`; everything keys on it.
+- Pack content is bundled at build time for v1. OTA pack downloads come later (Phase 5+) when there are 10+ speaker packs to motivate the bandwidth cost.
+
+### 3.4 Identifier convention
+
+IDs are flat strings, composed at runtime, not joined into pair-strings.
+
+| Pack type | ID format | Examples |
+|---|---|---|
+| Speaker | language ISO code (or close) | `english`, `shona`, `french`, `tagalog`, `japanese` |
+| Course | `<course-type>-<target>` for language courses; `<course-type>` for non-language | `language-shona`, `language-english`, `ai-companion`, `travel-zimbabwe` |
+| Jurisdiction | ISO 3166-1 alpha-2 country code | `AU`, `GB`, `US`, `EU` (the bloc), `ZW` |
+
+A user record carries three fields:
+
+```
+profiles.speaker_pack_id       text  e.g. 'english'
+profiles.active_course_ids     text[] e.g. ['language-shona', 'ai-companion']
+profiles.jurisdiction_id       text  e.g. 'AU'
+```
+
+(Migration path from existing schema: §3.8 below.)
+
+The legacy `available_packs.id` values (`shona-english`, `english-shona`) survive as backward-compatibility aliases that decompose to `(speaker:english, course:language-shona)` and `(speaker:shona, course:language-english)` respectively. New code keys on the three-part composition; only the migration script touches the old IDs.
+
+### 3.5 File layout
+
+Each pack is a directory under `data/`. Adding a new pack = drop in a directory; nothing else in the codebase needs to know about it.
+
+```
+data/speakers/{english,shona,french,...}/
+  index.ts              ISO code, flag emoji, native name, voice IDs
+  locale/               every UI string in this language
+    common.json         (was locales/<id>/common.json)
+    auth.json           (was locales/<id>/auth.json)
+    learn.json          ...
+    rwen.json           ...
+    achievements.json   ...
+  ai-system-prompt.ts   Claude system prompt template, written in this language
+  greetings.ts          { morning, afternoon, evening } — used by home hero
+  tips.ts               home tab "Rwen's tip today" array, authored from this speaker's POV
+  narration.ts          Travel/cultural-guide narration in this language
+  conventions.ts        formality patterns, name conventions, fonts, anything else
+
+data/courses/
+  language-shona/
+    index.ts            metadata, pricing keys, course type='language', target='shona'
+    {english,shona,french}/    one sub-pack per speaker that the course supports
+      curriculum/m01-l01.ts ... m10-l10.ts  authored from that speaker's POV
+      cultural.ts         hook framing, tsika notes, dialogue scenarios for this speaker
+  language-english/
+    index.ts
+    {shona,french,...}/...
+  ai-companion/
+    index.ts            course type='ai-companion', no target language
+    {english,shona,french}/
+      starter-cards.ts  conversation starter cards in this speaker's language
+      topics/{process-day,decide,stuck,...}.ts
+      depth-levels.ts   level progression copy
+      memory-schema.ts  shape of "things Rwen remembers"
+      crisis-triggers.ts  speaker-language phrase list (works WITH jurisdiction.crisisResources)
+  travel-zimbabwe/
+    index.ts
+    {english,shona,french}/
+      phrasebook.ts cultural-guide.ts ...
+
+data/jurisdictions/
+  AU/
+    index.ts            age threshold (16 in AU per Privacy Act 1988 amend), currency='AUD',
+                        cooling_off_days=0 (no statutory right outside EU/UK; we honour
+                        Apple/Google store policies), crisis_lines=[Lifeline, Beyond Blue]
+    privacy-policy.md   AU-specific Privacy Policy
+    terms-of-service.md AU-specific ToS
+    crisis-resources.ts numbers + URLs
+  GB/  index.ts: { extends: 'AU' } until lawyer authors UK-specific text
+  US/  index.ts: { extends: 'AU' } — placeholder
+  EU/  index.ts: { extends: 'AU' } — placeholder
+  ZW/  index.ts: { extends: 'AU' } — placeholder
+```
+
+The legacy locations migrate as follows:
+
+- `locales/<id>/*.json` → `data/speakers/<id>/locale/*.json` (mechanical move)
+- `data/languages/<id>.ts` → `data/speakers/<id>/index.ts` (renamed, expanded)
+- `data/curriculum/<pair>/*.ts` → `data/courses/language-<target>/<speaker>/curriculum/*.ts` (e.g. `data/curriculum/shona-english/` becomes `data/courses/language-shona/english/curriculum/`)
+- `data/packs.ts` becomes a thin re-export from the new structure for backward compat, then deleted in a follow-up.
+
+### 3.6 Runtime composition
+
+`useSettings()` exposes:
+
+```ts
+{
+  speaker: SpeakerPack,             // resolved from profiles.speaker_pack_id
+  courses: CoursePack[],            // resolved from profiles.active_course_ids
+  jurisdiction: JurisdictionPack,   // resolved from profiles.jurisdiction_id
+  activeCourseId: string | null,    // which course is foregrounded right now
+}
+```
+
+Every render path keys on these:
+
+| Surface | Comes from |
+|---|---|
+| All UI strings via `t(...)` | `speaker.locale.<namespace>` |
+| Home hero "big" greeting | active course's target language → if course is `language-shona`, big greeting is the Shona word; if course is `ai-companion`, big greeting is the speaker's word (greeting with yourself) |
+| Home hero subtitle | `speaker.locale.home.greetings.<timeOfDay>` |
+| Home tips array | `speaker.tips` (authored from this speaker's POV — different idioms for different speakers) |
+| Lesson chunks `target` field | active language-course's curriculum (in target language) |
+| Lesson chunks `native` field | active language-course's curriculum's speaker variant (in speaker's language) |
+| AI Claude system prompt | `speaker.aiSystemPromptTemplate` + course-specific addon (e.g. Phase 8 lesson context, Companion persona) |
+| Voice options in Profile | `speaker.voiceIds` — speaker-pack curates which voices work for that language |
+| Privacy Policy / Terms screens | `jurisdiction.privacyPolicy` / `jurisdiction.termsOfService` |
+| Currency display in Plans screen | `jurisdiction.currency` (and price lookup per region) |
+| Age check in onboarding | `jurisdiction.minAge` |
+| Crisis trigger handoff message in Companion | `jurisdiction.crisisResources` + `course.crisisTriggers` (speaker-language phrase list) |
+
+If any of these read from anywhere else (a hardcoded `'Mangwanani'`, a hardcoded `18`, a hardcoded English Claude prompt), it's a leak — file an issue and route it through the right pack.
+
+### 3.7 Composition examples
+
+**English speaker, learning Shona, lives in Australia:**
+- `speaker:english + courses:[language-shona] + jurisdiction:AU`
+- UI in English. Big home greeting in Shona ("Mangwanani"). Tips introduce Shona idioms. AI prompt instructs Claude in English. Privacy Policy is AU-specific. AUD prices. Lifeline crisis number.
+
+**Shona speaker, learning English AND has AI Companion, lives in UK:**
+- `speaker:shona + courses:[language-english, ai-companion] + jurisdiction:GB`
+- UI in Shona. Big home greeting in English ("Hello"). Tips introduce English idioms (mirror of en tips). AI prompt instructs Claude in Shona. Privacy Policy is UK-specific (14-day cooling-off). GBP prices. UK Samaritans crisis number.
+
+**French speaker, AI Companion only, lives in France:**
+- `speaker:french + courses:[ai-companion] + jurisdiction:EU`
+- UI in French. No big language-learning home hero (the AI Companion course doesn't have a target language to highlight). Tips/cards in French. AI prompt instructs Claude in French. EU Privacy Policy with 14-day cooling-off. EUR prices. France crisis numbers via `EU.crisisResources` (or a future `FR` jurisdiction if we author one).
+
+**Down-the-track scenario (Phase 6+):** Shona speaker on their phone has a video conversation with a French speaker on theirs. Each phone reads its own speaker pack — the same shared experience renders in both languages on opposite ends. The architecture has to support this from the start; the alternative is two apps.
+
+### 3.8 DB migration path
+
+Existing schema (see DATABASE-DESIGN.md §1 profiles, §2 available_packs):
+
+```
+profiles.app_language               → profiles.speaker_pack_id   (rename, value space same)
+profiles.active_language_pack_id    → profiles.active_course_ids[0] (single → array; legacy
+                                       'shona-english' decomposes to ['language-shona']
+                                       on read for users whose speaker_pack_id='english')
+profiles.country_code               → profiles.jurisdiction_id   (mapped, e.g. ZA→ZW only if
+                                       Zimbabwean-Shona context, else ISO-direct)
+profiles.is_eu_customer / .is_uk_customer  → derived view, kept for legacy compat
+```
+
+`available_packs` gains a `pack_kind` column distinguishing `speaker` / `course` / `jurisdiction` (subset of existing `pack_type` taxonomy). Existing rows like `shona-english` get a derived view that exposes them as a course pack with `target_language='shona'`. Real schema changes:
+
+- Add `available_packs.pack_kind` enum
+- Add `jurisdictions` table (id, name, currency, min_age, refund_rights jsonb, is_eu, is_uk)
+- Add `profiles.speaker_pack_id`, `profiles.active_course_ids text[]`, `profiles.jurisdiction_id` (FK to jurisdictions)
+- View / function that decomposes legacy `app_language` + `active_language_pack_id` into the new three fields for unmigrated rows
+
+See DATABASE-DESIGN.md §10 for the migration SQL plan.
+
+### 3.9 The Shona voice problem
+
+ElevenLabs has **no native Shona voice** in their library. The 4 voices currently configured (George, Charlie, Jessica, Alice) are all English voices. When Rwen speaks Shona today, it's an English voice mispronouncing Shona words — workable for English-speaking learners, but unacceptable for a Shona speaker pack.
+
+Voice options live in `data/speakers/<id>/index.ts`. Each speaker pack curates which voice IDs work for that language. The `english` speaker pack lists the 4 ElevenLabs voices. The `shona` speaker pack v1 lists Multilingual v2 voices with phonetic hints (mediocre but workable); v1.x adds a custom Shona clone (~$1-2k recording session per design doc §3.5 history). Adding French = the `french` speaker pack picks French-native ElevenLabs voices.
+
+This puts voice choice where it belongs: with the speaker pack, not as global app config.
+
+### 3.10 What other apps do
+
+For grounding, here's how the major players solve the 1-app-many-languages problem:
+
+- **Duolingo (~40 UI languages, ~100 courses):** UI strings in JSON per language (= speaker pack locale). Courses are blobs loaded from CDN keyed by `<from>-<to>` pair. They fold UI-language and course-from-language together by convention; we don't, because we have non-language courses (AI Companion, Travel) where there's no "from→to" semantics.
+- **Babbel (~14 UI languages, ~14 courses):** Identical pattern, smaller scope. Stricter pairing — UI language has to match "from" of course. Limiting.
+- **Memrise:** Crowd-sourced courses with fixed UI (8 UI languages). Doesn't model "from→to" in UI; courses just declare their target language. Closer to our course-pack idea but no jurisdiction concept.
+- **Rosetta Stone:** Famously **does not** translate the lesson surface — uses immersion / images only. Their UI translates but lessons are picture-based. Rwendo deliberately doesn't go this route — chunks need glosses, and glosses are speaker-language-specific.
+
+**Conclusion:** No major player has the three-pack model. Duolingo gets two of three (locale + course). The jurisdiction layer is original to this design and is the load-bearing piece for shipping a single binary that's legally compliant globally.
 
 ---
 
-## 4. i18n implementation strategy
+## 4. i18n is the locale slot of the speaker pack
+
+i18next is still the runtime tool, but conceptually the locale JSON files are no longer a top-level concern — they're one slot inside each speaker pack. This section covers the i18n machinery; §3 covers where it sits.
 
 ### 4.1 Library choice
 
-Recommendation: **`i18next` + `react-i18next` + `expo-localization`**.
+`i18next` + `react-i18next` + `expo-localization`. Already installed (commit `093b98b`).
 
 - Mature, well-maintained, battle-tested in RN/Expo apps.
-- Namespaced translations (chrome / lessons / errors as separate JSON files).
-- Lazy-loadable per locale (don't ship 100 JSON files in the bundle).
-- Pluralisation, formatting, fallback chains all built in.
-- Compatible with Crowdin/Lokalise for translation management.
+- Namespaced translations (5 namespaces: common / auth / learn / rwen / achievements).
+- Pluralisation, formatting, fallback chains built in.
+- Compatible with Crowdin/Lokalise for future translation management.
 
-### 4.2 Locale file structure
+### 4.2 Where the locale files live
+
+After the §3 refactor:
 
 ```
-locales/
-  en/
-    common.json       (~50 strings — Profile, Home, nav)
-    auth.json         (~30 strings — sign-up, sign-in, onboarding)
-    learn.json        (~40 strings — Learn tab, unit screen, lesson chrome)
-    rwen.json         (~20 strings — Companion screen UI)
-    achievements.json (~15 strings)
-  sn/
-    (same files, in Shona)
-  fr/
-    ...
+data/speakers/<id>/locale/
+  common.json       Profile, Home, nav, actions, App Language switcher
+  auth.json         sign-up, sign-in, onboarding, consents
+  learn.json        Learn tab, unit screen, lesson chrome, exercises
+  rwen.json         Companion screen UI, Rwen status labels
+  achievements.json achievement names + descriptions
 ```
 
-**Launch scope: BOTH `en` and `sn` locales ship at v1.** This is what proves the architecture works in both directions. We can't half-ship i18n.
+`lib/i18n.ts` registers resources by walking the speakers registry: for each speaker, mount its `locale/*` files under that speaker's ID. Adding a new speaker = drop in a directory, the registry picks it up.
 
-**Cultural note keys** in lessons are NOT in `locales/`. They're in the curriculum file itself (`data/curriculum/shona-english/m01-l01-mangwanani.ts`) because they're pack-specific, not UI-chrome.
+### 4.3 Launch scope
 
-### 4.3 Translation workflow (AI-authored, AI-verified, human-checked)
+Both `english` and `shona` speaker packs ship at v1 with full locale JSON. **This is non-negotiable** — the architecture isn't proven until it works in both directions, and the first commercial offering is bilingual.
 
-For each new locale (e.g. `sn`):
+Curriculum content (chunks, dialogue, mission text, hook narrative) is NOT in `locale/*.json`. It lives in `data/courses/<course-id>/<speaker-id>/curriculum/*.ts` because it's course content, not UI chrome (per §3.5 file layout).
 
-1. **Draft pass** — Claude (Opus) translates the entire `en/*.json` set into the target locale, with explicit instructions to preserve placeholders, plurals, and the warm/conversational tone. Output goes to `locales/<id>/*.json` as a draft.
-2. **Verification pass** — A second Claude call with a different system prompt asks: "Review this translation for naturalness, tone consistency, accuracy. Flag anything that reads as machine-translated." Returns annotated JSON with `__warnings: [...]` per file. We surface flagged items for human review.
-3. **Human spot-check** — A native speaker reviews flagged items + samples 10% of unflagged items. For Shona at launch, this is a Shona-speaking colleague or freelance reviewer (~half a day's work, ~A$200).
-4. **App pass** — Once flagged items are resolved, the locale is "verified" and shipped.
+### 4.4 Translation workflow (AI-authored, AI-verified, human-checked)
 
-This workflow is reusable and gets cheaper per language as we tune the system prompts. v1 we run it twice (en and sn).
+Per speaker pack:
 
-### 4.4 The hard problem: cultural baking
+1. **Draft pass** — Claude (Opus) translates `data/speakers/english/locale/*.json` into the target speaker's locale. Explicit instructions: preserve placeholders, plurals, tone. Crucially, the prompt warns the translator to **mirror, not translate** when the source has embedded foreign-language anchors (e.g. an English `tips.json` that introduces Shona idioms — the Shona speaker pack version should introduce English idioms, not echo the same Shona phrases). Output includes a top-level `__warnings: [{key, note}]` array of items the drafter flagged. (See `8904538` for the sn worked example.)
+2. **Verification pass** — A second Claude call reviews for naturalness, tone, accuracy. Adds to `__warnings`.
+3. **Human spot-check** — Native speaker reviews flagged items + samples 10% of unflagged. ~half a day's work per language, ~A$200.
+4. **Apply review** — Notes integrated, `__warnings` cleared, locale ships.
 
-> "The problem with surface translation is there is cultural elements baked into the learning process."
+The `__warnings` array is inert at runtime (i18next never resolves it; nothing keys on `__warnings.*`), so it can stay in the JSON through the review cycle and be removed when verified.
 
-This is real. A literal translation of "Greetings & Respect" into French loses the *tsika* concept. Two answers:
+### 4.5 The hard problem: cultural baking
 
-1. **Lesson chrome is translated** (instructions, button labels, error messages, "Tap to continue"). This goes through `i18next`.
-2. **Lesson content is authored fresh per pack.** A French speaker learning Shona gets the same Shona target words but French explanations of *tsika*, French cultural framing, and a French version of the Hook narrative. Same lesson **structure**, different **soul**. This is exactly why each (spoken, learned) pair is a separate authored pack — there is no machine path from English-Shona to French-Shona that does justice to the cultural framing.
+> "There are cultural elements baked into the learning process."
 
-**Cost implication:** Adding a new spoken-language to an existing target = a curriculum re-authoring, not a translation. We should not promise users 100 spoken languages × N target languages without an authoring plan. Realistic v1 scope: English-Shona only. v2: add Shona-English (your other direction). v3+: pick the next pair based on user demand.
+A literal translation of "Greetings & Respect" into French loses the *tsika* concept. Two answers:
 
-### 4.5 Onboarding sets `app_language`
+1. **UI chrome is translated** (instructions, button labels, "Tap to continue"). This goes through `i18next`. It's the locale slot of each speaker pack.
+2. **Course content is authored fresh per (course, speaker) pair.** A French speaker learning Shona gets the same Shona target words but French explanations of *tsika*, French cultural framing, French Hook narrative. Same lesson **structure**, different **soul**. This is why courses have per-speaker sub-packs (`data/courses/language-shona/{english,french}/...`) — there is no machine path from one to the other that does justice to the framing.
 
-Already half-wired:
+**Cost implication:** adding a new speaker pack to an existing course is curriculum re-authoring, not translation. Realistic v1 scope: `language-shona` and `language-english` and `ai-companion` courses each with `english` and `shona` speaker variants. v2+: pick the next speaker based on user demand and add variants to whichever courses we want them in.
 
-- The schema has `profiles.app_language text default 'english'`.
-- Onboarding asks for it but currently does nothing structural with it (the UI stays in English).
-- Fix: on every app boot and on the onboarding save, call `i18next.changeLanguage(profile.app_language)`. Now every key resolves into the correct locale.
+### 4.6 Mirror-not-translate strings
+
+Strings that embed cross-language anchors (the home tips array, parts of the AI Companion welcome, parts of the cultural notes) need to be **mirrored** in each speaker pack, not translated. The mirror swaps which language is the "anchor" content and which is the "explanation".
+
+Example (home tips):
+
+```
+en speaker tips: "In Shona, 'Ukama igasva hunozadziswa nekudya' — relationships are
+                 completed by sharing food. Share what you learn today."
+                 (English chrome, Shona anchor — pedagogical for an EN speaker)
+
+sn speaker tips: "MuChiNgezi: 'It takes a village to raise a child' — zvinoreva mwana
+                 anokurirwa nemhuri yose. Govera zvaunodzidza nhasi."
+                 (Shona chrome, English anchor — pedagogical for an SN speaker)
+```
+
+These get a special note in the translator's prompt during the draft pass: "this string must mirror the language pattern; do not echo the source language's anchor". Worked example committed in `74ab471`.
+
+### 4.7 Onboarding sets the speaker pack at the very first step
+
+The first onboarding question is "what language do you speak?" which writes `profiles.speaker_pack_id` AND immediately calls `setAppLanguage()`. From that question forward, every subsequent screen of onboarding is rendered in the chosen speaker's language.
+
+Phase E.0 (§8) wires this. Currently the language selection at onboarding writes to Supabase but doesn't flip the running session — the workaround was the in-app App Language switcher in Profile (commit `42e5ccc`).
 
 ---
 
@@ -504,87 +672,142 @@ These will inform how I write the Companion curriculum. Citations belong in `doc
 
 ## 8. Implementation roadmap
 
-This is the **minimum** code path to ship the design above. Phases are roughly equal in size (1-3 days each).
+This is the **minimum** code path to ship the design above. Phases are roughly equal in size (1-3 days each). Strict sequential order — no parallel work for code phases.
 
-### Phase A — Lesson schema generalisation (BLOCKER for everything else)
+### Phase A — Lesson schema generalisation ✅ DONE (`bdf4dd7`)
 
-- Rename `Chunk.shona` → `Chunk.target`, `Chunk.english` → `Chunk.native`. Same for `DialogueLine`, `PatternExample`, `ActiveRecallPrompt`.
-- Mechanical migration of all 100 curriculum files.
-- Update lesson engine to read the new fields.
-- No user-visible change. Just unblocks everything else.
+- Renamed `Chunk.shona` → `Chunk.target`, `Chunk.english` → `Chunk.native`. Same for `DialogueLine`, `PatternExample`, `ActiveRecallPrompt`.
+- Mechanical migration of all 100 curriculum files (1994 keys renamed).
+- Updated lesson engine to read the new fields.
+- No user-visible change.
 
-### Phase B — Curriculum directory restructure
+### Phase B — Curriculum directory restructure ✅ DONE (`afa9f66`)
 
-- Move `data/curriculum/m01-l01-mangwanani.ts` → `data/curriculum/shona-english/m01-l01-mangwanani.ts`.
-- Update `data/lessons.ts` to load curriculum based on active pack ID.
-- Add a `getCurriculumLesson(packId, lessonId)` resolver.
-- Now the codebase is structurally ready for a second pack (English-Shona, French-English, etc.).
+- Moved `data/curriculum/m01-l01-mangwanani.ts` → `data/curriculum/shona-english/m01-l01-mangwanani.ts`.
+- Added `data/curriculum/index.ts` with `getCurriculumLesson(packId, lessonId)` resolver.
+- Lesson screen reads `activePack.id` from `useSettings()`.
+- Phase E.0 supersedes the directory naming (moves it under `data/courses/language-shona/english/curriculum/`) but the resolver pattern carries forward.
 
-### Phase C — i18next + first locale
+### Phase C — i18next + en locale ✅ DONE (`093b98b`, `2a160b6`, `66ca95c`, `9d208e3`)
 
-- Install `i18next`, `react-i18next`, `expo-localization`.
-- Create `locales/en/*.json` with every UI string from the existing screens. ~150-200 strings.
-- Refactor every hardcoded English string in `app/`, `components/` to use `t('key')`.
-- On boot, set i18next language to `profile.app_language`. (Falls back to device locale, then English.)
-- No user-visible change yet — still English.
+- Installed `i18next`, `react-i18next`, `expo-localization`.
+- `lib/i18n.ts` wired with synchronous init + `setAppLanguage()` runtime flip.
+- Every hardcoded English string in `app/`/`components/` extracted to `locales/en/{common,auth,learn,rwen,achievements}.json` (~250 strings).
+- ProfileLoader fetches `profile.app_language` and calls `setAppLanguage()`.
 
-### Phase D — First non-English UI (Shona)
+### Phase D — Shona locale (sn) draft ✅ DONE (`8904538`, `74ab471`, `42e5ccc`)
 
-- Create `locales/sn/*.json` — translate every key.
-- Test on device: set `profile.app_language = 'shona'`, the whole app should flip.
-- This is the proof-of-concept moment. Once it works for Shona, it works for any language.
+- All 5 namespaces drafted in Shona with per-file `__warnings` for native-speaker review (~250 strings).
+- Mirror-not-translate fix to home tips committed in `74ab471`.
+- In-app App Language switcher in Profile (`42e5ccc`) — instant flip + persists.
+- AWAITING native-speaker review pass; integrate notes in a follow-up commit.
 
-### Phase E — Module gating
+### Phase E.0 — Three-pack architecture refactor (NEW, current priority)
 
-- Add `lib/entitlements.ts`: `canAccessLesson(userId, lessonId, packId)` returns `{ allowed: boolean, reason: 'free' | 'subscription_required' | 'pack_required' }`.
-- For modules 1-4 of *starter* pack (the first pack the user ever activates): free. For modules 5-10: requires Text AI tier or above. For any non-starter pack: requires that pack's `user_packs` row.
+The big restructure §3 calls for. Must come before Phase E (gating) because gating keys on the new pack model.
+
+- Create `data/speakers/{english,shona}/` directories. Each contains:
+  - `index.ts` (metadata moved from `data/languages/<id>.ts`, expanded with voice IDs, currency hints, ISO code)
+  - `locale/` (the existing `locales/<id>/*.json` files, moved)
+  - `ai-system-prompt.ts` (move hardcoded English prompt out of `lib/claude.ts` + edge function; author Shona equivalent)
+  - `greetings.ts` (`{ morning, afternoon, evening }` per speaker)
+  - `tips.ts` (move home tips array out of `locale/common.json` into a typed export)
+- Create `data/courses/{language-shona,language-english,ai-companion}/` directories. Each contains:
+  - `index.ts` (course metadata, `revenuecat_product_id`, target language for language courses)
+  - `<speaker-id>/curriculum/` for language courses (move existing `data/curriculum/shona-english/*.ts` → `data/courses/language-shona/english/curriculum/`)
+  - `<speaker-id>/{starter-cards,topics,depth-levels,memory-schema,crisis-triggers}.ts` for AI Companion (stub files for now; populate in Phase J)
+- Create `data/jurisdictions/{AU,GB,US,EU,ZW}/` directories. AU populated; others `{ extends: 'AU' }` stubs.
+- New types in `types/packs.ts`: `SpeakerPack`, `CoursePack`, `JurisdictionPack`, `RuntimePackContext`.
+- `lib/i18n.ts` resource registration walks `data/speakers/*/locale/*` instead of `locales/<id>/*`.
+- `useSettings()` exposes `{ speaker, courses[], jurisdiction, activeCourseId }` resolved from profile fields.
+- Update onboarding to write the new profile fields (`speaker_pack_id`, `active_course_ids`, `jurisdiction_id`) AND the legacy ones for migration safety.
+- Fix the leaks identified in §1 reality check:
+  - Onboarding `step_learn_*` strings: parameterise with `{{lang}}` from active course's target.
+  - Home greeting hero: pull `getShonaGreeting()`-equivalent from active course's target speaker pack.
+  - Tips array: pull from `speaker.tips` (already authored differently per speaker post-Phase D).
+  - AI prompt: pull from `speaker.aiSystemPromptTemplate`.
+- Migration: legacy `data/curriculum/`, `data/languages/`, `locales/` paths get thin re-exports from the new layout for one release, then deleted.
+- Total: ~2 working days. UNBLOCKS everything downstream.
+
+### Phase E — Module gating (after E.0)
+
+- Add `lib/entitlements.ts`: `canAccessLesson(userId, lessonId, courseId)` returns `{ allowed: boolean, reason: 'free' | 'subscription_required' | 'course_required' }`.
+- For modules 1-4 of *starter* course (the first language course the user ever activates): free. For modules 5-10: requires Text AI tier or above. For any non-starter course: requires that course's `user_packs` row.
 - Lesson screen shows locked state with CTA to `/profile/plans`.
 - Wire `subscriptions.active_tier` into the entitlement check.
-- **Add dev bypass**: `constants/dev.ts` exports `DEV_UNLOCK_ALL = process.env.EXPO_PUBLIC_DEV_UNLOCK_ALL === '1'`. `canAccessLesson` and every other gate short-circuits to `{ allowed: true }` when this flag is on. Set in `.env.local` for development; omit from production EAS builds. No runtime UI; can't be triggered by accident in a shipped build.
-- **Add demo-account flow**: a documented Supabase admin script that creates a synthetic user with `subscriptions.active_tier = 'premium'` and rows in `user_packs` for every pack. Useful for testing real gating logic without bypasses. Lives at `scripts/create-demo-account.ts`.
+- **Dev bypass**: `constants/dev.ts` exports `DEV_UNLOCK_ALL = process.env.EXPO_PUBLIC_DEV_UNLOCK_ALL === '1'`. Every gate short-circuits to `{ allowed: true }` when set. Stripped from production EAS builds.
+- **Demo-account script**: `scripts/create-demo-account.ts` creates a synthetic user with `active_tier='premium'` and `user_packs` rows for every course. Tests real gating without bypasses.
 
 ### Phase F — Phase 8 (AI conversation in lesson)
 
 - Add `phase8` to `LessonData` schema.
-- Backfill `phase8` on the 100 existing lessons. (Mechanical authoring, ~1 day.)
+- Backfill `phase8` on the 100 existing lessons (mechanical authoring, ~1 day).
 - Lesson result screen shows locked Phase 8 card if user lacks AI tier.
-- For paid users: full Claude integration with lesson-context system prompt. Reuses existing `lib/claude.ts`, just with an additional system prompt layer.
+- For paid users: Claude integration with lesson-context system prompt composed from `speaker.aiSystemPromptTemplate` + lesson-specific addon. Reuses `lib/claude.ts` (which becomes a thin wrapper around the rwen-chat edge function after Phase M).
 
-### Phase G — Two lesson tracks UI
+### Phase G — Two-track Learn tab
 
-- Update Learn tab: instead of showing units immediately, show 2 cards (Language / AI Companion).
-- Tap Language → existing flow.
-- Tap AI Companion → new track with its own modules. Same gating, same Phase 8 (which is the entire lesson here, not a phase).
+- Update Learn tab: instead of showing units immediately, show cards for each active course.
+- Tap a language course → existing curriculum flow.
+- Tap AI Companion → new conversation surface (Phase J content).
 
 ### Phase H — RevenueCat wiring
 
-- Create RevenueCat account, set up products matching the 6-tier model.
+- Create RevenueCat account, set up products matching the 5-tier model.
 - Update `available_packs.revenuecat_product_id` with real IDs.
 - On purchase, write to `user_packs` and update `subscriptions.active_tier`.
 - Plans screen "Upgrade" → real RevenueCat paywall.
+- Currency display reads from `jurisdiction.currency`.
 
-### Phase I — Onboarding fix-ups
+### Phase I — Onboarding refinements (largely subsumed by E.0)
 
-- Make `app_language` selection at onboarding *actually flip* the UI immediately (calls Phase C/D plumbing).
-- If user picks "AI Companion" path at onboarding, route them to a Plans screen with Text Friend pre-selected — no free experience for them.
+- Make speaker-language selection at onboarding flip the UI immediately (E.0 wires this).
+- Add jurisdiction declaration step (new — pick country at signup, writes `profiles.jurisdiction_id`).
+- If user picks "AI Companion" path at onboarding, route to Plans screen with Text AI pre-selected (no free experience for that course).
 
-### Phase J — AI Companion infrastructure (relationship, not curriculum)
+### Phase J — AI Companion course content (relationship, not curriculum)
 
-- ~50 conversation starter cards (text + system prompt fragments)
-- ~6 Topic flows (system prompts + turn-count targets)
-- Depth-level progression logic (cumulative interaction → level)
-- Memory extraction pass (periodic Claude job that distills `conversations` into `companion_memory` JSONB)
-- Memory UI panel inside Companion tab
-- Crisis-trigger detection layer in `lib/claude.ts` + per-region handoff messages
+- Author content into `data/courses/ai-companion/{english,shona}/`:
+  - ~50 conversation starter cards per speaker (text + system prompt fragments)
+  - ~6 Topic flows per speaker (system prompts + turn-count targets)
+  - Depth-level progression logic (cumulative interaction → level)
+  - Memory extraction pass (periodic Claude job distilling `conversations` into `companion_memory` JSONB)
+  - Memory UI panel inside Companion tab
+  - Crisis-trigger detection layer composes `course.crisisTriggers` (speaker-language phrases) with `jurisdiction.crisisResources` (region phone numbers)
 - Total: ~3-4 days of authoring + ~2-3 days of code
 
-### Phase K — Second pack: english-shona
+### Phase K — Second speaker × course variant: language-english/shona/ + ai-companion/shona/
 
-- 100 lessons authored fresh for Shona-speakers learning English
-- Same lesson structure, all `target` fields in English, all `native` fields in Shona
-- Cultural framing rewritten from a Shona perspective (not translated from the english-shona pack)
-- AI-authored draft + AI verification + native-speaker spot-check (workflow from §4.3)
-- Total: ~5-7 days using the AI-authoring pipeline
+- The "shona speaker, learning english" experience: 100 lessons authored fresh for Shona-speakers learning English.
+- Lives at `data/courses/language-english/shona/curriculum/`.
+- Same lesson structure as language-shona/english/, all `target` fields in English, all `native` fields in Shona.
+- Cultural framing rewritten from a Shona perspective (not translated from the english variant).
+- AI-authored draft + AI verification + native-speaker spot-check (workflow §4.4).
+- Same workflow for `data/courses/ai-companion/shona/` — Shona starter cards + Topics.
+- Total: ~5-7 days using the AI-authoring pipeline.
+
+### Phase L — In-app methodology screens
+
+- `app/profile/methodology.tsx` — language track pedagogy (the SLA research from §7).
+- `app/profile/companion-philosophy.tsx` — AI Companion philosophy.
+- "Why this works" card on Learn tab → links to methodology.
+- About screen gets a section linking to both.
+- Each lives in `speaker.locale.methodology.*` so it flips with the speaker.
+- Total: ~1 day.
+
+### Phase M — Move API keys server-side (BLOCKER for any external testing)
+
+(Unchanged in scope from previous version of this doc — see lines that follow.)
+
+### Phase N — Jurisdiction packs populated (lawyer-fillable)
+
+- Currently AU is populated; GB/US/EU/ZW are `{ extends: 'AU' }` stubs.
+- Lawyer fills in per-region Privacy Policy + Terms of Service per `data/jurisdictions/<id>/`.
+- Wire age threshold to read from `jurisdiction.minAge` (drops the hardcoded 18).
+- Wire currency display to `jurisdiction.currency` (drops AUD assumption).
+- Wire crisis resources display to `jurisdiction.crisisResources` (per AI Companion design §2.2).
+- Forex alignment of pricing across jurisdictions is v1.x — initial prices are locked per region.
+- Total: ~1-2 days of code + lawyer time for content.
 
 ### Phase L — In-app methodology screens
 
@@ -610,14 +833,19 @@ The Supabase Edge Function pattern already exists for one path (`rwen-conversati
 
 **Phase M ordering**: must be done before Phase H (RevenueCat) and before any TestFlight / Play Internal Testing distribution. Recommend slotting it immediately after Phase F (Phase 8 / AI conversation per lesson), so the AI plumbing is solid in one place before paywalls are wired around it.
 
-### Total (revised after 2026-04-30 decisions)
+### Total (revised after the three-pack lock)
 
-- Phases A through I (code): ~10-12 working days
-- Phase J (AI Companion infra + content): ~5-7 days
-- Phase K (english-shona pack, AI-authored): ~5-7 days, can run in parallel with code
+Phases A–D **DONE**. Remaining:
+
+- Phase E.0 (three-pack architecture refactor): ~2 days. **Current priority — unblocks everything.**
+- Phases E–I (code): ~8–10 days post-E.0
+- Phase J (AI Companion course content + memory infra): ~5–7 days
+- Phase K (second speaker × course variants): ~5–7 days, can run in parallel with code post-E.0
 - Phase L (in-app methodology screens): ~1 day
+- Phase M (API keys server-side): ~2 days
+- Phase N (jurisdiction packs populated): ~1–2 days code + lawyer time
 
-**Critical path to launch: ~17-20 working days of focused work**, with content and code running in parallel after Phase B unlocks the second pack.
+**Critical path to launch: ~22–28 working days of focused work** including the architecture refactor. Content (Phase K) runs in parallel with code (E–I) after E.0 lands.
 
 ---
 
@@ -717,16 +945,114 @@ The 100 lesson curriculum is the most copy-able asset (and someone determined en
 
 ---
 
-## 12. What I am not doing right now
+## 11.5 Jurisdiction packs (legal, currency, age, crisis resources)
 
-To stay honest: this doc is design only. I have **not yet** done any of the following, even though some are tempting:
+Per §3, each user has exactly one active jurisdiction pack. It owns everything that varies by where the user lives.
 
-- Renamed any lesson types or curriculum files.
-- Installed `i18next`.
-- Touched the Plans screen pricing.
-- Wired any pack-entitlement check.
-- Authored any AI Companion content.
-- Modified the lesson engine.
+### What a jurisdiction pack contains
+
+```ts
+// data/jurisdictions/<id>/index.ts
+{
+  id: 'AU',
+  name: 'Australia',
+  countryCodes: ['AU'],          // Some packs (EU bloc) cover many ISO codes
+  currency: { code: 'AUD', symbol: 'A$' },
+  minAge: 16,                    // AU Privacy Act 1988 amendment threshold
+  refundRights: {
+    coolingOffDays: 0,           // No statutory right outside EU/UK; Apple/Google policies still apply
+    refundUrl: 'https://apps.apple.com/...'
+  },
+  languageOfRecord: 'english',   // Which speaker pack the lawyer-vetted text is authored in
+  voiceConsentRequired: false,   // BIPA only matters for Illinois (US)
+  dataResidency: 'AU',           // Where the user's data physically sits
+  crisisResources: [
+    { name: 'Lifeline', phone: '13 11 14', url: 'https://www.lifeline.org.au', context: 'crisis_general' },
+    { name: 'Beyond Blue', phone: '1300 22 4636', url: 'https://www.beyondblue.org.au', context: 'mental_health' },
+    { name: '13YARN', phone: '13 92 76', url: 'https://www.13yarn.org.au', context: 'indigenous_specific' },
+  ],
+  consentDisclosures: {
+    // Speaker-language strings that get inserted into onboarding's consent checkboxes
+    aiPartnerProcessor: 'Anthropic (Claude AI) — operates from US, GDPR-compliant DPA with Australian residents',
+    voiceProcessor: 'ElevenLabs (voice) — operates from US, audio deleted within 24h',
+    dataController: 'Rwendo Pty Ltd (Australian entity once incorporated)',
+  }
+}
+```
+
+`privacy-policy.md` and `terms-of-service.md` sit in the same directory as authored text. The in-app `(legal)/privacy-policy.tsx` and `(legal)/terms-of-service.tsx` screens load whichever jurisdiction is active.
+
+### v1 jurisdiction roster
+
+| ID | Status | Content state | Lawyer review |
+|---|---|---|---|
+| `AU` | Populated | All fields authored (English) | Pre-launch |
+| `GB` | `{ extends: 'AU' }` | UK-specific Privacy Policy + Terms required (14-day cooling-off) | Pre-launch |
+| `US` | `{ extends: 'AU' }` | US Privacy + Terms; CCPA disclosures; BIPA voice consent for IL | Pre-launch |
+| `EU` | `{ extends: 'AU' }` | GDPR Privacy Policy; 14-day cooling-off; multiple language ToS by member state | Pre-launch |
+| `ZW` | `{ extends: 'AU' }` | Local Zimbabwean ToS; ZWL/USD currency dual-display | Pre-launch (low priority — minimal Shona-speaker base in Zimbabwe likely paying via mobile money) |
+
+The `extends` pattern means: every field not overridden falls back to AU. Lawyer reviews each pack and overrides what differs. No code changes when a region's text gets fleshed out — just edits to the jurisdiction directory.
+
+### Detection vs declaration
+
+User declares jurisdiction at signup (a step in onboarding, post-Phase E.0). We can pre-fill from device locale or IP-geo as a hint, but the user confirms. RevenueCat reports purchase country which we cross-check; if there's a divergence, the user wins (they live where they say they do, even if travelling).
+
+### Currency (deferred decision)
+
+For v1, prices are stored per jurisdiction in `available_packs.prices_by_jurisdiction jsonb` (or a separate `pack_prices` table — see DATABASE-DESIGN.md §10). Initial values are locked manually per region.
+
+Forex alignment with live FX rates is a v1.x concern. The trigger to revisit: when we have customers in 5+ jurisdictions and price drift is causing visible disparity. At that point, options are:
+- Daily refresh against a free FX feed (e.g. ECB), with manual override for marketing campaigns
+- Anchor on USD and convert at purchase time
+- Honour the platform's localised pricing tier (Apple/Google have built-in price tiers per region)
+
+Most likely we'll let RevenueCat manage cross-currency pricing once it's wired (Phase H), and the jurisdiction pack just stores the marketing display price.
+
+### Crisis resources composition
+
+The AI Companion (per §2.2) has crisis triggers — phrase patterns in the user's speaker language that match suicidal ideation, self-harm, etc. When a trigger fires, Rwen surfaces a handoff:
+
+```
+[speaker.locale] → "What you're describing is bigger than what I'm built for."
+[jurisdiction.crisisResources] → "Please contact: Lifeline 13 11 14 (24/7)"
+```
+
+The phrase list lives in `data/courses/ai-companion/<speaker>/crisis-triggers.ts` (course content, speaker-language). The handoff phone numbers live in `data/jurisdictions/<id>/crisis-resources.ts` (jurisdiction content). Composition at runtime gives the right phone number to the right user in the right language.
+
+---
+
+## 12. State of the build
+
+What's done (commits in chronological order):
+
+- `bdf4dd7` Phase A: lesson schema rename target/native — all 100 curriculum files migrated
+- `afa9f66` Phase B: pack-aware curriculum loading via `getCurriculumLesson(packId, lessonId)`
+- `093b98b` Phase C.1: i18n infrastructure
+- `2a160b6` Phase C.2.a: extract strings from main tabs
+- `66ca95c` Phase C.2.b: extract strings from auth flows
+- `9d208e3` Phase C.2.c: extract strings from profile sub-screens, lesson chrome, components
+- `e92e3f6` tsc cleanup — project type-clean, all 5 historical errors cleared
+- `8904538` Phase D: Shona (sn) UI translation drafted with `__warnings` for native review
+- `74ab471` Phase D fix: home tips rewritten as Shona-chrome around English content (mirror, not translate)
+- `42e5ccc` In-app App Language switcher (instant flip + persists; pulled forward from Phase I)
+
+What's NOT done:
+
+- Phase E.0 (three-pack architecture refactor) — **next priority, unblocks everything**
+- Phase E (gating) — needs E.0
+- Phase F (per-lesson Phase 8 AI conversation)
+- Phase G (two-track Learn tab)
+- Phase H (RevenueCat)
+- Phase I (onboarding refinements — most of it subsumed by E.0)
+- Phase J (AI Companion course content + memory infra)
+- Phase K (second speaker × course variants)
+- Phase L (in-app methodology screens)
+- Phase M (API keys server-side) — **HARD PREREQUISITE for any external testing**
+- Phase N (jurisdiction packs populated for non-AU regions)
+- Native-Shona reviewer pass on the sn locale draft (Phase D follow-up)
+
+The Phase E.0 refactor is the load-bearing one. After it lands, the rest of the roadmap fits cleanly because every remaining phase keys on the three-pack composition model rather than scattered hardcodes.
 
 **Phase A is ready to start when you say "Phase A go".** It's a clean, mechanical 1-2 day chunk:
 1. Rename `Chunk.shona` → `Chunk.target`, `Chunk.english` → `Chunk.native`. Same for `DialogueLine`, `PatternExample`, `ActiveRecallPrompt`.
