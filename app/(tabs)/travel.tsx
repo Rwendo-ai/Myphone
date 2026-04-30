@@ -1,20 +1,32 @@
 import { View, Text, StyleSheet, ScrollView, Pressable, Linking, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useTranslation } from 'react-i18next';
 import RwenImage from '../../components/rwen/RwenImage';
 import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
 
-const COMING_SOON_FEATURES = [
-  { emoji: '🗺️', title: 'Phrasebook', desc: 'Survival phrases by situation — airport, hotel, market, emergency' },
-  { emoji: '🏛️', title: 'Cultural Guide', desc: 'Tsika, customs, and what to expect in Zimbabwe' },
-  { emoji: '💱', title: 'Money & Market', desc: 'Prices, bargaining, ZiG currency, market navigation' },
-  { emoji: '🛫', title: 'Airport to City', desc: 'Kombi routes, taxi tips, getting around Harare & Bulawayo' },
-  { emoji: '👥', title: 'Meet Travellers', desc: 'Connect with others learning Shona and visiting Zimbabwe' },
-  { emoji: '🦁', title: 'Safari & Parks', desc: 'Hwange, Victoria Falls, Great Zimbabwe — your guide' },
-];
+const FEATURE_KEYS = ['phrasebook', 'culture', 'money', 'transport', 'travellers', 'safari'] as const;
+const FEATURE_EMOJIS: Record<(typeof FEATURE_KEYS)[number], string> = {
+  phrasebook:  '🗺️',
+  culture:     '🏛️',
+  money:       '💱',
+  transport:   '🛫',
+  travellers:  '👥',
+  safari:      '🦁',
+};
 
 export default function TravelScreen() {
+  const { t } = useTranslation('common');
+
+  const openNotifyEmail = () => {
+    const subject = encodeURIComponent(t('travel.notify.email_subject'));
+    const body = encodeURIComponent(t('travel.notify.email_body'));
+    Linking.openURL(`mailto:hello@rwendo.app?subject=${subject}&body=${body}`).catch(() =>
+      Alert.alert(t('travel.notify.fallback_title'), t('travel.notify.fallback_body'))
+    );
+  };
+
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -24,11 +36,11 @@ export default function TravelScreen() {
           <View style={styles.heroContent}>
             <View style={styles.heroText}>
               <View style={styles.badge}>
-                <Text style={styles.badgeText}>COMING SOON</Text>
+                <Text style={styles.badgeText}>{t('travel.coming_soon_badge')}</Text>
               </View>
-              <Text style={styles.heroTitle}>Zimbabwe{'\n'}Travel Mode</Text>
+              <Text style={styles.heroTitle}>{t('travel.hero_title')}</Text>
               <Text style={styles.heroSub}>
-                Your Shona skills + cultural knowledge + on-the-ground travel guide. Rwendo in the real world.
+                {t('travel.hero_sub')}
               </Text>
             </View>
             <RwenImage pose="arms_spread" size={130} />
@@ -38,35 +50,35 @@ export default function TravelScreen() {
           <View style={styles.teaserRow}>
             <View style={styles.teaserItem}>
               <Text style={styles.teaserValue}>6</Text>
-              <Text style={styles.teaserLabel}>Features</Text>
+              <Text style={styles.teaserLabel}>{t('travel.teaser.features')}</Text>
             </View>
             <View style={styles.teaserDivider} />
             <View style={styles.teaserItem}>
               <Text style={styles.teaserValue}>🇿🇼</Text>
-              <Text style={styles.teaserLabel}>Zimbabwe</Text>
+              <Text style={styles.teaserLabel}>{t('travel.teaser.zimbabwe')}</Text>
             </View>
             <View style={styles.teaserDivider} />
             <View style={styles.teaserItem}>
               <Text style={styles.teaserValue}>∞</Text>
-              <Text style={styles.teaserLabel}>Connections</Text>
+              <Text style={styles.teaserLabel}>{t('travel.teaser.connections')}</Text>
             </View>
           </View>
         </LinearGradient>
 
         <View style={styles.content}>
-          <Text style={styles.sectionTitle}>What's coming</Text>
+          <Text style={styles.sectionTitle}>{t('travel.whats_coming')}</Text>
 
-          {COMING_SOON_FEATURES.map((feature, i) => (
-            <View key={i} style={styles.featureCard}>
+          {FEATURE_KEYS.map((key) => (
+            <View key={key} style={styles.featureCard}>
               <View style={styles.featureEmoji}>
-                <Text style={styles.featureEmojiText}>{feature.emoji}</Text>
+                <Text style={styles.featureEmojiText}>{FEATURE_EMOJIS[key]}</Text>
               </View>
               <View style={styles.featureInfo}>
-                <Text style={styles.featureTitle}>{feature.title}</Text>
-                <Text style={styles.featureDesc}>{feature.desc}</Text>
+                <Text style={styles.featureTitle}>{t(`travel.features.${key}.title`)}</Text>
+                <Text style={styles.featureDesc}>{t(`travel.features.${key}.desc`)}</Text>
               </View>
               <View style={styles.lockBadge}>
-                <Text style={styles.lockText}>Soon</Text>
+                <Text style={styles.lockText}>{t('travel.lock_soon')}</Text>
               </View>
             </View>
           ))}
@@ -74,35 +86,23 @@ export default function TravelScreen() {
           {/* Notify me card */}
           <View style={styles.notifyCard}>
             <RwenImage pose="waving" size={80} />
-            <Text style={styles.notifyTitle}>Rwen is packing his bags</Text>
+            <Text style={styles.notifyTitle}>{t('travel.notify.title')}</Text>
             <Text style={styles.notifyText}>
-              Travel Mode is in development. Keep learning your Shona — by the time you land in Harare, Rwen will be ready to guide you.
+              {t('travel.notify.body')}
             </Text>
-            <Pressable
-              style={styles.notifyBtn}
-              onPress={() =>
-                Linking.openURL(
-                  'mailto:hello@rwendo.app?subject=Notify me about Travel Mode&body=Hi Rwen, please let me know when Travel Mode launches!'
-                ).catch(() =>
-                  Alert.alert(
-                    "We'll let you know",
-                    'Email hello@rwendo.app and we\'ll add you to the early-access list.'
-                  )
-                )
-              }
-            >
-              <Text style={styles.notifyBtnText}>Notify me when it's ready</Text>
+            <Pressable style={styles.notifyBtn} onPress={openNotifyEmail}>
+              <Text style={styles.notifyBtnText}>{t('travel.notify.button')}</Text>
             </Pressable>
           </View>
 
           {/* Victoria Falls teaser */}
           <View style={styles.spotlightCard}>
-            <Text style={styles.spotlightLabel}>DESTINATION SPOTLIGHT</Text>
-            <Text style={styles.spotlightTitle}>🌊 Victoria Falls</Text>
-            <Text style={styles.spotlightShona}>"Mosi-oa-Tunya"</Text>
-            <Text style={styles.spotlightMeaning}>The Smoke That Thunders</Text>
+            <Text style={styles.spotlightLabel}>{t('travel.spotlight.label')}</Text>
+            <Text style={styles.spotlightTitle}>{t('travel.spotlight.title')}</Text>
+            <Text style={styles.spotlightShona}>{t('travel.spotlight.shona_name')}</Text>
+            <Text style={styles.spotlightMeaning}>{t('travel.spotlight.meaning')}</Text>
             <Text style={styles.spotlightDesc}>
-              One of the Seven Natural Wonders of the World, on the Zambezi River between Zimbabwe and Zambia. In Shona culture, it is a sacred place — the home of the water spirits, midzimu yemvura.
+              {t('travel.spotlight.desc')}
             </Text>
           </View>
 

@@ -2,6 +2,7 @@ import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router, useFocusEffect } from 'expo-router';
 import { useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { getUnitsForPack } from '../../data/lessons';
 import { useSettings } from '../../lib/SettingsContext';
 import { useProgress } from '../../hooks/useProgress';
@@ -10,6 +11,8 @@ import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
 
 export default function LearnScreen() {
+  const { t } = useTranslation('learn');
+  const { t: tCommon } = useTranslation('common');
   const { activePack, spokenLanguage, learnedLanguage } = useSettings();
   const { xp, streakDays, completedLessons, refresh } = useProgress();
   const { goal: dailyXpGoal } = useDailyXpGoal();
@@ -38,8 +41,8 @@ export default function LearnScreen() {
 
         <View style={styles.xpCard}>
           <View style={styles.xpRow}>
-            <Text style={styles.xpLabel}>Daily XP</Text>
-            <Text style={styles.xpValue}>{xp % dailyXpGoal} / {dailyXpGoal} XP</Text>
+            <Text style={styles.xpLabel}>{t('tab.daily_xp')}</Text>
+            <Text style={styles.xpValue}>{tCommon('xp_progress', { current: xp % dailyXpGoal, goal: dailyXpGoal })}</Text>
           </View>
           <View style={styles.xpBarBg}>
             <View style={[styles.xpBarFill, { width: `${dailyXpProgress * 100}%` }]} />
@@ -50,15 +53,15 @@ export default function LearnScreen() {
           <View style={styles.comingSoon}>
             <Text style={styles.comingSoonEmoji}>{learnedLanguage.flag}</Text>
             <Text style={styles.comingSoonTitle}>
-              {learnedLanguage.name} curriculum coming soon
+              {t('tab.coming_soon_title', { lang: learnedLanguage.name })}
             </Text>
             <Text style={styles.comingSoonSub}>
-              We're building the lessons now. Check back soon!
+              {t('tab.coming_soon_sub')}
             </Text>
           </View>
         ) : (
           <>
-            <Text style={styles.sectionTitle}>Units</Text>
+            <Text style={styles.sectionTitle}>{t('tab.units')}</Text>
             {units.map((unit, index) => {
               const completedCount = unit.lessons.filter(l => completedLessons.has(l.id)).length;
               const isLocked = index > 0 && units[index - 1].lessons.filter(l => completedLessons.has(l.id)).length < units[index - 1].lessons.length;
@@ -76,8 +79,8 @@ export default function LearnScreen() {
                     <Text style={[styles.unitTitle, isLocked && styles.lockedText]}>{unit.title}</Text>
                     <Text style={[styles.unitDesc, isLocked && styles.lockedText]}>{unit.description}</Text>
                     <View style={styles.unitMeta}>
-                      <Text style={styles.unitMetaText}>{unit.lessons.length} lessons</Text>
-                      {!isLocked && <Text style={styles.unitProgress}>{completedCount}/{unit.lessons.length} done</Text>}
+                      <Text style={styles.unitMetaText}>{t('tab.lesson_count', { count: unit.lessons.length })}</Text>
+                      {!isLocked && <Text style={styles.unitProgress}>{t('tab.unit_progress', { completed: completedCount, total: unit.lessons.length })}</Text>}
                     </View>
                     {!isLocked && (
                       <View style={styles.progressBarBg}>

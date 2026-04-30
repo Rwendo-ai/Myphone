@@ -3,6 +3,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useFocusEffect, router } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useTranslation } from 'react-i18next';
 import RwenImage from '../../components/rwen/RwenImage';
 import { useAuth } from '../../lib/AuthContext';
 import { deleteAccount } from '../../lib/progress';
@@ -39,6 +40,7 @@ function SettingsRow({ label, value, onPress, danger }: {
 }
 
 export default function ProfileScreen() {
+  const { t } = useTranslation('common');
   const { user, signOut } = useAuth();
   const { xp, streakDays, username, completedLessons, refresh } = useProgress();
   const { rwenVoice, setRwenVoice, learnedLanguage, spokenLanguage, theme, setThemeId, avatarUrl, setAvatarUrl } = useSettings();
@@ -63,28 +65,28 @@ export default function ProfileScreen() {
   };
   useFocusEffect(useCallback(() => { refresh(); }, [refresh]));
 
-  const displayName = username || user?.email?.split('@')[0] || 'Learner';
+  const displayName = username || user?.email?.split('@')[0] || t('fallback_learner');
   const initial = displayName[0]?.toUpperCase() ?? 'L';
 
   const handleSignOut = () => {
-    Alert.alert('Sign out', 'Are you sure?', [
-      { text: 'Cancel', style: 'cancel' },
-      { text: 'Sign out', style: 'destructive', onPress: signOut },
+    Alert.alert(t('profile.sign_out.confirm_title'), t('profile.sign_out.confirm_body'), [
+      { text: t('actions.cancel'), style: 'cancel' },
+      { text: t('profile.sign_out.confirm_action'), style: 'destructive', onPress: signOut },
     ]);
   };
 
   const handleDeleteAccount = () => {
     Alert.alert(
-      'Delete Account',
-      'This permanently deletes your account and all progress. Cannot be undone.',
+      t('profile.delete_account.confirm_title'),
+      t('profile.delete_account.confirm_body'),
       [
-        { text: 'Cancel', style: 'cancel' },
+        { text: t('actions.cancel'), style: 'cancel' },
         {
-          text: 'Delete my account',
+          text: t('profile.delete_account.confirm_action'),
           style: 'destructive',
           onPress: async () => {
             try { if (user) await deleteAccount(user.id); }
-            catch { Alert.alert('Error', 'Could not delete account. Please try again.'); }
+            catch { Alert.alert(t('profile.delete_account.error_title'), t('profile.delete_account.error_body')); }
           },
         },
       ]
@@ -124,17 +126,17 @@ export default function ProfileScreen() {
           <View style={styles.statsRow}>
             <View style={styles.statItem}>
               <Text style={styles.statValue}>{xp}</Text>
-              <Text style={styles.statLabel}>Total XP</Text>
+              <Text style={styles.statLabel}>{t('profile.stats.total_xp')}</Text>
             </View>
             <View style={styles.statDivider} />
             <View style={styles.statItem}>
               <Text style={styles.statValue}>🔥 {streakDays}</Text>
-              <Text style={styles.statLabel}>Streak</Text>
+              <Text style={styles.statLabel}>{t('profile.stats.streak')}</Text>
             </View>
             <View style={styles.statDivider} />
             <View style={styles.statItem}>
               <Text style={styles.statValue}>{completedLessons.size}</Text>
-              <Text style={styles.statLabel}>Lessons</Text>
+              <Text style={styles.statLabel}>{t('profile.stats.lessons')}</Text>
             </View>
           </View>
         </LinearGradient>
@@ -142,52 +144,52 @@ export default function ProfileScreen() {
         <View style={styles.content}>
 
           {/* Subscription */}
-          <Section title="My Plan">
+          <Section title={t('profile.sections.my_plan')}>
             <View style={styles.planCard}>
               <View>
-                <Text style={styles.planName}>Free Plan</Text>
-                <Text style={styles.planDesc}>Access to all lessons</Text>
+                <Text style={styles.planName}>{t('profile.plan.free_name')}</Text>
+                <Text style={styles.planDesc}>{t('profile.plan.free_desc')}</Text>
               </View>
               <Pressable style={styles.upgradeBtn} onPress={() => router.push('/profile/plans')}>
-                <Text style={styles.upgradeBtnText}>Upgrade</Text>
+                <Text style={styles.upgradeBtnText}>{t('profile.plan.upgrade')}</Text>
               </Pressable>
             </View>
-            <SettingsRow label="View all plans" onPress={() => router.push('/profile/plans')} />
+            <SettingsRow label={t('profile.plan.view_all_plans')} onPress={() => router.push('/profile/plans')} />
           </Section>
 
           {/* Colour Theme */}
-          <Section title="Colour Theme">
+          <Section title={t('profile.sections.colour_theme')}>
             <View style={styles.themeGrid}>
-              {Object.values(THEMES).map((t) => (
+              {Object.values(THEMES).map((th) => (
                 <Pressable
-                  key={t.id}
-                  style={[styles.themeChip, theme.id === t.id && styles.themeChipActive]}
-                  onPress={() => handleThemeSelect(t.id)}
+                  key={th.id}
+                  style={[styles.themeChip, theme.id === th.id && styles.themeChipActive]}
+                  onPress={() => handleThemeSelect(th.id)}
                 >
-                  <View style={[styles.themeSwatch, { backgroundColor: t.primary }]}>
-                    <View style={[styles.themeSwatchInner, { backgroundColor: t.secondary }]} />
+                  <View style={[styles.themeSwatch, { backgroundColor: th.primary }]}>
+                    <View style={[styles.themeSwatchInner, { backgroundColor: th.secondary }]} />
                   </View>
-                  <Text style={[styles.themeChipLabel, theme.id === t.id && { color: Colors.primary, fontWeight: FontWeight.bold }]}>
-                    {t.emoji} {t.name}
+                  <Text style={[styles.themeChipLabel, theme.id === th.id && { color: Colors.primary, fontWeight: FontWeight.bold }]}>
+                    {th.emoji} {th.name}
                   </Text>
-                  {theme.id === t.id && <Text style={styles.themeCheck}>✓</Text>}
+                  {theme.id === th.id && <Text style={styles.themeCheck}>✓</Text>}
                 </Pressable>
               ))}
             </View>
           </Section>
 
           {/* Rwen's Voice */}
-          <Section title="Rwen's Voice">
+          <Section title={t('profile.sections.rwens_voice')}>
             <View style={styles.voiceGrid}>
-              {(Object.entries(RWEN_VOICES) as [RwenVoiceKey, typeof RWEN_VOICES[RwenVoiceKey]][]).map(([key, voice]) => (
+              {(Object.keys(RWEN_VOICES) as RwenVoiceKey[]).map((key) => (
                 <Pressable
                   key={key}
                   style={[styles.voiceCard, rwenVoice === key && styles.voiceCardActive]}
                   onPress={() => setRwenVoice(key)}
                 >
                   <Text style={styles.voiceGender}>{key.startsWith('female') ? '👩' : '👨'}</Text>
-                  <Text style={[styles.voiceName, rwenVoice === key && styles.voiceNameActive]}>{voice.name}</Text>
-                  <Text style={styles.voiceDesc}>{voice.description}</Text>
+                  <Text style={[styles.voiceName, rwenVoice === key && styles.voiceNameActive]}>{t(`profile.voices.${key}.name`)}</Text>
+                  <Text style={styles.voiceDesc}>{t(`profile.voices.${key}.description`)}</Text>
                   {rwenVoice === key && <Text style={styles.voiceCheck}>✓</Text>}
                 </Pressable>
               ))}
@@ -195,15 +197,15 @@ export default function ProfileScreen() {
           </Section>
 
           {/* Learning preferences */}
-          <Section title="Learning">
+          <Section title={t('profile.sections.learning')}>
             <SettingsRow
-              label="Language pack"
+              label={t('profile.learning.language_pack')}
               value={`${spokenLanguage.flag} → ${learnedLanguage.flag}`}
               onPress={() => router.push('/profile/language-pack')}
             />
             <SettingsRow
-              label="Daily XP goal"
-              value={`${dailyXpGoal} XP`}
+              label={t('profile.learning.daily_xp_goal')}
+              value={t('profile.learning.daily_xp_value', { count: dailyXpGoal })}
               onPress={() => router.push('/profile/daily-goal')}
             />
             <Pressable
@@ -213,13 +215,13 @@ export default function ProfileScreen() {
                 setRemindersOn(next);
                 if (next) {
                   Alert.alert(
-                    'Reminders enabled',
-                    "We'll save your preference. Push notifications will arrive in an upcoming update."
+                    t('profile.learning.reminders_enabled_title'),
+                    t('profile.learning.reminders_enabled_body')
                   );
                 }
               }}
             >
-              <Text style={styles.rowLabel}>Daily reminders</Text>
+              <Text style={styles.rowLabel}>{t('profile.learning.daily_reminders')}</Text>
               <Switch
                 value={remindersOn}
                 onValueChange={setRemindersOn}
@@ -230,48 +232,49 @@ export default function ProfileScreen() {
           </Section>
 
           {/* Progress */}
-          <Section title="My Progress">
-            <SettingsRow label="Completed lessons" value={String(completedLessons.size)} />
-            <SettingsRow label="Current streak" value={`${streakDays} days`} />
-            <SettingsRow label="Total XP earned" value={String(xp)} />
-            <SettingsRow label="Achievements" onPress={() => router.push('/profile/achievements')} />
+          <Section title={t('profile.sections.my_progress')}>
+            <SettingsRow label={t('profile.progress_rows.completed_lessons')} value={String(completedLessons.size)} />
+            <SettingsRow label={t('profile.progress_rows.current_streak')} value={t('profile.progress_rows.streak_days', { count: streakDays })} />
+            <SettingsRow label={t('profile.progress_rows.total_xp_earned')} value={String(xp)} />
+            <SettingsRow label={t('profile.progress_rows.achievements')} onPress={() => router.push('/profile/achievements')} />
           </Section>
 
           {/* Account */}
-          <Section title="Account">
-            <SettingsRow label="Edit profile" onPress={() => router.push('/profile/edit')} />
-            <SettingsRow label="Change password" onPress={() => router.push('/profile/change-password')} />
-            <SettingsRow label="Privacy settings" onPress={() => router.push('/profile/privacy')} />
-            <SettingsRow label="Export my data" onPress={() => router.push('/profile/export')} />
+          <Section title={t('profile.sections.account')}>
+            <SettingsRow label={t('profile.account_rows.edit_profile')} onPress={() => router.push('/profile/edit')} />
+            <SettingsRow label={t('profile.account_rows.change_password')} onPress={() => router.push('/profile/change-password')} />
+            <SettingsRow label={t('profile.account_rows.privacy_settings')} onPress={() => router.push('/profile/privacy')} />
+            <SettingsRow label={t('profile.account_rows.export_data')} onPress={() => router.push('/profile/export')} />
           </Section>
 
           {/* Legal */}
-          <Section title="Legal Documents">
-            <SettingsRow label="Terms of Service" onPress={() => router.push('/(legal)/terms-of-service')} />
-            <SettingsRow label="Privacy Policy" onPress={() => router.push('/(legal)/privacy-policy')} />
+          <Section title={t('profile.sections.legal')}>
+            <SettingsRow label={t('profile.legal_rows.terms')} onPress={() => router.push('/(legal)/terms-of-service')} />
+            <SettingsRow label={t('profile.legal_rows.privacy_policy')} onPress={() => router.push('/(legal)/privacy-policy')} />
           </Section>
 
           {/* Support */}
-          <Section title="Support">
-            <SettingsRow label="Help & FAQ" onPress={() => router.push('/profile/help')} />
-            <SettingsRow label="About Rwendo" onPress={() => router.push('/profile/about')} />
+          <Section title={t('profile.sections.support')}>
+            <SettingsRow label={t('profile.support_rows.help_faq')} onPress={() => router.push('/profile/help')} />
+            <SettingsRow label={t('profile.support_rows.about')} onPress={() => router.push('/profile/about')} />
             <SettingsRow
-              label="Contact Us"
-              onPress={() =>
-                Linking.openURL('mailto:support@rwendo.app?subject=Rwendo support').catch(() =>
-                  Alert.alert('No email app', 'Please email support@rwendo.app from your preferred email app.')
-                )
-              }
+              label={t('profile.support_rows.contact_us')}
+              onPress={() => {
+                const subject = encodeURIComponent(t('profile.support_rows.contact_email_subject'));
+                Linking.openURL(`mailto:support@rwendo.app?subject=${subject}`).catch(() =>
+                  Alert.alert(t('profile.support_rows.no_email_app_title'), t('profile.support_rows.no_email_app_body'))
+                );
+              }}
             />
           </Section>
 
           {/* Sign out / delete */}
           <Section title="">
             <Pressable style={styles.signOutBtn} onPress={handleSignOut}>
-              <Text style={styles.signOutText}>Sign Out</Text>
+              <Text style={styles.signOutText}>{t('profile.sign_out.button')}</Text>
             </Pressable>
             <Pressable style={styles.deleteBtn} onPress={handleDeleteAccount}>
-              <Text style={styles.deleteText}>Delete Account & All Data</Text>
+              <Text style={styles.deleteText}>{t('profile.delete_account.button')}</Text>
             </Pressable>
           </Section>
 

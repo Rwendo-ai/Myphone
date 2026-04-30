@@ -1,1 +1,25 @@
-{}
+{
+  "header": {
+    "title": "Rwen",
+    "status_listening": "🎤 Listening...",
+    "status_thinking": "💭 Thinking...",
+    "status_speaking": "🔊 Speaking...",
+    "status_loading": "Thinking...",
+    "status_idle": "{{lang}} companion · AI"
+  },
+  "banner": {
+    "speak_now": "🎤 Speak now...",
+    "rwen_thinking": "💭 Rwen is thinking...",
+    "rwen_speaking": "🔊 Rwen is speaking...",
+    "done_speaking": "Done speaking"
+  },
+  "input": {
+    "placeholder_default": "Message Rwen...",
+    "placeholder_convo_active": "Conversation active — speak or tap ⏹ to stop"
+  },
+  "messages": {
+    "welcome": "Mhoro, {{name}}! What's on your mind today?",
+    "error_generic": "Ndine urombo — something went wrong. Try again.",
+    "auto_listen_greeting": "Mhoro! I'm listening. Speak whenever you're ready."
+  }
+}

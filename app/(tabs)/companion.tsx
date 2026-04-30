@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet, TextInput, Pressable, ScrollView, KeyboardAvoidingView, Platform, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useState, useRef, useEffect, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import RwenImage from '../../components/rwen/RwenImage';
 import { useAuth } from '../../lib/AuthContext';
 import { useSettings } from '../../lib/SettingsContext';
@@ -20,6 +21,8 @@ type ConvoMode = 'text' | 'voice_push' | 'voice_auto';
 type RwenState = 'idle' | 'thinking' | 'waving' | 'victory' | 'wrong' | 'arms_spread';
 
 export default function CompanionScreen() {
+  const { t } = useTranslation('rwen');
+  const { t: tCommon } = useTranslation('common');
   const { user } = useAuth();
   const { learnedLanguage, rwenVoice, theme } = useSettings();
   const { username } = useProgress();
@@ -51,7 +54,7 @@ export default function CompanionScreen() {
           text: m.content,
         })));
       } else {
-        setMessages([{ id: '0', role: 'rwen', text: `Mhoro, ${username || 'friend'}! What's on your mind today?` }]);
+        setMessages([{ id: '0', role: 'rwen', text: t('messages.welcome', { name: username || tCommon('fallback_name') }) }]);
       }
       setHistoryLoaded(true);
       setRwenState('idle');
@@ -93,12 +96,12 @@ export default function CompanionScreen() {
         }
       }
     } catch (e) {
-      setMessages(prev => [...prev, { id: (Date.now() + 1).toString(), role: 'rwen', text: "Ndine urombo — something went wrong. Try again." }]);
+      setMessages(prev => [...prev, { id: (Date.now() + 1).toString(), role: 'rwen', text: t('messages.error_generic') }]);
       setRwenState('idle');
     } finally {
       setLoading(false);
     }
-  }, [user, mode, rwenVoice]);
+  }, [user, mode, rwenVoice, t]);
 
   // ─── Auto-listen: record until silence, then process ─────────────────────
 
@@ -144,10 +147,10 @@ export default function CompanionScreen() {
     setMode('voice_auto');
 
     // Rwen greets
-    const greeting = `Mhoro! I'm listening. Speak whenever you're ready.`;
+    const greeting = t('messages.auto_listen_greeting');
     await speakText(greeting, rwenVoice);
     await startAutoListen();
-  }, [rwenVoice, startAutoListen]);
+  }, [rwenVoice, startAutoListen, t]);
 
   const stopConversation = useCallback(async () => {
     autoLoopRef.current = false;
@@ -191,13 +194,13 @@ export default function CompanionScreen() {
       <View style={[styles.header, { backgroundColor: theme.gradient[0] }]}>
         <RwenImage pose={rwenState as any} size={48} />
         <View style={styles.headerText}>
-          <Text style={styles.headerTitle}>Rwen</Text>
+          <Text style={styles.headerTitle}>{t('header.title')}</Text>
           <Text style={styles.headerSub}>
-            {convoActive && isListening ? '🎤 Listening...' :
-             convoActive && loading     ? '💭 Thinking...' :
-             convoActive               ? '🔊 Speaking...' :
-             loading                   ? 'Thinking...'    :
-             `${learnedLanguage.name} companion · AI`}
+            {convoActive && isListening ? t('header.status_listening') :
+             convoActive && loading     ? t('header.status_thinking') :
+             convoActive               ? t('header.status_speaking') :
+             loading                   ? t('header.status_loading')    :
+             t('header.status_idle', { lang: learnedLanguage.name })}
           </Text>
         </View>
 
@@ -215,11 +218,11 @@ export default function CompanionScreen() {
       {convoActive && (
         <View style={[styles.convoBanner, { backgroundColor: theme.gradient[0] }]}>
           <Text style={styles.convoBannerText}>
-            {isListening ? '🎤 Speak now...' : loading ? '💭 Rwen is thinking...' : '🔊 Rwen is speaking...'}
+            {isListening ? t('banner.speak_now') : loading ? t('banner.rwen_thinking') : t('banner.rwen_speaking')}
           </Text>
           {isListening && !loading && (
             <Pressable style={styles.stopListenBtn} onPress={stopAutoListen}>
-              <Text style={styles.stopListenText}>Done speaking</Text>
+              <Text style={styles.stopListenText}>{t('banner.done_speaking')}</Text>
             </Pressable>
           )}
         </View>
@@ -265,7 +268,7 @@ export default function CompanionScreen() {
 
           <TextInput
             style={styles.input}
-            placeholder={convoActive ? 'Conversation active — speak or tap ⏹ to stop' : `Message Rwen...`}
+            placeholder={convoActive ? t('input.placeholder_convo_active') : t('input.placeholder_default')}
             placeholderTextColor={Colors.gray[400]}
             value={input}
             onChangeText={setInput}

@@ -1,5 +1,6 @@
 import { Tabs } from 'expo-router';
 import { Pressable, View, StyleSheet, Text } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import RwenImage from '../../components/rwen/RwenImage';
 import { Colors } from '../../constants/colors';
 
@@ -20,6 +21,7 @@ function TabIcon({ emoji, focused }: { emoji: string; focused: boolean }) {
 }
 
 export default function TabLayout() {
+  const { t } = useTranslation('common');
   return (
     <Tabs
       screenOptions={{
@@ -34,21 +36,21 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
+          title: t('nav.home'),
           tabBarIcon: ({ focused }) => <TabIcon emoji="🏠" focused={focused} />,
         }}
       />
       <Tabs.Screen
         name="learn"
         options={{
-          title: 'Learn',
+          title: t('nav.learn'),
           tabBarIcon: ({ focused }) => <TabIcon emoji="📚" focused={focused} />,
         }}
       />
       <Tabs.Screen
         name="companion"
         options={{
-          title: 'Rwen',
+          title: t('nav.rwen'),
           tabBarLabel: '',
           tabBarIcon: () => null,
           tabBarButton: (props) => <RwenTabButton onPress={props.onPress ?? undefined} />,
@@ -57,14 +59,14 @@ export default function TabLayout() {
       <Tabs.Screen
         name="travel"
         options={{
-          title: 'Travel',
+          title: t('nav.travel'),
           tabBarIcon: ({ focused }) => <TabIcon emoji="✈️" focused={focused} />,
         }}
       />
       <Tabs.Screen
         name="profile"
         options={{
-          title: 'Profile',
+          title: t('nav.profile'),
           tabBarIcon: ({ focused }) => <TabIcon emoji="👤" focused={focused} />,
         }}
       />

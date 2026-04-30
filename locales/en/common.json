@@ -1,7 +1,171 @@
 {
+  "fallback_name": "friend",
+  "fallback_learner": "Learner",
+  "xp_progress": "{{current}} / {{goal}} XP",
+  "actions": {
+    "cancel": "Cancel",
+    "ok": "OK",
+    "save": "Save",
+    "delete": "Delete"
+  },
+  "nav": {
+    "home": "Home",
+    "learn": "Learn",
+    "rwen": "Rwen",
+    "travel": "Travel",
+    "profile": "Profile"
+  },
+  "profile": {
+    "stats": {
+      "total_xp": "Total XP",
+      "streak": "Streak",
+      "lessons": "Lessons"
+    },
+    "sections": {
+      "my_plan": "My Plan",
+      "colour_theme": "Colour Theme",
+      "rwens_voice": "Rwen's Voice",
+      "learning": "Learning",
+      "my_progress": "My Progress",
+      "account": "Account",
+      "legal": "Legal Documents",
+      "support": "Support"
+    },
+    "plan": {
+      "free_name": "Free Plan",
+      "free_desc": "Access to all lessons",
+      "upgrade": "Upgrade",
+      "view_all_plans": "View all plans"
+    },
+    "voices": {
+      "male_warm":    { "name": "George",  "description": "Warm storyteller" },
+      "male_energy":  { "name": "Charlie", "description": "Energetic, confident" },
+      "female_warm":  { "name": "Jessica", "description": "Playful, bright, warm" },
+      "female_clear": { "name": "Alice",   "description": "Clear, engaging educator" }
+    },
+    "learning": {
+      "language_pack": "Language pack",
+      "daily_xp_goal": "Daily XP goal",
+      "daily_xp_value": "{{count}} XP",
+      "daily_reminders": "Daily reminders",
+      "reminders_enabled_title": "Reminders enabled",
+      "reminders_enabled_body": "We'll save your preference. Push notifications will arrive in an upcoming update."
+    },
+    "progress_rows": {
+      "completed_lessons": "Completed lessons",
+      "current_streak": "Current streak",
+      "streak_days": "{{count}} days",
+      "total_xp_earned": "Total XP earned",
+      "achievements": "Achievements"
+    },
+    "account_rows": {
+      "edit_profile": "Edit profile",
+      "change_password": "Change password",
+      "privacy_settings": "Privacy settings",
+      "export_data": "Export my data"
+    },
+    "legal_rows": {
+      "terms": "Terms of Service",
+      "privacy_policy": "Privacy Policy"
+    },
+    "support_rows": {
+      "help_faq": "Help & FAQ",
+      "about": "About Rwendo",
+      "contact_us": "Contact Us",
+      "no_email_app_title": "No email app",
+      "no_email_app_body": "Please email support@rwendo.app from your preferred email app.",
+      "contact_email_subject": "Rwendo support"
+    },
+    "sign_out": {
+      "button": "Sign Out",
+      "confirm_title": "Sign out",
+      "confirm_body": "Are you sure?",
+      "confirm_action": "Sign out"
+    },
+    "delete_account": {
+      "button": "Delete Account & All Data",
+      "confirm_title": "Delete Account",
+      "confirm_body": "This permanently deletes your account and all progress. Cannot be undone.",
+      "confirm_action": "Delete my account",
+      "error_title": "Error",
+      "error_body": "Could not delete account. Please try again."
+    }
+  },
   "stats": {
     "xp": "XP",
     "streak": "Streak",
     "lessons": "Lessons"
+  },
+  "travel": {
+    "coming_soon_badge": "COMING SOON",
+    "hero_title": "Zimbabwe\nTravel Mode",
+    "hero_sub": "Your Shona skills + cultural knowledge + on-the-ground travel guide. Rwendo in the real world.",
+    "teaser": {
+      "features": "Features",
+      "zimbabwe": "Zimbabwe",
+      "connections": "Connections"
+    },
+    "whats_coming": "What's coming",
+    "lock_soon": "Soon",
+    "features": {
+      "phrasebook":  { "title": "Phrasebook",       "desc": "Survival phrases by situation — airport, hotel, market, emergency" },
+      "culture":     { "title": "Cultural Guide",   "desc": "Tsika, customs, and what to expect in Zimbabwe" },
+      "money":       { "title": "Money & Market",   "desc": "Prices, bargaining, ZiG currency, market navigation" },
+      "transport":   { "title": "Airport to City",  "desc": "Kombi routes, taxi tips, getting around Harare & Bulawayo" },
+      "travellers":  { "title": "Meet Travellers",  "desc": "Connect with others learning Shona and visiting Zimbabwe" },
+      "safari":      { "title": "Safari & Parks",   "desc": "Hwange, Victoria Falls, Great Zimbabwe — your guide" }
+    },
+    "notify": {
+      "title": "Rwen is packing his bags",
+      "body": "Travel Mode is in development. Keep learning your Shona — by the time you land in Harare, Rwen will be ready to guide you.",
+      "button": "Notify me when it's ready",
+      "email_subject": "Notify me about Travel Mode",
+      "email_body": "Hi Rwen, please let me know when Travel Mode launches!",
+      "fallback_title": "We'll let you know",
+      "fallback_body": "Email hello@rwendo.app and we'll add you to the early-access list."
+    },
+    "spotlight": {
+      "label": "DESTINATION SPOTLIGHT",
+      "title": "🌊 Victoria Falls",
+      "shona_name": "\"Mosi-oa-Tunya\"",
+      "meaning": "The Smoke That Thunders",
+      "desc": "One of the Seven Natural Wonders of the World, on the Zambezi River between Zimbabwe and Zambia. In Shona culture, it is a sacred place — the home of the water spirits, midzimu yemvura."
+    }
+  },
+  "home": {
+    "greetings": {
+      "morning": "Good morning",
+      "afternoon": "Good afternoon",
+      "evening": "Good evening"
+    },
+    "hero_sub": "{{greeting}} — Day {{day}} of your journey",
+    "daily_goal": "Daily goal",
+    "talk_to_rwen": "Talk to Rwen",
+    "talk_to_rwen_sub": "Your AI companion is ready",
+    "continue_learning": "CONTINUE LEARNING",
+    "all_lessons_complete": "🎉 All lessons complete!",
+    "more_coming_soon": "More coming soon",
+    "rwens_tip_today": "Rwen's Tip Today",
+    "quick_access": "Quick Access",
+    "quick": {
+      "all_lessons": "All Lessons",
+      "chat": "Chat",
+      "travel": "Travel",
+      "settings": "Settings"
+    },
+    "journey_title": "{{flag}} Your {{lang}} Journey",
+    "journey_progress": "{{completed}} of {{total}} lessons complete across {{units}} modules.",
+    "journey_remaining": "{{remaining}} lessons to A2 fluency.",
+    "journey_done": "A2 fluency achieved! 🎉",
+    "tips": [
+      "Every great journey begins with 'Mhoro'. You've already taken the first step.",
+      "In Shona, 'Ukama igasva hunozadziswa nekudya' — relationships are completed by sharing food. Share what you learn today.",
+      "The prefix Ma- for elders, Wa- for friends. One letter, a world of respect.",
+      "Sadza is more than food — it's identity. When you eat sadza, you eat Zimbabwe.",
+      "Chara chimwe hachitswanyi inda — one finger cannot kill a louse. Keep building, word by word.",
+      "Rwen tip: practice your last lesson out loud today. Speaking is 10× more effective than reading.",
+      "Makadii? — three syllables that open every door in Zimbabwe.",
+      "You're learning a language spoken by millions. Every word you master is a connection made."
+    ]
   }
 }

@@ -1,1 +1,10 @@
-{}
+{
+  "tab": {
+    "daily_xp": "Daily XP",
+    "units": "Units",
+    "lesson_count": "{{count}} lessons",
+    "unit_progress": "{{completed}}/{{total}} done",
+    "coming_soon_title": "{{lang}} curriculum coming soon",
+    "coming_soon_sub": "We're building the lessons now. Check back soon!"
+  }
+}

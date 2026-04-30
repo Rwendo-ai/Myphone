@@ -13,25 +13,13 @@ import { getUnitsForPack } from '../../data/lessons';
 import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
 
-function getShonaGreeting(): { shona: string; english: string; rwen: string } {
-  const hour = new Date().getHours();
-  if (hour < 12) return { shona: 'Mangwanani', english: 'Good morning', rwen: 'waving' };
-  if (hour < 17) return { shona: 'Masikati', english: 'Good afternoon', rwen: 'idle' };
-  return { shona: 'Manheru', english: 'Good evening', rwen: 'idle' };
-}
+type TimeOfDay = 'morning' | 'afternoon' | 'evening';
 
-function getRwenTip(completedCount: number): string {
-  const tips = [
-    "Every great journey begins with 'Mhoro'. You've already taken the first step.",
-    "In Shona, 'Ukama igasva hunozadziswa nekudya' — relationships are completed by sharing food. Share what you learn today.",
-    "The prefix Ma- for elders, Wa- for friends. One letter, a world of respect.",
-    "Sadza is more than food — it's identity. When you eat sadza, you eat Zimbabwe.",
-    "Chara chimwe hachitswanyi inda — one finger cannot kill a louse. Keep building, word by word.",
-    "Rwen tip: practice your last lesson out loud today. Speaking is 10× more effective than reading.",
-    "Makadii? — three syllables that open every door in Zimbabwe.",
-    "You're learning a language spoken by millions. Every word you master is a connection made.",
-  ];
-  return tips[completedCount % tips.length];
+function getShonaGreeting(): { shona: string; timeKey: TimeOfDay; rwen: string } {
+  const hour = new Date().getHours();
+  if (hour < 12) return { shona: 'Mangwanani', timeKey: 'morning',   rwen: 'waving' };
+  if (hour < 17) return { shona: 'Masikati',   timeKey: 'afternoon', rwen: 'idle' };
+  return                 { shona: 'Manheru',   timeKey: 'evening',   rwen: 'idle' };
 }
 
 export default function HomeScreen() {
@@ -62,9 +50,11 @@ export default function HomeScreen() {
   }
 
   const greeting = getShonaGreeting();
-  const tip = getRwenTip(completedCount);
+  const greetingEnglish = t(`home.greetings.${greeting.timeKey}`);
+  const tips = t('home.tips', { returnObjects: true }) as string[];
+  const tip = tips[completedCount % tips.length];
   const dailyXpProgress = Math.min((xp % dailyXpGoal) / dailyXpGoal, 1);
-  const displayName = username || user?.email?.split('@')[0] || 'friend';
+  const displayName = username || user?.email?.split('@')[0] || t('fallback_name');
 
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>
@@ -76,7 +66,9 @@ export default function HomeScreen() {
             <View>
               <Text style={styles.greetingShona}>{greeting.shona}!</Text>
               <Text style={styles.heroName}>{displayName}</Text>
-              <Text style={styles.heroSub}>{greeting.english} — Day {streakDays > 0 ? streakDays : 1} of your journey</Text>
+              <Text style={styles.heroSub}>
+                {t('home.hero_sub', { greeting: greetingEnglish, day: streakDays > 0 ? streakDays : 1 })}
+              </Text>
             </View>
             <RwenImage pose={greeting.rwen as any} size={110} />
           </View>
@@ -107,8 +99,8 @@ export default function HomeScreen() {
           {/* Daily XP bar */}
           <View style={styles.xpBarSection}>
             <View style={styles.xpBarRow}>
-              <Text style={styles.xpBarLabel}>Daily goal</Text>
-              <Text style={styles.xpBarValue}>{xp % dailyXpGoal} / {dailyXpGoal} XP</Text>
+              <Text style={styles.xpBarLabel}>{t('home.daily_goal')}</Text>
+              <Text style={styles.xpBarValue}>{t('xp_progress', { current: xp % dailyXpGoal, goal: dailyXpGoal })}</Text>
             </View>
             <View style={styles.xpBarBg}>
               <View style={[styles.xpBarFill, { width: `${dailyXpProgress * 100}%` }]} />
@@ -121,8 +113,8 @@ export default function HomeScreen() {
           {/* Talk to Rwen card */}
           <Pressable style={styles.rwenCard} onPress={() => router.push('/(tabs)/companion')}>
             <View style={styles.rwenCardLeft}>
-              <Text style={styles.rwenCardTitle}>Talk to Rwen</Text>
-              <Text style={styles.rwenCardSub}>Your AI companion is ready</Text>
+              <Text style={styles.rwenCardTitle}>{t('home.talk_to_rwen')}</Text>
+              <Text style={styles.rwenCardSub}>{t('home.talk_to_rwen_sub')}</Text>
             </View>
             <View style={styles.rwenCardRight}>
               <RwenImage pose="waving" size={64} />
@@ -136,7 +128,7 @@ export default function HomeScreen() {
               onPress={() => router.push(`/lesson/${nextLesson!.id}`)}
             >
               <View style={styles.continueLeft}>
-                <Text style={styles.continueLabel}>CONTINUE LEARNING</Text>
+                <Text style={styles.continueLabel}>{t('home.continue_learning')}</Text>
                 <Text style={styles.continueTitle}>{nextLesson.title}</Text>
                 <Text style={styles.continueUnit}>{nextUnit.emoji} {nextUnit.title}</Text>
               </View>
@@ -146,8 +138,8 @@ export default function HomeScreen() {
             </Pressable>
           ) : (
             <View style={[styles.continueCard, { opacity: 0.7 }]}>
-              <Text style={styles.continueTitle}>🎉 All lessons complete!</Text>
-              <Text style={styles.continueUnit}>More coming soon</Text>
+              <Text style={styles.continueTitle}>{t('home.all_lessons_complete')}</Text>
+              <Text style={styles.continueUnit}>{t('home.more_coming_soon')}</Text>
             </View>
           )}
 
@@ -155,42 +147,42 @@ export default function HomeScreen() {
           <View style={styles.tipCard}>
             <View style={styles.tipHeader}>
               <RwenImage pose="thinking" size={36} />
-              <Text style={styles.tipTitle}>Rwen's Tip Today</Text>
+              <Text style={styles.tipTitle}>{t('home.rwens_tip_today')}</Text>
             </View>
             <Text style={styles.tipText}>{tip}</Text>
           </View>
 
           {/* Quick actions */}
-          <Text style={styles.sectionTitle}>Quick Access</Text>
+          <Text style={styles.sectionTitle}>{t('home.quick_access')}</Text>
           <View style={styles.quickGrid}>
             <Pressable style={styles.quickCard} onPress={() => router.push('/(tabs)/learn')}>
               <Text style={styles.quickEmoji}>📚</Text>
-              <Text style={styles.quickLabel}>All Lessons</Text>
+              <Text style={styles.quickLabel}>{t('home.quick.all_lessons')}</Text>
             </Pressable>
             <Pressable style={styles.quickCard} onPress={() => router.push('/(tabs)/companion')}>
               <Text style={styles.quickEmoji}>💬</Text>
-              <Text style={styles.quickLabel}>Chat</Text>
+              <Text style={styles.quickLabel}>{t('home.quick.chat')}</Text>
             </Pressable>
             <Pressable style={styles.quickCard} onPress={() => router.push('/(tabs)/travel')}>
               <Text style={styles.quickEmoji}>✈️</Text>
-              <Text style={styles.quickLabel}>Travel</Text>
+              <Text style={styles.quickLabel}>{t('home.quick.travel')}</Text>
             </Pressable>
             <Pressable style={styles.quickCard} onPress={() => router.push('/(tabs)/profile')}>
               <Text style={styles.quickEmoji}>⚙️</Text>
-              <Text style={styles.quickLabel}>Settings</Text>
+              <Text style={styles.quickLabel}>{t('home.quick.settings')}</Text>
             </Pressable>
           </View>
 
           {/* Language info */}
           <View style={styles.journeyCard}>
             <Text style={styles.journeyTitle}>
-              {learnedLanguage.flag} Your {learnedLanguage.name} Journey
+              {t('home.journey_title', { flag: learnedLanguage.flag, lang: learnedLanguage.name })}
             </Text>
             <Text style={styles.journeyText}>
-              {completedCount} of {totalLessons} lessons complete across {units.length} modules.{'\n'}
+              {t('home.journey_progress', { completed: completedCount, total: totalLessons, units: units.length })}{'\n'}
               {totalLessons - completedCount > 0
-                ? `${totalLessons - completedCount} lessons to A2 fluency.`
-                : 'A2 fluency achieved! 🎉'}
+                ? t('home.journey_remaining', { remaining: totalLessons - completedCount })
+                : t('home.journey_done')}
             </Text>
           </View>
 
