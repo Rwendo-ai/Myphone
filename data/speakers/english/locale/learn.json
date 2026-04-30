@@ -5,7 +5,17 @@
     "lesson_count": "{{count}} lessons",
     "unit_progress": "{{completed}}/{{total}} done",
     "coming_soon_title": "{{lang}} curriculum coming soon",
-    "coming_soon_sub": "We're building the lessons now. Check back soon!"
+    "coming_soon_sub": "We're building the lessons now. Check back soon!",
+    "tracks_title": "Tracks",
+    "tracks": {
+      "language_title": "Language",
+      "language_sub": "Learn {{lang}}",
+      "companion_title": "AI Companion",
+      "companion_sub": "Talk with Rwen",
+      "travel_title": "Travel",
+      "travel_sub": "Zimbabwe guide",
+      "soon": "SOON"
+    }
   },
   "screen_header": {
     "back": "← Back"

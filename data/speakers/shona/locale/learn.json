@@ -15,7 +15,17 @@
     "lesson_count": "Zvidzidzo {{count}}",
     "unit_progress": "{{completed}}/{{total}} zvapera",
     "coming_soon_title": "Curriculum ye{{lang}} iri kuuya",
-    "coming_soon_sub": "Tiri kuvaka zvidzidzo zvino. Dzoka munguva pfupi!"
+    "coming_soon_sub": "Tiri kuvaka zvidzidzo zvino. Dzoka munguva pfupi!",
+    "tracks_title": "Maracho",
+    "tracks": {
+      "language_title": "Mutauro",
+      "language_sub": "Dzidza {{lang}}",
+      "companion_title": "Shamwari yeAI",
+      "companion_sub": "Taura naRwen",
+      "travel_title": "Kufamba",
+      "travel_sub": "Mutungamiri weZimbabwe",
+      "soon": "ZVICHAUYA"
+    }
   },
   "screen_header": {
     "back": "← Dzokera"
