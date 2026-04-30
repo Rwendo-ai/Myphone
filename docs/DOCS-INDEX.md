@@ -67,6 +67,7 @@ When adding a new .md file:
 | [supabase-migrations/002-functions.sql](./supabase-migrations/002-functions.sql) | ✅ Run | add_xp and delete_user functions |
 | [supabase-migrations/003-consolidated-schema.sql](./supabase-migrations/003-consolidated-schema.sql) | ⬜ Run next | Pack system, user_packs, subscriptions, parental_codes, new profile columns |
 | [supabase-migrations/004-account-management.sql](./supabase-migrations/004-account-management.sql) | ⬜ Run after 003 | EU cooling-off, usage tracking, indexes, country detection |
+| [supabase-migrations/005-three-pack-architecture.sql](./supabase-migrations/005-three-pack-architecture.sql) | ⬜ Run after 004 | NEW jurisdictions table, available_packs.pack_kind, profile.speaker_pack_id / active_course_ids / jurisdiction_id with non-destructive backfill from legacy columns. Three-pack composition model — see PRODUCT-DESIGN.md §3 + DATABASE-DESIGN.md §10. |
 
 ---
 
