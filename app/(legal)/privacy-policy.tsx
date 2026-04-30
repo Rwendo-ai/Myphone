@@ -1,6 +1,7 @@
 import { ScrollView, Text, StyleSheet, View, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
+import { useSettings } from '../../lib/SettingsContext';
 import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
 
@@ -60,6 +61,11 @@ const SECTIONS = [
 ];
 
 export default function PrivacyPolicyScreen() {
+  const { jurisdiction } = useSettings();
+  // Phase N: when jurisdiction.privacyPolicyMd is authored (lawyer pass), the
+  // screen will render that markdown. Until then the AU baseline below applies.
+  const usesBaseline = !jurisdiction.privacyPolicyMd || jurisdiction.id === 'AU';
+
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>
       <View style={styles.header}>
@@ -67,9 +73,16 @@ export default function PrivacyPolicyScreen() {
           <Text style={styles.backText}>← Back</Text>
         </Pressable>
         <Text style={styles.title}>Privacy Policy</Text>
-        <Text style={styles.date}>Effective: 1 May 2026</Text>
+        <Text style={styles.date}>Effective: 1 May 2026 · {jurisdiction.name}</Text>
       </View>
       <ScrollView style={styles.scroll} contentContainerStyle={styles.content}>
+        {!usesBaseline ? null : jurisdiction.id !== 'AU' && (
+          <View style={styles.regionalBanner}>
+            <Text style={styles.regionalBannerText}>
+              You're viewing the Australian Privacy Policy template. A {jurisdiction.name}-specific version is being prepared — please email privacy@rwendo.app for region-specific questions.
+            </Text>
+          </View>
+        )}
         <View style={styles.intro}>
           <Text style={styles.introText}>
             This Privacy Policy explains what data Rwendo collects, how we use it, and your rights. We are committed to protecting your privacy.
@@ -109,4 +122,6 @@ const styles = StyleSheet.create({
   sectionBody: { fontSize: FontSize.sm, color: Colors.gray[700], lineHeight: 22 },
   footer: { backgroundColor: Colors.gray[50], borderRadius: BorderRadius.lg, padding: Spacing.md },
   footerText: { fontSize: FontSize.xs, color: Colors.gray[400], textAlign: 'center', lineHeight: 18 },
+  regionalBanner: { backgroundColor: '#FEF3C7', borderRadius: BorderRadius.lg, padding: Spacing.md, borderWidth: 1, borderColor: '#FBBF24' },
+  regionalBannerText: { fontSize: FontSize.xs, color: '#92400E', lineHeight: 18 },
 });

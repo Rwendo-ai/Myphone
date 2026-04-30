@@ -1,6 +1,7 @@
 import { ScrollView, Text, StyleSheet, View, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
+import { useSettings } from '../../lib/SettingsContext';
 import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
 
@@ -65,6 +66,11 @@ const SECTIONS = [
 ];
 
 export default function TermsOfServiceScreen() {
+  const { jurisdiction } = useSettings();
+  // Phase N: when jurisdiction.termsOfServiceMd is authored, render that.
+  // Until then the AU baseline below applies.
+  const usesBaseline = !jurisdiction.termsOfServiceMd || jurisdiction.id === 'AU';
+
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>
       <View style={styles.header}>
@@ -72,9 +78,18 @@ export default function TermsOfServiceScreen() {
           <Text style={styles.backText}>← Back</Text>
         </Pressable>
         <Text style={styles.title}>Terms of Service</Text>
-        <Text style={styles.date}>Effective: 1 May 2026</Text>
+        <Text style={styles.date}>Effective: 1 May 2026 · {jurisdiction.name}</Text>
       </View>
       <ScrollView style={styles.scroll} contentContainerStyle={styles.content}>
+        {usesBaseline && jurisdiction.id !== 'AU' && (
+          <View style={styles.regionalBanner}>
+            <Text style={styles.regionalBannerText}>
+              You're viewing the Australian Terms template. {jurisdiction.coolingOffDays > 0
+                ? `${jurisdiction.name} customers also have a ${jurisdiction.coolingOffDays}-day cooling-off period for subscriptions; refunds during that window are guaranteed even outside our normal policy.`
+                : `A ${jurisdiction.name}-specific version is being prepared.`}
+            </Text>
+          </View>
+        )}
         <View style={styles.warning}>
           <Text style={styles.warningTitle}>⚠️ Important</Text>
           <Text style={styles.warningText}>
@@ -119,4 +134,6 @@ const styles = StyleSheet.create({
   sectionBody: { fontSize: FontSize.sm, color: Colors.gray[700], lineHeight: 22 },
   footer: { backgroundColor: Colors.gray[50], borderRadius: BorderRadius.lg, padding: Spacing.md },
   footerText: { fontSize: FontSize.xs, color: Colors.gray[400], textAlign: 'center', lineHeight: 18 },
+  regionalBanner: { backgroundColor: '#DBEAFE', borderRadius: BorderRadius.lg, padding: Spacing.md, borderWidth: 1, borderColor: '#3B82F6' },
+  regionalBannerText: { fontSize: FontSize.xs, color: '#1E40AF', lineHeight: 18 },
 });
