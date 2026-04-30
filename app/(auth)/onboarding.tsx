@@ -7,16 +7,26 @@ import RwenImage from '../../components/rwen/RwenImage';
 import { useAuth } from '../../lib/AuthContext';
 import { useSettings, RWEN_VOICES, RwenVoiceKey } from '../../lib/SettingsContext';
 import { supabase } from '../../lib/supabase';
+import { JURISDICTION_IDS, getJurisdiction } from '../../data/jurisdictions';
+import { JurisdictionPackId } from '../../types/packs';
 import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
 
 type AppPath = 'learn' | 'companion' | 'travel';
-type Step = 'language'|'gender'|'age'|'age_blocked'|'path'|'learn_ability'|'learn_reasons'|'learn_time'|'learn_challenge'|'learn_connection'|'companion_type'|'companion_topics'|'travel_destination'|'travel_when'|'travel_purpose'|'voice'|'complete';
+type Step = 'language'|'jurisdiction'|'gender'|'age'|'age_blocked'|'path'|'learn_ability'|'learn_reasons'|'learn_time'|'learn_challenge'|'learn_connection'|'companion_type'|'companion_topics'|'travel_destination'|'travel_when'|'travel_purpose'|'voice'|'complete';
 
-const LEARN_STEPS: Step[]     = ['language','gender','age','path','learn_ability','learn_reasons','learn_time','learn_challenge','learn_connection','voice','complete'];
-const COMPANION_STEPS: Step[] = ['language','gender','age','path','companion_type','companion_topics','voice','complete'];
-const TRAVEL_STEPS: Step[]    = ['language','gender','age','path','travel_destination','travel_when','travel_purpose','voice','complete'];
-const BASE_STEPS: Step[]      = ['language','gender','age','path'];
+const LEARN_STEPS: Step[]     = ['language','jurisdiction','gender','age','path','learn_ability','learn_reasons','learn_time','learn_challenge','learn_connection','voice','complete'];
+const COMPANION_STEPS: Step[] = ['language','jurisdiction','gender','age','path','companion_type','companion_topics','voice','complete'];
+const TRAVEL_STEPS: Step[]    = ['language','jurisdiction','gender','age','path','travel_destination','travel_when','travel_purpose','voice','complete'];
+const BASE_STEPS: Step[]      = ['language','jurisdiction','gender','age','path'];
+
+const JURISDICTION_FLAGS: Record<JurisdictionPackId, string> = {
+  AU: '🇦🇺',
+  GB: '🇬🇧',
+  US: '🇺🇸',
+  EU: '🇪🇺',
+  ZW: '🇿🇼',
+};
 
 // Option IDs + emoji metadata. Human-readable labels live in locales/<lang>/auth.json.
 const LANGUAGE_IDS = ['english', 'shona'] as const;
@@ -100,12 +110,13 @@ function Nav({ onBack, onNext, nextLabel, disabled }: {
 export default function OnboardingScreen() {
   const { t } = useTranslation('auth');
   const { user, setOnboardingComplete } = useAuth();
-  const { setActivePack, setRwenVoice } = useSettings();
+  const { setActivePack, setRwenVoice, setJurisdictionId, setSpeakerPack } = useSettings();
 
   const [step, setStep]     = useState<Step>('language');
   const [saving, setSaving] = useState(false);
 
   const [appLanguage,     setAppLanguage]     = useState('');
+  const [jurisdictionId,  setJurisdictionIdState] = useState<JurisdictionPackId>('AU');
   const [gender,          setGender]          = useState('');
   const [birthDay,        setBirthDay]        = useState('');
   const [birthMonth,      setBirthMonth]      = useState('');
@@ -152,8 +163,11 @@ export default function OnboardingScreen() {
     const age = getAge();
     if (age === null || age > 120) { setAgeError(t('onboarding.date.error_invalid')); return; }
     setAgeError('');
-    // Stage 1: 18+ required. Stage 2 will add parental consent for 13-17 (AU: 16+).
-    if (age < 18) { setStep('age_blocked'); return; }
+    // Age threshold comes from the active jurisdiction (AU=16, EU=16,
+    // GB=13, US=13, ZW=13). Stage 2 will add parental consent for the
+    // 13-15 / 16-17 grey zone — see PRODUCT-DESIGN.md §11.5.
+    const minAge = getJurisdiction(jurisdictionId).minAge;
+    if (age < minAge) { setStep('age_blocked'); return; }
     goNext();
   };
 
@@ -163,16 +177,28 @@ export default function OnboardingScreen() {
     try {
       const packId = appLanguage === 'shona' ? 'english-shona' : 'shona-english';
       setActivePack({ id: packId, spokenLanguageId: appLanguage, learnedLanguageId: appLanguage === 'shona' ? 'english' : 'shona', isPremium: false });
+      setSpeakerPack(appLanguage);
+      setJurisdictionId(jurisdictionId);
       setRwenVoice(voiceKey);
 
       const age = getAge() ?? 0;
       const ageRange = age < 18 ? '13-17' : age < 25 ? '18-24' : age < 35 ? '25-34' : age < 45 ? '35-44' : '45+';
 
+      const courseId = appLanguage === 'shona' ? 'course:language-english' : 'course:language-shona';
+      const minAge = getJurisdiction(jurisdictionId).minAge;
+
       await supabase.from('profiles').update({
         app_language: appLanguage, gender,
+        // v3 fields (write alongside legacy)
+        speaker_pack_id: appLanguage,
+        active_course_ids: [courseId],
+        jurisdiction_id: jurisdictionId,
         date_of_birth: `${birthYear}-${birthMonth.padStart(2,'0')}-${birthDay.padStart(2,'0')}`,
-        age_range: ageRange, is_minor: age < 18,
+        age_range: ageRange, is_minor: age < minAge,
         primary_path: path, active_language_pack_id: packId,
+        country_code: jurisdictionId === 'EU' ? null : jurisdictionId,
+        is_eu_customer: jurisdictionId === 'EU',
+        is_uk_customer: jurisdictionId === 'GB',
         ability_level: ability || null,
         learning_reasons: reasons.length ? reasons : null,
         time_commitment: timeCommit || null,
@@ -196,7 +222,7 @@ export default function OnboardingScreen() {
       console.error('Onboarding save error:', e);
       setSaving(false);
     }
-  }, [user, appLanguage, gender, birthYear, birthMonth, birthDay, path, ability, reasons, timeCommit, challenge, connection, companionType, compTopics, voiceKey]);
+  }, [user, appLanguage, jurisdictionId, gender, birthYear, birthMonth, birthDay, path, ability, reasons, timeCommit, challenge, connection, companionType, compTopics, voiceKey]);
 
   // The language being learned, derived from the speaker selection.
   // English speaker → learning Shona. Shona speaker → learning English.
@@ -228,6 +254,14 @@ export default function OnboardingScreen() {
           </View>
         )}
 
+        {step === 'jurisdiction' && (
+          <View style={styles.block}>
+            <ProgressHeader current={stepIndex} total={total} title={t('onboarding.step_jurisdiction.title')} sub={t('onboarding.step_jurisdiction.sub')} />
+            {JURISDICTION_IDS.map(id => <Card key={id} emoji={JURISDICTION_FLAGS[id]} label={t(`onboarding.jurisdictions.${id}`)}
+              selected={jurisdictionId === id} onPress={() => { setJurisdictionIdState(id); goNext(); }} />)}
+          </View>
+        )}
+
         {step === 'gender' && (
           <View style={styles.block}>
             <ProgressHeader current={stepIndex} total={total} title={t('onboarding.step_gender.title')} sub={t('onboarding.step_gender.sub')} />
@@ -238,7 +272,7 @@ export default function OnboardingScreen() {
 
         {step === 'age' && (
           <View style={styles.block}>
-            <ProgressHeader current={stepIndex} total={total} title={t('onboarding.step_age.title')} sub={t('onboarding.step_age.sub')} />
+            <ProgressHeader current={stepIndex} total={total} title={t('onboarding.step_age.title')} sub={t('onboarding.step_age.sub', { minAge: getJurisdiction(jurisdictionId).minAge })} />
             <View style={styles.dateRow}>
               {[
                 { v: birthDay,   s: setBirthDay,   p: t('onboarding.date.day_placeholder'),   l: t('onboarding.date.day'),   m: 2 },
