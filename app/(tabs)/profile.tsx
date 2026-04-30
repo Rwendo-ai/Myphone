@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView, Pressable, Alert, Switch, Image, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Pressable, Alert, Switch, Image, ActivityIndicator, Share, Linking } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useFocusEffect, router } from 'expo-router';
 import { useCallback, useState } from 'react';
@@ -8,6 +8,7 @@ import { useAuth } from '../../lib/AuthContext';
 import { deleteAccount } from '../../lib/progress';
 import { useProgress } from '../../hooks/useProgress';
 import { useSettings, RWEN_VOICES, RwenVoiceKey } from '../../lib/SettingsContext';
+import { useDailyXpGoal, useDailyReminders } from '../../lib/preferences';
 import { pickAndUploadAvatar } from '../../lib/storage';
 import { supabase } from '../../lib/supabase';
 import { THEMES } from '../../constants/themes';
@@ -41,6 +42,8 @@ export default function ProfileScreen() {
   const { user, signOut } = useAuth();
   const { xp, streakDays, username, completedLessons, refresh } = useProgress();
   const { rwenVoice, setRwenVoice, learnedLanguage, spokenLanguage, theme, setThemeId, avatarUrl, setAvatarUrl } = useSettings();
+  const { goal: dailyXpGoal } = useDailyXpGoal();
+  const { enabled: remindersOn, setEnabled: setRemindersOn } = useDailyReminders();
   const [uploadingAvatar, setUploadingAvatar] = useState(false);
 
   const handleAvatarPress = async () => {
@@ -58,8 +61,6 @@ export default function ProfileScreen() {
     setThemeId(themeId);
     if (user) await supabase.from('profiles').update({ theme_id: themeId }).eq('id', user.id);
   };
-  const [notificationsOn, setNotificationsOn] = useState(true);
-
   useFocusEffect(useCallback(() => { refresh(); }, [refresh]));
 
   const displayName = username || user?.email?.split('@')[0] || 'Learner';
@@ -147,11 +148,11 @@ export default function ProfileScreen() {
                 <Text style={styles.planName}>Free Plan</Text>
                 <Text style={styles.planDesc}>Access to all lessons</Text>
               </View>
-              <Pressable style={styles.upgradeBtn}>
+              <Pressable style={styles.upgradeBtn} onPress={() => router.push('/profile/plans')}>
                 <Text style={styles.upgradeBtnText}>Upgrade</Text>
               </Pressable>
             </View>
-            <SettingsRow label="View all plans" onPress={() => {}} />
+            <SettingsRow label="View all plans" onPress={() => router.push('/profile/plans')} />
           </Section>
 
           {/* Colour Theme */}
@@ -195,17 +196,37 @@ export default function ProfileScreen() {
 
           {/* Learning preferences */}
           <Section title="Learning">
-            <SettingsRow label="Language pack" value={`${spokenLanguage.flag} → ${learnedLanguage.flag}`} onPress={() => {}} />
-            <SettingsRow label="Daily XP goal" value="50 XP" onPress={() => {}} />
-            <View style={styles.row}>
+            <SettingsRow
+              label="Language pack"
+              value={`${spokenLanguage.flag} → ${learnedLanguage.flag}`}
+              onPress={() => router.push('/profile/language-pack')}
+            />
+            <SettingsRow
+              label="Daily XP goal"
+              value={`${dailyXpGoal} XP`}
+              onPress={() => router.push('/profile/daily-goal')}
+            />
+            <Pressable
+              style={styles.row}
+              onPress={() => {
+                const next = !remindersOn;
+                setRemindersOn(next);
+                if (next) {
+                  Alert.alert(
+                    'Reminders enabled',
+                    "We'll save your preference. Push notifications will arrive in an upcoming update."
+                  );
+                }
+              }}
+            >
               <Text style={styles.rowLabel}>Daily reminders</Text>
               <Switch
-                value={notificationsOn}
-                onValueChange={setNotificationsOn}
+                value={remindersOn}
+                onValueChange={setRemindersOn}
                 trackColor={{ true: Colors.secondary }}
                 thumbColor={Colors.white}
               />
-            </View>
+            </Pressable>
           </Section>
 
           {/* Progress */}
@@ -213,15 +234,15 @@ export default function ProfileScreen() {
             <SettingsRow label="Completed lessons" value={String(completedLessons.size)} />
             <SettingsRow label="Current streak" value={`${streakDays} days`} />
             <SettingsRow label="Total XP earned" value={String(xp)} />
-            <SettingsRow label="Achievements" onPress={() => {}} />
+            <SettingsRow label="Achievements" onPress={() => router.push('/profile/achievements')} />
           </Section>
 
           {/* Account */}
           <Section title="Account">
-            <SettingsRow label="Edit profile" onPress={() => {}} />
-            <SettingsRow label="Change password" onPress={() => {}} />
-            <SettingsRow label="Privacy settings" onPress={() => {}} />
-            <SettingsRow label="Export my data" onPress={() => {}} />
+            <SettingsRow label="Edit profile" onPress={() => router.push('/profile/edit')} />
+            <SettingsRow label="Change password" onPress={() => router.push('/profile/change-password')} />
+            <SettingsRow label="Privacy settings" onPress={() => router.push('/profile/privacy')} />
+            <SettingsRow label="Export my data" onPress={() => router.push('/profile/export')} />
           </Section>
 
           {/* Legal */}
@@ -232,9 +253,16 @@ export default function ProfileScreen() {
 
           {/* Support */}
           <Section title="Support">
-            <SettingsRow label="Help & FAQ" onPress={() => {}} />
-            <SettingsRow label="About Rwendo" onPress={() => {}} />
-            <SettingsRow label="Contact Us" onPress={() => {}} />
+            <SettingsRow label="Help & FAQ" onPress={() => router.push('/profile/help')} />
+            <SettingsRow label="About Rwendo" onPress={() => router.push('/profile/about')} />
+            <SettingsRow
+              label="Contact Us"
+              onPress={() =>
+                Linking.openURL('mailto:support@rwendo.app?subject=Rwendo support').catch(() =>
+                  Alert.alert('No email app', 'Please email support@rwendo.app from your preferred email app.')
+                )
+              }
+            />
           </Section>
 
           {/* Sign out / delete */}

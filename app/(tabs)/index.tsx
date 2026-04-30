@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView, Pressable, Image } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router, useFocusEffect } from 'expo-router';
 import { useCallback } from 'react';
@@ -7,11 +7,10 @@ import RwenImage from '../../components/rwen/RwenImage';
 import { useAuth } from '../../lib/AuthContext';
 import { useSettings } from '../../lib/SettingsContext';
 import { useProgress } from '../../hooks/useProgress';
+import { useDailyXpGoal } from '../../lib/preferences';
 import { getUnitsForPack } from '../../data/lessons';
 import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
-
-const DAILY_XP_GOAL = 50;
 
 function getShonaGreeting(): { shona: string; english: string; rwen: string } {
   const hour = new Date().getHours();
@@ -20,7 +19,7 @@ function getShonaGreeting(): { shona: string; english: string; rwen: string } {
   return { shona: 'Manheru', english: 'Good evening', rwen: 'idle' };
 }
 
-function getRwenTip(completedCount: number, currentModule: number): string {
+function getRwenTip(completedCount: number): string {
   const tips = [
     "Every great journey begins with 'Mhoro'. You've already taken the first step.",
     "In Shona, 'Ukama igasva hunozadziswa nekudya' — relationships are completed by sharing food. Share what you learn today.",
@@ -36,8 +35,9 @@ function getRwenTip(completedCount: number, currentModule: number): string {
 
 export default function HomeScreen() {
   const { user } = useAuth();
-  const { activePack, learnedLanguage, spokenLanguage, theme, avatarUrl } = useSettings();
+  const { activePack, learnedLanguage, theme } = useSettings();
   const { xp, streakDays, username, completedLessons, refresh } = useProgress();
+  const { goal: dailyXpGoal } = useDailyXpGoal();
 
   useFocusEffect(useCallback(() => { refresh(); }, [refresh]));
 
@@ -59,10 +59,9 @@ export default function HomeScreen() {
     }
   }
 
-  const currentModule = units.findIndex(u => u.lessons.some(l => !completedLessons.has(l.id))) + 1;
   const greeting = getShonaGreeting();
-  const tip = getRwenTip(completedCount, currentModule);
-  const dailyXpProgress = Math.min((xp % DAILY_XP_GOAL) / DAILY_XP_GOAL, 1);
+  const tip = getRwenTip(completedCount);
+  const dailyXpProgress = Math.min((xp % dailyXpGoal) / dailyXpGoal, 1);
   const displayName = username || user?.email?.split('@')[0] || 'friend';
 
   return (
@@ -73,7 +72,7 @@ export default function HomeScreen() {
         <LinearGradient colors={theme.gradient} style={styles.hero}>
           <View style={styles.heroTop}>
             <View>
-              <Text style={styles.greatingShona}>{greeting.shona}!</Text>
+              <Text style={styles.greetingShona}>{greeting.shona}!</Text>
               <Text style={styles.heroName}>{displayName}</Text>
               <Text style={styles.heroSub}>{greeting.english} — Day {streakDays > 0 ? streakDays : 1} of your journey</Text>
             </View>
@@ -107,7 +106,7 @@ export default function HomeScreen() {
           <View style={styles.xpBarSection}>
             <View style={styles.xpBarRow}>
               <Text style={styles.xpBarLabel}>Daily goal</Text>
-              <Text style={styles.xpBarValue}>{xp % DAILY_XP_GOAL} / {DAILY_XP_GOAL} XP</Text>
+              <Text style={styles.xpBarValue}>{xp % dailyXpGoal} / {dailyXpGoal} XP</Text>
             </View>
             <View style={styles.xpBarBg}>
               <View style={[styles.xpBarFill, { width: `${dailyXpProgress * 100}%` }]} />
@@ -204,7 +203,7 @@ const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: Colors.primary },
   hero: { paddingHorizontal: Spacing.lg, paddingTop: Spacing.md, paddingBottom: Spacing.lg },
   heroTop: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: Spacing.lg },
-  greatingShona: { fontSize: FontSize.xl, fontWeight: FontWeight.bold, color: Colors.xp },
+  greetingShona: { fontSize: FontSize.xl, fontWeight: FontWeight.bold, color: Colors.xp },
   heroName: { fontSize: FontSize.xxl, fontWeight: FontWeight.extrabold, color: Colors.white },
   heroSub: { fontSize: FontSize.sm, color: 'rgba(255,255,255,0.6)', marginTop: 2 },
   statsRow: { flexDirection: 'row', backgroundColor: 'rgba(255,255,255,0.08)', borderRadius: BorderRadius.lg, padding: Spacing.md, marginBottom: Spacing.md },

@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView, Pressable, ImageBackground } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Pressable, Linking, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import RwenImage from '../../components/rwen/RwenImage';
@@ -78,7 +78,19 @@ export default function TravelScreen() {
             <Text style={styles.notifyText}>
               Travel Mode is in development. Keep learning your Shona — by the time you land in Harare, Rwen will be ready to guide you.
             </Text>
-            <Pressable style={styles.notifyBtn}>
+            <Pressable
+              style={styles.notifyBtn}
+              onPress={() =>
+                Linking.openURL(
+                  'mailto:hello@rwendo.app?subject=Notify me about Travel Mode&body=Hi Rwen, please let me know when Travel Mode launches!'
+                ).catch(() =>
+                  Alert.alert(
+                    "We'll let you know",
+                    'Email hello@rwendo.app and we\'ll add you to the early-access list.'
+                  )
+                )
+              }
+            >
               <Text style={styles.notifyBtnText}>Notify me when it's ready</Text>
             </Pressable>
           </View>

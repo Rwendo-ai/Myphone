@@ -5,19 +5,19 @@ import { useCallback } from 'react';
 import { getUnitsForPack } from '../../data/lessons';
 import { useSettings } from '../../lib/SettingsContext';
 import { useProgress } from '../../hooks/useProgress';
+import { useDailyXpGoal } from '../../lib/preferences';
 import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
-
-const DAILY_XP_GOAL = 50;
 
 export default function LearnScreen() {
   const { activePack, spokenLanguage, learnedLanguage } = useSettings();
   const { xp, streakDays, completedLessons, refresh } = useProgress();
+  const { goal: dailyXpGoal } = useDailyXpGoal();
 
   const units = getUnitsForPack(activePack.id);
   const greeting = spokenLanguage.ui.greeting;
   const headerTitle = `${learnedLanguage.flag}  ${learnedLanguage.name}`;
-  const dailyXpProgress = Math.min((xp % DAILY_XP_GOAL) / DAILY_XP_GOAL, 1);
+  const dailyXpProgress = Math.min((xp % dailyXpGoal) / dailyXpGoal, 1);
 
   // Refresh progress every time this tab is focused (e.g. after completing a lesson)
   useFocusEffect(useCallback(() => { refresh(); }, [refresh]));
@@ -39,7 +39,7 @@ export default function LearnScreen() {
         <View style={styles.xpCard}>
           <View style={styles.xpRow}>
             <Text style={styles.xpLabel}>Daily XP</Text>
-            <Text style={styles.xpValue}>{xp % DAILY_XP_GOAL} / {DAILY_XP_GOAL} XP</Text>
+            <Text style={styles.xpValue}>{xp % dailyXpGoal} / {dailyXpGoal} XP</Text>
           </View>
           <View style={styles.xpBarBg}>
             <View style={[styles.xpBarFill, { width: `${dailyXpProgress * 100}%` }]} />
