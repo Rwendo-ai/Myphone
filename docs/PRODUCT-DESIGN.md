@@ -4,12 +4,27 @@
 
 This is the canonical design doc for **how Rwendo actually works** as a multi-language, multi-pack, multi-tier product. It covers four entangled topics:
 
-1. The two lesson tracks (Language curriculum and AI Companion curriculum)
+1. The two lesson tracks (Language curriculum + AI Companion as a relationship)
 2. The pack architecture that scales from 2 to 100 languages without 100 apps
 3. The i18n strategy that makes the whole UI flip into the user's spoken language
-4. The pricing model (4 free modules, AI tiers, overage policy)
+4. The pricing model (4 free modules of starter pack, AI tiers, token-based overage)
 
-Everything below is a proposal based on the discussion of 2026-04-30. Implementation has **not** started — the existing code partially matches the schema but does not match this design. See §8 (Implementation roadmap) and §9 (Open questions) at the end.
+## Decision log (locked 2026-04-30)
+
+- **Pricing**: 5 tiers matching schema seed — Free, Text AI $10, Voice $15, Companion $25, Premium $45.
+- **Annual plans**: ship at launch alongside monthly. Standard 40% annual discount. Auto-renew default on.
+- **Overage**: token-based ("Rwen credits") priced at averaged cost-per-minute. Generic credit usable across text/voice/realtime.
+- **Free 4 modules**: applies *only* to the first language pack the user activates, ever. Subsequent packs are paid from day 1.
+- **AI Companion**: not a 60-lesson curriculum. It's a relationship that grows with the user — open conversation, memory, depth levels. See §2.2.
+- **Phase 8 cadence**: 6 text exchanges (12 messages) OR 3 minutes voice — whichever comes first, unless the user ends earlier.
+- **Schema rename**: lesson types use `target` / `native` (not `shona` / `english`). Filenames stay as-is.
+- **Phase order**: strict sequential A → B → C ... no parallel work.
+- **Launch scope**: ship both `shona-english` *and* `english-shona` packs on day one. Plus the AI Companion track (relationship-based, not lesson-based) and an in-app methodology page.
+- **AI Companion track**: visible at launch. The conversation IS the product. Curriculum cards/topics are scaffolding, not gating.
+- **Translation**: AI-authored (Claude), verified by a second AI pass and a human spot-check.
+- **RevenueCat**: confirmed. Free up to $2,500/mo MTR, 1% above. Negligible at our stage.
+
+Everything below is the design behind those decisions. Implementation has **not** started — the existing code partially matches the schema but does not match this design. See §8 (Implementation roadmap) at the end.
 
 ---
 
@@ -60,33 +75,89 @@ When the user taps **Learn**, they choose between two structured curricula. Each
 
 **Curriculum scale:** 100 lessons per pack, organised into 10 modules of 10 lessons. First module is greetings (the lowest-stakes way to get a learner to produce real output on day one).
 
-### 2.2 AI Companion track (NEW — proposed)
+### 2.2 AI Companion track (REVISED — relationship, not curriculum)
 
-**Goal:** Build the rapport and conversational habits to make Rwen genuinely useful as an AI friend, language partner, journal, or coach.
+**Goal:** A friend that grows with the user. Long-term sticky engagement through ongoing, meaningful conversation. Not a course you finish.
 
-**Why a curriculum (vs. a free-form chat):** Without scaffolding, conversations with AI companions decay into either novelty churn (Replika engagement studies) or therapeutic rabbit-holes the AI shouldn't be running. A structured intro curriculum sets expectations, models good prompts, and teaches the user *how to use the companion well*. This is a real edge over Replika/Pi.
+**Why this is NOT a curriculum:** The original draft had a 60-lesson structured curriculum. Wrong frame. A real friendship doesn't have 60 lessons. It has shared history, inside references, and depth that builds over months. The AI Companion track has to model that — otherwise it's just chat with extra steps.
 
-**Method:** A 6-phase shape adapted from coaching and CBT structures (without claiming to be therapy):
+**Why this is NOT pure free-form chat either:** Pure free-form is what the existing Companion tab does today. Without scaffolding, novelty wears off in days (this is the documented Replika failure mode). The trick is structure that *invites* depth without forcing it.
 
-1. **Welcome / Frame** — Rwen explains what this conversation is about.
-2. **Open prompt** — Rwen asks a real question. The user types or speaks.
-3. **Reflection** — Rwen reflects what it heard back, in the user's words. Demonstrates active listening.
-4. **Deepen** — One follow-up question that goes one level deeper.
-5. **Reframe / pattern** — Rwen names the pattern it's noticing (a strength, a value, a recurring frustration).
-6. **Tiny commitment** — A single small action the user could take this week, framed as "if you want — no pressure."
+#### The four building blocks
 
-**Curriculum scale:** Proposal — 60 lessons across 6 modules:
+**1. The conversation surface (open chat).** Same Companion tab UI that exists today. Type or speak, Rwen responds. This is the primary canvas.
 
-- M1: **Knowing yourself** (10 lessons) — values, history, who you are when you're at your best
-- M2: **Knowing others** (10) — relationships, listening, conflict
-- M3: **The day-to-day** (10) — work, focus, energy, habits
-- M4: **The hard stuff** (10) — fear, grief, anger (with crisis-resource handoffs baked in)
-- M5: **Curiosity & growth** (10) — learning, creativity, hobbies
-- M6: **The future** (10) — direction, hope, regret, decisions
+**2. Conversation starter cards.** When the user opens Companion and doesn't know what to say, a row of contextual cards. Examples:
+- *"How was your day?"* (always available)
+- *"Tell me one small win from this week."* (Sunday evenings)
+- *"You mentioned [X] last week — how's that going?"* (uses memory)
+- *"I'm in a weird mood."* (always available, opens a low-pressure check-in)
+- *"Help me think through a decision."* (opens a structured 4-step framing flow)
+- *"Tell me a Shona proverb and what it means."* (cultural anchor for language learners)
 
-**Free tier:** First 4 modules of either track. Second and subsequent packs (whether language or companion) are paid from day one — see §5.
+Cards rotate based on time of day, day of week, last conversation, and the user's depth level (below). 6-8 cards visible at any time. Tap = primes Rwen with a system prompt + opens the chat.
 
-**Critical guardrail:** The AI Companion curriculum **never** claims to be therapy. Every "hard stuff" lesson surfaces a "this is too big for Rwen — call XYZ" affordance. The Privacy Policy and Terms already disclaim this; we honour it here.
+**3. Depth levels (relationship progression).** A simple level system tied to cumulative interaction. Each level unlocks new card types and conversational modes:
+
+| Level | Name | Unlocks at | What it changes |
+|---|---|---|---|
+| 1 | New friend | Day 1 | Surface-level cards. Rwen is warm but doesn't presume familiarity. |
+| 2 | Familiar | ~7 days + 30 messages | Rwen starts referencing past conversations. New cards appear about hobbies/work. |
+| 3 | Close | ~30 days + 200 messages | Deeper cards unlock: values, fears, hopes. Rwen offers gentle observations. |
+| 4 | Trusted | ~90 days + 800 messages | Rwen reflects patterns ("you mention sleep a lot lately"). Hard-topic cards unlock with crisis-resource scaffolding. |
+| 5 | Lifelong | ~365 days | Full memory richness. Rwen feels like a friend who actually knows you. |
+
+Levels are progress, not gates — every paid user can have any conversation at any level. Levels just shape *what Rwen offers proactively*.
+
+**4. Memory.** A "Things Rwen remembers about you" panel inside Companion. Shows the structured facts Rwen has learned (your sister's name is Tanya, you work as a nurse, you're learning Shona because of your partner's family). User can:
+- Read everything Rwen knows
+- Edit any fact
+- Delete any fact
+- Wipe everything (also clears `conversations` table)
+
+Built on existing `profiles` columns + a new `companion_memory` JSONB store extracted by a periodic Claude pass over conversation history.
+
+#### Topics & Explorations (optional structured flows)
+
+For users who want more structure on a given day, **Topics** are guided multi-turn flows the user can opt into:
+
+- **"Process my day"** — 5-7 turns, light reflection, ends with one tiny commitment.
+- **"Help me decide"** — 4-step decision framing: what's the choice, what matters, what does each option cost, what would a trusted friend say.
+- **"I'm stuck"** — 6-turn unsticking conversation, ends with one concrete next action.
+- **"Tell me about yourself"** — onboarding-style getting-to-know-you, deepens memory.
+- **"Reflect on my week"** — Sunday-evening guided wind-down.
+- **"Practice a language conversation"** — bridges to Phase 8 of the language track.
+
+These are NOT lessons. They're tools the user reaches for. Each Topic is a Claude system prompt + a target turn count.
+
+#### Subscription gating
+
+- **Free tier**: no AI Companion access at all. The track is visible on the Learn tab but tapping it goes to `/profile/plans` with Text AI tier highlighted.
+- **Text AI ($10)**: Companion chat (text), all starter cards, all Topics in text mode. Memory.
+- **Voice ($15)**: + voice push-to-talk in Companion.
+- **Companion ($25)**: + real-time hands-free conversation.
+- **Premium ($45)**: + Opus model + lipsync avatar.
+
+#### Critical guardrails
+
+The AI Companion **never** claims to be therapy. Specific protections:
+
+1. **Crisis triggers.** When the user's messages match crisis patterns (suicidal ideation, self-harm, abuse), Rwen surfaces an immediate handoff: "What you're describing is bigger than what I'm built for. [Region-specific crisis line]". This pre-empts model output and is rule-based, not AI-judged.
+2. **Hard-topic cards** in Levels 3-4 always have a footer: "If this gets heavy, [link to crisis resources]".
+3. **"You're not my therapist" reminders** appear automatically every 7 days for users who use Topics like "Process my day" heavily.
+4. **No persuasion patterns**. Rwen's prompt explicitly forbids "I'd love to hear more about that" repetition or any pattern that mimics therapeutic dependency-building.
+
+These are operationalised in Rwen's system prompt + a thin moderation layer in `lib/claude.ts`.
+
+#### Authoring scope (much smaller than the curriculum approach)
+
+Pre-launch authoring needed:
+- ~50 conversation starter cards (text + system prompt fragments)
+- ~6 Topic flows (system prompts + turn-count targets)
+- ~30 starter "memory facts" the system seeds from onboarding answers
+- Crisis-trigger phrase list + handoff messages per supported region
+
+Total: ~2-3 days of structured writing. **Far less than 60 lessons** and far more aligned with what an AI friend actually is.
 
 ---
 
@@ -148,16 +219,30 @@ Same for `DialogueLine`, `PatternExample`, etc. The lesson **author** authors pe
 **Adding a new language to the system requires:**
 
 1. **A language definition** — `data/languages/<id>.ts` (script, flag, name, ISO code). One file, ~20 lines.
-2. **A UI translation** — `locales/<id>.json` (every UI string). Crowdin / Lokalise can handle this; it's an ops cost, not a code cost.
+2. **A UI translation** — `locales/<id>.json` (every UI string). AI-authored draft via Claude, second-AI verification pass, human spot-check. See §4.4 for the workflow.
 3. **One or more pack curricula** — `data/curriculum/<spoken>-<learned>/<lesson>.ts` per direction you want to support.
 4. **A row in `available_packs`** — already in DB, just needs the right `id`, `revenuecat_product_id`, and `price_aud`.
-5. **Voice configuration** — ElevenLabs voice IDs that can speak that language naturally (already mapped per-voice for English; needs same for Shona, French, etc.).
+5. **Voice configuration** — ElevenLabs voice IDs that can speak that language naturally. **This is a real gap for Shona** — see §3.5.
 
 **No native-app split.** It's one binary. The `i18next` instance switches namespace based on `profile.app_language`. The `LanguagePack` registry resolves `data/languages/<id>.ts` by ID. The lesson loader picks `data/curriculum/<active_pack_id>/...`.
 
 **Pack discovery:** Eventually, packs are not bundled into the app at all — they're downloaded from Supabase Storage on demand. Schema's `available_packs.cover_image_url` already hints at this. Phase 5+ (see roadmap).
 
-### 3.4 What other apps do
+### 3.5 The Shona voice problem
+
+ElevenLabs has **no native Shona voice** in their library. The 4 voices currently configured (George, Charlie, Jessica, Alice) are all English voices. When Rwen speaks Shona today, it's an English voice mispronouncing Shona words — workable for English-speaking learners, but unacceptable for the Shona-speaking direction (`english-shona` pack).
+
+Three options, in order of cost/quality:
+
+| Option | Quality | Cost | Time |
+|---|---|---|---|
+| **Use ElevenLabs Multilingual v2 voices with Shona phonetic hints** | Mediocre — accent will be wrong, prosody off. Good enough for greetings, breaks down on longer prose. | Already in ElevenLabs subscription | Today |
+| **Train a custom voice clone with a native Shona speaker** | Excellent — the Rwen voice becomes a real person sounding native. | $1k-2k for the recording session + ElevenLabs Voice Cloning subscription | 2-4 weeks (find speaker, record 30 min, train, integrate) |
+| **Switch to a TTS provider with native Shona support** | Mixed — Google Cloud TTS has Shona but is robotic. Microsoft Azure has it. ResembleAI custom is high-quality. | Variable | 1-2 weeks integration |
+
+**Recommendation:** Launch with Option 1 (multilingual v2) for the `english-shona` direction. Set aside a marketing/cost line item for Option 2 (custom Shona voice) within 3 months of launch — it's a real differentiator and the only way Shona-speakers will trust the product. A Zimbabwean-Shona native voice is also a strong cultural signal.
+
+### 3.6 What other apps do
 
 For grounding, here's how the major players solve the 1-app-many-languages problem (so we don't reinvent):
 
@@ -198,9 +283,22 @@ locales/
     ...
 ```
 
+**Launch scope: BOTH `en` and `sn` locales ship at v1.** This is what proves the architecture works in both directions. We can't half-ship i18n.
+
 **Cultural note keys** in lessons are NOT in `locales/`. They're in the curriculum file itself (`data/curriculum/shona-english/m01-l01-mangwanani.ts`) because they're pack-specific, not UI-chrome.
 
-### 4.3 The hard problem: cultural baking
+### 4.3 Translation workflow (AI-authored, AI-verified, human-checked)
+
+For each new locale (e.g. `sn`):
+
+1. **Draft pass** — Claude (Opus) translates the entire `en/*.json` set into the target locale, with explicit instructions to preserve placeholders, plurals, and the warm/conversational tone. Output goes to `locales/<id>/*.json` as a draft.
+2. **Verification pass** — A second Claude call with a different system prompt asks: "Review this translation for naturalness, tone consistency, accuracy. Flag anything that reads as machine-translated." Returns annotated JSON with `__warnings: [...]` per file. We surface flagged items for human review.
+3. **Human spot-check** — A native speaker reviews flagged items + samples 10% of unflagged items. For Shona at launch, this is a Shona-speaking colleague or freelance reviewer (~half a day's work, ~A$200).
+4. **App pass** — Once flagged items are resolved, the locale is "verified" and shipped.
+
+This workflow is reusable and gets cheaper per language as we tune the system prompts. v1 we run it twice (en and sn).
+
+### 4.4 The hard problem: cultural baking
 
 > "The problem with surface translation is there is cultural elements baked into the learning process."
 
@@ -211,7 +309,7 @@ This is real. A literal translation of "Greetings & Respect" into French loses t
 
 **Cost implication:** Adding a new spoken-language to an existing target = a curriculum re-authoring, not a translation. We should not promise users 100 spoken languages × N target languages without an authoring plan. Realistic v1 scope: English-Shona only. v2: add Shona-English (your other direction). v3+: pick the next pair based on user demand.
 
-### 4.4 Onboarding sets `app_language`
+### 4.5 Onboarding sets `app_language`
 
 Already half-wired:
 
@@ -235,15 +333,17 @@ Per the conversation, the rules are:
 
 ### 5.1 Tier structure (CONFIRMED 2026-04-30 — matches schema seed)
 
-| Tier | Monthly | What you get | Notes |
-|---|---|---|---|
-| **Free** | $0 | First 4 modules of starter language pack. Local progress, streaks, achievements. **No AI of any kind, no Phase 8, locked teaser only.** | Funnel. Most users will not convert; that's expected. |
-| **Text AI** | A$10 | All modules of all owned language packs + 500 AI text messages/month + Phase 8 (text mode) + AI Companion track | First paid tier. **Module 5+ gating clears here.** A user who wants modules 5-10 has to take the AI features along with them — accepted tradeoff for a simpler tier matrix. |
-| **Voice** | A$15 | Text AI + 200 voiced replies/month (push-to-talk) + 4 voice options | Adds TTS and STT. |
-| **Companion** | A$25 | Voice + 60 min/month real-time conversation with Rwen (ElevenLabs Agents) | Hands-free, real-time. |
-| **Premium** | A$45 | Companion + 120 min/month + Claude Opus model + lipsync avatar (when ready) | Top tier. The "professional" AI option from the conversation. |
+| Tier | Monthly | Annual (-40%) | What you get | Notes |
+|---|---|---|---|---|
+| **Free** | $0 | — | First 4 modules of starter language pack. Local progress, streaks, achievements. **No AI of any kind, no Phase 8, locked teaser only.** | Funnel. Most users will not convert; that's expected. |
+| **Text AI** | A$10 | A$72/yr | All modules of all owned language packs + 500 AI text messages/month + Phase 8 (text mode) + AI Companion track (text) | First paid tier. **Module 5+ gating clears here.** A user who wants modules 5-10 has to take the AI features along with them — accepted tradeoff for a simpler tier matrix. |
+| **Voice** | A$15 | A$108/yr | Text AI + 200 voiced replies/month (push-to-talk) + 4 voice options | Adds TTS and STT. |
+| **Companion** | A$25 | A$180/yr | Voice + 60 min/month real-time conversation with Rwen (ElevenLabs Agents) | Hands-free, real-time. **Cost-sensitive — see §5.2.** |
+| **Premium** | A$45 | A$324/yr | Companion + 120 min/month + Claude Opus model + 3D Rwen with lipsync (when ready) | **Cost-sensitive — see §5.2.** Lipsync adds variable compute. |
 
 These match the current `available_packs` seed (`ai-companion-text` $10, `ai-companion-voice` $15, `ai-companion-realtime` $25, `ai-premium` $45). No schema changes needed for pricing.
+
+**On Companion and Premium pricing — read this carefully.** The current $25 / $45 prices were set before factoring lipsync compute. Lipsync (sync.io or similar) is non-trivially priced — typically $0.05-0.15 per second of generated video. At 120 min/month of lipsync video generation, that's an additional $6-18 in cost. Today's "Premium = $45" margin would shrink to 25-30% before discounts. **Action item:** revisit Companion/Premium pricing before launch with real lipsync vendor quotes. May need to either raise prices, cap lipsync minutes separately, or make lipsync a paid add-on. This is captured as Open Question 8.
 
 **Pack add-ons (one-off, not subscription):**
 
@@ -268,20 +368,37 @@ Per-month costs to serve one user, assuming they fully use their tier:
 
 **Every tier clears 40% gross margin.** Enough room to discount 25-30% in a promo and still profit. **Companion is the danger zone** — if a user pushes 60 min flat every month and is on a heavy quarterly discount, margin collapses. Mitigation: hard cap on real-time minutes (already in schema as `realtime_minutes_limit`); overage starts at minute 61.
 
-### 5.3 Overage policy
+### 5.3 Overage — token-based "Rwen credits"
 
-When a user hits their cap mid-month, the app:
+Per the 2026-04-30 conversation: instead of per-feature overage SKUs (100 messages, 50 voices, 30 minutes), use a **single unified token** that works across all services. Simpler for users to understand, predictable for us to price.
 
-1. Stops the call / blocks the message.
-2. Surfaces an "Add more" sheet with priced overage units:
-   - 100 extra text messages: A$2.99
-   - 50 extra voice replies: A$3.99
-   - 30 extra real-time minutes: A$11.99
-3. User chooses to upgrade tier (next sub period) or buy overage now.
+**Conversion rates** (averaged from §5.2 cost analysis, with margin):
 
-Overage prices are 2-2.5× cost, conservatively. Keeps margin intact even if users buy heavy overage.
+| Action | Tokens consumed |
+|---|---|
+| 1 AI text message | 1 token |
+| 1 voiced reply (TTS + chat) | 3 tokens |
+| 1 minute of real-time conversation | 25 tokens |
+| 1 minute Premium (Opus + lipsync) | 50 tokens |
 
-**Hard cap option:** for users who are nervous about open-ended billing, a per-month spend cap they can set (default infinite). Hits the cap → service stops until next period. Recommended toggle: `subscriptions.spend_cap_aud`.
+**Token bundles:**
+
+| Bundle | Tokens | Price | Equivalent | Cost-per-min |
+|---|---|---|---|---|
+| Top-up | 100 | A$2.99 | 100 messages, or 33 voices, or ~4 minutes realtime | ~$0.75/min realtime |
+| Pack | 500 | A$11.99 | 500 messages, or ~20 minutes realtime | ~$0.60/min realtime |
+| Bulk | 2000 | A$39.99 | unlimited messaging-equivalent, or ~80 minutes realtime | ~$0.50/min realtime |
+
+Tokens **don't expire** within the active subscription. If user cancels subscription, tokens hold for 90 days then expire.
+
+**When the user hits their tier cap mid-month**, the app:
+1. Pauses the call / blocks the message.
+2. Surfaces a "Top up?" sheet with the three bundle options + the upgrade tier alternative.
+3. User picks one. Service resumes.
+
+**Hard cap option:** users who want billing safety can set a max tokens-per-month (`subscriptions.token_spend_cap`). Hits cap → service pauses until next period. Default: no cap (since user has to actively buy tokens).
+
+**Pricing logic:** every bundle clears 2× variable cost. The 2000-token "Bulk" bundle is the loss-leader — best per-minute rate, encourages large prepay, locks in revenue. Promo headroom: discount these by 25% in seasonal sales without losing margin.
 
 ### 5.4 What this means for the Plans screen we just shipped
 
@@ -330,8 +447,9 @@ at a market stall.
 
 Tapping starts a real Claude conversation with a lesson-context prompt:
 
-- **System prompt addition:** "You are Rwen. The learner just completed lesson m01-l01-mangwanani. They have learned: Mangwanani, Mamuka sei?, Ndamuka kana mamukawo. Stay in role as a Shona speaker the learner is meeting at a market in Harare at 7am. Greet them. Wait for their reply. Use only chunks from this lesson and Module 1. If they make a mistake, gently recast (don't lecture). After 4-6 exchanges, end with a celebratory line in Shona and English."
-- **Tier difference:** Text mode at $14.99, voice push-to-talk at $19.99, hands-free at $29.99, Opus model at $49.99.
+- **System prompt addition:** "You are Rwen. The learner just completed lesson m01-l01-mangwanani. They have learned: Mangwanani, Mamuka sei?, Ndamuka kana mamukawo. Stay in role as a Shona speaker the learner is meeting at a market in Harare at 7am. Greet them. Wait for their reply. Use only chunks from this lesson and Module 1. If they make a mistake, gently recast (don't lecture). **Hard cap: 6 exchanges (12 messages) OR 3 minutes voice — whichever first. Then end with a celebratory line in Shona and English.** Stay focused on the lesson topic — do not let the learner drift to off-topic chat."
+- **Tier difference:** Text mode at $10, voice push-to-talk at $15, hands-free at $25, Opus model at $45.
+- **Cost ceiling per Phase 8:** ~$0.04 text (Haiku, 12 msgs × ~3K tokens cached) | ~$0.30 voice (Voice tier, 3 min TTS+chat) | ~$0.55 realtime (Companion tier, 3 min agents) | ~$1.20 Premium (Opus + 3 min agents). All comfortably within tier margin.
 
 ### 6.2 Schema additions
 
@@ -361,6 +479,8 @@ The current Companion tab is open-ended — the user can talk about anything. Th
 ---
 
 ## 7. Best learning practices — sources and rationale
+
+> **This section ships in-app.** Per 2026-04-30: this content needs to live somewhere users can read it as a marketing surface — "we know why this works" is a selling point. Plan: add `app/profile/methodology.tsx` (linked from About + from a "Why this works" card on the Learn tab), and add `app/profile/companion-philosophy.tsx` for the AI Companion equivalent. Both screens render this content with cleaner formatting + Rwen narration. Education-conscious users will pay more when they understand the research; "evidence-based" is a real differentiator over Duolingo's gamification-first approach.
 
 For the Language track:
 
@@ -446,39 +566,90 @@ This is the **minimum** code path to ship the design above. Phases are roughly e
 - Make `app_language` selection at onboarding *actually flip* the UI immediately (calls Phase C/D plumbing).
 - If user picks "AI Companion" path at onboarding, route them to a Plans screen with Text Friend pre-selected — no free experience for them.
 
-### Phase J — Authoring the AI Companion curriculum (MVP)
+### Phase J — AI Companion infrastructure (relationship, not curriculum)
 
-- **Pre-launch MVP: 6 lessons of Module 1 ("Knowing yourself").** Probably 2-3 days of structured writing.
-- Each lesson follows the 6-phase Companion shape from §2.2 and uses a Phase 8-style Claude integration as the lesson body itself.
-- **Post-launch:** Modules 2-6 (54 lessons) author in parallel and ship monthly. Real changelog so users see momentum.
+- ~50 conversation starter cards (text + system prompt fragments)
+- ~6 Topic flows (system prompts + turn-count targets)
+- Depth-level progression logic (cumulative interaction → level)
+- Memory extraction pass (periodic Claude job that distills `conversations` into `companion_memory` JSONB)
+- Memory UI panel inside Companion tab
+- Crisis-trigger detection layer in `lib/claude.ts` + per-region handoff messages
+- Total: ~3-4 days of authoring + ~2-3 days of code
 
-### Total
+### Phase K — Second pack: english-shona
 
-~10-12 working days for Phases A through I. Phase J runs in parallel as content authoring.
+- 100 lessons authored fresh for Shona-speakers learning English
+- Same lesson structure, all `target` fields in English, all `native` fields in Shona
+- Cultural framing rewritten from a Shona perspective (not translated from the english-shona pack)
+- AI-authored draft + AI verification + native-speaker spot-check (workflow from §4.3)
+- Total: ~5-7 days using the AI-authoring pipeline
+
+### Phase L — In-app methodology screens
+
+- `app/profile/methodology.tsx` — language track pedagogy (the SLA research from §7)
+- `app/profile/companion-philosophy.tsx` — AI Companion philosophy
+- "Why this works" card on Learn tab → links to methodology
+- About screen gets a section linking to both
+- Total: ~1 day
+
+### Total (revised after 2026-04-30 decisions)
+
+- Phases A through I (code): ~10-12 working days
+- Phase J (AI Companion infra + content): ~5-7 days
+- Phase K (english-shona pack, AI-authored): ~5-7 days, can run in parallel with code
+- Phase L (in-app methodology screens): ~1 day
+
+**Critical path to launch: ~17-20 working days of focused work**, with content and code running in parallel after Phase B unlocks the second pack.
 
 ---
 
 ## 9. Open questions
 
-These need answers before any of the above is implemented. Marking each with the Phase it blocks.
+All Q1-Q7 from the original draft are now decided. The new open question is Q8 (lipsync pricing impact).
 
-1. **(blocks A)** When we rename `shona`/`english` → `target`/`native` in lesson types, do we also rename the curriculum files? (e.g. `m01-l01-mangwanani.ts` is fine since it's a Shona word, but file headers / comments reference English explicitly.) — **Recommend: only rename type fields, leave files structurally identical.**
+1. ~~**(blocks A)** Rename curriculum files?~~ **DECIDED**: only rename type fields. Files keep their names.
+2. ~~**(blocks E)** What's a "starter pack"?~~ **DECIDED**: the first pack the user activates, regardless of language. Subsequent packs are paid from day 1.
+3. ~~**(blocks H)** Annual plans at launch?~~ **DECIDED**: yes — annual at -40% ships at launch alongside monthly. Auto-renew default on. Cleaner to ship now than retrofit later.
+4. ~~**(blocks F)** Phase 8 length?~~ **DECIDED**: 6 text exchanges (12 messages) OR 3 minutes voice — whichever comes first, unless the user ends earlier. Stay focused on the lesson topic.
+5. ~~**(blocks G)** Two-track UI at launch?~~ **DECIDED**: yes. Both Language and AI Companion tracks visible at launch. AI Companion redesigned as relationship-based (§2.2) so "authoring" is ~50 starter cards + 6 Topic flows, not 60 lessons.
+6. ~~**(blocks D)** Translation logistics?~~ **DECIDED**: AI-authored (Claude), AI-verified (second Claude pass), human spot-check on flagged items. Workflow in §4.3.
+7. ~~**(blocks all)** Did I misunderstand anything?~~ **REVIEWED**: AI Companion was over-scoped as a curriculum (now redesigned as a relationship). Launch must include both `shona-english` and `english-shona`. Methodology must be readable in-app. Pricing on Companion/Premium needs lipsync cost re-check.
 
-2. **(blocks E)** Is the user's "starter pack" the one chosen at signup, or always `shona-english` for now? If a user picks "Spanish for English speakers" at onboarding 6 months from now, are modules 1-4 of *Spanish* free? **Recommend: yes, "starter pack" = the first pack the user activates, regardless of language.** This is fairer.
-
-3. **(blocks H)** Do we want **annual** plans at launch, or only monthly? Annual at -40% is industry standard but adds RevenueCat complexity. **Recommend: launch with monthly only, add annual after first month of telemetry.**
-
-4. **(blocks F)** Phase 8 conversation length — fixed (3 minutes? 6 exchanges?) or open-ended until user ends? **Recommend: 4-6 exchanges, ended by Rwen with a clear celebratory line. Prevents runaway costs.**
-
-5. **(blocks G)** Does the Learn tab show two cards (Language / AI Companion) immediately at v1, or only after both curricula exist? **DECIDED 2026-04-30: ship both tracks at launch. AI Companion track has a 6-lesson MVP (Module 1 only — "Knowing yourself"); Modules 2-6 ship month-by-month with a real changelog. AI lessons are a hot, marketable feature and should be at launch, not a coming-soon tile.**
-
-6. **(blocks D)** Translation logistics: are you authoring the Shona UI translation yourself, or hiring a Shona speaker? **Strong recommend: hire a native speaker for at minimum a final pass on the full `locales/sn/*.json`.** UI translation is one of the highest-leverage things to get right.
-
-7. **(blocks all)** Does this design feel right? Is there anything in the conversation that I've misunderstood and over-/under-scoped? Read this whole doc and push back on anything that doesn't match what you meant.
+8. **(blocks H + Companion/Premium tier launch)** What's the actual lipsync cost? Until we have real vendor quotes (sync.io is the planned partner — confirm pricing model), the $25/$45 prices for Companion and Premium might not survive. Three resolution paths:
+   - **a)** Get real lipsync quotes, raise Companion/Premium prices if needed (likely $30/$55).
+   - **b)** Keep $25/$45 but make lipsync a separate paid add-on (e.g. lipsync minutes = 50 tokens/min, sold from the Premium tier upward as an opt-in).
+   - **c)** Don't ship lipsync at launch. Premium becomes "Opus model + voice" only. Lipsync ships in v1.1 once costed.
+   **Recommend: (c) for launch**. Lipsync isn't ready (the 3D Rwen needs EAS build first per `PROJECT_OVERVIEW.md`). Defer the cost question until lipsync is technically ready, by which time we'll have user data to set the price properly.
 
 ---
 
-## 10. What I am not doing right now
+## 10. RevenueCat — clarifying the cost concern
+
+You asked: *"Is RevenueCat paid and going to send me broke before I even make a sale?"*
+
+Short answer: **no**.
+
+- **$0/month** until you cross **$2,500 USD/month in tracked revenue (MTR)**.
+- **1% of revenue** above that, billed monthly.
+- No per-user fee, no upfront cost, no minimum commitment.
+- That 1% covers: cross-platform receipt validation, subscription state sync, paywall A/B testing, refund handling, family sharing, promo codes, and webhooks for fulfillment.
+
+**At your stage (pre-launch, $0 revenue), RevenueCat is genuinely free.** The 1% only kicks in *after* you're making real money — and at that point it pays for itself by saving you weeks of building receipt validation, App Store / Play Store API integration, and webhook infrastructure.
+
+The cheaper-on-paper alternatives (raw native IAP) cost ~2-3 weeks of engineering time + ongoing maintenance. At a typical solo-dev hourly value, that's >$5k of opportunity cost. RevenueCat at 1% breaks even at $500k/yr — long after you'd want to switch anyway.
+
+**Verdict: keep RevenueCat. The cost story is a non-issue at our stage.**
+
+If concern persists, the closest alternatives with similar free tiers are:
+- **Adapty** (free up to $10k/mo MTR, 1% above) — slightly more generous free tier
+- **Glassfy** (free up to $1k/mo MTR, 1.5% above) — less generous
+- **Qonversion** (free up to $10k/mo MTR, 1% above) — comparable to Adapty
+
+If you want to revisit this when you cross $2.5k/mo, Adapty becomes a defensible swap. Until then, RevenueCat is fine.
+
+---
+
+## 11. What I am not doing right now
 
 To stay honest: this doc is design only. I have **not yet** done any of the following, even though some are tempting:
 
@@ -486,7 +657,15 @@ To stay honest: this doc is design only. I have **not yet** done any of the foll
 - Installed `i18next`.
 - Touched the Plans screen pricing.
 - Wired any pack-entitlement check.
-- Authored any AI Companion lesson.
+- Authored any AI Companion content.
 - Modified the lesson engine.
 
-Phase A starts the moment you OK this doc (or push back).
+**Phase A is ready to start when you say "Phase A go".** It's a clean, mechanical 1-2 day chunk:
+1. Rename `Chunk.shona` → `Chunk.target`, `Chunk.english` → `Chunk.native`. Same for `DialogueLine`, `PatternExample`, `ActiveRecallPrompt`.
+2. Run a search-and-replace across all 100 curriculum files in `data/curriculum/`.
+3. Update `app/lesson/[id].tsx` (lesson engine) to read the new fields.
+4. Update the 5 exercise components in `components/exercises/` to read the new fields.
+5. Run `tsc` to confirm zero new type errors.
+6. Manual test: load lesson m01-l01 on device, verify it renders identically.
+
+No user-visible change. Just unblocks Phase B (directory restructure for two-pack support) and everything after.
