@@ -15,6 +15,239 @@
     "travel": "Travel",
     "profile": "Profile"
   },
+  "daily_goal_screen": {
+    "title": "Daily XP goal",
+    "subtitle": "How much do you want to learn each day?",
+    "xp_value": "{{count}} XP",
+    "hint": "You can change this any time. The goal resets every day at midnight (your device's local time).",
+    "options": {
+      "25":  { "title": "Casual",  "sub": "~5 min/day · one short lesson" },
+      "50":  { "title": "Regular", "sub": "~10 min/day · one full lesson" },
+      "100": { "title": "Serious", "sub": "~20 min/day · two lessons" },
+      "200": { "title": "Intense", "sub": "~40 min/day · push for fluency" }
+    }
+  },
+  "about": {
+    "title": "About Rwendo",
+    "app_name": "Rwendo",
+    "tagline": "Every journey begins with hello",
+    "version_label": "Version {{version}}",
+    "what_card": {
+      "title": "What is Rwendo?",
+      "body": "Rwendo (Shona for \"journey\") is a language learning app and AI companion. Learn Shona with Rwen — a friendly chameleon powered by Claude AI and ElevenLabs voice — through a 7-phase lesson method based on second language acquisition research."
+    },
+    "meet_card": {
+      "title": "Meet Rwen",
+      "body": "Rwen is a chameleon, a creature that adapts to its surroundings. Rwen learns about you and adapts the way it speaks, teaches, and supports you. The more you talk, the better Rwen knows you."
+    },
+    "method_card": {
+      "title": "The Rwendo Method",
+      "body": "7 phases per lesson: Hook → Chunks → Pattern → Practice → Dialogue → Recall → Mission. Maximum 3 new chunks per lesson. 5–7 minutes per lesson. Built around 10 SLA pillars including spaced repetition, comprehensible input, and meaningful output."
+    },
+    "builders_card": {
+      "title": "Built by",
+      "body": "A solo developer based in Australia who believes language learning should feel like a conversation with a friend, not a chore."
+    },
+    "link": "rwendo.app",
+    "footer": "Made with ❤️ for everyone learning Shona\nMhoro!"
+  },
+  "help": {
+    "title": "Help & FAQ",
+    "intro": "Quick answers to the questions Rwen hears most.",
+    "contact_btn": "Still stuck? Email support@rwendo.app",
+    "faq": [
+      { "q": "How do I talk to Rwen?",                          "a": "Tap the Rwen tab in the centre of the bottom bar. You can type a message or hold the mic button to speak. Tap the 🎙 icon in the top right to start a hands-free conversation." },
+      { "q": "Why does Rwen sometimes get things wrong?",      "a": "Rwen is an AI (Claude). AI can make mistakes — including factual errors and odd translations. Treat Rwen as a conversation partner, not a textbook. For anything critical, double-check with a human Shona speaker." },
+      { "q": "How do I earn XP?",                              "a": "Complete lessons in the Learn tab. Each correct answer earns XP, and finishing a lesson awards a bonus. Your daily XP goal resets every day." },
+      { "q": "How does the streak work?",                      "a": "Open the app and complete at least one activity each day to keep your streak alive. Miss a day and the streak resets to 1." },
+      { "q": "Can I change Rwen's voice?",                     "a": "Yes — go to Profile → Rwen's Voice and pick from George, Charlie, Jessica, or Alice. The change applies to text-to-speech immediately." },
+      { "q": "Is my conversation with Rwen private?",          "a": "Your messages are sent to Anthropic (Claude) for processing and stored in Supabase for up to 12 months. Anthropic does NOT use your conversations to train its models. Voice recordings are deleted within 24 hours. See the Privacy Policy for full detail." },
+      { "q": "How do I cancel my subscription?",               "a": "Subscriptions are managed through your app store (App Store or Google Play). EU/UK users have a 14-day cooling-off period during which you can cancel for a full refund." },
+      { "q": "How do I delete my account?",                    "a": "Profile → Delete Account & All Data. This removes your profile, lesson progress, and conversation history within 30 days. The action cannot be undone." },
+      { "q": "I found a bug — what do I do?",                  "a": "Tap \"Contact Us\" below or email support@rwendo.app. Include your device, app version, and what you were doing when the bug happened." },
+      { "q": "When is real-time conversation coming?",         "a": "It's in development. Hands-free voice calls with Rwen will arrive with the Companion subscription tier in an upcoming update." }
+    ]
+  },
+  "edit_profile": {
+    "title": "Edit profile",
+    "name_label": "Display name",
+    "name_hint": "This is what Rwen will call you.",
+    "name_placeholder": "Your name",
+    "char_count": "{{current}}/{{max}}",
+    "email_label": "Email",
+    "email_hint": "To change your email, contact support@rwendo.app.",
+    "save_btn": "Save changes",
+    "error_title": "Could not save",
+    "saved_title": "Saved",
+    "saved_body": "Your display name has been updated."
+  },
+  "privacy_screen": {
+    "title": "Privacy settings",
+    "intro": "Manage what data Rwendo keeps about you. For the full policy, read the Privacy Policy.",
+    "sections": {
+      "your_data": "Your data",
+      "what_we_share": "What we share",
+      "your_rights": "Your rights"
+    },
+    "clear": {
+      "label": "Clear conversation history",
+      "sub": "Delete every message you've sent to Rwen.",
+      "confirm_title": "Clear conversation history?",
+      "confirm_body": "This permanently deletes every message you've exchanged with Rwen. Your lesson progress and account stay intact. This cannot be undone.",
+      "confirm_action": "Clear all",
+      "error_title": "Could not clear",
+      "success_title": "Cleared",
+      "success_body": "Your conversation history has been deleted."
+    },
+    "export_row": {
+      "label": "Export my data",
+      "sub": "Download a copy of your profile, progress, and conversations."
+    },
+    "share": {
+      "anthropic": { "label": "Anthropic (Claude)",   "sub": "Receives your messages to generate Rwen's replies. Not used for training." },
+      "elevenlabs": { "label": "ElevenLabs (voice)",  "sub": "Generates Rwen's voice and transcribes yours. Audio deleted within 24 hours." },
+      "supabase":  { "label": "Supabase (database)", "sub": "Stores your account, progress, and conversation history." }
+    },
+    "rights": {
+      "policy_label": "Privacy Policy",
+      "policy_sub":   "Full detail of what we collect and why.",
+      "terms_label":  "Terms of Service",
+      "terms_sub":    "Rules for using Rwendo."
+    },
+    "note": "To delete your entire account, return to Profile → Delete Account & All Data."
+  },
+  "language_pack_screen": {
+    "title": "Language pack",
+    "subtitle": "Switch between languages",
+    "available_now": "Available now",
+    "coming_soon_section": "Coming soon",
+    "available_curriculum_sub": "100 lessons · Modules 1–10 · 7-phase Rwendo Method",
+    "dev_curriculum_sub": "Curriculum in development",
+    "coming_soon_label": "Coming soon",
+    "coming_soon_alert_title": "{{name}} — coming soon",
+    "coming_soon_alert_body": "We're authoring the {{name}} curriculum now. Stay on Shona-English for the full Rwendo Method, and we'll let you know as soon as {{name}} is ready.",
+    "coming_soon_packs": {
+      "english-spanish":    "Spanish",
+      "english-french":     "French",
+      "english-portuguese": "Portuguese",
+      "english-swahili":    "Swahili",
+      "english-zulu":       "Zulu",
+      "english-mandarin":   "Mandarin"
+    }
+  },
+  "change_password": {
+    "title": "Change password",
+    "current_label": "Current password",
+    "current_placeholder": "Your current password",
+    "new_label": "New password",
+    "new_placeholder": "Min. 8 characters",
+    "confirm_label": "Confirm new password",
+    "confirm_placeholder": "Re-enter new password",
+    "show": "Show",
+    "hide": "Hide",
+    "rules": {
+      "length": "At least 8 characters",
+      "upper": "One uppercase letter (A-Z)",
+      "lower": "One lowercase letter (a-z)",
+      "number": "One number (0-9)",
+      "special": "One special character (!@#$...)",
+      "different": "Different from current password"
+    },
+    "mismatch": "Passwords don't match",
+    "submit": "Update password",
+    "wrong_current_title": "Wrong current password",
+    "wrong_current_body": "The current password you entered is incorrect.",
+    "update_error_title": "Could not update password",
+    "success_title": "Password updated",
+    "success_body": "Your password has been changed successfully."
+  },
+  "export_screen": {
+    "title": "Export my data",
+    "hero_title": "Your data, in one file",
+    "hero_body": "Generate a JSON copy of your profile, lesson progress, and conversation history with Rwen. You can email it to yourself, save it to Files, or send it anywhere your device supports.",
+    "section_included": "What's included",
+    "items": {
+      "account":       { "label": "Account",          "desc": "Email, account creation date" },
+      "profile":       { "label": "Profile",          "desc": "Display name, learning preferences, settings" },
+      "lesson_progress": { "label": "Lesson progress", "desc": "Every completed lesson with score and XP" },
+      "conversations": { "label": "Conversations",    "desc": "All messages exchanged with Rwen" }
+    },
+    "summary_title": "Summary",
+    "summary_profile_included": "Profile: included",
+    "summary_profile_missing": "Profile: missing",
+    "summary_lessons": "Lesson records: {{count}}",
+    "summary_messages": "Messages: {{count}}",
+    "preview_btn": "Preview what's there",
+    "share_btn": "Generate & share",
+    "share_title": "My Rwendo data",
+    "load_error_title": "Could not load",
+    "load_error_body": "Please try again in a moment.",
+    "note": "Your data is generated on-device from Supabase and only sent where you choose to share it. Nothing is uploaded to a third-party."
+  },
+  "plans_screen": {
+    "title": "Plans",
+    "subtitle": "Pick the journey that fits you",
+    "hero_title": "Built for every stage",
+    "hero_body": "Start free with all 100 lessons. Upgrade when you want Rwen as your conversation partner.",
+    "popular_badge": "MOST POPULAR",
+    "current_badge": "YOUR PLAN",
+    "upgrade_to": "Upgrade to {{name}}",
+    "footnote": "EU/UK customers get a 14-day cooling-off period with full refund. Cancel any time.",
+    "alert_title": "{{name}} — coming soon",
+    "alert_body": "Subscriptions launch with our next update. We're working with RevenueCat to make billing smooth and refund-friendly. Sit tight!",
+    "tiers": {
+      "free": {
+        "name": "Free",
+        "price": "A$0",
+        "tagline": "Learn at your own pace",
+        "features": [
+          "100 Shona lessons (full Rwendo Method)",
+          "XP, streaks, achievements",
+          "No AI companion"
+        ]
+      },
+      "text_ai": {
+        "name": "Text AI",
+        "price": "A$10/mo",
+        "tagline": "Chat with Rwen in writing",
+        "features": [
+          "Everything in Free",
+          "500 AI messages per month",
+          "Personalised lesson tips"
+        ]
+      },
+      "voice": {
+        "name": "Voice",
+        "price": "A$15/mo",
+        "tagline": "Hear and speak with Rwen",
+        "features": [
+          "Everything in Text AI",
+          "200 voice replies (push-to-talk)",
+          "4 voice options"
+        ]
+      },
+      "companion": {
+        "name": "Companion",
+        "price": "A$25/mo",
+        "tagline": "Hands-free conversation",
+        "features": [
+          "Everything in Voice",
+          "60 min real-time conversation",
+          "Unlimited text & voice replies"
+        ]
+      },
+      "premium": {
+        "name": "Premium",
+        "price": "A$45/mo",
+        "tagline": "The full Rwen experience",
+        "features": [
+          "Everything in Companion",
+          "120 min real-time conversation",
+          "3D Rwen with lip-sync (coming soon)"
+        ]
+      }
+    }
+  },
   "profile": {
     "stats": {
       "total_xp": "Total XP",

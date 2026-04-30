@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet, ScrollView, Pressable, Alert, Share, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import ScreenHeader from '../../components/ScreenHeader';
 import { useAuth } from '../../lib/AuthContext';
 import { supabase } from '../../lib/supabase';
@@ -8,6 +9,7 @@ import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
 
 export default function ExportScreen() {
+  const { t } = useTranslation('common');
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
   const [counts, setCounts] = useState<{ profile: boolean; lessons: number; conversations: number } | null>(null);
@@ -43,7 +45,7 @@ export default function ExportScreen() {
     const data = await fetchExport();
     setLoading(false);
     if (!data) {
-      Alert.alert('Could not load', 'Please try again in a moment.');
+      Alert.alert(t('export_screen.load_error_title'), t('export_screen.load_error_body'));
       return;
     }
     setCounts({
@@ -58,12 +60,12 @@ export default function ExportScreen() {
     const data = await fetchExport();
     setLoading(false);
     if (!data) {
-      Alert.alert('Could not load', 'Please try again in a moment.');
+      Alert.alert(t('export_screen.load_error_title'), t('export_screen.load_error_body'));
       return;
     }
     try {
       await Share.share({
-        title: 'My Rwendo data',
+        title: t('export_screen.share_title'),
         message: JSON.stringify(data, null, 2),
       });
     } catch {
@@ -73,29 +75,29 @@ export default function ExportScreen() {
 
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>
-      <ScreenHeader title="Export my data" />
+      <ScreenHeader title={t('export_screen.title')} />
       <ScrollView contentContainerStyle={styles.content}>
         <View style={styles.card}>
-          <Text style={styles.title}>Your data, in one file</Text>
+          <Text style={styles.title}>{t('export_screen.hero_title')}</Text>
           <Text style={styles.body}>
-            Generate a JSON copy of your profile, lesson progress, and conversation history with Rwen. You can email it to yourself, save it to Files, or send it anywhere your device supports.
+            {t('export_screen.hero_body')}
           </Text>
         </View>
 
-        <Text style={styles.sectionTitle}>What's included</Text>
+        <Text style={styles.sectionTitle}>{t('export_screen.section_included')}</Text>
         <View style={styles.list}>
-          <Item label="Account" desc="Email, account creation date" />
-          <Item label="Profile" desc="Display name, learning preferences, settings" />
-          <Item label="Lesson progress" desc="Every completed lesson with score and XP" />
-          <Item label="Conversations" desc="All messages exchanged with Rwen" />
+          <Item label={t('export_screen.items.account.label')}         desc={t('export_screen.items.account.desc')} />
+          <Item label={t('export_screen.items.profile.label')}         desc={t('export_screen.items.profile.desc')} />
+          <Item label={t('export_screen.items.lesson_progress.label')} desc={t('export_screen.items.lesson_progress.desc')} />
+          <Item label={t('export_screen.items.conversations.label')}   desc={t('export_screen.items.conversations.desc')} />
         </View>
 
         {counts ? (
           <View style={styles.countsBox}>
-            <Text style={styles.countsTitle}>Summary</Text>
-            <Text style={styles.countsLine}>Profile: {counts.profile ? 'included' : 'missing'}</Text>
-            <Text style={styles.countsLine}>Lesson records: {counts.lessons}</Text>
-            <Text style={styles.countsLine}>Messages: {counts.conversations}</Text>
+            <Text style={styles.countsTitle}>{t('export_screen.summary_title')}</Text>
+            <Text style={styles.countsLine}>{counts.profile ? t('export_screen.summary_profile_included') : t('export_screen.summary_profile_missing')}</Text>
+            <Text style={styles.countsLine}>{t('export_screen.summary_lessons', { count: counts.lessons })}</Text>
+            <Text style={styles.countsLine}>{t('export_screen.summary_messages', { count: counts.conversations })}</Text>
           </View>
         ) : null}
 
@@ -105,7 +107,7 @@ export default function ExportScreen() {
             onPress={handlePreview}
             disabled={loading}
           >
-            <Text style={styles.btnSecondaryText}>Preview what's there</Text>
+            <Text style={styles.btnSecondaryText}>{t('export_screen.preview_btn')}</Text>
           </Pressable>
 
           <Pressable
@@ -115,13 +117,13 @@ export default function ExportScreen() {
           >
             {loading
               ? <ActivityIndicator color={Colors.white} />
-              : <Text style={styles.btnPrimaryText}>Generate & share</Text>
+              : <Text style={styles.btnPrimaryText}>{t('export_screen.share_btn')}</Text>
             }
           </Pressable>
         </View>
 
         <Text style={styles.note}>
-          Your data is generated on-device from Supabase and only sent where you choose to share it. Nothing is uploaded to a third-party.
+          {t('export_screen.note')}
         </Text>
 
         <View style={{ height: Spacing.xxl }} />

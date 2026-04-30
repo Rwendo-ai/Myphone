@@ -2,6 +2,7 @@ import { View, Text, StyleSheet, ScrollView, Pressable, Alert, ActivityIndicator
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import ScreenHeader from '../../components/ScreenHeader';
 import { useAuth } from '../../lib/AuthContext';
 import { supabase } from '../../lib/supabase';
@@ -9,18 +10,19 @@ import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
 
 export default function PrivacyScreen() {
+  const { t } = useTranslation('common');
   const { user } = useAuth();
   const [clearing, setClearing] = useState(false);
 
   const handleClearConversations = () => {
     if (!user) return;
     Alert.alert(
-      'Clear conversation history?',
-      'This permanently deletes every message you\'ve exchanged with Rwen. Your lesson progress and account stay intact. This cannot be undone.',
+      t('privacy_screen.clear.confirm_title'),
+      t('privacy_screen.clear.confirm_body'),
       [
-        { text: 'Cancel', style: 'cancel' },
+        { text: t('actions.cancel'), style: 'cancel' },
         {
-          text: 'Clear all',
+          text: t('privacy_screen.clear.confirm_action'),
           style: 'destructive',
           onPress: async () => {
             setClearing(true);
@@ -30,10 +32,10 @@ export default function PrivacyScreen() {
               .eq('user_id', user.id);
             setClearing(false);
             if (error) {
-              Alert.alert('Could not clear', error.message);
+              Alert.alert(t('privacy_screen.clear.error_title'), error.message);
               return;
             }
-            Alert.alert('Cleared', 'Your conversation history has been deleted.');
+            Alert.alert(t('privacy_screen.clear.success_title'), t('privacy_screen.clear.success_body'));
           },
         },
       ]
@@ -42,20 +44,20 @@ export default function PrivacyScreen() {
 
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>
-      <ScreenHeader title="Privacy settings" />
+      <ScreenHeader title={t('privacy_screen.title')} />
       <ScrollView contentContainerStyle={styles.content}>
         <View style={styles.intro}>
           <Text style={styles.introText}>
-            Manage what data Rwendo keeps about you. For the full policy, read the Privacy Policy.
+            {t('privacy_screen.intro')}
           </Text>
         </View>
 
-        <Text style={styles.sectionTitle}>Your data</Text>
+        <Text style={styles.sectionTitle}>{t('privacy_screen.sections.your_data')}</Text>
         <View style={styles.card}>
           <Pressable style={styles.row} onPress={handleClearConversations} disabled={clearing}>
             <View style={styles.rowMain}>
-              <Text style={styles.rowLabel}>Clear conversation history</Text>
-              <Text style={styles.rowSub}>Delete every message you've sent to Rwen.</Text>
+              <Text style={styles.rowLabel}>{t('privacy_screen.clear.label')}</Text>
+              <Text style={styles.rowSub}>{t('privacy_screen.clear.sub')}</Text>
             </View>
             {clearing ? <ActivityIndicator color={Colors.primary} /> : <Text style={styles.chevron}>›</Text>}
           </Pressable>
@@ -64,58 +66,58 @@ export default function PrivacyScreen() {
 
           <Pressable style={styles.row} onPress={() => router.push('/profile/export')}>
             <View style={styles.rowMain}>
-              <Text style={styles.rowLabel}>Export my data</Text>
-              <Text style={styles.rowSub}>Download a copy of your profile, progress, and conversations.</Text>
+              <Text style={styles.rowLabel}>{t('privacy_screen.export_row.label')}</Text>
+              <Text style={styles.rowSub}>{t('privacy_screen.export_row.sub')}</Text>
             </View>
             <Text style={styles.chevron}>›</Text>
           </Pressable>
         </View>
 
-        <Text style={styles.sectionTitle}>What we share</Text>
+        <Text style={styles.sectionTitle}>{t('privacy_screen.sections.what_we_share')}</Text>
         <View style={styles.card}>
           <View style={styles.row}>
             <View style={styles.rowMain}>
-              <Text style={styles.rowLabel}>Anthropic (Claude)</Text>
-              <Text style={styles.rowSub}>Receives your messages to generate Rwen's replies. Not used for training.</Text>
+              <Text style={styles.rowLabel}>{t('privacy_screen.share.anthropic.label')}</Text>
+              <Text style={styles.rowSub}>{t('privacy_screen.share.anthropic.sub')}</Text>
             </View>
           </View>
           <View style={styles.divider} />
           <View style={styles.row}>
             <View style={styles.rowMain}>
-              <Text style={styles.rowLabel}>ElevenLabs (voice)</Text>
-              <Text style={styles.rowSub}>Generates Rwen's voice and transcribes yours. Audio deleted within 24 hours.</Text>
+              <Text style={styles.rowLabel}>{t('privacy_screen.share.elevenlabs.label')}</Text>
+              <Text style={styles.rowSub}>{t('privacy_screen.share.elevenlabs.sub')}</Text>
             </View>
           </View>
           <View style={styles.divider} />
           <View style={styles.row}>
             <View style={styles.rowMain}>
-              <Text style={styles.rowLabel}>Supabase (database)</Text>
-              <Text style={styles.rowSub}>Stores your account, progress, and conversation history.</Text>
+              <Text style={styles.rowLabel}>{t('privacy_screen.share.supabase.label')}</Text>
+              <Text style={styles.rowSub}>{t('privacy_screen.share.supabase.sub')}</Text>
             </View>
           </View>
         </View>
 
-        <Text style={styles.sectionTitle}>Your rights</Text>
+        <Text style={styles.sectionTitle}>{t('privacy_screen.sections.your_rights')}</Text>
         <View style={styles.card}>
           <Pressable style={styles.row} onPress={() => router.push('/(legal)/privacy-policy')}>
             <View style={styles.rowMain}>
-              <Text style={styles.rowLabel}>Privacy Policy</Text>
-              <Text style={styles.rowSub}>Full detail of what we collect and why.</Text>
+              <Text style={styles.rowLabel}>{t('privacy_screen.rights.policy_label')}</Text>
+              <Text style={styles.rowSub}>{t('privacy_screen.rights.policy_sub')}</Text>
             </View>
             <Text style={styles.chevron}>›</Text>
           </Pressable>
           <View style={styles.divider} />
           <Pressable style={styles.row} onPress={() => router.push('/(legal)/terms-of-service')}>
             <View style={styles.rowMain}>
-              <Text style={styles.rowLabel}>Terms of Service</Text>
-              <Text style={styles.rowSub}>Rules for using Rwendo.</Text>
+              <Text style={styles.rowLabel}>{t('privacy_screen.rights.terms_label')}</Text>
+              <Text style={styles.rowSub}>{t('privacy_screen.rights.terms_sub')}</Text>
             </View>
             <Text style={styles.chevron}>›</Text>
           </Pressable>
         </View>
 
         <Text style={styles.note}>
-          To delete your entire account, return to Profile → Delete Account & All Data.
+          {t('privacy_screen.note')}
         </Text>
 
         <View style={{ height: Spacing.xxl }} />

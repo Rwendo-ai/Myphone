@@ -1,11 +1,13 @@
 import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router, useLocalSearchParams } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { getUnit } from '../../data/lessons';
 import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
 
 export default function UnitScreen() {
+  const { t } = useTranslation('learn');
   const { id } = useLocalSearchParams<{ id: string }>();
   const unit = getUnit(id);
 
@@ -23,7 +25,7 @@ export default function UnitScreen() {
       </View>
 
       <ScrollView style={styles.list} contentContainerStyle={styles.listContent}>
-        <Text style={styles.sectionLabel}>LESSONS</Text>
+        <Text style={styles.sectionLabel}>{t('unit.section_label')}</Text>
         {unit.lessons.map((lesson, index) => (
           <Pressable
             key={lesson.id}
@@ -35,7 +37,7 @@ export default function UnitScreen() {
             </View>
             <View style={styles.lessonInfo}>
               <Text style={styles.lessonTitle}>{lesson.title}</Text>
-              <Text style={styles.lessonMeta}>{lesson.xpReward} XP</Text>
+              <Text style={styles.lessonMeta}>{t('unit.xp_value', { count: lesson.xpReward })}</Text>
             </View>
             <Text style={styles.chevron}>›</Text>
           </Pressable>

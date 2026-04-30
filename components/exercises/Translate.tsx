@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet, TextInput, Pressable } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useState, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
 
@@ -12,6 +13,7 @@ interface Props {
 }
 
 export default function Translate({ instruction, prompt, correct, onComplete }: Props) {
+  const { t } = useTranslation('learn');
   const [value, setValue] = useState('');
   const [checked, setChecked] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
@@ -47,7 +49,7 @@ export default function Translate({ instruction, prompt, correct, onComplete }: 
         ]}
         value={value}
         onChangeText={setValue}
-        placeholder="Type your answer..."
+        placeholder={t('exercises.translate.placeholder')}
         placeholderTextColor={Colors.gray[300]}
         editable={!checked}
         autoFocus
@@ -60,7 +62,7 @@ export default function Translate({ instruction, prompt, correct, onComplete }: 
       {checked ? (
         <View style={[styles.feedback, isCorrect ? styles.feedbackCorrect : styles.feedbackWrong]}>
           <Text style={styles.feedbackText}>
-            {isCorrect ? '✓ Correct!' : `✗ Correct answer: ${correct[0]}`}
+            {isCorrect ? t('exercises.feedback_correct') : t('exercises.translate.wrong', { correct: correct[0] })}
           </Text>
         </View>
       ) : (
@@ -69,7 +71,7 @@ export default function Translate({ instruction, prompt, correct, onComplete }: 
           onPress={check}
           disabled={!value.trim()}
         >
-          <Text style={styles.checkBtnText}>Check</Text>
+          <Text style={styles.checkBtnText}>{t('exercises.check')}</Text>
         </Pressable>
       )}
     </KeyboardAwareScrollView>

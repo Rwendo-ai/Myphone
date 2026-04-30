@@ -1,63 +1,23 @@
 import { View, Text, StyleSheet, ScrollView, Pressable, Linking } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import ScreenHeader from '../../components/ScreenHeader';
 import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
 
-const FAQ = [
-  {
-    q: 'How do I talk to Rwen?',
-    a: 'Tap the Rwen tab in the centre of the bottom bar. You can type a message or hold the mic button to speak. Tap the 🎙 icon in the top right to start a hands-free conversation.',
-  },
-  {
-    q: 'Why does Rwen sometimes get things wrong?',
-    a: 'Rwen is an AI (Claude). AI can make mistakes — including factual errors and odd translations. Treat Rwen as a conversation partner, not a textbook. For anything critical, double-check with a human Shona speaker.',
-  },
-  {
-    q: 'How do I earn XP?',
-    a: 'Complete lessons in the Learn tab. Each correct answer earns XP, and finishing a lesson awards a bonus. Your daily XP goal resets every day.',
-  },
-  {
-    q: 'How does the streak work?',
-    a: 'Open the app and complete at least one activity each day to keep your streak alive. Miss a day and the streak resets to 1.',
-  },
-  {
-    q: 'Can I change Rwen\'s voice?',
-    a: 'Yes — go to Profile → Rwen\'s Voice and pick from George, Charlie, Jessica, or Alice. The change applies to text-to-speech immediately.',
-  },
-  {
-    q: 'Is my conversation with Rwen private?',
-    a: 'Your messages are sent to Anthropic (Claude) for processing and stored in Supabase for up to 12 months. Anthropic does NOT use your conversations to train its models. Voice recordings are deleted within 24 hours. See the Privacy Policy for full detail.',
-  },
-  {
-    q: 'How do I cancel my subscription?',
-    a: 'Subscriptions are managed through your app store (App Store or Google Play). EU/UK users have a 14-day cooling-off period during which you can cancel for a full refund.',
-  },
-  {
-    q: 'How do I delete my account?',
-    a: 'Profile → Delete Account & All Data. This removes your profile, lesson progress, and conversation history within 30 days. The action cannot be undone.',
-  },
-  {
-    q: 'I found a bug — what do I do?',
-    a: 'Tap "Contact Us" below or email support@rwendo.app. Include your device, app version, and what you were doing when the bug happened.',
-  },
-  {
-    q: 'When is real-time conversation coming?',
-    a: 'It\'s in development. Hands-free voice calls with Rwen will arrive with the Companion subscription tier in an upcoming update.',
-  },
-];
-
 export default function HelpScreen() {
+  const { t } = useTranslation('common');
   const [open, setOpen] = useState<number | null>(null);
+  const faq = t('help.faq', { returnObjects: true }) as { q: string; a: string }[];
 
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>
-      <ScreenHeader title="Help & FAQ" />
+      <ScreenHeader title={t('help.title')} />
       <ScrollView contentContainerStyle={styles.content}>
-        <Text style={styles.intro}>Quick answers to the questions Rwen hears most.</Text>
+        <Text style={styles.intro}>{t('help.intro')}</Text>
 
-        {FAQ.map((item, i) => {
+        {faq.map((item, i) => {
           const isOpen = open === i;
           return (
             <Pressable
@@ -76,11 +36,12 @@ export default function HelpScreen() {
 
         <Pressable
           style={styles.contactBtn}
-          onPress={() =>
-            Linking.openURL('mailto:support@rwendo.app?subject=Rwendo support').catch(() => {})
-          }
+          onPress={() => {
+            const subject = encodeURIComponent(t('profile.support_rows.contact_email_subject'));
+            Linking.openURL(`mailto:support@rwendo.app?subject=${subject}`).catch(() => {});
+          }}
         >
-          <Text style={styles.contactBtnText}>Still stuck? Email support@rwendo.app</Text>
+          <Text style={styles.contactBtnText}>{t('help.contact_btn')}</Text>
         </Pressable>
 
         <View style={{ height: Spacing.xxl }} />

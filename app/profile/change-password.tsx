@@ -3,6 +3,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { router } from 'expo-router';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import ScreenHeader from '../../components/ScreenHeader';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../lib/AuthContext';
@@ -19,6 +20,7 @@ function Rule({ met, text }: { met: boolean; text: string }) {
 }
 
 export default function ChangePasswordScreen() {
+  const { t } = useTranslation('common');
   const { user } = useAuth();
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -48,7 +50,7 @@ export default function ChangePasswordScreen() {
     });
     if (signInError) {
       setLoading(false);
-      Alert.alert('Wrong current password', 'The current password you entered is incorrect.');
+      Alert.alert(t('change_password.wrong_current_title'), t('change_password.wrong_current_body'));
       return;
     }
 
@@ -56,26 +58,26 @@ export default function ChangePasswordScreen() {
     const { error: updateError } = await supabase.auth.updateUser({ password: newPassword });
     setLoading(false);
     if (updateError) {
-      Alert.alert('Could not update password', updateError.message);
+      Alert.alert(t('change_password.update_error_title'), updateError.message);
       return;
     }
 
-    Alert.alert('Password updated', 'Your password has been changed successfully.', [
+    Alert.alert(t('change_password.success_title'), t('change_password.success_body'), [
       { text: 'OK', onPress: () => router.back() },
     ]);
   };
 
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>
-      <ScreenHeader title="Change password" />
+      <ScreenHeader title={t('change_password.title')} />
       <KeyboardAwareScrollView contentContainerStyle={styles.content} enableOnAndroid extraScrollHeight={32}>
         <View style={styles.field}>
-          <Text style={styles.label}>Current password</Text>
+          <Text style={styles.label}>{t('change_password.current_label')}</Text>
           <TextInput
             style={styles.input}
             value={currentPassword}
             onChangeText={setCurrentPassword}
-            placeholder="Your current password"
+            placeholder={t('change_password.current_placeholder')}
             placeholderTextColor={Colors.gray[400]}
             secureTextEntry={!show}
             autoCapitalize="none"
@@ -84,41 +86,41 @@ export default function ChangePasswordScreen() {
         </View>
 
         <View style={styles.field}>
-          <Text style={styles.label}>New password</Text>
+          <Text style={styles.label}>{t('change_password.new_label')}</Text>
           <View style={styles.passwordRow}>
             <TextInput
               style={[styles.input, { flex: 1 }]}
               value={newPassword}
               onChangeText={setNewPassword}
-              placeholder="Min. 8 characters"
+              placeholder={t('change_password.new_placeholder')}
               placeholderTextColor={Colors.gray[400]}
               secureTextEntry={!show}
               autoCapitalize="none"
               returnKeyType="next"
             />
             <Pressable onPress={() => setShow(v => !v)} style={styles.showBtn}>
-              <Text style={styles.showBtnText}>{show ? 'Hide' : 'Show'}</Text>
+              <Text style={styles.showBtnText}>{show ? t('change_password.hide') : t('change_password.show')}</Text>
             </Pressable>
           </View>
           {newPassword.length > 0 ? (
             <View style={styles.rules}>
-              <Rule met={hasLength} text="At least 8 characters" />
-              <Rule met={hasUpper} text="One uppercase letter (A-Z)" />
-              <Rule met={hasLower} text="One lowercase letter (a-z)" />
-              <Rule met={hasNumber} text="One number (0-9)" />
-              <Rule met={hasSpecial} text="One special character (!@#$...)" />
-              <Rule met={isDifferent} text="Different from current password" />
+              <Rule met={hasLength}    text={t('change_password.rules.length')} />
+              <Rule met={hasUpper}     text={t('change_password.rules.upper')} />
+              <Rule met={hasLower}     text={t('change_password.rules.lower')} />
+              <Rule met={hasNumber}    text={t('change_password.rules.number')} />
+              <Rule met={hasSpecial}   text={t('change_password.rules.special')} />
+              <Rule met={isDifferent}  text={t('change_password.rules.different')} />
             </View>
           ) : null}
         </View>
 
         <View style={styles.field}>
-          <Text style={styles.label}>Confirm new password</Text>
+          <Text style={styles.label}>{t('change_password.confirm_label')}</Text>
           <TextInput
             style={styles.input}
             value={confirmPassword}
             onChangeText={setConfirmPassword}
-            placeholder="Re-enter new password"
+            placeholder={t('change_password.confirm_placeholder')}
             placeholderTextColor={Colors.gray[400]}
             secureTextEntry={!show}
             autoCapitalize="none"
@@ -126,7 +128,7 @@ export default function ChangePasswordScreen() {
             onSubmitEditing={handleSubmit}
           />
           {confirmPassword.length > 0 && !confirmMatches ? (
-            <Text style={styles.mismatch}>Passwords don't match</Text>
+            <Text style={styles.mismatch}>{t('change_password.mismatch')}</Text>
           ) : null}
         </View>
 
@@ -137,7 +139,7 @@ export default function ChangePasswordScreen() {
         >
           {loading
             ? <ActivityIndicator color={Colors.white} />
-            : <Text style={styles.submitBtnText}>Update password</Text>
+            : <Text style={styles.submitBtnText}>{t('change_password.submit')}</Text>
           }
         </Pressable>
       </KeyboardAwareScrollView>

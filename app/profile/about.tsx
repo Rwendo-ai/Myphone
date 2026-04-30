@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet, ScrollView, Pressable, Linking } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Constants from 'expo-constants';
+import { useTranslation } from 'react-i18next';
 import RwenImage from '../../components/rwen/RwenImage';
 import ScreenHeader from '../../components/ScreenHeader';
 import { Colors } from '../../constants/colors';
@@ -9,42 +10,43 @@ import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/the
 const APP_VERSION = Constants.expoConfig?.version ?? '1.0.0';
 
 export default function AboutScreen() {
+  const { t } = useTranslation('common');
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>
-      <ScreenHeader title="About Rwendo" />
+      <ScreenHeader title={t('about.title')} />
       <ScrollView contentContainerStyle={styles.content}>
         <View style={styles.hero}>
           <RwenImage pose="waving" size={120} />
-          <Text style={styles.appName}>Rwendo</Text>
-          <Text style={styles.tagline}>Every journey begins with hello</Text>
-          <Text style={styles.version}>Version {APP_VERSION}</Text>
+          <Text style={styles.appName}>{t('about.app_name')}</Text>
+          <Text style={styles.tagline}>{t('about.tagline')}</Text>
+          <Text style={styles.version}>{t('about.version_label', { version: APP_VERSION })}</Text>
         </View>
 
         <View style={styles.card}>
-          <Text style={styles.cardTitle}>What is Rwendo?</Text>
+          <Text style={styles.cardTitle}>{t('about.what_card.title')}</Text>
           <Text style={styles.cardBody}>
-            Rwendo (Shona for "journey") is a language learning app and AI companion. Learn Shona with Rwen — a friendly chameleon powered by Claude AI and ElevenLabs voice — through a 7-phase lesson method based on second language acquisition research.
+            {t('about.what_card.body')}
           </Text>
         </View>
 
         <View style={styles.card}>
-          <Text style={styles.cardTitle}>Meet Rwen</Text>
+          <Text style={styles.cardTitle}>{t('about.meet_card.title')}</Text>
           <Text style={styles.cardBody}>
-            Rwen is a chameleon, a creature that adapts to its surroundings. Rwen learns about you and adapts the way it speaks, teaches, and supports you. The more you talk, the better Rwen knows you.
+            {t('about.meet_card.body')}
           </Text>
         </View>
 
         <View style={styles.card}>
-          <Text style={styles.cardTitle}>The Rwendo Method</Text>
+          <Text style={styles.cardTitle}>{t('about.method_card.title')}</Text>
           <Text style={styles.cardBody}>
-            7 phases per lesson: Hook → Chunks → Pattern → Practice → Dialogue → Recall → Mission. Maximum 3 new chunks per lesson. 5–7 minutes per lesson. Built around 10 SLA pillars including spaced repetition, comprehensible input, and meaningful output.
+            {t('about.method_card.body')}
           </Text>
         </View>
 
         <View style={styles.card}>
-          <Text style={styles.cardTitle}>Built by</Text>
+          <Text style={styles.cardTitle}>{t('about.builders_card.title')}</Text>
           <Text style={styles.cardBody}>
-            A solo developer based in Australia who believes language learning should feel like a conversation with a friend, not a chore.
+            {t('about.builders_card.body')}
           </Text>
         </View>
 
@@ -52,11 +54,11 @@ export default function AboutScreen() {
           style={styles.linkRow}
           onPress={() => Linking.openURL('https://rwendo.app').catch(() => {})}
         >
-          <Text style={styles.linkText}>rwendo.app</Text>
+          <Text style={styles.linkText}>{t('about.link')}</Text>
           <Text style={styles.linkArrow}>↗</Text>
         </Pressable>
 
-        <Text style={styles.footer}>Made with ❤️ for everyone learning Shona{'\n'}Mhoro!</Text>
+        <Text style={styles.footer}>{t('about.footer')}</Text>
 
         <View style={{ height: Spacing.xxl }} />
       </ScrollView>

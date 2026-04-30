@@ -1,5 +1,6 @@
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
 
@@ -14,6 +15,7 @@ interface Props {
 }
 
 export default function MultipleChoice({ instruction, question, options, explanation, onComplete }: Props) {
+  const { t } = useTranslation('learn');
   const [selected, setSelected] = useState<string | null>(null);
   const [answered, setAnswered] = useState(false);
 
@@ -59,7 +61,7 @@ export default function MultipleChoice({ instruction, question, options, explana
       {answered && (
         <View style={[styles.explanation, options.find((o) => o.text === selected)?.correct ? styles.feedbackCorrect : styles.feedbackWrong]}>
           <Text style={styles.explanationTitle}>
-            {options.find((o) => o.text === selected)?.correct ? '✓ Correct!' : '✗ Not quite'}
+            {options.find((o) => o.text === selected)?.correct ? t('exercises.feedback_correct') : t('exercises.multiple_choice.wrong')}
           </Text>
           <Text style={styles.explanationText}>{explanation}</Text>
         </View>

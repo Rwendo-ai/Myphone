@@ -1,1 +1,18 @@
-{}
+{
+  "title": "Achievements",
+  "subtitle": "{{unlocked}} of {{total}} unlocked",
+  "items": {
+    "first_lesson": { "title": "First Steps",         "description": "Completed your very first lesson." },
+    "streak_3":     { "title": "Three-Day Spark",     "description": "3 days in a row." },
+    "streak_7":     { "title": "Week Warrior",        "description": "Kept your streak alive for 7 days." },
+    "streak_30":    { "title": "Month of Mhoro",      "description": "30-day streak. Rwen is proud." },
+    "xp_100":       { "title": "Bright Spark",        "description": "Earned 100 XP." },
+    "xp_500":       { "title": "Rising Star",         "description": "Earned 500 XP." },
+    "xp_1000":      { "title": "Constellation",       "description": "Earned 1,000 XP." },
+    "module_1":     { "title": "Module Master",       "description": "Completed your first module." },
+    "module_5":     { "title": "Halfway There",       "description": "Completed 5 modules." },
+    "lessons_25":   { "title": "Quarter Climber",     "description": "Completed 25 lessons." },
+    "lessons_50":   { "title": "Halfway Tree",        "description": "Completed 50 lessons." },
+    "graduated":    { "title": "Rwendo Graduate",     "description_fmt": "Completed all {{total}} lessons." }
+  }
+}

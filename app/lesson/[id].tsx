@@ -2,6 +2,7 @@ import { View, Text, StyleSheet, Pressable, ScrollView, Alert } from 'react-nati
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../lib/AuthContext';
 import RwenImage from '../../components/rwen/RwenImage';
 import { saveLessonProgress } from '../../lib/progress';
@@ -20,17 +21,9 @@ import { getCurriculumLesson } from '../../data/curriculum';
 type Phase = 'hook' | 'chunks' | 'pattern' | 'practice' | 'dialogue' | 'recall' | 'mission';
 
 const PHASES: Phase[] = ['hook', 'chunks', 'pattern', 'practice', 'dialogue', 'recall', 'mission'];
-const PHASE_LABELS: Record<Phase, string> = {
-  hook: 'The Scene',
-  chunks: 'New Words',
-  pattern: 'The Pattern',
-  practice: 'Practice',
-  dialogue: 'Conversation',
-  recall: 'Recall',
-  mission: 'Your Mission',
-};
 
 export default function LessonScreen() {
+  const { t } = useTranslation('learn');
   const { id } = useLocalSearchParams<{ id: string }>();
   const { activePack } = useSettings();
   const lesson = getCurriculumLesson(activePack.id, id);
@@ -49,7 +42,7 @@ export default function LessonScreen() {
   if (!lesson) {
     return (
       <SafeAreaView style={styles.safe}>
-        <Text style={{ padding: 20, color: Colors.gray[600] }}>Lesson not found: {id}</Text>
+        <Text style={{ padding: 20, color: Colors.gray[600] }}>{t('lesson.not_found', { id })}</Text>
       </SafeAreaView>
     );
   }
@@ -82,11 +75,11 @@ export default function LessonScreen() {
       return;
     }
     Alert.alert(
-      'Quit lesson?',
-      'Your progress in this lesson will be lost. Are you sure?',
+      t('lesson.quit.title'),
+      t('lesson.quit.body'),
       [
-        { text: 'Keep going', style: 'cancel' },
-        { text: 'Quit', style: 'destructive', onPress: () => router.back() },
+        { text: t('lesson.quit.keep_going'), style: 'cancel' },
+        { text: t('lesson.quit.quit'),       style: 'destructive', onPress: () => router.back() },
       ]
     );
   };
@@ -156,7 +149,7 @@ export default function LessonScreen() {
         <View style={[styles.progressFill, { width: `${progress * 100}%` }, light && { backgroundColor: Colors.xp }]} />
       </View>
       <Text style={[styles.phaseLabel, light && { color: 'rgba(255,255,255,0.7)' }]}>
-        {PHASE_LABELS[phase]}
+        {t(`lesson.phases.${phase}`)}
       </Text>
     </View>
   );
@@ -183,13 +176,13 @@ export default function LessonScreen() {
             <Text style={styles.rwenLine}>{lesson.hook.rwenLine}</Text>
           </View>
           <View style={styles.culturalNote}>
-            <Text style={styles.culturalNoteLabel}>TSIKA — Cultural Context</Text>
+            <Text style={styles.culturalNoteLabel}>{t('lesson.hook.tsika_label')}</Text>
             <Text style={styles.culturalNoteText}>{lesson.hook.culturalNote}</Text>
           </View>
         </View>
         <View style={styles.bottomAction}>
           <Pressable style={styles.primaryBtn} onPress={nextPhase}>
-            <Text style={styles.primaryBtnText}>Let's learn →</Text>
+            <Text style={styles.primaryBtnText}>{t('lesson.hook.cta')}</Text>
           </Pressable>
         </View>
       </SafeAreaView>
@@ -206,7 +199,7 @@ export default function LessonScreen() {
       <SafeAreaView style={[styles.safe, { backgroundColor: Colors.primary }]} edges={['top']}>
         <TopBar light />
         <Text style={styles.chunkCounter}>
-          Word {chunkIndex + 1} of {lesson.chunks.length}
+          {t('lesson.chunks.counter', { current: chunkIndex + 1, total: lesson.chunks.length })}
         </Text>
         <View style={styles.chunkCard}>
           <Text style={styles.chunkEmoji}>{chunk.emoji}</Text>
@@ -214,14 +207,14 @@ export default function LessonScreen() {
           <Text style={styles.chunkPhonetic}>{chunk.phonetic}</Text>
           <View style={styles.chunkDivider} />
           <Text style={styles.chunkEnglish}>{chunk.native}</Text>
-          {chunk.literal && <Text style={styles.chunkLiteral}>Literally: "{chunk.literal}"</Text>}
+          {chunk.literal && <Text style={styles.chunkLiteral}>{t('lesson.chunks.literal', { value: chunk.literal })}</Text>}
         </View>
         <View style={styles.bottomAction}>
           <Pressable
             style={styles.primaryBtn}
             onPress={() => isLast ? nextPhase() : setChunkIndex((i) => i + 1)}
           >
-            <Text style={styles.primaryBtnText}>{isLast ? 'See the pattern →' : 'Got it →'}</Text>
+            <Text style={styles.primaryBtnText}>{isLast ? t('lesson.chunks.see_pattern') : t('lesson.chunks.got_it')}</Text>
           </Pressable>
         </View>
       </SafeAreaView>
@@ -250,7 +243,7 @@ export default function LessonScreen() {
         </ScrollView>
         <View style={styles.bottomAction}>
           <Pressable style={styles.primaryBtn} onPress={nextPhase}>
-            <Text style={styles.primaryBtnText}>Start practice →</Text>
+            <Text style={styles.primaryBtnText}>{t('lesson.pattern.start_practice')}</Text>
           </Pressable>
         </View>
       </SafeAreaView>
@@ -266,7 +259,7 @@ export default function LessonScreen() {
       <SafeAreaView style={[styles.safe, { backgroundColor: Colors.white }]} edges={['top']}>
         <TopBar />
         <Text style={styles.exerciseCounter}>
-          Exercise {exerciseIndex + 1} of {lesson.exercises.length}
+          {t('lesson.practice.counter', { current: exerciseIndex + 1, total: lesson.exercises.length })}
         </Text>
         {exercise.type === 'match_pairs' && (
           <MatchPairs
@@ -375,7 +368,7 @@ export default function LessonScreen() {
         {(currentLine.speaker !== 'user' || dialogueChoice) && (
           <View style={styles.bottomAction}>
             <Pressable style={styles.primaryBtn} onPress={advanceDialogue}>
-              <Text style={styles.primaryBtnText}>{isLastLine ? 'Great — now recall →' : 'Continue →'}</Text>
+              <Text style={styles.primaryBtnText}>{isLastLine ? t('lesson.dialogue.to_recall') : t('lesson.dialogue.continue')}</Text>
             </Pressable>
           </View>
         )}
@@ -392,12 +385,12 @@ export default function LessonScreen() {
       <SafeAreaView style={[styles.safe, { backgroundColor: Colors.white }]} edges={['top']}>
         <TopBar />
         <View style={styles.recallHeader}>
-          <Text style={styles.recallTitle}>Active Recall</Text>
+          <Text style={styles.recallTitle}>{t('lesson.recall.title')}</Text>
           <Text style={styles.recallSubtitle}>{lesson.activeRecall.instruction}</Text>
         </View>
         <Translate
           key={recallIndex}
-          instruction={`${recallIndex + 1} of ${lesson.activeRecall.prompts.length}`}
+          instruction={t('lesson.recall.counter', { current: recallIndex + 1, total: lesson.activeRecall.prompts.length })}
           prompt={prompt.prompt}
           correct={prompt.correct}
           onComplete={handleRecallComplete}
@@ -414,14 +407,14 @@ export default function LessonScreen() {
       <SafeAreaView style={[styles.safe, { backgroundColor: Colors.primary }]} edges={['top']}>
         <ScrollView contentContainerStyle={styles.missionContainer}>
           <RwenFace animation="celebrate" size={100} />
-          <Text style={styles.missionCompleteTitle}>Lesson Complete!</Text>
+          <Text style={styles.missionCompleteTitle}>{t('lesson.mission.complete_title')}</Text>
           <View style={styles.xpBadge}>
-            <Text style={styles.xpBadgeText}>+{xpEarned} XP</Text>
+            <Text style={styles.xpBadgeText}>{t('lesson.mission.xp_badge', { count: xpEarned })}</Text>
           </View>
-          <Text style={styles.missionScoreText}>{score} / {totalAnswered} correct</Text>
+          <Text style={styles.missionScoreText}>{t('lesson.mission.score', { score, total: totalAnswered })}</Text>
 
           <View style={styles.missionCard}>
-            <Text style={styles.missionCardTitle}>📍 {lesson.mission.title}</Text>
+            <Text style={styles.missionCardTitle}>{t('lesson.mission.card_title_prefix')}{lesson.mission.title}</Text>
             <Text style={styles.missionTask}>{lesson.mission.task}</Text>
             <View style={styles.rwenSignoffRow}>
               <RwenFace size={32} />
@@ -431,7 +424,7 @@ export default function LessonScreen() {
         </ScrollView>
         <View style={styles.bottomAction}>
           <Pressable style={styles.primaryBtn} onPress={() => router.back()}>
-            <Text style={styles.primaryBtnText}>Famba zvakanaka →</Text>
+            <Text style={styles.primaryBtnText}>{t('lesson.mission.cta')}</Text>
           </Pressable>
         </View>
       </SafeAreaView>

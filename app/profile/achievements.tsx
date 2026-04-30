@@ -1,5 +1,6 @@
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 import ScreenHeader from '../../components/ScreenHeader';
 import { useProgress } from '../../hooks/useProgress';
 import { useSettings } from '../../lib/SettingsContext';
@@ -10,13 +11,12 @@ import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/the
 interface Achievement {
   id: string;
   emoji: string;
-  title: string;
-  description: string;
   unlocked: boolean;
   progress?: { current: number; total: number };
 }
 
 export default function AchievementsScreen() {
+  const { t } = useTranslation('achievements');
   const { xp, streakDays, completedLessons } = useProgress();
   const { activePack } = useSettings();
 
@@ -29,117 +29,40 @@ export default function AchievementsScreen() {
   ).length;
 
   const achievements: Achievement[] = [
-    {
-      id: 'first_lesson',
-      emoji: '🌱',
-      title: 'First Steps',
-      description: 'Completed your very first lesson.',
-      unlocked: lessonCount >= 1,
-    },
-    {
-      id: 'streak_3',
-      emoji: '🔥',
-      title: 'Three-Day Spark',
-      description: '3 days in a row.',
-      unlocked: streakDays >= 3,
-      progress: { current: Math.min(streakDays, 3), total: 3 },
-    },
-    {
-      id: 'streak_7',
-      emoji: '🏕️',
-      title: 'Week Warrior',
-      description: 'Kept your streak alive for 7 days.',
-      unlocked: streakDays >= 7,
-      progress: { current: Math.min(streakDays, 7), total: 7 },
-    },
-    {
-      id: 'streak_30',
-      emoji: '🌍',
-      title: 'Month of Mhoro',
-      description: '30-day streak. Rwen is proud.',
-      unlocked: streakDays >= 30,
-      progress: { current: Math.min(streakDays, 30), total: 30 },
-    },
-    {
-      id: 'xp_100',
-      emoji: '⭐',
-      title: 'Bright Spark',
-      description: 'Earned 100 XP.',
-      unlocked: xp >= 100,
-      progress: { current: Math.min(xp, 100), total: 100 },
-    },
-    {
-      id: 'xp_500',
-      emoji: '🌟',
-      title: 'Rising Star',
-      description: 'Earned 500 XP.',
-      unlocked: xp >= 500,
-      progress: { current: Math.min(xp, 500), total: 500 },
-    },
-    {
-      id: 'xp_1000',
-      emoji: '✨',
-      title: 'Constellation',
-      description: 'Earned 1,000 XP.',
-      unlocked: xp >= 1000,
-      progress: { current: Math.min(xp, 1000), total: 1000 },
-    },
-    {
-      id: 'module_1',
-      emoji: '📕',
-      title: 'Module Master',
-      description: 'Completed your first module.',
-      unlocked: completedModules >= 1,
-    },
-    {
-      id: 'module_5',
-      emoji: '📚',
-      title: 'Halfway There',
-      description: 'Completed 5 modules.',
-      unlocked: completedModules >= 5,
-      progress: { current: Math.min(completedModules, 5), total: 5 },
-    },
-    {
-      id: 'lessons_25',
-      emoji: '🪴',
-      title: 'Quarter Climber',
-      description: 'Completed 25 lessons.',
-      unlocked: lessonCount >= 25,
-      progress: { current: Math.min(lessonCount, 25), total: 25 },
-    },
-    {
-      id: 'lessons_50',
-      emoji: '🌳',
-      title: 'Halfway Tree',
-      description: 'Completed 50 lessons.',
-      unlocked: lessonCount >= 50,
-      progress: { current: Math.min(lessonCount, 50), total: 50 },
-    },
-    {
-      id: 'graduated',
-      emoji: '🎓',
-      title: 'Rwendo Graduate',
-      description: `Completed all ${totalLessons} lessons.`,
-      unlocked: totalLessons > 0 && lessonCount >= totalLessons,
-      progress: { current: lessonCount, total: totalLessons },
-    },
+    { id: 'first_lesson', emoji: '🌱', unlocked: lessonCount >= 1 },
+    { id: 'streak_3',     emoji: '🔥', unlocked: streakDays >= 3,  progress: { current: Math.min(streakDays, 3),  total: 3 } },
+    { id: 'streak_7',     emoji: '🏕️', unlocked: streakDays >= 7,  progress: { current: Math.min(streakDays, 7),  total: 7 } },
+    { id: 'streak_30',    emoji: '🌍', unlocked: streakDays >= 30, progress: { current: Math.min(streakDays, 30), total: 30 } },
+    { id: 'xp_100',       emoji: '⭐', unlocked: xp >= 100,  progress: { current: Math.min(xp, 100),  total: 100 } },
+    { id: 'xp_500',       emoji: '🌟', unlocked: xp >= 500,  progress: { current: Math.min(xp, 500),  total: 500 } },
+    { id: 'xp_1000',      emoji: '✨', unlocked: xp >= 1000, progress: { current: Math.min(xp, 1000), total: 1000 } },
+    { id: 'module_1',     emoji: '📕', unlocked: completedModules >= 1 },
+    { id: 'module_5',     emoji: '📚', unlocked: completedModules >= 5, progress: { current: Math.min(completedModules, 5), total: 5 } },
+    { id: 'lessons_25',   emoji: '🪴', unlocked: lessonCount >= 25, progress: { current: Math.min(lessonCount, 25), total: 25 } },
+    { id: 'lessons_50',   emoji: '🌳', unlocked: lessonCount >= 50, progress: { current: Math.min(lessonCount, 50), total: 50 } },
+    { id: 'graduated',    emoji: '🎓', unlocked: totalLessons > 0 && lessonCount >= totalLessons, progress: { current: lessonCount, total: totalLessons } },
   ];
 
   const unlockedCount = achievements.filter((a) => a.unlocked).length;
 
+  const describe = (id: string) =>
+    id === 'graduated'
+      ? t('items.graduated.description_fmt', { total: totalLessons })
+      : t(`items.${id}.description`);
+
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>
       <ScreenHeader
-        title="Achievements"
-        subtitle={`${unlockedCount} of ${achievements.length} unlocked`}
+        title={t('title')}
+        subtitle={t('subtitle', { unlocked: unlockedCount, total: achievements.length })}
       />
       <ScrollView contentContainerStyle={styles.content}>
         {achievements.map((a) => (
           <View key={a.id} style={[styles.card, !a.unlocked && styles.cardLocked]}>
             <Text style={[styles.emoji, !a.unlocked && styles.emojiLocked]}>{a.emoji}</Text>
             <View style={styles.cardMain}>
-              <Text style={[styles.cardTitle, !a.unlocked && styles.cardTitleLocked]}>{a.title}</Text>
-              <Text style={styles.cardDesc}>{a.description}</Text>
+              <Text style={[styles.cardTitle, !a.unlocked && styles.cardTitleLocked]}>{t(`items.${a.id}.title`)}</Text>
+              <Text style={styles.cardDesc}>{describe(a.id)}</Text>
               {a.progress && !a.unlocked ? (
                 <View style={styles.progressWrap}>
                   <View style={styles.progressBg}>

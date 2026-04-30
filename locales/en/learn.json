@@ -6,5 +6,79 @@
     "unit_progress": "{{completed}}/{{total}} done",
     "coming_soon_title": "{{lang}} curriculum coming soon",
     "coming_soon_sub": "We're building the lessons now. Check back soon!"
+  },
+  "screen_header": {
+    "back": "← Back"
+  },
+  "unit": {
+    "section_label": "LESSONS",
+    "xp_value": "{{count}} XP"
+  },
+  "lesson": {
+    "not_found": "Lesson not found: {{id}}",
+    "phases": {
+      "hook": "The Scene",
+      "chunks": "New Words",
+      "pattern": "The Pattern",
+      "practice": "Practice",
+      "dialogue": "Conversation",
+      "recall": "Recall",
+      "mission": "Your Mission"
+    },
+    "quit": {
+      "title": "Quit lesson?",
+      "body": "Your progress in this lesson will be lost. Are you sure?",
+      "keep_going": "Keep going",
+      "quit": "Quit"
+    },
+    "hook": {
+      "tsika_label": "TSIKA — Cultural Context",
+      "cta": "Let's learn →"
+    },
+    "chunks": {
+      "counter": "Word {{current}} of {{total}}",
+      "literal": "Literally: \"{{value}}\"",
+      "see_pattern": "See the pattern →",
+      "got_it": "Got it →"
+    },
+    "pattern": {
+      "start_practice": "Start practice →"
+    },
+    "practice": {
+      "counter": "Exercise {{current}} of {{total}}"
+    },
+    "dialogue": {
+      "to_recall": "Great — now recall →",
+      "continue": "Continue →"
+    },
+    "recall": {
+      "title": "Active Recall",
+      "counter": "{{current}} of {{total}}"
+    },
+    "mission": {
+      "complete_title": "Lesson Complete!",
+      "xp_badge": "+{{count}} XP",
+      "score": "{{score}} / {{total}} correct",
+      "card_title_prefix": "📍 ",
+      "cta": "Famba zvakanaka →"
+    }
+  },
+  "exercises": {
+    "check": "Check",
+    "feedback_correct": "✓ Correct!",
+    "fill_blank": {
+      "wrong": "✗ The answer is \"{{correct}}\""
+    },
+    "translate": {
+      "placeholder": "Type your answer...",
+      "wrong": "✗ Correct answer: {{correct}}"
+    },
+    "build_sentence": {
+      "placeholder": "Tap words below to build the sentence",
+      "wrong": "✗ Correct: {{correct}}"
+    },
+    "multiple_choice": {
+      "wrong": "✗ Not quite"
+    }
   }
 }

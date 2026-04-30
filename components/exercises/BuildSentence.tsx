@@ -1,5 +1,6 @@
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
 
@@ -21,6 +22,7 @@ function shuffle<T>(arr: T[]): T[] {
 }
 
 export default function BuildSentence({ instruction, words, correct, translation, onComplete }: Props) {
+  const { t } = useTranslation('learn');
   const [pool] = useState(() => shuffle(words.map((w, i) => ({ word: w, id: i }))));
   const [available, setAvailable] = useState(() => shuffle(words.map((w, i) => ({ word: w, id: i }))));
   const [built, setBuilt] = useState<{ word: string; id: number }[]>([]);
@@ -54,7 +56,7 @@ export default function BuildSentence({ instruction, words, correct, translation
 
       <View style={[styles.builtArea, checked && (isCorrect ? styles.builtAreaCorrect : styles.builtAreaWrong)]}>
         {built.length === 0 ? (
-          <Text style={styles.placeholder}>Tap words below to build the sentence</Text>
+          <Text style={styles.placeholder}>{t('exercises.build_sentence.placeholder')}</Text>
         ) : (
           <View style={styles.wordRow}>
             {built.map((item) => (
@@ -77,7 +79,7 @@ export default function BuildSentence({ instruction, words, correct, translation
       {checked ? (
         <View style={[styles.feedback, isCorrect ? styles.feedbackCorrect : styles.feedbackWrong]}>
           <Text style={styles.feedbackText}>
-            {isCorrect ? '✓ Correct!' : `✗ Correct: ${correct.join(' ')}`}
+            {isCorrect ? t('exercises.feedback_correct') : t('exercises.build_sentence.wrong', { correct: correct.join(' ') })}
           </Text>
         </View>
       ) : (
@@ -86,7 +88,7 @@ export default function BuildSentence({ instruction, words, correct, translation
           onPress={checkAnswer}
           disabled={built.length < words.length}
         >
-          <Text style={styles.checkBtnText}>Check</Text>
+          <Text style={styles.checkBtnText}>{t('exercises.check')}</Text>
         </Pressable>
       )}
     </View>

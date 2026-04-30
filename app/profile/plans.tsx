@@ -1,151 +1,95 @@
 import { View, Text, StyleSheet, ScrollView, Pressable, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 import ScreenHeader from '../../components/ScreenHeader';
 import RwenImage from '../../components/rwen/RwenImage';
 import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
 
-interface Tier {
-  id: string;
-  name: string;
-  price: string;
-  tagline: string;
-  features: string[];
-  highlight?: boolean;
-  current?: boolean;
-}
-
-const TIERS: Tier[] = [
-  {
-    id: 'free',
-    name: 'Free',
-    price: 'A$0',
-    tagline: 'Learn at your own pace',
-    features: [
-      '100 Shona lessons (full Rwendo Method)',
-      'XP, streaks, achievements',
-      'No AI companion',
-    ],
-    current: true,
-  },
-  {
-    id: 'text_ai',
-    name: 'Text AI',
-    price: 'A$10/mo',
-    tagline: 'Chat with Rwen in writing',
-    features: [
-      'Everything in Free',
-      '500 AI messages per month',
-      'Personalised lesson tips',
-    ],
-  },
-  {
-    id: 'voice',
-    name: 'Voice',
-    price: 'A$15/mo',
-    tagline: 'Hear and speak with Rwen',
-    features: [
-      'Everything in Text AI',
-      '200 voice replies (push-to-talk)',
-      '4 voice options',
-    ],
-  },
-  {
-    id: 'companion',
-    name: 'Companion',
-    price: 'A$25/mo',
-    tagline: 'Hands-free conversation',
-    features: [
-      'Everything in Voice',
-      '60 min real-time conversation',
-      'Unlimited text & voice replies',
-    ],
-    highlight: true,
-  },
-  {
-    id: 'premium',
-    name: 'Premium',
-    price: 'A$45/mo',
-    tagline: 'The full Rwen experience',
-    features: [
-      'Everything in Companion',
-      '120 min real-time conversation',
-      '3D Rwen with lip-sync (coming soon)',
-    ],
-  },
-];
+type TierKey = 'free' | 'text_ai' | 'voice' | 'companion' | 'premium';
+const TIER_KEYS: TierKey[] = ['free', 'text_ai', 'voice', 'companion', 'premium'];
+const TIER_HIGHLIGHT: Record<TierKey, boolean> = { free: false, text_ai: false, voice: false, companion: true,  premium: false };
+const TIER_CURRENT:   Record<TierKey, boolean> = { free: true,  text_ai: false, voice: false, companion: false, premium: false };
 
 export default function PlansScreen() {
+  const { t } = useTranslation('common');
+
   const handleUpgrade = (tierName: string) => {
     Alert.alert(
-      `${tierName} — coming soon`,
-      'Subscriptions launch with our next update. We\'re working with RevenueCat to make billing smooth and refund-friendly. Sit tight!',
+      t('plans_screen.alert_title', { name: tierName }),
+      t('plans_screen.alert_body'),
       [{ text: 'OK' }]
     );
   };
 
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>
-      <ScreenHeader title="Plans" subtitle="Pick the journey that fits you" />
+      <ScreenHeader title={t('plans_screen.title')} subtitle={t('plans_screen.subtitle')} />
       <ScrollView contentContainerStyle={styles.content}>
         <View style={styles.heroCard}>
           <RwenImage pose="arms_spread" size={80} />
-          <Text style={styles.heroTitle}>Built for every stage</Text>
+          <Text style={styles.heroTitle}>{t('plans_screen.hero_title')}</Text>
           <Text style={styles.heroSub}>
-            Start free with all 100 lessons. Upgrade when you want Rwen as your conversation partner.
+            {t('plans_screen.hero_body')}
           </Text>
         </View>
 
-        {TIERS.map((tier) => (
-          <View
-            key={tier.id}
-            style={[
-              styles.tierCard,
-              tier.highlight && styles.tierCardHighlight,
-              tier.current && styles.tierCardCurrent,
-            ]}
-          >
-            {tier.highlight ? (
-              <View style={styles.popularBadge}>
-                <Text style={styles.popularBadgeText}>MOST POPULAR</Text>
-              </View>
-            ) : null}
-            {tier.current ? (
-              <View style={styles.currentBadge}>
-                <Text style={styles.currentBadgeText}>YOUR PLAN</Text>
-              </View>
-            ) : null}
-
-            <View style={styles.tierHead}>
-              <Text style={styles.tierName}>{tier.name}</Text>
-              <Text style={styles.tierPrice}>{tier.price}</Text>
-            </View>
-            <Text style={styles.tierTagline}>{tier.tagline}</Text>
-
-            <View style={styles.featureList}>
-              {tier.features.map((f, i) => (
-                <View key={i} style={styles.featureRow}>
-                  <Text style={styles.featureCheck}>✓</Text>
-                  <Text style={styles.featureText}>{f}</Text>
+        {TIER_KEYS.map((id) => {
+          const highlight = TIER_HIGHLIGHT[id];
+          const current = TIER_CURRENT[id];
+          const name = t(`plans_screen.tiers.${id}.name`);
+          const features = t(`plans_screen.tiers.${id}.features`, { returnObjects: true }) as string[];
+          return (
+            <View
+              key={id}
+              style={[
+                styles.tierCard,
+                highlight && styles.tierCardHighlight,
+                current && styles.tierCardCurrent,
+              ]}
+            >
+              {highlight ? (
+                <View style={styles.popularBadge}>
+                  <Text style={styles.popularBadgeText}>{t('plans_screen.popular_badge')}</Text>
                 </View>
-              ))}
-            </View>
+              ) : null}
+              {current ? (
+                <View style={styles.currentBadge}>
+                  <Text style={styles.currentBadgeText}>{t('plans_screen.current_badge')}</Text>
+                </View>
+              ) : null}
 
-            {!tier.current ? (
-              <Pressable
-                style={[styles.tierBtn, tier.highlight && styles.tierBtnHighlight]}
-                onPress={() => handleUpgrade(tier.name)}
-              >
-                <Text style={[styles.tierBtnText, tier.highlight && styles.tierBtnTextHighlight]}>
-                  Upgrade to {tier.name}
-                </Text>
-              </Pressable>
-            ) : null}
-          </View>
-        ))}
+              <View style={styles.tierHead}>
+                <Text style={styles.tierName}>{name}</Text>
+                <Text style={styles.tierPrice}>{t(`plans_screen.tiers.${id}.price`)}</Text>
+              </View>
+              <Text style={styles.tierTagline}>{t(`plans_screen.tiers.${id}.tagline`)}</Text>
+
+              <View style={styles.featureList}>
+                {features.map((f, i) => (
+                  <View key={i} style={styles.featureRow}>
+                    <Text style={styles.featureCheck}>✓</Text>
+                    <Text style={styles.featureText}>{f}</Text>
+                  </View>
+                ))}
+              </View>
+
+              {!current ? (
+                <Pressable
+                  style={[styles.tierBtn, highlight && styles.tierBtnHighlight]}
+                  onPress={() => handleUpgrade(name)}
+                >
+                  <Text style={[styles.tierBtnText, highlight && styles.tierBtnTextHighlight]}>
+                    {t('plans_screen.upgrade_to', { name })}
+                  </Text>
+                </Pressable>
+              ) : null}
+            </View>
+          );
+        })}
 
         <Text style={styles.footnote}>
-          EU/UK customers get a 14-day cooling-off period with full refund. Cancel any time.
+          {t('plans_screen.footnote')}
         </Text>
 
         <View style={{ height: Spacing.xxl }} />

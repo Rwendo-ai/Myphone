@@ -1,5 +1,6 @@
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
 
@@ -13,6 +14,7 @@ interface Props {
 }
 
 export default function FillBlank({ instruction, sentence, options, correct, context, onComplete }: Props) {
+  const { t } = useTranslation('learn');
   const [selected, setSelected] = useState<string | null>(null);
   const [answered, setAnswered] = useState(false);
 
@@ -58,7 +60,7 @@ export default function FillBlank({ instruction, sentence, options, correct, con
       {answered && (
         <View style={[styles.feedback, selected === correct ? styles.feedbackCorrect : styles.feedbackWrong]}>
           <Text style={styles.feedbackText}>
-            {selected === correct ? '✓ Correct!' : `✗ The answer is "${correct}"`}
+            {selected === correct ? t('exercises.feedback_correct') : t('exercises.fill_blank.wrong', { correct })}
           </Text>
         </View>
       )}

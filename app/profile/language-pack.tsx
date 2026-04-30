@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet, ScrollView, Pressable, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import ScreenHeader from '../../components/ScreenHeader';
 import { useSettings } from '../../lib/SettingsContext';
 import { useAuth } from '../../lib/AuthContext';
@@ -12,21 +13,20 @@ import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/the
 interface ComingSoonPack {
   id: string;
   spokenFlag: string;
-  spokenName: string;
   learnedFlag: string;
-  learnedName: string;
 }
 
 const COMING_SOON: ComingSoonPack[] = [
-  { id: 'english-spanish', spokenFlag: '🇬🇧', spokenName: 'English', learnedFlag: '🇪🇸', learnedName: 'Spanish' },
-  { id: 'english-french', spokenFlag: '🇬🇧', spokenName: 'English', learnedFlag: '🇫🇷', learnedName: 'French' },
-  { id: 'english-portuguese', spokenFlag: '🇬🇧', spokenName: 'English', learnedFlag: '🇵🇹', learnedName: 'Portuguese' },
-  { id: 'english-swahili', spokenFlag: '🇬🇧', spokenName: 'English', learnedFlag: '🇰🇪', learnedName: 'Swahili' },
-  { id: 'english-zulu', spokenFlag: '🇬🇧', spokenName: 'English', learnedFlag: '🇿🇦', learnedName: 'Zulu' },
-  { id: 'english-mandarin', spokenFlag: '🇬🇧', spokenName: 'English', learnedFlag: '🇨🇳', learnedName: 'Mandarin' },
+  { id: 'english-spanish',    spokenFlag: '🇬🇧', learnedFlag: '🇪🇸' },
+  { id: 'english-french',     spokenFlag: '🇬🇧', learnedFlag: '🇫🇷' },
+  { id: 'english-portuguese', spokenFlag: '🇬🇧', learnedFlag: '🇵🇹' },
+  { id: 'english-swahili',    spokenFlag: '🇬🇧', learnedFlag: '🇰🇪' },
+  { id: 'english-zulu',       spokenFlag: '🇬🇧', learnedFlag: '🇿🇦' },
+  { id: 'english-mandarin',   spokenFlag: '🇬🇧', learnedFlag: '🇨🇳' },
 ];
 
 export default function LanguagePackScreen() {
+  const { t } = useTranslation('common');
   const { user } = useAuth();
   const { activePack, setActivePack } = useSettings();
 
@@ -45,16 +45,16 @@ export default function LanguagePackScreen() {
 
   const handleComingSoon = (name: string) => {
     Alert.alert(
-      `${name} — coming soon`,
-      `We're authoring the ${name} curriculum now. Stay on Shona-English for the full Rwendo Method, and we'll let you know as soon as ${name} is ready.`
+      t('language_pack_screen.coming_soon_alert_title', { name }),
+      t('language_pack_screen.coming_soon_alert_body', { name })
     );
   };
 
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>
-      <ScreenHeader title="Language pack" subtitle="Switch between languages" />
+      <ScreenHeader title={t('language_pack_screen.title')} subtitle={t('language_pack_screen.subtitle')} />
       <ScrollView contentContainerStyle={styles.content}>
-        <Text style={styles.sectionTitle}>Available now</Text>
+        <Text style={styles.sectionTitle}>{t('language_pack_screen.available_now')}</Text>
         {PACKS.map((pack) => {
           const { spoken, learned } = resolvePackLanguages(pack);
           const isActive = activePack.id === pack.id;
@@ -75,8 +75,8 @@ export default function LanguagePackScreen() {
                 </Text>
                 <Text style={styles.cardSub}>
                   {pack.id === 'shona-english'
-                    ? '100 lessons · Modules 1–10 · 7-phase Rwendo Method'
-                    : 'Curriculum in development'}
+                    ? t('language_pack_screen.available_curriculum_sub')
+                    : t('language_pack_screen.dev_curriculum_sub')}
                 </Text>
               </View>
               {isActive ? <Text style={styles.check}>✓</Text> : null}
@@ -84,27 +84,30 @@ export default function LanguagePackScreen() {
           );
         })}
 
-        <Text style={styles.sectionTitle}>Coming soon</Text>
-        {COMING_SOON.map((pack) => (
-          <Pressable
-            key={pack.id}
-            style={[styles.card, styles.cardLocked]}
-            onPress={() => handleComingSoon(pack.learnedName)}
-          >
-            <View style={styles.flagRow}>
-              <Text style={[styles.flag, styles.flagLocked]}>{pack.spokenFlag}</Text>
-              <Text style={[styles.arrow, styles.arrowLocked]}>→</Text>
-              <Text style={[styles.flag, styles.flagLocked]}>{pack.learnedFlag}</Text>
-            </View>
-            <View style={styles.cardMain}>
-              <Text style={[styles.cardTitle, styles.lockedText]}>
-                {pack.spokenName} → {pack.learnedName}
-              </Text>
-              <Text style={[styles.cardSub, styles.lockedText]}>Coming soon</Text>
-            </View>
-            <Text style={styles.lock}>🔒</Text>
-          </Pressable>
-        ))}
+        <Text style={styles.sectionTitle}>{t('language_pack_screen.coming_soon_section')}</Text>
+        {COMING_SOON.map((pack) => {
+          const learnedName = t(`language_pack_screen.coming_soon_packs.${pack.id}`);
+          return (
+            <Pressable
+              key={pack.id}
+              style={[styles.card, styles.cardLocked]}
+              onPress={() => handleComingSoon(learnedName)}
+            >
+              <View style={styles.flagRow}>
+                <Text style={[styles.flag, styles.flagLocked]}>{pack.spokenFlag}</Text>
+                <Text style={[styles.arrow, styles.arrowLocked]}>→</Text>
+                <Text style={[styles.flag, styles.flagLocked]}>{pack.learnedFlag}</Text>
+              </View>
+              <View style={styles.cardMain}>
+                <Text style={[styles.cardTitle, styles.lockedText]}>
+                  English → {learnedName}
+                </Text>
+                <Text style={[styles.cardSub, styles.lockedText]}>{t('language_pack_screen.coming_soon_label')}</Text>
+              </View>
+              <Text style={styles.lock}>🔒</Text>
+            </Pressable>
+          );
+        })}
 
         <View style={{ height: Spacing.xxl }} />
       </ScrollView>

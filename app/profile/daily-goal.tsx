@@ -1,19 +1,14 @@
 import { View, Text, StyleSheet, ScrollView, Pressable, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import ScreenHeader from '../../components/ScreenHeader';
 import { useDailyXpGoal, XP_GOAL_OPTIONS } from '../../lib/preferences';
 import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
 
-const LABELS: Record<number, { title: string; sub: string }> = {
-  25: { title: 'Casual', sub: '~5 min/day · one short lesson' },
-  50: { title: 'Regular', sub: '~10 min/day · one full lesson' },
-  100: { title: 'Serious', sub: '~20 min/day · two lessons' },
-  200: { title: 'Intense', sub: '~40 min/day · push for fluency' },
-};
-
 export default function DailyGoalScreen() {
+  const { t } = useTranslation('common');
   const { goal, setGoal, loaded } = useDailyXpGoal();
 
   const handleSelect = async (n: number) => {
@@ -23,13 +18,12 @@ export default function DailyGoalScreen() {
 
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>
-      <ScreenHeader title="Daily XP goal" subtitle="How much do you want to learn each day?" />
+      <ScreenHeader title={t('daily_goal_screen.title')} subtitle={t('daily_goal_screen.subtitle')} />
       <ScrollView contentContainerStyle={styles.content}>
         {!loaded ? (
           <ActivityIndicator color={Colors.primary} style={{ marginTop: Spacing.xxl }} />
         ) : (
           XP_GOAL_OPTIONS.map((n) => {
-            const meta = LABELS[n];
             const active = goal === n;
             return (
               <Pressable
@@ -38,9 +32,9 @@ export default function DailyGoalScreen() {
                 onPress={() => handleSelect(n)}
               >
                 <View style={styles.cardLeft}>
-                  <Text style={[styles.cardXp, active && styles.cardXpActive]}>{n} XP</Text>
-                  <Text style={styles.cardTitle}>{meta.title}</Text>
-                  <Text style={styles.cardSub}>{meta.sub}</Text>
+                  <Text style={[styles.cardXp, active && styles.cardXpActive]}>{t('daily_goal_screen.xp_value', { count: n })}</Text>
+                  <Text style={styles.cardTitle}>{t(`daily_goal_screen.options.${n}.title`)}</Text>
+                  <Text style={styles.cardSub}>{t(`daily_goal_screen.options.${n}.sub`)}</Text>
                 </View>
                 {active ? <Text style={styles.check}>✓</Text> : null}
               </Pressable>
@@ -49,7 +43,7 @@ export default function DailyGoalScreen() {
         )}
 
         <Text style={styles.hint}>
-          You can change this any time. The goal resets every day at midnight (your device's local time).
+          {t('daily_goal_screen.hint')}
         </Text>
       </ScrollView>
     </SafeAreaView>

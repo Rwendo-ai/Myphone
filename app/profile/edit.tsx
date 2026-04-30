@@ -3,6 +3,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import ScreenHeader from '../../components/ScreenHeader';
 import { useAuth } from '../../lib/AuthContext';
 import { supabase } from '../../lib/supabase';
@@ -10,6 +11,7 @@ import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
 
 export default function EditProfileScreen() {
+  const { t } = useTranslation('common');
   const { user } = useAuth();
   const [username, setUsername] = useState('');
   const [originalUsername, setOriginalUsername] = useState('');
@@ -45,30 +47,30 @@ export default function EditProfileScreen() {
       .eq('id', user.id);
     setLoading(false);
     if (error) {
-      Alert.alert('Could not save', error.message);
+      Alert.alert(t('edit_profile.error_title'), error.message);
       return;
     }
-    Alert.alert('Saved', 'Your display name has been updated.', [
+    Alert.alert(t('edit_profile.saved_title'), t('edit_profile.saved_body'), [
       { text: 'OK', onPress: () => router.back() },
     ]);
   };
 
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>
-      <ScreenHeader title="Edit profile" />
+      <ScreenHeader title={t('edit_profile.title')} />
       <KeyboardAwareScrollView contentContainerStyle={styles.content} enableOnAndroid extraScrollHeight={32}>
         {fetching ? (
           <ActivityIndicator color={Colors.primary} style={{ marginTop: Spacing.xxl }} />
         ) : (
           <>
             <View style={styles.field}>
-              <Text style={styles.label}>Display name</Text>
-              <Text style={styles.hint}>This is what Rwen will call you.</Text>
+              <Text style={styles.label}>{t('edit_profile.name_label')}</Text>
+              <Text style={styles.hint}>{t('edit_profile.name_hint')}</Text>
               <TextInput
                 style={styles.input}
                 value={username}
                 onChangeText={setUsername}
-                placeholder="Your name"
+                placeholder={t('edit_profile.name_placeholder')}
                 placeholderTextColor={Colors.gray[400]}
                 autoCapitalize="words"
                 autoCorrect={false}
@@ -76,15 +78,15 @@ export default function EditProfileScreen() {
                 returnKeyType="done"
                 onSubmitEditing={handleSave}
               />
-              <Text style={styles.charCount}>{trimmed.length}/30</Text>
+              <Text style={styles.charCount}>{t('edit_profile.char_count', { current: trimmed.length, max: 30 })}</Text>
             </View>
 
             <View style={styles.field}>
-              <Text style={styles.label}>Email</Text>
+              <Text style={styles.label}>{t('edit_profile.email_label')}</Text>
               <View style={[styles.input, styles.inputDisabled]}>
                 <Text style={styles.disabledText}>{user?.email}</Text>
               </View>
-              <Text style={styles.hint}>To change your email, contact support@rwendo.app.</Text>
+              <Text style={styles.hint}>{t('edit_profile.email_hint')}</Text>
             </View>
 
             <Pressable
@@ -94,7 +96,7 @@ export default function EditProfileScreen() {
             >
               {loading
                 ? <ActivityIndicator color={Colors.white} />
-                : <Text style={styles.saveBtnText}>Save changes</Text>
+                : <Text style={styles.saveBtnText}>{t('edit_profile.save_btn')}</Text>
               }
             </Pressable>
           </>
