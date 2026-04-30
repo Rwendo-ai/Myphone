@@ -12,6 +12,7 @@ import { useSettings, RWEN_VOICES, RwenVoiceKey } from '../../lib/SettingsContex
 import { useDailyXpGoal, useDailyReminders } from '../../lib/preferences';
 import { pickAndUploadAvatar } from '../../lib/storage';
 import { supabase } from '../../lib/supabase';
+import { SUPPORTED_LANGUAGES, SupportedLanguage, setAppLanguage } from '../../lib/i18n';
 import { THEMES } from '../../constants/themes';
 import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
@@ -39,8 +40,15 @@ function SettingsRow({ label, value, onPress, danger }: {
   );
 }
 
+// DB stores the legacy values 'english' / 'shona'; i18n keys are ISO 'en' / 'sn'.
+const ISO_TO_DB: Record<SupportedLanguage, string> = { en: 'english', sn: 'shona' };
+const LANG_FLAGS: Record<SupportedLanguage, string> = { en: '🇬🇧', sn: '🇿🇼' };
+
 export default function ProfileScreen() {
-  const { t } = useTranslation('common');
+  const { t, i18n } = useTranslation('common');
+  const currentLang = (SUPPORTED_LANGUAGES as readonly string[]).includes(i18n.language)
+    ? (i18n.language as SupportedLanguage)
+    : 'en';
   const { user, signOut } = useAuth();
   const { xp, streakDays, username, completedLessons, refresh } = useProgress();
   const { rwenVoice, setRwenVoice, learnedLanguage, spokenLanguage, theme, setThemeId, avatarUrl, setAvatarUrl } = useSettings();
@@ -62,6 +70,11 @@ export default function ProfileScreen() {
   const handleThemeSelect = async (themeId: string) => {
     setThemeId(themeId);
     if (user) await supabase.from('profiles').update({ theme_id: themeId }).eq('id', user.id);
+  };
+
+  const handleAppLanguageSelect = async (lang: SupportedLanguage) => {
+    setAppLanguage(lang);
+    if (user) await supabase.from('profiles').update({ app_language: ISO_TO_DB[lang] }).eq('id', user.id);
   };
   useFocusEffect(useCallback(() => { refresh(); }, [refresh]));
 
@@ -173,6 +186,25 @@ export default function ProfileScreen() {
                     {th.emoji} {th.name}
                   </Text>
                   {theme.id === th.id && <Text style={styles.themeCheck}>✓</Text>}
+                </Pressable>
+              ))}
+            </View>
+          </Section>
+
+          {/* App Language */}
+          <Section title={t('profile.sections.app_language')}>
+            <View style={styles.langGrid}>
+              {SUPPORTED_LANGUAGES.map((lang) => (
+                <Pressable
+                  key={lang}
+                  style={[styles.langChip, currentLang === lang && styles.langChipActive]}
+                  onPress={() => handleAppLanguageSelect(lang)}
+                >
+                  <Text style={styles.langFlag}>{LANG_FLAGS[lang]}</Text>
+                  <Text style={[styles.langLabel, currentLang === lang && styles.langLabelActive]}>
+                    {t(`profile.app_language_options.${lang}`)}
+                  </Text>
+                  {currentLang === lang && <Text style={styles.langCheck}>✓</Text>}
                 </Pressable>
               ))}
             </View>
@@ -360,6 +392,20 @@ const styles = StyleSheet.create({
   themeSwatchInner: { width: 16, height: 16, borderTopLeftRadius: 8 },
   themeChipLabel: { flex: 1, fontSize: FontSize.xs, color: Colors.gray[600] },
   themeCheck: { color: Colors.primary, fontWeight: FontWeight.bold, fontSize: FontSize.sm },
+  langGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm, padding: Spacing.md },
+  langChip: {
+    flex: 1, minWidth: '45%',
+    flexDirection: 'row', alignItems: 'center', gap: Spacing.sm,
+    borderRadius: BorderRadius.lg, borderWidth: 2,
+    borderColor: Colors.gray[100], padding: Spacing.sm,
+    backgroundColor: Colors.gray[50],
+  },
+  langChipActive: { borderColor: Colors.primary, backgroundColor: '#EFF6FF' },
+  langFlag: { fontSize: 22 },
+  langLabel: { flex: 1, fontSize: FontSize.sm, color: Colors.gray[600] },
+  langLabelActive: { color: Colors.primary, fontWeight: FontWeight.bold },
+  langCheck: { color: Colors.primary, fontWeight: FontWeight.bold, fontSize: FontSize.sm },
+
   voiceGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm, padding: Spacing.md },
   voiceCard: { flex: 1, minWidth: '45%', borderRadius: BorderRadius.md, borderWidth: 2, borderColor: Colors.gray[100], padding: Spacing.md, alignItems: 'center', gap: 3, backgroundColor: Colors.gray[50] },
   voiceCardActive: { borderColor: Colors.secondary, backgroundColor: '#EFF6FF' },

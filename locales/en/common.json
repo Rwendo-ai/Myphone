@@ -257,12 +257,17 @@
     "sections": {
       "my_plan": "My Plan",
       "colour_theme": "Colour Theme",
+      "app_language": "App Language",
       "rwens_voice": "Rwen's Voice",
       "learning": "Learning",
       "my_progress": "My Progress",
       "account": "Account",
       "legal": "Legal Documents",
       "support": "Support"
+    },
+    "app_language_options": {
+      "en": "English",
+      "sn": "ChiShona"
     },
     "plan": {
       "free_name": "Free Plan",

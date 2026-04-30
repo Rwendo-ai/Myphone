@@ -353,12 +353,17 @@
     "sections": {
       "my_plan": "Pulani Yangu",
       "colour_theme": "Ruvara",
+      "app_language": "Mutauro weApp",
       "rwens_voice": "Izwi raRwen",
       "learning": "Kudzidza",
       "my_progress": "Kufambira Kwangu",
       "account": "Account",
       "legal": "Magwaro Emutemo",
       "support": "Rubatsiro"
+    },
+    "app_language_options": {
+      "en": "English",
+      "sn": "ChiShona"
     },
     "plan": {
       "free_name": "Free Plan",
