@@ -34,7 +34,7 @@ function ProfileLoader() {
 
 function NavigationGuard() {
   const { session, loading, onboardingComplete } = useAuth();
-  const segments = useSegments();
+  const segments = useSegments() as string[];
 
   useEffect(() => {
     if (loading) return;

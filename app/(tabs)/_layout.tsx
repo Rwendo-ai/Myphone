@@ -53,7 +53,7 @@ export default function TabLayout() {
           title: t('nav.rwen'),
           tabBarLabel: '',
           tabBarIcon: () => null,
-          tabBarButton: (props) => <RwenTabButton onPress={props.onPress ?? undefined} />,
+          tabBarButton: (props) => <RwenTabButton onPress={props.onPress as (() => void) | undefined} />,
         }}
       />
       <Tabs.Screen

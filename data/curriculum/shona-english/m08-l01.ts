@@ -69,7 +69,7 @@ const lesson: LessonData = {
       sentence: 'Ndi_____ kuZimbabwe gore rinouya.',
       options: ['chaenda', 'noenda', 'aenda'],
       correct: 'chaenda',
-      translation: 'I will go to Zimbabwe next year.',
+      context: 'I will go to Zimbabwe next year.',
     },
     {
       type: 'translate',

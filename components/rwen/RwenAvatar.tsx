@@ -54,7 +54,10 @@ export default function RwenAvatar({ animation = 'idle', style, autoRotate = fal
   const onContextCreate = useCallback(async (gl: WebGLRenderingContext) => {
     const { drawingBufferWidth: width, drawingBufferHeight: height } = gl;
 
-    const renderer = new Renderer({ gl });
+    // expo-three's Renderer is a THREE.WebGLRenderer at runtime, but its
+    // TypeScript declaration only exposes the constructor — cast to access
+    // setSize/setClearColor/render/dispose.
+    const renderer = new Renderer({ gl }) as unknown as THREE.WebGLRenderer;
     renderer.setSize(width, height);
     renderer.setClearColor(0x000000, 0);
 
@@ -138,7 +141,7 @@ export default function RwenAvatar({ animation = 'idle', style, autoRotate = fal
       const delta = clockRef.current.getDelta();
       mixerRef.current?.update(delta);
       if (autoRotate) {
-        scene.children.forEach(c => {
+        scene.children.forEach((c: THREE.Object3D) => {
           if ((c as any).isMesh || c.type === 'Group') c.rotation.y += 0.01;
         });
       }
