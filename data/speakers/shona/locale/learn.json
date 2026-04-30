@@ -89,6 +89,14 @@
       "score": "{{score}} / {{total}} zvakanaka",
       "card_title_prefix": "📍 ",
       "cta": "Famba zvakanaka →"
+    },
+    "phase8": {
+      "unlocked_title": "Dzidzira naRwen",
+      "unlocked_body": "Edza '{{topic}}' muhurukuro. Rwen achashandisa zvawapfuura kudzidza.",
+      "unlocked_cta": "Tanga hurukuro yemaminitsi 2 →",
+      "locked_title": "Dzidzira naRwen — Yakakiyiwa",
+      "locked_body": "Ita hurukuro yemaminitsi 2 nezve '{{topic}}'. Rwen achashandisa zvawapfuura kudzidza.",
+      "locked_cta": "Vhura neText AI →"
     }
   },
   "exercises": {

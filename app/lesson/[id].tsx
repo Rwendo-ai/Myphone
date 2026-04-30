@@ -17,7 +17,7 @@ import MultipleChoice from '../../components/exercises/MultipleChoice';
 import { DialogueLine } from '../../types/lesson';
 import { useSettings } from '../../lib/SettingsContext';
 import { getCourseLesson } from '../../data/courses';
-import { canAccessLesson } from '../../lib/entitlements';
+import { canAccessLesson, canUseAiFeature } from '../../lib/entitlements';
 
 type Phase = 'hook' | 'chunks' | 'pattern' | 'practice' | 'dialogue' | 'recall' | 'mission';
 
@@ -458,6 +458,49 @@ export default function LessonScreen() {
               <Text style={styles.rwenSignoff}>"{lesson.mission.rwenSignoff}"</Text>
             </View>
           </View>
+
+          {/* Phase 8 teaser — locked or unlocked based on AI tier */}
+          {(() => {
+            const aiCheck = canUseAiFeature('text', entitlementContext);
+            const phase8Title = lesson.phase8?.scenario ?? lesson.title;
+            if (aiCheck.allowed) {
+              return (
+                <Pressable
+                  style={styles.phase8Card}
+                  onPress={() => {
+                    // For v1, route to companion with the lesson title baked into a query
+                    // string. Companion can prime its system prompt from this. Real
+                    // dedicated Phase 8 screen is a Phase F follow-up.
+                    router.push({ pathname: '/(tabs)/companion', params: { lessonContext: phase8Title } });
+                  }}
+                >
+                  <View style={styles.phase8Header}>
+                    <Text style={styles.phase8Emoji}>🦎</Text>
+                    <Text style={styles.phase8Title}>{t('lesson.phase8.unlocked_title')}</Text>
+                  </View>
+                  <Text style={styles.phase8Body}>
+                    {t('lesson.phase8.unlocked_body', { topic: phase8Title })}
+                  </Text>
+                  <Text style={styles.phase8Cta}>{t('lesson.phase8.unlocked_cta')}</Text>
+                </Pressable>
+              );
+            }
+            return (
+              <Pressable
+                style={[styles.phase8Card, styles.phase8CardLocked]}
+                onPress={() => router.push('/profile/plans')}
+              >
+                <View style={styles.phase8Header}>
+                  <Text style={styles.phase8Emoji}>🔒</Text>
+                  <Text style={styles.phase8Title}>{t('lesson.phase8.locked_title')}</Text>
+                </View>
+                <Text style={styles.phase8Body}>
+                  {t('lesson.phase8.locked_body', { topic: phase8Title })}
+                </Text>
+                <Text style={styles.phase8CtaLocked}>{t('lesson.phase8.locked_cta')}</Text>
+              </Pressable>
+            );
+          })()}
         </ScrollView>
         <View style={styles.bottomAction}>
           <Pressable style={styles.primaryBtn} onPress={() => router.back()}>
@@ -571,6 +614,28 @@ const styles = StyleSheet.create({
   recallHeader: { padding: Spacing.lg, paddingBottom: 0 },
   recallTitle: { fontSize: FontSize.xl, fontWeight: FontWeight.bold, color: Colors.primary },
   recallSubtitle: { fontSize: FontSize.sm, color: Colors.gray[500], marginTop: 4 },
+
+  // Phase 8 result-screen card (Phase F)
+  phase8Card: {
+    backgroundColor: Colors.white,
+    borderRadius: BorderRadius.lg,
+    padding: Spacing.lg,
+    margin: Spacing.lg,
+    marginTop: Spacing.md,
+    gap: Spacing.sm,
+    shadowColor: Colors.black,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 6,
+    elevation: 2,
+  },
+  phase8CardLocked: { backgroundColor: 'rgba(255,255,255,0.6)' },
+  phase8Header: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm },
+  phase8Emoji: { fontSize: 24 },
+  phase8Title: { fontSize: FontSize.md, fontWeight: FontWeight.bold, color: Colors.gray[800] },
+  phase8Body: { fontSize: FontSize.sm, color: Colors.gray[600], lineHeight: 20 },
+  phase8Cta: { fontSize: FontSize.sm, color: Colors.secondary, fontWeight: FontWeight.bold, marginTop: 4 },
+  phase8CtaLocked: { fontSize: FontSize.sm, color: Colors.xp, fontWeight: FontWeight.bold, marginTop: 4 },
 
   // Locked state (Phase E gating)
   lockedContainer: { flex: 1, padding: Spacing.xl, alignItems: 'center', justifyContent: 'center', gap: Spacing.lg },

@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet, TextInput, Pressable, ScrollView, KeyboardAvoidingView, Platform, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useState, useRef, useEffect, useCallback } from 'react';
+import { useLocalSearchParams } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import RwenImage from '../../components/rwen/RwenImage';
 import { useAuth } from '../../lib/AuthContext';
@@ -23,6 +24,10 @@ type RwenState = 'idle' | 'thinking' | 'waving' | 'victory' | 'wrong' | 'arms_sp
 export default function CompanionScreen() {
   const { t } = useTranslation('rwen');
   const { t: tCommon } = useTranslation('common');
+  // Phase F: lesson-context query param. When the user lands here from a
+  // lesson-completion Phase 8 card, this carries the lesson topic so the
+  // Claude system prompt can be primed with it.
+  const { lessonContext } = useLocalSearchParams<{ lessonContext?: string }>();
   const { user } = useAuth();
   const { learnedLanguage, rwenVoice, theme, speaker } = useSettings();
   const { username } = useProgress();
@@ -75,7 +80,7 @@ export default function CompanionScreen() {
     setTimeout(() => scrollRef.current?.scrollToEnd({ animated: true }), 100);
 
     try {
-      const reply = await sendMessage(user.id, text.trim(), historyRef.current, speaker);
+      const reply = await sendMessage(user.id, text.trim(), historyRef.current, speaker, lessonContext);
 
       historyRef.current = [
         ...historyRef.current,

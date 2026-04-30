@@ -79,6 +79,14 @@
       "score": "{{score}} / {{total}} correct",
       "card_title_prefix": "📍 ",
       "cta": "Famba zvakanaka →"
+    },
+    "phase8": {
+      "unlocked_title": "Practice with Rwen",
+      "unlocked_body": "Try out '{{topic}}' in conversation. Rwen will use what you just learned.",
+      "unlocked_cta": "Start a 2-minute chat →",
+      "locked_title": "Practice with Rwen — Locked",
+      "locked_body": "Have a 2-minute conversation about '{{topic}}'. Rwen will use what you just learned.",
+      "locked_cta": "Unlock with Text AI →"
     }
   },
   "exercises": {

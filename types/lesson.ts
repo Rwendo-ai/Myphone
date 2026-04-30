@@ -78,6 +78,21 @@ export interface ActiveRecallPrompt {
   correct: string[];
 }
 
+/**
+ * Phase 8 — per-lesson AI conversation. Per PRODUCT-DESIGN.md §6.
+ * Optional in v1 since the 100 existing lessons aren't backfilled with
+ * scripted scenarios. When `phase8` is omitted, the lesson result screen
+ * still shows a generic "Practice with Rwen" teaser card; if the user
+ * has an AI tier, the conversation kicks off using the lesson title +
+ * chunks as auto-derived context.
+ */
+export interface Phase8Config {
+  scenario: string;          // "Greeting an elder at a Harare market at 7am"
+  rwenRole: string;          // "Market stall owner, ~50yo, kind"
+  successCriteria: string;   // "Used 'mamuka sei' (respectful), responded warmly"
+  estimatedMinutes: 2 | 3 | 4;
+}
+
 export interface LessonData {
   id: string;
   module: number;
@@ -105,4 +120,7 @@ export interface LessonData {
     task: string;
     rwenSignoff: string;
   };
+  /** Optional Phase 8 (per-lesson AI conversation). Lessons without this
+   *  fall back to an auto-generated context based on chunks + title. */
+  phase8?: Phase8Config;
 }
