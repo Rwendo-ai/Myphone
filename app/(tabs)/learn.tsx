@@ -1,78 +1,99 @@
-import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Pressable, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router, useFocusEffect } from 'expo-router';
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getUnitsForPack } from '../../data/lessons';
 import { useSettings } from '../../lib/SettingsContext';
 import { useProgress } from '../../hooks/useProgress';
 import { useDailyXpGoal } from '../../lib/preferences';
-import { COURSES } from '../../data/courses';
-import { CoursePackId } from '../../types/packs';
+import { CoursePack, CoursePackId } from '../../types/packs';
 import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
 
-type TrackType = 'language' | 'ai-companion' | 'travel';
+// The Learn tab is the "course hub". It surfaces only educational courses
+// (Languages, AI courses, Know Yourself). The AI Companion and Travel are
+// not courses — they live on their own tabs.
+type CourseCategory = 'languages' | 'ai-courses' | 'know-yourself';
+
+// v1 only ships language courses; AI courses and Know Yourself are placeholders
+// until their first course is authored. When a non-language educational course
+// pack is added, give it a meta.type that this map turns into the right category.
+function categoryForCourse(course: CoursePack): CourseCategory | null {
+  if (course.meta.type === 'language') return 'languages';
+  return null;
+}
+
+// Today's units table is keyed by legacy pack ID. Once non-language educational
+// courses ship, units should migrate to course-ID keys directly.
+function courseIdToLegacyPackId(courseId: CoursePackId): string | null {
+  if (courseId === 'language-shona')   return 'shona-english';
+  if (courseId === 'language-english') return 'english-shona';
+  return null;
+}
 
 export default function LearnScreen() {
   const { t } = useTranslation('learn');
   const { t: tCommon } = useTranslation('common');
-  const { activePack, spokenLanguage, learnedLanguage, courses, ownedCourseIds, starterCourseId } = useSettings();
+  const {
+    spokenLanguage, learnedLanguage,
+    courses, activeCourseId, setActiveCourseId,
+  } = useSettings();
   const { xp, streakDays, completedLessons, refresh } = useProgress();
   const { goal: dailyXpGoal } = useDailyXpGoal();
 
-  // Track selection: 'language' (default — show curriculum), 'ai-companion', 'travel'
-  const [selectedTrack, setSelectedTrack] = useState<TrackType>('language');
+  const educationalCourses = useMemo(
+    () => courses.filter(c => categoryForCourse(c) !== null),
+    [courses],
+  );
 
-  const units = getUnitsForPack(activePack.id);
+  const initialCategory: CourseCategory = useMemo(() => {
+    const active = educationalCourses.find(c => c.meta.id === activeCourseId);
+    return (active && categoryForCourse(active)) ?? 'languages';
+  }, [educationalCourses, activeCourseId]);
+
+  const [selectedCategory, setSelectedCategory] = useState<CourseCategory>(initialCategory);
+
+  const coursesInCategory = useMemo(
+    () => educationalCourses.filter(c => categoryForCourse(c) === selectedCategory),
+    [educationalCourses, selectedCategory],
+  );
+
+  const courseToShow = useMemo(
+    () => coursesInCategory.find(c => c.meta.id === activeCourseId) ?? coursesInCategory[0],
+    [coursesInCategory, activeCourseId],
+  );
+
+  const units = useMemo(() => {
+    if (!courseToShow) return [];
+    const legacy = courseIdToLegacyPackId(courseToShow.meta.id);
+    return legacy ? getUnitsForPack(legacy) : [];
+  }, [courseToShow]);
+
   const greeting = spokenLanguage.ui.greeting;
   const headerTitle = `${learnedLanguage.flag}  ${learnedLanguage.name}`;
   const dailyXpProgress = Math.min((xp % dailyXpGoal) / dailyXpGoal, 1);
 
-  // Tracks the user could see in this view, with their entitlement status
-  const tracks = [
-    {
-      type: 'language' as TrackType,
-      emoji: learnedLanguage.flag,
-      title: t('tab.tracks.language_title'),
-      sub: t('tab.tracks.language_sub', { lang: learnedLanguage.name }),
-      active: ownedCourseIds.includes('language-shona') || starterCourseId === 'language-shona',
-    },
-    {
-      type: 'ai-companion' as TrackType,
-      emoji: '🦎',
-      title: t('tab.tracks.companion_title'),
-      sub: t('tab.tracks.companion_sub'),
-      active: ownedCourseIds.includes('ai-companion'),
-      comingSoon: !COURSES['ai-companion'].meta.isActive,
-    },
-    {
-      type: 'travel' as TrackType,
-      emoji: '✈️',
-      title: t('tab.tracks.travel_title'),
-      sub: t('tab.tracks.travel_sub'),
-      active: false,
-      comingSoon: true,
-    },
+  const categories: Array<{ key: CourseCategory; emoji: string; label: string }> = [
+    { key: 'languages',     emoji: '🌍', label: t('tab.categories.languages') },
+    { key: 'ai-courses',    emoji: '🤖', label: t('tab.categories.ai_courses') },
+    { key: 'know-yourself', emoji: '🌱', label: t('tab.categories.know_yourself') },
   ];
 
-  const handleTrackTap = (track: typeof tracks[0]) => {
-    if (track.type === 'language') {
-      setSelectedTrack('language');
-      return;
-    }
-    if (track.type === 'ai-companion') {
-      if (track.comingSoon) return;
-      router.push('/(tabs)/companion');
-      return;
-    }
-    if (track.type === 'travel') {
-      router.push('/(tabs)/travel');
-      return;
-    }
+  const buyLabelKey: Record<CourseCategory, string> = {
+    'languages':     'tab.buy.language_course',
+    'ai-courses':    'tab.buy.ai_course',
+    'know-yourself': 'tab.buy.know_yourself_course',
   };
 
-  // Refresh progress every time this tab is focused (e.g. after completing a lesson)
+  const handleSelectCourse = (course: CoursePack) => {
+    if (course.meta.id !== activeCourseId) setActiveCourseId(course.meta.id);
+  };
+
+  const handleBuyAnother = () => {
+    Alert.alert(t('tab.buy.alert_title'), t('tab.buy.alert_body'));
+  };
+
   useFocusEffect(useCallback(() => { refresh(); }, [refresh]));
 
   return (
@@ -99,41 +120,68 @@ export default function LearnScreen() {
           </View>
         </View>
 
-        {/* Track selection cards (Phase G) */}
-        <Text style={styles.sectionTitle}>{t('tab.tracks_title')}</Text>
-        <View style={styles.trackRow}>
-          {tracks.map(track => (
-            <Pressable
-              key={track.type}
-              style={[
-                styles.trackCard,
-                track.type === selectedTrack && styles.trackCardSelected,
-                track.comingSoon && styles.trackCardLocked,
-              ]}
-              onPress={() => handleTrackTap(track)}
-              disabled={track.comingSoon && track.type !== 'travel'}
-            >
-              <Text style={styles.trackEmoji}>{track.emoji}</Text>
-              <Text style={[styles.trackTitle, track.comingSoon && styles.lockedText]}>{track.title}</Text>
-              <Text style={[styles.trackSub, track.comingSoon && styles.lockedText]}>{track.sub}</Text>
-              {track.comingSoon && (
-                <View style={styles.trackBadge}>
-                  <Text style={styles.trackBadgeText}>{t('tab.tracks.soon')}</Text>
-                </View>
-              )}
-            </Pressable>
-          ))}
+        <Text style={styles.sectionTitle}>{t('tab.categories_title')}</Text>
+        <View style={styles.categoryRow}>
+          {categories.map(cat => {
+            const selected = cat.key === selectedCategory;
+            return (
+              <Pressable
+                key={cat.key}
+                style={[styles.categoryCard, selected && styles.categoryCardSelected]}
+                onPress={() => setSelectedCategory(cat.key)}
+              >
+                <Text style={styles.categoryEmoji}>{cat.emoji}</Text>
+                <Text style={[styles.categoryLabel, selected && styles.categoryLabelSelected]}>{cat.label}</Text>
+              </Pressable>
+            );
+          })}
         </View>
 
-        {selectedTrack !== 'language' ? null : units.length === 0 ? (
+        <View style={styles.coursePillSection}>
+          {coursesInCategory.map(course => {
+            const isActive = course.meta.id === (courseToShow?.meta.id ?? null);
+            return (
+              <Pressable
+                key={course.meta.id}
+                style={[styles.coursePill, isActive && styles.coursePillActive]}
+                onPress={() => handleSelectCourse(course)}
+              >
+                <Text style={styles.coursePillEmoji}>{course.meta.emoji}</Text>
+                <Text style={[styles.coursePillLabel, isActive && styles.coursePillLabelActive]}>
+                  {course.meta.displayName}
+                </Text>
+                {isActive && <Text style={styles.coursePillCheck}>✓</Text>}
+              </Pressable>
+            );
+          })}
+          <Pressable style={styles.buyAnotherPill} onPress={handleBuyAnother}>
+            <Text style={styles.buyAnotherLabel}>{t(buyLabelKey[selectedCategory])}</Text>
+          </Pressable>
+        </View>
+
+        {coursesInCategory.length === 0 ? (
+          <View style={styles.comingSoon}>
+            <Text style={styles.comingSoonEmoji}>
+              {selectedCategory === 'ai-courses' ? '🤖' : '🌱'}
+            </Text>
+            <Text style={styles.comingSoonTitle}>
+              {t(selectedCategory === 'ai-courses'
+                ? 'tab.empty_category.ai_courses_title'
+                : 'tab.empty_category.know_yourself_title')}
+            </Text>
+            <Text style={styles.comingSoonSub}>
+              {t(selectedCategory === 'ai-courses'
+                ? 'tab.empty_category.ai_courses_body'
+                : 'tab.empty_category.know_yourself_body')}
+            </Text>
+          </View>
+        ) : units.length === 0 ? (
           <View style={styles.comingSoon}>
             <Text style={styles.comingSoonEmoji}>{learnedLanguage.flag}</Text>
             <Text style={styles.comingSoonTitle}>
               {t('tab.coming_soon_title', { lang: learnedLanguage.name })}
             </Text>
-            <Text style={styles.comingSoonSub}>
-              {t('tab.coming_soon_sub')}
-            </Text>
+            <Text style={styles.comingSoonSub}>{t('tab.coming_soon_sub')}</Text>
           </View>
         ) : (
           <>
@@ -221,6 +269,69 @@ const styles = StyleSheet.create({
     paddingHorizontal: Spacing.lg,
     paddingVertical: Spacing.md,
   },
+  categoryRow: {
+    flexDirection: 'row',
+    gap: Spacing.sm,
+    paddingHorizontal: Spacing.lg,
+    marginBottom: Spacing.md,
+  },
+  categoryCard: {
+    flex: 1,
+    backgroundColor: Colors.white,
+    borderRadius: BorderRadius.lg,
+    paddingVertical: Spacing.md,
+    paddingHorizontal: Spacing.sm,
+    alignItems: 'center',
+    gap: 6,
+    borderWidth: 2,
+    borderColor: Colors.white,
+    shadowColor: Colors.black,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.06,
+    shadowRadius: 4,
+    elevation: 1,
+  },
+  categoryCardSelected: { borderColor: Colors.primary, backgroundColor: '#EFF6FF' },
+  categoryEmoji: { fontSize: 26 },
+  categoryLabel: { fontSize: FontSize.sm, fontWeight: FontWeight.bold, color: Colors.gray[700], textAlign: 'center' },
+  categoryLabelSelected: { color: Colors.primary },
+  coursePillSection: {
+    paddingHorizontal: Spacing.lg,
+    gap: Spacing.sm,
+    marginBottom: Spacing.md,
+  },
+  coursePill: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: Colors.white,
+    borderRadius: BorderRadius.lg,
+    paddingHorizontal: Spacing.md,
+    paddingVertical: Spacing.md,
+    gap: Spacing.sm,
+    borderWidth: 2,
+    borderColor: Colors.white,
+    shadowColor: Colors.black,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.06,
+    shadowRadius: 4,
+    elevation: 1,
+  },
+  coursePillActive: { borderColor: Colors.primary },
+  coursePillEmoji: { fontSize: 24 },
+  coursePillLabel: { flex: 1, fontSize: FontSize.md, fontWeight: FontWeight.bold, color: Colors.gray[800] },
+  coursePillLabelActive: { color: Colors.primary },
+  coursePillCheck: { fontSize: FontSize.md, color: Colors.primary, fontWeight: FontWeight.bold },
+  buyAnotherPill: {
+    backgroundColor: 'transparent',
+    borderRadius: BorderRadius.lg,
+    paddingHorizontal: Spacing.md,
+    paddingVertical: Spacing.md,
+    borderWidth: 1,
+    borderColor: Colors.gray[300],
+    borderStyle: 'dashed',
+    alignItems: 'center',
+  },
+  buyAnotherLabel: { fontSize: FontSize.sm, color: Colors.gray[600], fontWeight: FontWeight.medium },
   unitCard: {
     flexDirection: 'row',
     backgroundColor: Colors.white,
@@ -236,26 +347,6 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   unitCardLocked: { opacity: 0.6 },
-  trackRow: {
-    flexDirection: 'row', gap: Spacing.sm,
-    paddingHorizontal: Spacing.lg, marginBottom: Spacing.md,
-  },
-  trackCard: {
-    flex: 1,
-    backgroundColor: Colors.white, borderRadius: BorderRadius.lg,
-    padding: Spacing.md, gap: 4,
-    borderWidth: 2, borderColor: Colors.white,
-    shadowColor: Colors.black, shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.06, shadowRadius: 4, elevation: 1,
-    alignItems: 'flex-start', position: 'relative',
-  },
-  trackCardSelected: { borderColor: Colors.primary, backgroundColor: '#EFF6FF' },
-  trackCardLocked: { opacity: 0.6 },
-  trackEmoji: { fontSize: 24 },
-  trackTitle: { fontSize: FontSize.sm, fontWeight: FontWeight.bold, color: Colors.gray[800] },
-  trackSub: { fontSize: FontSize.xs, color: Colors.gray[500] },
-  trackBadge: { position: 'absolute', top: 6, right: 6, backgroundColor: Colors.gray[200], paddingHorizontal: 6, paddingVertical: 2, borderRadius: BorderRadius.full },
-  trackBadgeText: { fontSize: 9, color: Colors.gray[600], fontWeight: FontWeight.bold },
   unitEmoji: {
     width: 56, height: 56,
     backgroundColor: Colors.accent,

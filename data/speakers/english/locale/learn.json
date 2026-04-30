@@ -6,15 +6,24 @@
     "unit_progress": "{{completed}}/{{total}} done",
     "coming_soon_title": "{{lang}} curriculum coming soon",
     "coming_soon_sub": "We're building the lessons now. Check back soon!",
-    "tracks_title": "Tracks",
-    "tracks": {
-      "language_title": "Language",
-      "language_sub": "Learn {{lang}}",
-      "companion_title": "AI Companion",
-      "companion_sub": "Talk with Rwen",
-      "travel_title": "Travel",
-      "travel_sub": "Zimbabwe guide",
-      "soon": "SOON"
+    "categories_title": "Courses",
+    "categories": {
+      "languages": "Languages",
+      "ai_courses": "AI courses",
+      "know_yourself": "Know Yourself"
+    },
+    "buy": {
+      "language_course": "+ Buy another language course",
+      "ai_course": "+ Buy another AI course",
+      "know_yourself_course": "+ Buy another Know Yourself course",
+      "alert_title": "Coming soon",
+      "alert_body": "The course store opens in the next release."
+    },
+    "empty_category": {
+      "ai_courses_title": "AI courses are coming",
+      "ai_courses_body": "First course launches soon. We'll let you know when it's ready.",
+      "know_yourself_title": "Know Yourself is coming",
+      "know_yourself_body": "First course launches soon. We'll let you know when it's ready."
     }
   },
   "screen_header": {
