@@ -8,7 +8,7 @@ import RwenImage from '../../components/rwen/RwenImage';
 import { useAuth } from '../../lib/AuthContext';
 import { deleteAccount } from '../../lib/progress';
 import { useProgress } from '../../hooks/useProgress';
-import { useSettings, RWEN_VOICES, RwenVoiceKey } from '../../lib/SettingsContext';
+import { useSettings, RwenVoiceKey } from '../../lib/SettingsContext';
 import { useDailyXpGoal, useDailyReminders } from '../../lib/preferences';
 import { pickAndUploadAvatar } from '../../lib/storage';
 import { supabase } from '../../lib/supabase';
@@ -51,7 +51,7 @@ export default function ProfileScreen() {
     : 'en';
   const { user, signOut } = useAuth();
   const { xp, streakDays, username, completedLessons, refresh } = useProgress();
-  const { rwenVoice, setRwenVoice, learnedLanguage, spokenLanguage, theme, setThemeId, avatarUrl, setAvatarUrl } = useSettings();
+  const { rwenVoice, setRwenVoice, learnedLanguage, spokenLanguage, theme, setThemeId, avatarUrl, setAvatarUrl, speaker, jurisdiction } = useSettings();
   const { goal: dailyXpGoal } = useDailyXpGoal();
   const { enabled: remindersOn, setEnabled: setRemindersOn } = useDailyReminders();
   const [uploadingAvatar, setUploadingAvatar] = useState(false);
@@ -210,19 +210,22 @@ export default function ProfileScreen() {
             </View>
           </Section>
 
-          {/* Rwen's Voice */}
+          {/* Rwen's Voice — voice options are speaker-pack-curated. A Shona
+              speaker sees Shona-friendly voices, English speaker sees English
+              voices. v1 both packs use the same 4 IDs (multilingual v2);
+              v1.x adds a custom Shona clone. */}
           <Section title={t('profile.sections.rwens_voice')}>
             <View style={styles.voiceGrid}>
-              {(Object.keys(RWEN_VOICES) as RwenVoiceKey[]).map((key) => (
+              {speaker.voices.map((voice) => (
                 <Pressable
-                  key={key}
-                  style={[styles.voiceCard, rwenVoice === key && styles.voiceCardActive]}
-                  onPress={() => setRwenVoice(key)}
+                  key={voice.key}
+                  style={[styles.voiceCard, rwenVoice === voice.key && styles.voiceCardActive]}
+                  onPress={() => setRwenVoice(voice.key as RwenVoiceKey)}
                 >
-                  <Text style={styles.voiceGender}>{key.startsWith('female') ? '👩' : '👨'}</Text>
-                  <Text style={[styles.voiceName, rwenVoice === key && styles.voiceNameActive]}>{t(`profile.voices.${key}.name`)}</Text>
-                  <Text style={styles.voiceDesc}>{t(`profile.voices.${key}.description`)}</Text>
-                  {rwenVoice === key && <Text style={styles.voiceCheck}>✓</Text>}
+                  <Text style={styles.voiceGender}>{voice.gender === 'female' ? '👩' : '👨'}</Text>
+                  <Text style={[styles.voiceName, rwenVoice === voice.key && styles.voiceNameActive]}>{voice.name}</Text>
+                  <Text style={styles.voiceDesc}>{voice.description}</Text>
+                  {rwenVoice === voice.key && <Text style={styles.voiceCheck}>✓</Text>}
                 </Pressable>
               ))}
             </View>
