@@ -5,6 +5,8 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { SettingsProvider, useSettings, RwenVoiceKey } from '../lib/SettingsContext';
 import { AuthProvider, useAuth } from '../lib/AuthContext';
 import { supabase } from '../lib/supabase';
+import '../lib/i18n';
+import { setAppLanguage } from '../lib/i18n';
 
 // Loads user profile settings (theme, avatar, voice) from Supabase after login
 function ProfileLoader() {
@@ -15,7 +17,7 @@ function ProfileLoader() {
     if (!user) return;
     supabase
       .from('profiles')
-      .select('theme_id, avatar_url, rwen_voice_key')
+      .select('theme_id, avatar_url, rwen_voice_key, app_language')
       .eq('id', user.id)
       .single()
       .then(({ data }) => {
@@ -23,6 +25,7 @@ function ProfileLoader() {
         if (data.theme_id)      setThemeId(data.theme_id);
         if (data.avatar_url)    setAvatarUrl(data.avatar_url);
         if (data.rwen_voice_key) setRwenVoice(data.rwen_voice_key as RwenVoiceKey);
+        if (data.app_language)  setAppLanguage(data.app_language);
       });
   }, [user?.id]);
 

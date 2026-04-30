@@ -3,6 +3,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { router, useFocusEffect } from 'expo-router';
 import { useCallback } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useTranslation } from 'react-i18next';
 import RwenImage from '../../components/rwen/RwenImage';
 import { useAuth } from '../../lib/AuthContext';
 import { useSettings } from '../../lib/SettingsContext';
@@ -34,6 +35,7 @@ function getRwenTip(completedCount: number): string {
 }
 
 export default function HomeScreen() {
+  const { t } = useTranslation('common');
   const { user } = useAuth();
   const { activePack, learnedLanguage, theme } = useSettings();
   const { xp, streakDays, username, completedLessons, refresh } = useProgress();
@@ -83,17 +85,17 @@ export default function HomeScreen() {
           <View style={styles.statsRow}>
             <View style={styles.statItem}>
               <Text style={styles.statValue}>{xp}</Text>
-              <Text style={styles.statLabel}>XP</Text>
+              <Text style={styles.statLabel}>{t('stats.xp')}</Text>
             </View>
             <View style={styles.statDivider} />
             <View style={styles.statItem}>
               <Text style={styles.statValue}>🔥 {streakDays}</Text>
-              <Text style={styles.statLabel}>Streak</Text>
+              <Text style={styles.statLabel}>{t('stats.streak')}</Text>
             </View>
             <View style={styles.statDivider} />
             <View style={styles.statItem}>
               <Text style={styles.statValue}>{completedCount}</Text>
-              <Text style={styles.statLabel}>Lessons</Text>
+              <Text style={styles.statLabel}>{t('stats.lessons')}</Text>
             </View>
             <View style={styles.statDivider} />
             <View style={styles.statItem}>
