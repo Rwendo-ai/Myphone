@@ -16,9 +16,13 @@ When adding a new .md file:
 
 | File | Description | Last Updated |
 |---|---|---|
-| [PROJECT_OVERVIEW.md](../PROJECT_OVERVIEW.md) | Build status, tech stack, done/todo list | 2026-04-30 |
+| [PROJECT_OVERVIEW.md](../PROJECT_OVERVIEW.md) | Build status, tech stack, done/todo list | 2026-05-01 |
+| [PRODUCT-DESIGN.md](./PRODUCT-DESIGN.md) | Three-pack architecture (speaker × course × jurisdiction), pricing, roadmap | 2026-05-01 |
 | [LEGAL-REQUIREMENTS.md](./LEGAL-REQUIREMENTS.md) | Full legal research (Apple, Google, GDPR, COPPA, BIPA, AU) | 2026-04-30 |
-| [DATABASE-DESIGN.md](./DATABASE-DESIGN.md) | Database schema, tables, functions, best practices | 2026-04-30 |
+| [DATABASE-DESIGN.md](./DATABASE-DESIGN.md) | Database schema (v3), tables, functions, migration plan | 2026-04-30 |
+| [PHASE-H-REVENUECAT.md](./PHASE-H-REVENUECAT.md) | Phase H deployment plan — what to do when accounts are ready | 2026-05-01 |
+| [supabase-migrations/005-three-pack-architecture.sql](./supabase-migrations/005-three-pack-architecture.sql) | v3 schema migration — **needs run in Supabase SQL Editor** | 2026-04-30 |
+| [supabase/functions/README.md](../supabase/functions/README.md) | Edge function deployment instructions | 2026-05-01 |
 
 ---
 

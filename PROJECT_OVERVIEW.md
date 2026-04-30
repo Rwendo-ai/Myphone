@@ -152,15 +152,31 @@ See: docs/DATABASE-DESIGN.md for full schema.
 
 ---
 
-## ✅ DONE
+## ✅ DONE — Phases A through N landed (Phase H is plan-only)
 
-### Architecture (Phases A-D)
-- ✅ `bdf4dd7` Phase A: lesson schema rename `target`/`native` (was `shona`/`english`) — 1994 keys across 100 files
-- ✅ `afa9f66` Phase B: pack-aware curriculum loading via `getCurriculumLesson(packId, lessonId)`
-- ✅ `093b98b`/`2a160b6`/`66ca95c`/`9d208e3` Phase C: i18next + en locale extraction (~250 strings)
+### Architecture (A → E.0)
+- ✅ `bdf4dd7` **Phase A** — lesson schema rename `target`/`native` (1994 keys across 100 files)
+- ✅ `afa9f66` **Phase B** — pack-aware curriculum loading
+- ✅ `093b98b` / `2a160b6` / `66ca95c` / `9d208e3` **Phase C** — i18next + en locale extraction
 - ✅ `e92e3f6` tsc cleanup — project type-clean
-- ✅ `8904538`/`74ab471` Phase D: Shona (sn) UI translation drafted with `__warnings`. Awaiting native review.
-- ✅ `42e5ccc` In-app App Language switcher (Profile → flips locale instant + persists)
+- ✅ `8904538` / `74ab471` **Phase D** — Shona (sn) UI translation drafted with `__warnings`. Awaiting native review.
+- ✅ `42e5ccc` In-app App Language switcher
+- ✅ `44cf85f` design rewrite — three-pack model in `PRODUCT-DESIGN.md` / `PROJECT_OVERVIEW.md` / `DATABASE-DESIGN.md`
+- ✅ `698ef21` **Phase E.0** — three-pack architecture refactor (`data/speakers/`, `data/courses/`, `data/jurisdictions/`)
+- ✅ `8336e0f` Profile voice picker reads `speaker.voices`
+- ✅ `8292485` DB migration `005-three-pack-architecture.sql` — **needs run in Supabase SQL Editor**
+
+### Phase E → N
+- ✅ `84e6121` **Phase E** — module gating + `DEV_UNLOCK_ALL` + `scripts/create-demo-account.md`
+- ✅ `2671af2` **Phase I** — onboarding jurisdiction step + dynamic `minAge`
+- ✅ `f50e85c` **Phase G** — Learn tab track selector (Language / AI Companion / Travel cards)
+- ✅ `b6a2a7e` **Phase F** — Phase 8 schema + lesson-completion teaser card
+- ✅ `ea8d66b` **Phase L** — methodology + companion-philosophy in-app screens
+- ✅ `0993016` **Phase J** — AI Companion English content (10 starter cards, 6 Topics, 5 depth levels, 30 memory facts, crisis triggers); Shona variant stubbed for K
+- ✅ `b045fe5` **Phase K stub** — `language-english/shona/curriculum/m01-l01.ts` example proves second variant works
+- ✅ `4807f60` **Phase M (code)** — `rwen-chat`, `rwen-tts`, `rwen-stt` edge functions + `EXPO_PUBLIC_USE_EDGE_FUNCTIONS` flag. **Functions need deploy** before TestFlight.
+- ✅ `2c1db1f` **Phase N** — legal screens read `jurisdiction.{name, coolingOffDays}`; per-region banner; lawyer fills text into `jurisdiction.privacyPolicyMd` / `.termsOfServiceMd`
+- 🔶 `746c030` **Phase H plan** — `docs/PHASE-H-REVENUECAT.md`. External-account-blocked. Architecture is RevenueCat-shaped.
 
 ### Core
 - Expo app running on Samsung S23 Ultra via phone hotspot WiFi
@@ -203,39 +219,41 @@ See: docs/DATABASE-DESIGN.md for full schema.
 
 ---
 
-## ⬜ TODO — In Phase Order (per docs/PRODUCT-DESIGN.md §8)
+## ⬜ TODO
 
-### 🔴 Phase E.0 — Three-pack architecture refactor (CURRENT PRIORITY)
-The load-bearing restructure. Until this lands, every per-language fix is a band-aid that creates new leaks.
-- New types: `SpeakerPack`, `CoursePack`, `JurisdictionPack`, `RuntimePackContext`
-- New file layout: `data/speakers/<id>/`, `data/courses/<course-id>/<speaker-id>/`, `data/jurisdictions/<id>/`
-- Move `locales/<id>/` → `data/speakers/<id>/locale/`
-- Move `data/curriculum/shona-english/` → `data/courses/language-shona/english/curriculum/`
-- Move hardcoded English Claude prompt out of `lib/claude.ts` → `data/speakers/english/ai-system-prompt.ts`; author Shona equivalent
-- `useSettings()` exposes `{ speaker, courses[], jurisdiction, activeCourseId }`
-- Update onboarding to write `speaker_pack_id`, `active_course_ids`, `jurisdiction_id` (new columns)
-- Fix the leaks: parameterise onboarding learn-questions with `{{lang}}`, make home greeting hero pack-aware, AI prompt speaker-pack-driven, tips per-speaker
-- ~2 working days
+### 🔴 External work (blocked on user)
+1. **Run `005-three-pack-architecture.sql`** in Supabase SQL Editor. Until this runs, new sign-ups don't get the v3 profile fields populated automatically. Code falls back to legacy fields so the app still works pre-migration.
+2. **Deploy 3 edge functions** (`rwen-chat`, `rwen-tts`, `rwen-stt`) + set `ANTHROPIC_KEY` / `ELEVENLABS_KEY` Supabase secrets. After verify, set `EXPO_PUBLIC_USE_EDGE_FUNCTIONS=1` and remove `EXPO_PUBLIC_CLAUDE_KEY` / `EXPO_PUBLIC_ELEVENLABS_KEY` from production `.env`. **HARD PREREQUISITE** before TestFlight / Play Internal Testing.
+3. **Native-Shona reviewer pass** on the sn locale `__warnings` (Phase D follow-up)
+4. **Phase H accounts** — Apple Developer ($149 AUD/yr) + Google Play Console ($30 USD) + RevenueCat. Then Phase H wiring per `docs/PHASE-H-REVENUECAT.md`.
+5. **Lawyer review** of Privacy Policy + Terms of Service per jurisdiction. Authored markdown drops into `data/jurisdictions/<id>/{privacyPolicyMd, termsOfServiceMd}`.
+6. **EAS Build** — for `@elevenlabs/react-native` real-time + App Store / Play Store submission.
+7. **App Store assets** — icons all sizes, screenshots, descriptions.
 
-### 🔴 Critical post-E.0
-1. Phase E — Module gating + dev unlock flag + demo account script
-2. Phase F — Per-lesson AI conversation (Phase 8 of Rwendo Method)
-3. Phase G — Two-track Learn tab (Language / AI Companion as separate cards)
-4. Phase H — RevenueCat wiring (5 tiers + 5 jurisdictions' currency)
-5. Phase I — Onboarding refinements (largely subsumed by E.0)
-6. Phase J — AI Companion course content (starter cards + Topics + memory infra)
-7. Phase K — Second speaker variants (`language-english/shona/`, `ai-companion/shona/`)
-8. Phase L — In-app methodology screens
-9. Phase M — Move API keys server-side (HARD PREREQUISITE for any external testing)
-10. Phase N — Jurisdiction packs populated for non-AU regions (lawyer-fillable)
+### 🟡 Authoring backlog (deferred)
+- Phase K: ~99 remaining `language-english/shona/curriculum/` lessons (Shona-speaker-learning-English curriculum). Pipeline per PRODUCT-DESIGN.md §4.4.
+- Phase K: full Shona AI Companion variant content (starter cards, topics, memory schema). Currently re-exports English with the speakerId swapped.
+- Phase F: per-lesson `phase8` scripted scenarios on the existing 100 Shona lessons. v1 fallback uses lesson title as auto-context.
+- Phase D: home tip mirrors for any speaker pack added beyond English / Shona.
 
-### 🔴 External requirements (in parallel)
-- Native-Shona reviewer pass on the sn locale `__warnings` (Phase D follow-up)
-- **EAS Build** — for @elevenlabs/react-native real-time + App Store / Play Store submission
-- **Apple Developer account** ($149 AUD/yr) + **Google Play Console** ($30 USD)
-- **App Store assets** — icons all sizes, screenshots, descriptions
-- **Lawyer review** of Privacy Policy + Terms of Service per jurisdiction
-- **Voice consent checkbox** before first mic use (BIPA legal requirement, US Illinois)
+### 🟢 Post-launch (v1.x)
+- ElevenLabs real-time conversation (after EAS Build): voice-signed-url Edge Function, hands-free call UI.
+- Custom Shona voice clone (~$1-2k recording session).
+- Forex alignment of pricing per jurisdiction (Phase H likely handles via RevenueCat localised pricing).
+- Memory-extraction Claude job for AI Companion (periodic pass over `conversations` → `companion_memory` JSONB).
+- Memory UI panel inside Companion tab.
+- Crisis-trigger detection wired into `processMessage` before Claude call (composes course pack + jurisdiction pack).
+- Voice consent checkbox before first mic use (BIPA, US Illinois).
+- Lazy-load packs from Supabase Storage (when speaker count > 10).
+- Sentry + PostHog before any wider beta.
+
+### 🟢 Phase 2
+- Sync.io avatar lipsync at Premium tier
+- ElevenLabs Conversational AI (Custom LLM webhook) at Companion tier
+- Travel section content (per-jurisdiction destination guides)
+- Community features
+- Children's Family Plan (parental consent flow)
+- SRS review mode
 
 ### 🟡 Important (post-launch v1.x)
 - ElevenLabs real-time conversation (after EAS Build): voice-signed-url Edge Function, hands-free call UI

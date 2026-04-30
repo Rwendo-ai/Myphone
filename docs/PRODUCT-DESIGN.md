@@ -1026,33 +1026,50 @@ The phrase list lives in `data/courses/ai-companion/<speaker>/crisis-triggers.ts
 
 What's done (commits in chronological order):
 
+**A → D + tsc cleanup**
 - `bdf4dd7` Phase A: lesson schema rename target/native — all 100 curriculum files migrated
-- `afa9f66` Phase B: pack-aware curriculum loading via `getCurriculumLesson(packId, lessonId)`
+- `afa9f66` Phase B: pack-aware curriculum loading
 - `093b98b` Phase C.1: i18n infrastructure
-- `2a160b6` Phase C.2.a: extract strings from main tabs
-- `66ca95c` Phase C.2.b: extract strings from auth flows
-- `9d208e3` Phase C.2.c: extract strings from profile sub-screens, lesson chrome, components
-- `e92e3f6` tsc cleanup — project type-clean, all 5 historical errors cleared
-- `8904538` Phase D: Shona (sn) UI translation drafted with `__warnings` for native review
-- `74ab471` Phase D fix: home tips rewritten as Shona-chrome around English content (mirror, not translate)
-- `42e5ccc` In-app App Language switcher (instant flip + persists; pulled forward from Phase I)
+- `2a160b6` Phase C.2.a: main tabs strings
+- `66ca95c` Phase C.2.b: auth flows strings
+- `9d208e3` Phase C.2.c: profile sub-screens, lesson chrome, components strings
+- `e92e3f6` tsc cleanup — project type-clean
+- `8904538` Phase D: Shona (sn) UI translation drafted with `__warnings`
+- `74ab471` Phase D fix: home tips mirror-not-translate
+- `42e5ccc` In-app App Language switcher
 
-What's NOT done:
+**Three-pack architecture**
+- `44cf85f` design rewrite — `PRODUCT-DESIGN.md` / `PROJECT_OVERVIEW.md` / `DATABASE-DESIGN.md` updated to three-pack model
+- `698ef21` Phase E.0: code refactor — `data/speakers/`, `data/courses/`, `data/jurisdictions/`, `useSettings()` v3 surface
+- `8336e0f` Profile voice picker reads `speaker.voices`
+- `8292485` DB migration `005-three-pack-architecture.sql` — **needs run in Supabase SQL Editor**
 
-- Phase E.0 (three-pack architecture refactor) — **next priority, unblocks everything**
-- Phase E (gating) — needs E.0
-- Phase F (per-lesson Phase 8 AI conversation)
-- Phase G (two-track Learn tab)
-- Phase H (RevenueCat)
-- Phase I (onboarding refinements — most of it subsumed by E.0)
-- Phase J (AI Companion course content + memory infra)
-- Phase K (second speaker × course variants)
-- Phase L (in-app methodology screens)
-- Phase M (API keys server-side) — **HARD PREREQUISITE for any external testing**
-- Phase N (jurisdiction packs populated for non-AU regions)
-- Native-Shona reviewer pass on the sn locale draft (Phase D follow-up)
+**Phase E → N**
+- `84e6121` Phase E: module gating + DEV_UNLOCK_ALL + demo account doc
+- `2671af2` Phase I: jurisdiction step in onboarding + dynamic minAge
+- `f50e85c` Phase G: Learn tab track selector (Language / AI Companion / Travel cards)
+- `b6a2a7e` Phase F: Phase 8 schema + lesson-completion teaser card
+- `ea8d66b` Phase L: methodology + companion-philosophy screens
+- `0993016` Phase J: AI Companion English content authored (10 cards, 6 Topics, 5 levels, 30-fact memory schema, crisis triggers)
+- `b045fe5` Phase K stub: language-english/shona/m01-l01.ts proves second variant works
+- `4807f60` Phase M (code): rwen-chat / rwen-tts / rwen-stt edge functions + opt-in client wiring
+- `2c1db1f` Phase N (architecture): legal screens read jurisdiction.{name, coolingOffDays}
+- `746c030` Phase H plan: `docs/PHASE-H-REVENUECAT.md` (external-account-blocked)
 
-The Phase E.0 refactor is the load-bearing one. After it lands, the rest of the roadmap fits cleanly because every remaining phase keys on the three-pack composition model rather than scattered hardcodes.
+**External work blocked on user**
+
+- Run `005-three-pack-architecture.sql` in Supabase SQL Editor.
+- Deploy 3 edge functions + set `ANTHROPIC_KEY` / `ELEVENLABS_KEY` secrets. Then flip `EXPO_PUBLIC_USE_EDGE_FUNCTIONS=1` and remove client-side keys.
+- Native-Shona reviewer pass on the sn locale `__warnings`.
+- Phase H accounts (Apple Developer + Play Console + RevenueCat).
+- Lawyer pass on per-region Privacy / Terms of Service.
+
+**Authoring backlog** (deferred per content scope)
+
+- Phase K: 99 remaining `language-english/shona/curriculum/` lessons + full Shona AI Companion variant.
+- Phase F: per-lesson `phase8` scripted scenarios on the 100 existing Shona lessons.
+
+The architecture is in place. What remains is content authoring + external services + content review.
 
 **Phase A is ready to start when you say "Phase A go".** It's a clean, mechanical 1-2 day chunk:
 1. Rename `Chunk.shona` → `Chunk.target`, `Chunk.english` → `Chunk.native`. Same for `DialogueLine`, `PatternExample`, `ActiveRecallPrompt`.
