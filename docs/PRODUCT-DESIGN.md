@@ -536,10 +536,12 @@ This is the **minimum** code path to ship the design above. Phases are roughly e
 
 ### Phase E — Module gating
 
-- Add `entitlement.ts` lib: `canAccessLesson(userId, lessonId, packId)` returns `{ allowed: boolean, reason: 'free' | 'subscription_required' | 'pack_required' }`.
-- For modules 1-4 of starter pack: free. For modules 5-10: requires `Learner` tier or above. For any non-starter pack: requires that pack's `user_packs` row.
+- Add `lib/entitlements.ts`: `canAccessLesson(userId, lessonId, packId)` returns `{ allowed: boolean, reason: 'free' | 'subscription_required' | 'pack_required' }`.
+- For modules 1-4 of *starter* pack (the first pack the user ever activates): free. For modules 5-10: requires Text AI tier or above. For any non-starter pack: requires that pack's `user_packs` row.
 - Lesson screen shows locked state with CTA to `/profile/plans`.
 - Wire `subscriptions.active_tier` into the entitlement check.
+- **Add dev bypass**: `constants/dev.ts` exports `DEV_UNLOCK_ALL = process.env.EXPO_PUBLIC_DEV_UNLOCK_ALL === '1'`. `canAccessLesson` and every other gate short-circuits to `{ allowed: true }` when this flag is on. Set in `.env.local` for development; omit from production EAS builds. No runtime UI; can't be triggered by accident in a shipped build.
+- **Add demo-account flow**: a documented Supabase admin script that creates a synthetic user with `subscriptions.active_tier = 'premium'` and rows in `user_packs` for every pack. Useful for testing real gating logic without bypasses. Lives at `scripts/create-demo-account.ts`.
 
 ### Phase F — Phase 8 (AI conversation in lesson)
 
@@ -591,6 +593,22 @@ This is the **minimum** code path to ship the design above. Phases are roughly e
 - "Why this works" card on Learn tab → links to methodology
 - About screen gets a section linking to both
 - Total: ~1 day
+
+### Phase M — Move API keys server-side (BLOCKER for any external testing)
+
+**This is non-negotiable before giving the app to anyone, even one trusted tester.** Right now `lib/claude.ts` and `lib/voice.ts` call Anthropic and ElevenLabs APIs directly from the client with the keys baked into the bundle via `.env`. The first technically curious person who unzips the APK can extract those keys and run up bills on your accounts. RN bundles are inherently extractable; assume any client-side key is already public.
+
+The Supabase Edge Function pattern already exists for one path (`rwen-conversation` proxies Claude). Extend it:
+
+- **`rwen-tts` Edge Function**: accepts text + voice_id, calls ElevenLabs TTS server-side, returns audio.
+- **`rwen-stt` Edge Function**: accepts audio blob, calls ElevenLabs STT server-side, returns transcript.
+- **`rwen-chat` Edge Function**: accepts user message + conversation history, calls Claude server-side, returns reply. Replaces the direct Anthropic call in `lib/claude.ts`.
+- All three enforce auth (require valid Supabase JWT), apply rate limiting, and check `subscriptions` for quota before forwarding the call.
+- `lib/claude.ts` and `lib/voice.ts` become thin wrappers that hit Supabase instead of provider APIs.
+- Remove `EXPO_PUBLIC_ANTHROPIC_KEY` and `EXPO_PUBLIC_ELEVENLABS_KEY` from `.env` entirely. Only `EXPO_PUBLIC_SUPABASE_URL` and `EXPO_PUBLIC_SUPABASE_ANON_KEY` remain (the anon key is safe in the client because RLS protects data).
+- Total: ~2 days.
+
+**Phase M ordering**: must be done before Phase H (RevenueCat) and before any TestFlight / Play Internal Testing distribution. Recommend slotting it immediately after Phase F (Phase 8 / AI conversation per lesson), so the AI plumbing is solid in one place before paywalls are wired around it.
 
 ### Total (revised after 2026-04-30 decisions)
 
@@ -649,7 +667,57 @@ If you want to revisit this when you cross $2.5k/mo, Adapty becomes a defensible
 
 ---
 
-## 11. What I am not doing right now
+## 11. Distribution & beta testing
+
+Three concentric rings of distribution, in order of formality.
+
+### Ring 1 — Solo developer testing (today)
+
+Run on your Samsung S23 Ultra via Expo Go (`expo start`) on the local network. No formal distribution. **API keys exposed locally** — fine while only you have access.
+
+### Ring 2 — Trusted internal testers (5-10 people)
+
+Use **EAS Build with internal distribution**:
+
+```
+eas build --profile internal --platform android
+eas build --profile internal --platform ios   # requires Apple Developer ($149)
+```
+
+Generates an APK + a shareable install link. Friend/family testers click the link, install on their device. Less formal than store distribution; the file *can* be reshared, but for a small trusted circle this is fine.
+
+**Mandatory before this ring:**
+- ✅ Phase M (API keys server-side) — otherwise testers can extract keys
+- ✅ Crash logging (Sentry) — you'll want to see what breaks on their devices
+- ✅ A simple beta NDA in writing — legal recourse if anyone leaks
+
+### Ring 3 — Open beta (50-1000 people)
+
+Use **TestFlight (iOS)** + **Google Play Internal Testing track**:
+- Apple Developer Account ($149/yr) → TestFlight: invite by email/Apple ID, max 10,000 testers, builds expire 90 days, no IPA leaks (delivered through TestFlight app).
+- Google Play Console ($30 one-off) → Internal Testing track: invite by email, max 100 testers, no expiry, delivered through Play Store so testers can't redistribute.
+- Both platforms enforce non-redistribution at the OS level. This is the strongest distribution control you'll get short of full launch.
+
+**Mandatory before this ring:**
+- ✅ Everything from Ring 2
+- ✅ Privacy Policy + Terms hosted at public URLs (rwendo.app/privacy etc.) — required by both stores
+- ✅ App icon in all sizes, screenshots, store listing copy
+- ✅ Production EAS build profile separate from internal/dev (no `EXPO_PUBLIC_DEV_UNLOCK_ALL`)
+- ✅ Crash + analytics live (Sentry + PostHog)
+
+### What about IP/curriculum theft?
+
+The 100 lesson curriculum is the most copy-able asset (and someone determined enough could decompile any RN app and extract the lesson JSON). Realistic risk assessment:
+
+- **Low**: someone steals the lesson list and ships a competing app. The chunks ("Mangwanani") aren't copyrightable; the structure (7-phase Rwendo Method) is. Trade dress + named methodology give you light protection. The moat is the AI experience, the cultural framing, the brand — not the word list.
+- **Negligible**: someone steals the ELEVENLABS / ANTHROPIC keys *if you've done Phase M*. If you haven't, this is the actual concrete risk.
+- **None**: someone reverse-engineers Rwen's prompt to clone the personality. Prompts will leak via API requests anyway; the value is in the iteration speed and the data, not the secret sauce.
+
+**Practical posture: harden Phase M, use TestFlight/Internal Testing for any non-trivial tester pool, and don't lose sleep over curriculum theft.** Spend the worry budget on getting users instead.
+
+---
+
+## 12. What I am not doing right now
 
 To stay honest: this doc is design only. I have **not yet** done any of the following, even though some are tempting:
 
