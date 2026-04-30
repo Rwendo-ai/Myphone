@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'ruregerero',
-      shona: 'Ruregerero',
-      english: 'Sorry / Forgive me',
+      target: 'Ruregerero',
+      native: 'Sorry / Forgive me',
       literal: 'Forgiveness',
       emoji: '🕊️',
       phonetic: 'ru-re-ge-REH-ro',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndinokumbira_ruregerero',
-      shona: 'Ndinokumbira ruregerero',
-      english: 'I ask your forgiveness',
+      target: 'Ndinokumbira ruregerero',
+      native: 'I ask your forgiveness',
       literal: 'I-ask-for forgiveness',
       emoji: '🙏',
       phonetic: 'ndi-no-KUM-bi-ra ru-re-ge-REH-ro',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'haitei',
-      shona: 'Haitei',
-      english: "No problem / It's fine",
+      target: 'Haitei',
+      native: "No problem / It's fine",
       literal: "It doesn't matter",
       emoji: '👌',
       phonetic: 'hai-TEH-i',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Ndinokumbira — I ask for',
     explanation: "'Ndinokumbira' means 'I ask for' or 'I request'. Pair it with anything you need and it becomes a formal, respectful request. 'Ndinokumbira ruregerero' is a full, formal apology.",
     examples: [
-      { shona: 'Ruregerero', english: 'Sorry (informal)' },
-      { shona: 'Ndinokumbira ruregerero', english: 'I ask your forgiveness (formal)' },
-      { shona: 'Ndinokumbira mvura', english: 'I ask for water / May I have water?' },
+      { target: 'Ruregerero', native: 'Sorry (informal)' },
+      { target: 'Ndinokumbira ruregerero', native: 'I ask your forgiveness (formal)' },
+      { target: 'Ndinokumbira mvura', native: 'I ask for water / May I have water?' },
     ],
   },
 
@@ -113,9 +113,9 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Ndinokumbira ruregerero. Ndanonoka.', english: 'I ask your forgiveness. I was late.', correct: true, feedback: "Direct, sincere, and complete. Rwen nods." },
-          { shona: 'Ruregerero', english: 'Sorry', correct: false, feedback: "Acceptable — but a full 'Ndinokumbira ruregerero' shows more respect when someone waited for you." },
-          { shona: 'Haitei', english: "No problem", correct: false, feedback: "That's what THEY say to forgive you — not what you say when apologising." },
+          { target: 'Ndinokumbira ruregerero. Ndanonoka.', native: 'I ask your forgiveness. I was late.', correct: true, feedback: "Direct, sincere, and complete. Rwen nods." },
+          { target: 'Ruregerero', native: 'Sorry', correct: false, feedback: "Acceptable — but a full 'Ndinokumbira ruregerero' shows more respect when someone waited for you." },
+          { target: 'Haitei', native: "No problem", correct: false, feedback: "That's what THEY say to forgive you — not what you say when apologising." },
         ],
       },
       {

@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'ndanzwisisa',
-      shona: 'Ndanzwisisa',
-      english: 'I understand',
+      target: 'Ndanzwisisa',
+      native: 'I understand',
       literal: 'I-have-understood',
       emoji: '✅',
       phonetic: 'ndan-zwi-SI-sa',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'handanzwisisi',
-      shona: 'Handanzwisisi',
-      english: "I don't understand",
+      target: 'Handanzwisisi',
+      native: "I don't understand",
       literal: 'I-understand-not',
       emoji: '😕',
       phonetic: 'han-dan-zwi-SI-si',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndanzwa',
-      shona: 'Ndanzwa',
-      english: 'I heard / I get it',
+      target: 'Ndanzwa',
+      native: 'I heard / I get it',
       literal: 'I-heard/felt',
       emoji: '👂',
       phonetic: 'ndan-ZWA',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Nda- vs Handa- — I did vs I did not',
     explanation: "'Nda-' at the start of a verb means 'I did' (completed action). 'Handa-' negates it — 'I did not'. This pairs with the Ha- negation prefix you learned before.",
     examples: [
-      { shona: 'Nd-a-nzwisisa', english: 'I understood (I did understand)' },
-      { shona: 'Hand-a-nzwisisi', english: "I didn't understand" },
-      { shona: 'Nd-a-nzwa', english: 'I heard' },
+      { target: 'Nd-a-nzwisisa', native: 'I understood (I did understand)' },
+      { target: 'Hand-a-nzwisisi', native: "I didn't understand" },
+      { target: 'Nd-a-nzwa', native: 'I heard' },
     ],
   },
 
@@ -113,9 +113,9 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Ndanzwisisa. Ma- kuvakuru, Wa- kushamwari.', english: 'I understand. Ma- for elders, Wa- for friends.', correct: true, feedback: "You understood AND summarised it back. That's real learning." },
-          { shona: 'Ndanzwisisa', english: 'I understand', correct: false, feedback: "Good — and even better to summarise what you learned to confirm." },
-          { shona: 'Handanzwisisi', english: "I don't understand", correct: false, feedback: "That's okay — use 'Dzokorora ndapota' and Rwen will explain again." },
+          { target: 'Ndanzwisisa. Ma- kuvakuru, Wa- kushamwari.', native: 'I understand. Ma- for elders, Wa- for friends.', correct: true, feedback: "You understood AND summarised it back. That's real learning." },
+          { target: 'Ndanzwisisa', native: 'I understand', correct: false, feedback: "Good — and even better to summarise what you learned to confirm." },
+          { target: 'Handanzwisisi', native: "I don't understand", correct: false, feedback: "That's okay — use 'Dzokorora ndapota' and Rwen will explain again." },
         ],
       },
       {

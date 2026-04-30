@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'ndege',
-      shona: 'Ndege',
-      english: 'Aeroplane / Bird',
+      target: 'Ndege',
+      native: 'Aeroplane / Bird',
       literal: 'Ndege (bird — same word as aeroplane)',
       emoji: '✈️',
       phonetic: 'NDE-ge',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'nhandare_yendege',
-      shona: 'Nhandare yendege',
-      english: 'Airport',
+      target: 'Nhandare yendege',
+      native: 'Airport',
       literal: 'Field of-planes',
       emoji: '🛫',
       phonetic: 'nhan-DA-re ye-NDE-ge',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndirikuenda_kuZimbabwe',
-      shona: 'Ndirikuenda kuZimbabwe',
-      english: 'I am going to Zimbabwe',
+      target: 'Ndirikuenda kuZimbabwe',
+      native: 'I am going to Zimbabwe',
       literal: 'I-am-going to-Zimbabwe',
       emoji: '🇿🇼',
       phonetic: 'ndi-ri-ku-EN-da ku-ZIM-bab-we',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Ndege — bird and aeroplane (same word)',
     explanation: "Ndege means both bird and aeroplane — because when aeroplanes first appeared in Zimbabwe, people described them as 'big birds'. The word stuck. 'Ndege inobhururuka' (the plane flies) uses the same verb as birds — kubhururuka (to fly).",
     examples: [
-      { shona: 'Ndege inobhururuka', english: 'The plane flies / The bird flies' },
-      { shona: 'Nhandare yendege', english: 'Airport (field of planes)' },
-      { shona: 'Ndirikuenda kuZimbabwe nendege', english: 'I am going to Zimbabwe by plane' },
+      { target: 'Ndege inobhururuka', native: 'The plane flies / The bird flies' },
+      { target: 'Nhandare yendege', native: 'Airport (field of planes)' },
+      { target: 'Ndirikuenda kuZimbabwe nendege', native: 'I am going to Zimbabwe by plane' },
     ],
   },
 
@@ -108,15 +108,15 @@ const lesson: LessonData = {
     lines: [
       {
         speaker: 'npc',
-        shona: 'Mauya kuZimbabwe. Wauya nezviswa here?',
-        english: 'Welcome to Zimbabwe. Did you come for the first time?',
+        target: 'Mauya kuZimbabwe. Wauya nezviswa here?',
+        native: 'Welcome to Zimbabwe. Did you come for the first time?',
       },
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Ndatenda. Hongu, ndirikusvika Zimbabwe kekutanga. Ndinofara zvikuru.', english: 'Thank you. Yes, I am arriving in Zimbabwe for the first time. I am very happy.', correct: true, feedback: "First time, expressed joy. The officer smiles wider than protocol allows." },
-          { shona: 'Ndauya nendege', english: 'I came by plane', correct: false, feedback: "Answer the question — kekutanga (first time): 'Hongu, ndirikusvika Zimbabwe kekutanga. Ndinofara zvikuru.'" },
-          { shona: 'Ndinoda kuenda kuHarare', english: 'I want to go to Harare', correct: false, feedback: "You're already landing in Harare — answer about first visit: 'Hongu, kekutanga. Ndinofara zvikuru.'" },
+          { target: 'Ndatenda. Hongu, ndirikusvika Zimbabwe kekutanga. Ndinofara zvikuru.', native: 'Thank you. Yes, I am arriving in Zimbabwe for the first time. I am very happy.', correct: true, feedback: "First time, expressed joy. The officer smiles wider than protocol allows." },
+          { target: 'Ndauya nendege', native: 'I came by plane', correct: false, feedback: "Answer the question — kekutanga (first time): 'Hongu, ndirikusvika Zimbabwe kekutanga. Ndinofara zvikuru.'" },
+          { target: 'Ndinoda kuenda kuHarare', native: 'I want to go to Harare', correct: false, feedback: "You're already landing in Harare — answer about first visit: 'Hongu, kekutanga. Ndinofara zvikuru.'" },
         ],
       },
       {

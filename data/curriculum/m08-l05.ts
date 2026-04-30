@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'ndinorara',
-      shona: 'Ndinorara',
-      english: 'I sleep (habitually)',
+      target: 'Ndinorara',
+      native: 'I sleep (habitually)',
       literal: 'I-sleep (habitual)',
       emoji: '😴',
       phonetic: 'ndi-no-RA-ra',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndarara',
-      shona: 'Ndarara',
-      english: 'I slept / I have slept',
+      target: 'Ndarara',
+      native: 'I slept / I have slept',
       literal: 'I-slept (completed)',
       emoji: '🛌',
       phonetic: 'nda-RA-ra',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'rara_zvakanaka',
-      shona: 'Rara zvakanaka',
-      english: 'Sleep well',
+      target: 'Rara zvakanaka',
+      native: 'Sleep well',
       literal: 'Sleep that-is-well',
       emoji: '🌙',
       phonetic: 'RA-ra zva-ka-NA-ka',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Rara — sleep as a blessing',
     explanation: "'Rara zvakanaka' (sleep well) is a gift — a blessing for someone's night. Like 'famba zvakanaka' (go well) for journeys and 'sara zvakanaka' (stay well) for staying — zvakanaka transforms any verb into a blessing.",
     examples: [
-      { shona: 'Rara zvakanaka', english: 'Sleep well' },
-      { shona: 'Famba zvakanaka', english: 'Go well' },
-      { shona: 'Taura zvakanaka', english: 'Speak well' },
+      { target: 'Rara zvakanaka', native: 'Sleep well' },
+      { target: 'Famba zvakanaka', native: 'Go well' },
+      { target: 'Taura zvakanaka', native: 'Speak well' },
     ],
   },
 
@@ -113,9 +113,9 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Rara zvakanaka zvakare, Rwen. Ndatenda.', english: 'Sleep well too, Rwen. Thank you.', correct: true, feedback: "Returned the blessing + gratitude. A warm and complete goodnight." },
-          { shona: 'Usiku wakanaka', english: 'Good night', correct: false, feedback: "Add the sleep blessing back: 'Rara zvakanaka zvakare, Rwen.' — Sleep well too." },
-          { shona: 'Ndinorara', english: 'I sleep', correct: false, feedback: "Reply to the blessing: 'Rara zvakanaka zvakare, Rwen. Ndatenda.'" },
+          { target: 'Rara zvakanaka zvakare, Rwen. Ndatenda.', native: 'Sleep well too, Rwen. Thank you.', correct: true, feedback: "Returned the blessing + gratitude. A warm and complete goodnight." },
+          { target: 'Usiku wakanaka', native: 'Good night', correct: false, feedback: "Add the sleep blessing back: 'Rara zvakanaka zvakare, Rwen.' — Sleep well too." },
+          { target: 'Ndinorara', native: 'I sleep', correct: false, feedback: "Reply to the blessing: 'Rara zvakanaka zvakare, Rwen. Ndatenda.'" },
         ],
       },
       {

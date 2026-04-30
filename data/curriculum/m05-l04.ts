@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'sekuru',
-      shona: 'Sekuru',
-      english: 'Grandfather / Respectful address for elderly men',
+      target: 'Sekuru',
+      native: 'Grandfather / Respectful address for elderly men',
       literal: 'Sekuru (elder male respect)',
       emoji: '👴',
       phonetic: 'se-KU-ru',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'muzukuru',
-      shona: 'Muzukuru',
-      english: 'Grandchild / Nephew / Niece',
+      target: 'Muzukuru',
+      native: 'Grandchild / Nephew / Niece',
       literal: 'Mu-zukuru (grandchild class)',
       emoji: '🧒',
       phonetic: 'mu-zu-KU-ru',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'dzinza',
-      shona: 'Dzinza',
-      english: 'Clan / Lineage',
+      target: 'Dzinza',
+      native: 'Clan / Lineage',
       literal: 'Dzinza (family bloodline)',
       emoji: '🌳',
       phonetic: 'DZI-nza',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Sekuru and Ambuya extend beyond blood',
     explanation: "In Shona, Sekuru can mean: your grandfather, your mother's brother, OR any respected elderly man. Ambuya similarly extends beyond just 'grandmother'. These words are titles of honour, not just relationship labels.",
     examples: [
-      { shona: 'Sekuru wangu', english: 'My grandfather' },
-      { shona: 'Ambuya wangu', english: 'My grandmother' },
-      { shona: 'Muzukuru wangu', english: 'My grandchild / nephew / niece' },
+      { target: 'Sekuru wangu', native: 'My grandfather' },
+      { target: 'Ambuya wangu', native: 'My grandmother' },
+      { target: 'Muzukuru wangu', native: 'My grandchild / nephew / niece' },
     ],
   },
 
@@ -108,15 +108,15 @@ const lesson: LessonData = {
     lines: [
       {
         speaker: 'npc',
-        shona: 'Mangwanani, muzukuru.',
-        english: 'Good morning, grandchild.',
+        target: 'Mangwanani, muzukuru.',
+        native: 'Good morning, grandchild.',
       },
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Mangwanani, Sekuru. Mamuka sei?', english: 'Good morning, Grandfather. How did you wake?', correct: true, feedback: "Using 'Sekuru' with the respectful morning greeting — exactly right. The grandfather smiles." },
-          { shona: 'Mangwanani', english: 'Good morning (simple)', correct: false, feedback: "Add the respectful title and wellness check: 'Mangwanani, Sekuru. Mamuka sei?'" },
-          { shona: 'Makadii, Baba', english: 'How are you, Father (wrong title)', correct: false, feedback: "Use Sekuru for grandfather — 'Mangwanani, Sekuru. Mamuka sei?'" },
+          { target: 'Mangwanani, Sekuru. Mamuka sei?', native: 'Good morning, Grandfather. How did you wake?', correct: true, feedback: "Using 'Sekuru' with the respectful morning greeting — exactly right. The grandfather smiles." },
+          { target: 'Mangwanani', native: 'Good morning (simple)', correct: false, feedback: "Add the respectful title and wellness check: 'Mangwanani, Sekuru. Mamuka sei?'" },
+          { target: 'Makadii, Baba', native: 'How are you, Father (wrong title)', correct: false, feedback: "Use Sekuru for grandfather — 'Mangwanani, Sekuru. Mamuka sei?'" },
         ],
       },
       {

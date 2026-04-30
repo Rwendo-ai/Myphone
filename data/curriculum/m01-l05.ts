@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'makadii',
-      shona: 'Makadii?',
-      english: 'How are you? (universal, any time)',
+      target: 'Makadii?',
+      native: 'How are you? (universal, any time)',
       literal: 'You (plural/respectful) how-are?',
       emoji: '🤝',
       phonetic: 'ma-kah-DEE',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndiripo_makadiiwo',
-      shona: 'Ndiripo, makadiiwo?',
-      english: 'I am well, and how are you?',
+      target: 'Ndiripo, makadiiwo?',
+      native: 'I am well, and how are you?',
       literal: 'I-am-here, you-how-are-also?',
       emoji: '💚',
       phonetic: 'ndi-RI-po ma-kah-DEE-wo',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'wakadii',
-      shona: 'Wakadii?',
-      english: 'How are you? (informal, one person)',
+      target: 'Wakadii?',
+      native: 'How are you? (informal, one person)',
       literal: 'You (singular/friend) how-are?',
       emoji: '😄',
       phonetic: 'wa-kah-DEE',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Kadii — the wellness root',
     explanation: "'Kadii' asks about someone's state or condition. The prefix tells you who. Ma- is respectful/plural, Wa- is informal/singular. You've seen these prefixes before — they work on every verb in Shona.",
     examples: [
-      { shona: 'Ma-kadii?', english: 'How are you? (respectful/plural)' },
-      { shona: 'Wa-kadii?', english: 'How are you? (friend/singular)' },
-      { shona: 'Ndi-ripo', english: 'I am here / I am well' },
+      { target: 'Ma-kadii?', native: 'How are you? (respectful/plural)' },
+      { target: 'Wa-kadii?', native: 'How are you? (friend/singular)' },
+      { target: 'Ndi-ripo', native: 'I am here / I am well' },
     ],
   },
 
@@ -109,22 +109,22 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Makadii?', english: 'How are you?', correct: true, feedback: "Perfect — 'Makadii' works with a stranger at any time. Confident and respectful." },
-          { shona: 'Wamuka sei?', english: 'How did you wake? (informal)', correct: false, feedback: "Too informal for a stranger — save 'Wamuka sei?' for friends." },
-          { shona: 'Hesi', english: 'Hey (casual)', correct: false, feedback: "'Hesi' is very casual — for strangers, 'Makadii?' shows more respect." },
+          { target: 'Makadii?', native: 'How are you?', correct: true, feedback: "Perfect — 'Makadii' works with a stranger at any time. Confident and respectful." },
+          { target: 'Wamuka sei?', native: 'How did you wake? (informal)', correct: false, feedback: "Too informal for a stranger — save 'Wamuka sei?' for friends." },
+          { target: 'Hesi', native: 'Hey (casual)', correct: false, feedback: "'Hesi' is very casual — for strangers, 'Makadii?' shows more respect." },
         ],
       },
       {
         speaker: 'npc',
-        shona: 'Ndiripo, makadiiwo?',
-        english: 'I am well, and how are you?',
+        target: 'Ndiripo, makadiiwo?',
+        native: 'I am well, and how are you?',
       },
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Ndiripo, ndatenda', english: 'I am well, thank you', correct: true, feedback: "Natural and warm. You held a real exchange with a stranger." },
-          { shona: 'Mangwanani', english: 'Good morning', correct: false, feedback: "That's a greeting, not a reply to 'How are you?'." },
-          { shona: 'Makadii?', english: 'How are you?', correct: false, feedback: "They already asked you — now they need your answer." },
+          { target: 'Ndiripo, ndatenda', native: 'I am well, thank you', correct: true, feedback: "Natural and warm. You held a real exchange with a stranger." },
+          { target: 'Mangwanani', native: 'Good morning', correct: false, feedback: "That's a greeting, not a reply to 'How are you?'." },
+          { target: 'Makadii?', native: 'How are you?', correct: false, feedback: "They already asked you — now they need your answer." },
         ],
       },
       {

@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'wabva_kupi',
-      shona: 'Wabva kupi?',
-      english: 'Where are you from?',
+      target: 'Wabva kupi?',
+      native: 'Where are you from?',
       literal: 'You-came-from where?',
       emoji: '🗺️',
       phonetic: 'WAH-bva ku-pi',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndabva_ku',
-      shona: 'Ndabva ku...',
-      english: 'I am from...',
+      target: 'Ndabva ku...',
+      native: 'I am from...',
       literal: 'I-came-from (place)...',
       emoji: '📍',
       phonetic: 'NDA-bva ku',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndinogara_ku',
-      shona: 'Ndinogara ku...',
-      english: 'I live in...',
+      target: 'Ndinogara ku...',
+      native: 'I live in...',
       literal: 'I-stay/live at (place)...',
       emoji: '🏡',
       phonetic: 'ndi-no-GAH-ra ku',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Ku- marks a place',
     explanation: "'Ku' before a place name means 'at', 'in', or 'from' that place. It's a locative prefix — one of Shona's most useful tools. Stick 'ku' before any place name and you've located yourself.",
     examples: [
-      { shona: 'Ndabva ku Zimbabwe', english: 'I am from Zimbabwe' },
-      { shona: 'Ndinogara ku Harare', english: 'I live in Harare' },
-      { shona: 'Wabva ku South Africa?', english: 'Are you from South Africa?' },
+      { target: 'Ndabva ku Zimbabwe', native: 'I am from Zimbabwe' },
+      { target: 'Ndinogara ku Harare', native: 'I live in Harare' },
+      { target: 'Wabva ku South Africa?', native: 'Are you from South Africa?' },
     ],
   },
 
@@ -113,9 +113,9 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Ndabva ku...', english: 'I am from... (your country)', correct: true, feedback: "Perfect — you shared your origin. That's connection in Shona." },
-          { shona: 'Ndinogara ku...', english: 'I live in...', correct: false, feedback: "Close — but they asked where you're FROM, not where you live. Use 'Ndabva ku...'." },
-          { shona: 'Zita rangu ndi...', english: 'My name is...', correct: false, feedback: "That's your name, not your origin. They asked 'Wabva kupi?' — where you're from." },
+          { target: 'Ndabva ku...', native: 'I am from... (your country)', correct: true, feedback: "Perfect — you shared your origin. That's connection in Shona." },
+          { target: 'Ndinogara ku...', native: 'I live in...', correct: false, feedback: "Close — but they asked where you're FROM, not where you live. Use 'Ndabva ku...'." },
+          { target: 'Zita rangu ndi...', native: 'My name is...', correct: false, feedback: "That's your name, not your origin. They asked 'Wabva kupi?' — where you're from." },
         ],
       },
       {

@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'ndinofara_zvikuru',
-      shona: 'Ndinofara zvikuru',
-      english: 'I am very happy',
+      target: 'Ndinofara zvikuru',
+      native: 'I am very happy',
       literal: 'I-am-happy greatly',
       emoji: '😄',
       phonetic: 'ndi-no-FA-ra zvi-KU-ru',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'mufaro',
-      shona: 'Mufaro',
-      english: 'Happiness / Joy',
+      target: 'Mufaro',
+      native: 'Happiness / Joy',
       literal: 'Mufaro (the state of happiness)',
       emoji: '✨',
       phonetic: 'mu-FA-ro',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndinofara_kukuona',
-      shona: 'Ndinofara kukuona',
-      english: 'I am happy to see you',
+      target: 'Ndinofara kukuona',
+      native: 'I am happy to see you',
       literal: 'I-am-happy to-see-you',
       emoji: '🤗',
       phonetic: 'ndi-no-FA-ra ku-ku-O-na',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Ndinofara + ku- verb — I am happy to [do something]',
     explanation: "'Ndinofara' + 'ku-verb' = I am happy to [verb]. Ndinofara kukuona (happy to see you), Ndinofara kudzidza (happy to learn), Ndinofara kuva pano (happy to be here). Happiness directed at an action.",
     examples: [
-      { shona: 'Ndinofara kukuona', english: 'I am happy to see you' },
-      { shona: 'Ndinofara kuva pano', english: 'I am happy to be here' },
-      { shona: 'Mufaro ndirwo rugare', english: 'Happiness is peace' },
+      { target: 'Ndinofara kukuona', native: 'I am happy to see you' },
+      { target: 'Ndinofara kuva pano', native: 'I am happy to be here' },
+      { target: 'Mufaro ndirwo rugare', native: 'Happiness is peace' },
     ],
   },
 
@@ -113,9 +113,9 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Ndinofara zvikuru. Ndinofara kudzidza ChiShona. Ndinofara kukuona, Rwen.', english: "I am very happy. I am happy to learn Shona. I am happy to see you, Rwen.", correct: true, feedback: "Three 'ndinofara' statements — learning, language, friendship. That's a complete emotional portrait." },
-          { shona: 'Ndinofara', english: 'I am happy', correct: false, feedback: "Show the depth of your happiness — 'Ndinofara zvikuru. Ndinofara kudzidza. Ndinofara kukuona, Rwen.'" },
-          { shona: 'Zvakanaka', english: "It's good", correct: false, feedback: "Be personal — 'Ndinofara zvikuru kukuona, Rwen. Ndinofara kudzidza ChiShona nemi.'" },
+          { target: 'Ndinofara zvikuru. Ndinofara kudzidza ChiShona. Ndinofara kukuona, Rwen.', native: "I am very happy. I am happy to learn Shona. I am happy to see you, Rwen.", correct: true, feedback: "Three 'ndinofara' statements — learning, language, friendship. That's a complete emotional portrait." },
+          { target: 'Ndinofara', native: 'I am happy', correct: false, feedback: "Show the depth of your happiness — 'Ndinofara zvikuru. Ndinofara kudzidza. Ndinofara kukuona, Rwen.'" },
+          { target: 'Zvakanaka', native: "It's good", correct: false, feedback: "Be personal — 'Ndinofara zvikuru kukuona, Rwen. Ndinofara kudzidza ChiShona nemi.'" },
         ],
       },
       {

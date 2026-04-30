@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'chii',
-      shona: 'Chii?',
-      english: 'What?',
+      target: 'Chii?',
+      native: 'What?',
       literal: 'What-is-it?',
       emoji: '❓',
       phonetic: 'CHII',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndiani',
-      shona: 'Ndiani?',
-      english: 'Who?',
+      target: 'Ndiani?',
+      native: 'Who?',
       literal: 'It-is-who?',
       emoji: '🙋',
       phonetic: 'ndi-AH-ni',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'rinhi',
-      shona: 'Rinhi?',
-      english: 'When?',
+      target: 'Rinhi?',
+      native: 'When?',
       literal: 'Time-when?',
       emoji: '🕐',
       phonetic: 'RI-nhi',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Question words in Shona',
     explanation: "Shona question words: Chii? (what), Ndiani? (who), Rinhi? (when), Kupi? (where), Sei? (how), Mangani? (how many). Most go at the END of the sentence, after the verb.",
     examples: [
-      { shona: 'Unoda chii?', english: 'You want what? → What do you want?' },
-      { shona: 'Unobva kupi?', english: 'You come from where? → Where are you from?' },
-      { shona: 'Uchaenda rinhi?', english: 'You will go when? → When will you go?' },
+      { target: 'Unoda chii?', native: 'You want what? → What do you want?' },
+      { target: 'Unobva kupi?', native: 'You come from where? → Where are you from?' },
+      { target: 'Uchaenda rinhi?', native: 'You will go when? → When will you go?' },
     ],
   },
 
@@ -113,9 +113,9 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Chinhu chii ichi? Chakanaka here?', english: 'What is this thing? Is it good?', correct: true, feedback: "Two questions — chii (what) and asking for description. Great curiosity." },
-          { shona: 'Ndiani?', english: 'Who?', correct: false, feedback: "Ndiani is for people. For objects use Chii? — What is this thing? Chinhu chii ichi?" },
-          { shona: 'Ndinoziva', english: 'I know', correct: false, feedback: "Ask a question about the mystery object — 'Chinhu chii ichi?' (What is this thing?)" },
+          { target: 'Chinhu chii ichi? Chakanaka here?', native: 'What is this thing? Is it good?', correct: true, feedback: "Two questions — chii (what) and asking for description. Great curiosity." },
+          { target: 'Ndiani?', native: 'Who?', correct: false, feedback: "Ndiani is for people. For objects use Chii? — What is this thing? Chinhu chii ichi?" },
+          { target: 'Ndinoziva', native: 'I know', correct: false, feedback: "Ask a question about the mystery object — 'Chinhu chii ichi?' (What is this thing?)" },
         ],
       },
       {

@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'ndinofara',
-      shona: 'Ndinofara',
-      english: 'I am happy / I am glad',
+      target: 'Ndinofara',
+      native: 'I am happy / I am glad',
       literal: 'I-am-happy',
       emoji: '😊',
       phonetic: 'ndi-no-FA-ra',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndinofara_kukuziva',
-      shona: 'Ndinofara kukuziva',
-      english: 'I am happy to know you / Nice to meet you',
+      target: 'Ndinofara kukuziva',
+      native: 'I am happy to know you / Nice to meet you',
       literal: 'I-am-happy to-know-you',
       emoji: '🤗',
       phonetic: 'ndi-no-FA-ra ku-ku-ZI-va',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'zvakanakisisa',
-      shona: 'Zvakanakisisa',
-      english: 'Excellent / Very good / Wonderful',
+      target: 'Zvakanakisisa',
+      native: 'Excellent / Very good / Wonderful',
       literal: 'It-is-very-good-indeed',
       emoji: '🌟',
       phonetic: 'zva-ka-na-ki-SI-sa',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Ndinofara + ku- verb — I am happy to [do something]',
     explanation: "Add 'ku-' plus a verb after 'ndinofara' to say you're happy to do something. 'Ndinofara kukuziva' (happy to know you), 'ndinofara kudzidza' (happy to learn). The ku- pattern again — it unlocks infinite expression.",
     examples: [
-      { shona: 'Ndinofara', english: 'I am happy' },
-      { shona: 'Ndinofara kukuziva', english: 'I am happy to know you' },
-      { shona: 'Ndinofara kudzidza ChiShona', english: 'I am happy to be learning Shona' },
+      { target: 'Ndinofara', native: 'I am happy' },
+      { target: 'Ndinofara kukuziva', native: 'I am happy to know you' },
+      { target: 'Ndinofara kudzidza ChiShona', native: 'I am happy to be learning Shona' },
     ],
   },
 
@@ -113,9 +113,9 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Ndinofara zvikuru. Zvakanakisisa.', english: 'I am very happy. It is excellent.', correct: true, feedback: "Genuine, warm, and full of life. Rwen glows." },
-          { shona: 'Ndinofara', english: 'I am happy', correct: false, feedback: "Good — and add 'zvikuru' for extra warmth, and 'Zvakanakisisa' to describe the experience." },
-          { shona: 'Zvakanaka', english: "It's good", correct: false, feedback: "That works — but if you really mean it, 'Zvakanakisisa' carries much more feeling." },
+          { target: 'Ndinofara zvikuru. Zvakanakisisa.', native: 'I am very happy. It is excellent.', correct: true, feedback: "Genuine, warm, and full of life. Rwen glows." },
+          { target: 'Ndinofara', native: 'I am happy', correct: false, feedback: "Good — and add 'zvikuru' for extra warmth, and 'Zvakanakisisa' to describe the experience." },
+          { target: 'Zvakanaka', native: "It's good", correct: false, feedback: "That works — but if you really mean it, 'Zvakanakisisa' carries much more feeling." },
         ],
       },
       {

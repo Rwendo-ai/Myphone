@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'imba_yokurara',
-      shona: 'Imba yokurara',
-      english: 'Hotel / Guesthouse',
+      target: 'Imba yokurara',
+      native: 'Hotel / Guesthouse',
       literal: 'House of-sleeping',
       emoji: '🏨',
       phonetic: 'I-mba yo-ku-RA-ra',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndinoda_rumuri',
-      shona: 'Ndinoda rumuri',
-      english: 'I need a room',
+      target: 'Ndinoda rumuri',
+      native: 'I need a room',
       literal: 'I-need room',
       emoji: '🛏️',
       phonetic: 'ndi-no-da ru-MU-ri',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'kusvika_rinhi',
-      shona: 'Munosvika rinhi?',
-      english: 'When do you arrive? / When are you checking in?',
+      target: 'Munosvika rinhi?',
+      native: 'When do you arrive? / When are you checking in?',
       literal: 'You-arrive when?',
       emoji: '📅',
       phonetic: 'mu-no-SVI-ka ri-NHI',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: "Imba yo- — 'house of [purpose]'",
     explanation: "'Imba yo-' + verb = house for that purpose. Imba yokurara (house for sleeping = hotel). Imba yokushandira (house for working = office). Imba yokudzidzira (house for learning = school). One pattern, many buildings.",
     examples: [
-      { shona: 'Imba yokurara', english: 'Hotel (house for sleeping)' },
-      { shona: 'Imba yokudzidzira', english: 'School (house for learning)' },
-      { shona: 'Imba yokushandira', english: 'Office (house for working)' },
+      { target: 'Imba yokurara', native: 'Hotel (house for sleeping)' },
+      { target: 'Imba yokudzidzira', native: 'School (house for learning)' },
+      { target: 'Imba yokushandira', native: 'Office (house for working)' },
     ],
   },
 
@@ -108,15 +108,15 @@ const lesson: LessonData = {
     lines: [
       {
         speaker: 'npc',
-        shona: 'Mauya. Ndinokubatsira sei?',
-        english: 'Welcome. How can I help you?',
+        target: 'Mauya. Ndinokubatsira sei?',
+        native: 'Welcome. How can I help you?',
       },
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Ndatenda. Ndinoda rumuri humwe, ndapota. Ndichasara husiku humwe.', english: 'Thank you. I need one room, please. I will stay for one night.', correct: true, feedback: "Room request + duration. Complete check-in information. Professional and clear." },
-          { shona: 'Ndinoda rumuri', english: 'I need a room', correct: false, feedback: "Good start — add how many nights: 'Ndinoda rumuri husiku humwe, ndapota.' One room, one night." },
-          { shona: 'Ndinoda imba yokurara', english: 'I need a hotel', correct: false, feedback: "You're already at the hotel — ask for a room specifically: 'Ndinoda rumuri husiku humwe, ndapota.'" },
+          { target: 'Ndatenda. Ndinoda rumuri humwe, ndapota. Ndichasara husiku humwe.', native: 'Thank you. I need one room, please. I will stay for one night.', correct: true, feedback: "Room request + duration. Complete check-in information. Professional and clear." },
+          { target: 'Ndinoda rumuri', native: 'I need a room', correct: false, feedback: "Good start — add how many nights: 'Ndinoda rumuri husiku humwe, ndapota.' One room, one night." },
+          { target: 'Ndinoda imba yokurara', native: 'I need a hotel', correct: false, feedback: "You're already at the hotel — ask for a room specifically: 'Ndinoda rumuri husiku humwe, ndapota.'" },
         ],
       },
       {

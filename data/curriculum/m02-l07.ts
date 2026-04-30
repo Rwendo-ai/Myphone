@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'zvii_mushona',
-      shona: 'Zvii muShona?',
-      english: 'How do you say it in Shona? / What is it in Shona?',
+      target: 'Zvii muShona?',
+      native: 'How do you say it in Shona? / What is it in Shona?',
       literal: 'What-is-it in-Shona?',
       emoji: '🗣️',
       phonetic: 'zvii mu-SHO-na',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'zvinorevaiko',
-      shona: 'Zvinoreva chii?',
-      english: 'What does it mean?',
+      target: 'Zvinoreva chii?',
+      native: 'What does it mean?',
       literal: 'It-means what?',
       emoji: '❓',
       phonetic: 'zvi-no-REH-va chii',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndinoda_kudzidza',
-      shona: 'Ndinoda kudzidza ChiShona',
-      english: 'I want to learn Shona',
+      target: 'Ndinoda kudzidza ChiShona',
+      native: 'I want to learn Shona',
       literal: 'I-want to-learn Shona-language',
       emoji: '📚',
       phonetic: 'ndi-no-da ku-DZI-dza chi-SHO-na',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Zvii? — asking what something is',
     explanation: "'Zvii?' means 'what is it?' — a short, powerful question. Attach 'mu' (in/at) plus a language name and you ask how to say anything. 'MuShona', 'muChiRungu' (in English) — the pattern works for any language.",
     examples: [
-      { shona: 'Zvii muShona?', english: 'What is it in Shona?' },
-      { shona: 'Zvii muChiRungu?', english: 'What is it in English?' },
-      { shona: 'Zvinoreva chii?', english: 'What does it mean?' },
+      { target: 'Zvii muShona?', native: 'What is it in Shona?' },
+      { target: 'Zvii muChiRungu?', native: 'What is it in English?' },
+      { target: 'Zvinoreva chii?', native: 'What does it mean?' },
     ],
   },
 
@@ -113,9 +113,9 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Zvinoreva chii — faira?', english: "What does 'faira' mean?", correct: true, feedback: "Perfect — you caught the unknown word and asked immediately. That's how you learn fast." },
-          { shona: 'Handanzwisisi', english: "I don't understand", correct: false, feedback: "Good instinct — but narrowing it down to the specific word ('Zvinoreva chii — faira?') gets you a faster, more useful answer." },
-          { shona: 'Ndatenda', english: 'Thank you', correct: false, feedback: "Don't let unknown words pass by. Ask 'Zvinoreva chii?' — that's your learning superpower." },
+          { target: 'Zvinoreva chii — faira?', native: "What does 'faira' mean?", correct: true, feedback: "Perfect — you caught the unknown word and asked immediately. That's how you learn fast." },
+          { target: 'Handanzwisisi', native: "I don't understand", correct: false, feedback: "Good instinct — but narrowing it down to the specific word ('Zvinoreva chii — faira?') gets you a faster, more useful answer." },
+          { target: 'Ndatenda', native: 'Thank you', correct: false, feedback: "Don't let unknown words pass by. Ask 'Zvinoreva chii?' — that's your learning superpower." },
         ],
       },
       {

@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'tinogara',
-      shona: 'Tinogara ku...',
-      english: 'We live in...',
+      target: 'Tinogara ku...',
+      native: 'We live in...',
       literal: 'We-live in...',
       emoji: '🏘️',
       phonetic: 'ti-no-GA-ra ku',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'kumusha',
-      shona: 'Kumusha',
-      english: 'Back home / In the village',
+      target: 'Kumusha',
+      native: 'Back home / In the village',
       literal: 'At-home/village',
       emoji: '🌳',
       phonetic: 'ku-mu-SHA',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'kumusha_kwangu',
-      shona: 'Kumusha kwangu ndi...',
-      english: 'My home area is...',
+      target: 'Kumusha kwangu ndi...',
+      native: 'My home area is...',
       literal: 'Home my it-is...',
       emoji: '📍',
       phonetic: 'ku-mu-SHA kwan-gu ndi',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Ti- (we) vs Ndi- (I) — plural self',
     explanation: "You know 'Ndinogara ku...' (I live in). Switch 'Ndi-' to 'Ti-' and it becomes 'Tinogara ku...' (We live in). This Ti- vs Ndi- switch works on all verbs — we've seen Ti-ripo (we are well) in Module 1.",
     examples: [
-      { shona: 'Ndinogara ku Harare', english: 'I live in Harare' },
-      { shona: 'Tinogara ku Harare', english: 'We live in Harare' },
-      { shona: 'Kumusha kwangu ndi Bulawayo', english: 'My home area is Bulawayo' },
+      { target: 'Ndinogara ku Harare', native: 'I live in Harare' },
+      { target: 'Tinogara ku Harare', native: 'We live in Harare' },
+      { target: 'Kumusha kwangu ndi Bulawayo', native: 'My home area is Bulawayo' },
     ],
   },
 
@@ -113,9 +113,9 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Tinogara ku... Kumusha kwangu ndi...', english: 'We live in... My home area is...', correct: true, feedback: "Two homes — where you live now and where you're from. That tells your whole story." },
-          { shona: 'Ndinogara ku...', english: 'I live in...', correct: false, feedback: "Good — and add 'Kumusha kwangu ndi...' to share where home truly is." },
-          { shona: 'Handizivi', english: "I don't know", correct: false, feedback: "You know where you live — 'Tinogara ku...' for your current home." },
+          { target: 'Tinogara ku... Kumusha kwangu ndi...', native: 'We live in... My home area is...', correct: true, feedback: "Two homes — where you live now and where you're from. That tells your whole story." },
+          { target: 'Ndinogara ku...', native: 'I live in...', correct: false, feedback: "Good — and add 'Kumusha kwangu ndi...' to share where home truly is." },
+          { target: 'Handizivi', native: "I don't know", correct: false, feedback: "You know where you live — 'Tinogara ku...' for your current home." },
         ],
       },
       {

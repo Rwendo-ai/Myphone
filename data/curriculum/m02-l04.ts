@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'handizivi',
-      shona: 'Handizivi',
-      english: "I don't know",
+      target: 'Handizivi',
+      native: "I don't know",
       literal: "I-know-not",
       emoji: '🤷',
       phonetic: 'han-di-ZI-vi',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndinoziva',
-      shona: 'Ndinoziva',
-      english: 'I know',
+      target: 'Ndinoziva',
+      native: 'I know',
       literal: 'I-know',
       emoji: '💡',
       phonetic: 'ndi-no-ZI-va',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndinofunga',
-      shona: 'Ndinofunga',
-      english: 'I think / I believe',
+      target: 'Ndinofunga',
+      native: 'I think / I believe',
       literal: 'I-think',
       emoji: '🤔',
       phonetic: 'ndi-no-FUN-ga',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Ha- prefix — the negation',
     explanation: "In Shona, 'Ha-' at the start of a verb negates it. 'Ndinoziva' (I know) becomes 'Handizivi' (I don't know). Watch how the verb form also shifts slightly — this is Shona's negation pattern.",
     examples: [
-      { shona: 'Ndinoziva', english: 'I know' },
-      { shona: 'Handizivi', english: "I don't know" },
-      { shona: 'Ndinoda → Handidi', english: "I want → I don't want" },
+      { target: 'Ndinoziva', native: 'I know' },
+      { target: 'Handizivi', native: "I don't know" },
+      { target: 'Ndinoda → Handidi', native: "I want → I don't want" },
     ],
   },
 
@@ -113,9 +113,9 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Handizivi. Ndinofunga zvinoreva mweya.', english: "I don't know. I think it means spirit.", correct: true, feedback: "Honest and thoughtful. Rwen is impressed by your honesty." },
-          { shona: 'Ndinoziva', english: 'I know', correct: false, feedback: "Only say 'Ndinoziva' if you actually know — honesty matters here." },
-          { shona: 'Handizivi', english: "I don't know", correct: false, feedback: "Good and honest — adding 'Ndinofunga...' shows you're trying even when unsure." },
+          { target: 'Handizivi. Ndinofunga zvinoreva mweya.', native: "I don't know. I think it means spirit.", correct: true, feedback: "Honest and thoughtful. Rwen is impressed by your honesty." },
+          { target: 'Ndinoziva', native: 'I know', correct: false, feedback: "Only say 'Ndinoziva' if you actually know — honesty matters here." },
+          { target: 'Handizivi', native: "I don't know", correct: false, feedback: "Good and honest — adding 'Ndinofunga...' shows you're trying even when unsure." },
         ],
       },
       {

@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'wangu_rangu',
-      shona: '-wangu / -rangu / -yangu',
-      english: 'My (changes with noun class)',
+      target: '-wangu / -rangu / -yangu',
+      native: 'My (changes with noun class)',
       literal: 'Possession marker — class dependent',
       emoji: '🫵',
       phonetic: 'wa-ngu / ra-ngu / ya-ngu',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'imba_yangu',
-      shona: 'Imba yangu',
-      english: 'My house',
+      target: 'Imba yangu',
+      native: 'My house',
       literal: 'House my (ya- = house class)',
       emoji: '🏠',
       phonetic: 'I-mba ya-ngu',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'buku_rangu',
-      shona: 'Buku rangu',
-      english: 'My book',
+      target: 'Buku rangu',
+      native: 'My book',
       literal: 'Book my (ra- = book class)',
       emoji: '📖',
       phonetic: 'BU-ku ra-ngu',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Possession markers match noun class',
     explanation: "The 'my' word changes with the noun class. Zita rangu (my name), Imba yangu (my house), Musha wangu (my village), Chinhu changu (my thing). The first letter mirrors the noun's class prefix.",
     examples: [
-      { shona: 'Zita ra-ngu', english: 'My name (ri/ma class → ra-)' },
-      { shona: 'Imba ya-ngu', english: 'My house (i class → ya-)' },
-      { shona: 'Musha wa-ngu', english: 'My village (mu/mi class → wa-)' },
+      { target: 'Zita ra-ngu', native: 'My name (ri/ma class → ra-)' },
+      { target: 'Imba ya-ngu', native: 'My house (i class → ya-)' },
+      { target: 'Musha wa-ngu', native: 'My village (mu/mi class → wa-)' },
     ],
   },
 
@@ -108,15 +108,15 @@ const lesson: LessonData = {
     lines: [
       {
         speaker: 'npc',
-        shona: 'Buku iri nderenani?',
-        english: 'Whose book is this?',
+        target: 'Buku iri nderenani?',
+        native: 'Whose book is this?',
       },
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Buku rangu.', english: 'My book.', correct: true, feedback: "Correct possession marker. Buku rangu — my book." },
-          { shona: 'Buku yangu.', english: 'My book (wrong marker)', correct: false, feedback: "Close — but buku uses ra-ngu not ya-ngu. Buku rangu." },
-          { shona: 'Ndinoziva', english: 'I know', correct: false, feedback: "Tell them whose book it is: 'Buku rangu' — my book." },
+          { target: 'Buku rangu.', native: 'My book.', correct: true, feedback: "Correct possession marker. Buku rangu — my book." },
+          { target: 'Buku yangu.', native: 'My book (wrong marker)', correct: false, feedback: "Close — but buku uses ra-ngu not ya-ngu. Buku rangu." },
+          { target: 'Ndinoziva', native: 'I know', correct: false, feedback: "Tell them whose book it is: 'Buku rangu' — my book." },
         ],
       },
       {

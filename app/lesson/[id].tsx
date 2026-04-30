@@ -420,10 +420,10 @@ export default function LessonScreen() {
         </Text>
         <View style={styles.chunkCard}>
           <Text style={styles.chunkEmoji}>{chunk.emoji}</Text>
-          <Text style={styles.chunkShona}>{chunk.shona}</Text>
+          <Text style={styles.chunkShona}>{chunk.target}</Text>
           <Text style={styles.chunkPhonetic}>{chunk.phonetic}</Text>
           <View style={styles.chunkDivider} />
-          <Text style={styles.chunkEnglish}>{chunk.english}</Text>
+          <Text style={styles.chunkEnglish}>{chunk.native}</Text>
           {chunk.literal && <Text style={styles.chunkLiteral}>Literally: "{chunk.literal}"</Text>}
         </View>
         <View style={styles.bottomAction}>
@@ -451,9 +451,9 @@ export default function LessonScreen() {
           <View style={styles.patternTable}>
             {lesson.pattern.examples.map((ex, i) => (
               <View key={i} style={styles.patternRow}>
-                <Text style={styles.patternShona}>{ex.shona}</Text>
+                <Text style={styles.patternShona}>{ex.target}</Text>
                 <Text style={styles.patternArrow}>→</Text>
-                <Text style={styles.patternEnglish}>{ex.english}</Text>
+                <Text style={styles.patternEnglish}>{ex.native}</Text>
               </View>
             ))}
           </View>
@@ -568,8 +568,8 @@ export default function LessonScreen() {
                     setTotalAnswered((t) => t + 1);
                   }}
                 >
-                  <Text style={styles.userChoiceShona}>{choice.shona}</Text>
-                  <Text style={styles.userChoiceEnglish}>{choice.english}</Text>
+                  <Text style={styles.userChoiceShona}>{choice.target}</Text>
+                  <Text style={styles.userChoiceEnglish}>{choice.native}</Text>
                 </Pressable>
               ))}
             </View>
@@ -667,8 +667,8 @@ function DialogueLineView({ line, isActive }: { line: DialogueLine; isActive: bo
       <View style={dialogueStyles.npcLine}>
         <Text style={dialogueStyles.npcEmoji}>👴</Text>
         <View style={dialogueStyles.npcBubble}>
-          <Text style={dialogueStyles.npcShona}>{line.shona}</Text>
-          <Text style={dialogueStyles.npcEnglish}>{line.english}</Text>
+          <Text style={dialogueStyles.npcShona}>{line.target}</Text>
+          <Text style={dialogueStyles.npcEnglish}>{line.native}</Text>
         </View>
       </View>
     );

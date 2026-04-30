@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'zvakanakisisa',
-      shona: 'Zvakanakisisa',
-      english: 'Excellent / Delicious / Very good',
+      target: 'Zvakanakisisa',
+      native: 'Excellent / Delicious / Very good',
       literal: 'It-is-very-good-indeed',
       emoji: '😋',
       phonetic: 'zva-ka-na-ki-SI-sa',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'zvinonaka',
-      shona: 'Zvinonaka',
-      english: 'It tastes good / It is delicious',
+      target: 'Zvinonaka',
+      native: 'It tastes good / It is delicious',
       literal: 'Things-are-good/tasty',
       emoji: '✨',
       phonetic: 'zvi-no-NA-ka',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'makagadzira_zvakanaka',
-      shona: 'Makagadzira zvakanaka',
-      english: 'You cooked it well',
+      target: 'Makagadzira zvakanaka',
+      native: 'You cooked it well',
       literal: 'You-cooked it-well',
       emoji: '👨‍🍳',
       phonetic: 'ma-ka-ga-DZI-ra zva-ka-NA-ka',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Zvakanaka → Zvakanakisisa (intensified)',
     explanation: "Add '-isisa' to an adjective to intensify it maximally. Zvakanaka (it is good) → Zvakanakisisa (it is excellent/the best). This '-isisa' intensifier works broadly: ndinozivisisisa (I know very well indeed).",
     examples: [
-      { shona: 'Zvakanaka', english: 'It is good' },
-      { shona: 'Zvakanakisisa', english: 'It is excellent (maximally good)' },
-      { shona: 'Ndinokudaisisa', english: 'I love you very much (maximally)' },
+      { target: 'Zvakanaka', native: 'It is good' },
+      { target: 'Zvakanakisisa', native: 'It is excellent (maximally good)' },
+      { target: 'Ndinokudaisisa', native: 'I love you very much (maximally)' },
     ],
   },
 
@@ -108,15 +108,15 @@ const lesson: LessonData = {
     lines: [
       {
         speaker: 'npc',
-        shona: 'Zvakachaka here?',
-        english: 'Was it tasty?',
+        target: 'Zvakachaka here?',
+        native: 'Was it tasty?',
       },
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Zvakanakisisa, Amai! Makagadzira zvakanaka zvikuru. Ndatenda.', english: "It was excellent, Mother! You cooked it very well. Thank you.", correct: true, feedback: "A complete compliment — excellence, credit to the cook, gratitude. The mother is moved." },
-          { shona: 'Zvakanaka', english: "It's good", correct: false, feedback: "Go further — 'Zvakanakisisa, Amai! Makagadzira zvakanaka zvikuru.' The extra words mean everything." },
-          { shona: 'Ndaguta', english: "I'm full", correct: false, feedback: "That tells her you're full, not that it was good. Add: 'Zvakanakisisa, Amai! Makagadzira zvakanaka.'" },
+          { target: 'Zvakanakisisa, Amai! Makagadzira zvakanaka zvikuru. Ndatenda.', native: "It was excellent, Mother! You cooked it very well. Thank you.", correct: true, feedback: "A complete compliment — excellence, credit to the cook, gratitude. The mother is moved." },
+          { target: 'Zvakanaka', native: "It's good", correct: false, feedback: "Go further — 'Zvakanakisisa, Amai! Makagadzira zvakanaka zvikuru.' The extra words mean everything." },
+          { target: 'Ndaguta', native: "I'm full", correct: false, feedback: "That tells her you're full, not that it was good. Add: 'Zvakanakisisa, Amai! Makagadzira zvakanaka.'" },
         ],
       },
       {

@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'ndirikusvika_harare',
-      shona: 'Ndirikusvika Harare',
-      english: 'I am arriving in Harare',
+      target: 'Ndirikusvika Harare',
+      native: 'I am arriving in Harare',
       literal: 'I-am-arriving Harare',
       emoji: '🏙️',
       phonetic: 'ndi-ri-ku-SVI-ka ha-RA-re',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'chiteshi_chekombi',
-      shona: 'Chiteshi chekombi',
-      english: 'Kombi station / Bus stop',
+      target: 'Chiteshi chekombi',
+      native: 'Kombi station / Bus stop',
       literal: 'Station of-kombi',
       emoji: '🚌',
       phonetic: 'chi-TE-shi che-KOM-bi',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'wasvika',
-      shona: 'Wasvika!',
-      english: 'You have arrived!',
+      target: 'Wasvika!',
+      native: 'You have arrived!',
       literal: 'You-have-arrived!',
       emoji: '🎉',
       phonetic: 'wa-SVI-ka',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Kusvika — to arrive (the journey\'s end verb)',
     explanation: "'Kusvika' means to arrive, to reach, to get to. Ndirikusvika (I am arriving), Ndasvika (I have arrived), Wasvika! (You have arrived!). It's also used metaphorically — Wasvika! can mean 'You got it!' when someone understands something.",
     examples: [
-      { shona: 'Ndasvika', english: 'I have arrived' },
-      { shona: 'Wasvika!', english: 'You have arrived! / You got it!' },
-      { shona: 'Tinosvika rinhi?', english: 'When do we arrive?' },
+      { target: 'Ndasvika', native: 'I have arrived' },
+      { target: 'Wasvika!', native: 'You have arrived! / You got it!' },
+      { target: 'Tinosvika rinhi?', native: 'When do we arrive?' },
     ],
   },
 
@@ -109,22 +109,22 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Ndibatsire, ndapota. Chiteshi chekombi chiri kupi? Ndinoda kuenda kutown.', english: 'Please help me. Where is the kombi station? I want to go to town.', correct: true, feedback: "Polite, specific need, clear destination. You're navigating Harare." },
-          { shona: 'Ndeapi nzira yetown?', english: 'Which is the way to town?', correct: false, feedback: "Good — but ask about the kombi station first: 'Chiteshi chekombi chiri kupi?' Then you can take a kombi to town." },
-          { shona: 'Ndinoda kombi', english: 'I want a kombi', correct: false, feedback: "Ask where to find it first: 'Chiteshi chekombi chiri kupi? Ndinoda kuenda kutown.'" },
+          { target: 'Ndibatsire, ndapota. Chiteshi chekombi chiri kupi? Ndinoda kuenda kutown.', native: 'Please help me. Where is the kombi station? I want to go to town.', correct: true, feedback: "Polite, specific need, clear destination. You're navigating Harare." },
+          { target: 'Ndeapi nzira yetown?', native: 'Which is the way to town?', correct: false, feedback: "Good — but ask about the kombi station first: 'Chiteshi chekombi chiri kupi?' Then you can take a kombi to town." },
+          { target: 'Ndinoda kombi', native: 'I want a kombi', correct: false, feedback: "Ask where to find it first: 'Chiteshi chekombi chiri kupi? Ndinoda kuenda kutown.'" },
         ],
       },
       {
         speaker: 'npc',
-        shona: 'Enda mberi, dzokorora kurudyi — chiteshi iri pedyo nenhino.',
-        english: 'Go forward, turn right — the station is very nearby.',
+        target: 'Enda mberi, dzokorora kurudyi — chiteshi iri pedyo nenhino.',
+        native: 'Go forward, turn right — the station is very nearby.',
       },
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Ndatenda zvikuru. Mberi, kurudyi — ndanzwisisa.', english: 'Thank you very much. Forward, right — I understand.', correct: true, feedback: "Confirmed the directions back. Now you walk with confidence." },
-          { shona: 'Zvakanaka', english: "That's fine", correct: false, feedback: "Confirm the directions: 'Mberi, kurudyi — ndanzwisisa. Ndatenda zvikuru.'" },
-          { shona: 'Ndanzwisisa', english: 'I understand', correct: false, feedback: "Repeat the key directions back: 'Mberi, kurudyi — ndanzwisisa. Ndatenda zvikuru.'" },
+          { target: 'Ndatenda zvikuru. Mberi, kurudyi — ndanzwisisa.', native: 'Thank you very much. Forward, right — I understand.', correct: true, feedback: "Confirmed the directions back. Now you walk with confidence." },
+          { target: 'Zvakanaka', native: "That's fine", correct: false, feedback: "Confirm the directions: 'Mberi, kurudyi — ndanzwisisa. Ndatenda zvikuru.'" },
+          { target: 'Ndanzwisisa', native: 'I understand', correct: false, feedback: "Repeat the key directions back: 'Mberi, kurudyi — ndanzwisisa. Ndatenda zvikuru.'" },
         ],
       },
       {

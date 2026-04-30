@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'vakagadzirira',
-      shona: 'Vakagadzirira zvose',
-      english: 'They prepared everything',
+      target: 'Vakagadzirira zvose',
+      native: 'They prepared everything',
       literal: 'They-prepared all',
       emoji: '🍽️',
       phonetic: 'va-ka-ga-DZI-ri-ra zvo-se',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndinoonga',
-      shona: 'Ndinoonga',
-      english: 'I am grateful',
+      target: 'Ndinoonga',
+      native: 'I am grateful',
       literal: 'I-am-grateful',
       emoji: '🙏',
       phonetic: 'ndi-no-ON-ga',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'usiku_wakanaka',
-      shona: 'Usiku wakanaka',
-      english: 'Good night',
+      target: 'Usiku wakanaka',
+      native: 'Good night',
       literal: 'Night good',
       emoji: '🌙',
       phonetic: 'u-SI-ku wa-ka-NA-ka',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Ndinoonga — deep gratitude',
     explanation: "'Ndinoonga' expresses deep, ongoing gratitude — more than ndatenda (thank you). 'Ndinoonga zvikuru nemi' (I am deeply grateful to you) is used for significant acts of kindness. It stays with the person longer.",
     examples: [
-      { shona: 'Ndinoonga', english: 'I am grateful' },
-      { shona: 'Ndinoonga zvikuru nemi', english: 'I am deeply grateful to you' },
-      { shona: 'Usiku wakanaka', english: 'Good night' },
+      { target: 'Ndinoonga', native: 'I am grateful' },
+      { target: 'Ndinoonga zvikuru nemi', native: 'I am deeply grateful to you' },
+      { target: 'Usiku wakanaka', native: 'Good night' },
     ],
   },
 
@@ -108,28 +108,28 @@ const lesson: LessonData = {
     lines: [
       {
         speaker: 'npc',
-        shona: 'Tauya tose unoenda. Wakafarira here kudya kwedu?',
-        english: 'We all come as you leave. Did you enjoy our food?',
+        target: 'Tauya tose unoenda. Wakafarira here kudya kwedu?',
+        native: 'We all come as you leave. Did you enjoy our food?',
       },
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Zvakanakisisa zvikuru! Ndinoonga mhuri yose. Vakagadzirira zvakanaka.', english: "It was excellent! I am deeply grateful to the whole family. They prepared it so well.", correct: true, feedback: "Specific, warm, addressed everyone. That farewell will be remembered for years." },
-          { shona: 'Ndatenda, Sara zvakanaka', english: 'Thank you, stay well', correct: false, feedback: "Good — but go deeper: 'Zvakanakisisa. Ndinoonga mhuri yose.' Give credit to the family specifically." },
-          { shona: 'Ndadya, ndaguta', english: "I ate, I'm full", correct: false, feedback: "Say more — express gratitude and compliment the food: 'Zvakanakisisa! Ndinoonga mhuri yose.'" },
+          { target: 'Zvakanakisisa zvikuru! Ndinoonga mhuri yose. Vakagadzirira zvakanaka.', native: "It was excellent! I am deeply grateful to the whole family. They prepared it so well.", correct: true, feedback: "Specific, warm, addressed everyone. That farewell will be remembered for years." },
+          { target: 'Ndatenda, Sara zvakanaka', native: 'Thank you, stay well', correct: false, feedback: "Good — but go deeper: 'Zvakanakisisa. Ndinoonga mhuri yose.' Give credit to the family specifically." },
+          { target: 'Ndadya, ndaguta', native: "I ate, I'm full", correct: false, feedback: "Say more — express gratitude and compliment the food: 'Zvakanakisisa! Ndinoonga mhuri yose.'" },
         ],
       },
       {
         speaker: 'npc',
-        shona: 'Sara zvakanaka, mwanangu.',
-        english: 'Stay well, my child.',
+        target: 'Sara zvakanaka, mwanangu.',
+        native: 'Stay well, my child.',
       },
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Famba zvakanaka, mhuri yose. Ndinoonga. Usiku wakanaka.', english: 'Go well, whole family. I am grateful. Good night.', correct: true, feedback: "Farewell + gratitude + good night. The family smiles as you leave. Module 7 complete." },
-          { shona: 'Ndatenda', english: 'Thank you', correct: false, feedback: "Complete the farewell: 'Famba zvakanaka, mhuri yose. Ndinoonga. Usiku wakanaka.'" },
-          { shona: 'Sara zvakanaka', english: 'Stay well', correct: false, feedback: "You're leaving — so it's 'Sara zvakanaka' for them (stay well) and add 'Ndinoonga. Usiku wakanaka.'" },
+          { target: 'Famba zvakanaka, mhuri yose. Ndinoonga. Usiku wakanaka.', native: 'Go well, whole family. I am grateful. Good night.', correct: true, feedback: "Farewell + gratitude + good night. The family smiles as you leave. Module 7 complete." },
+          { target: 'Ndatenda', native: 'Thank you', correct: false, feedback: "Complete the farewell: 'Famba zvakanaka, mhuri yose. Ndinoonga. Usiku wakanaka.'" },
+          { target: 'Sara zvakanaka', native: 'Stay well', correct: false, feedback: "You're leaving — so it's 'Sara zvakanaka' for them (stay well) and add 'Ndinoonga. Usiku wakanaka.'" },
         ],
       },
       {

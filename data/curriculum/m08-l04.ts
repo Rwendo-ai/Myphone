@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'ndinowa',
-      shona: 'Ndinowa',
-      english: 'I drink (habitually)',
+      target: 'Ndinowa',
+      native: 'I drink (habitually)',
       literal: 'I-habitually-drink',
       emoji: '🥤',
       phonetic: 'ndi-NO-wa',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndiri_kunwa',
-      shona: 'Ndiri kunwa',
-      english: 'I am drinking (now)',
+      target: 'Ndiri kunwa',
+      native: 'I am drinking (now)',
       literal: 'I-am drinking',
       emoji: '🔄',
       phonetic: 'NDI-ri KU-nwa',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndanwa',
-      shona: 'Ndanwa',
-      english: 'I drank / I have drunk',
+      target: 'Ndanwa',
+      native: 'I drank / I have drunk',
       literal: 'I-drank (completed)',
       emoji: '✅',
       phonetic: 'nda-NWA',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Kunwa — same four-form pattern as all verbs',
     explanation: "Ndi-no-nwa (I drink, habitual). Ndiri ku-nwa (I am drinking). Nda-nwa (I drank). Ndicha-nwa (I will drink). This is exactly the kudya pattern — only the stem changes (-nwa instead of -dya). One pattern, every verb.",
     examples: [
-      { shona: 'Ndinowa mvura', english: 'I drink water (regularly)' },
-      { shona: 'Ndiri kunwa tii', english: 'I am drinking tea' },
-      { shona: 'Ndanwa mvura', english: 'I drank water' },
+      { target: 'Ndinowa mvura', native: 'I drink water (regularly)' },
+      { target: 'Ndiri kunwa tii', native: 'I am drinking tea' },
+      { target: 'Ndanwa mvura', native: 'I drank water' },
     ],
   },
 
@@ -113,9 +113,9 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Ndinowa mvura nguva yose. Ndinopa mvura, ndatenda.', english: 'I drink water always. Please bring me water, thank you.', correct: true, feedback: "Habitual preference stated, polite request made. Natural and complete." },
-          { shona: 'Ndanwa', english: 'I drank', correct: false, feedback: "That's past tense — you haven't drunk yet. Order now: 'Ndinopa mvura, ndatenda.'" },
-          { shona: 'Ndinoda mvura', english: 'I want water', correct: false, feedback: "Good — add your habitual preference: 'Ndinowa mvura nguva yose. Ndinopa mvura, ndatenda.'" },
+          { target: 'Ndinowa mvura nguva yose. Ndinopa mvura, ndatenda.', native: 'I drink water always. Please bring me water, thank you.', correct: true, feedback: "Habitual preference stated, polite request made. Natural and complete." },
+          { target: 'Ndanwa', native: 'I drank', correct: false, feedback: "That's past tense — you haven't drunk yet. Order now: 'Ndinopa mvura, ndatenda.'" },
+          { target: 'Ndinoda mvura', native: 'I want water', correct: false, feedback: "Good — add your habitual preference: 'Ndinowa mvura nguva yose. Ndinopa mvura, ndatenda.'" },
         ],
       },
       {

@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'ndinoenda',
-      shona: 'Ndinoenda',
-      english: 'I go (habitually)',
+      target: 'Ndinoenda',
+      native: 'I go (habitually)',
       literal: 'I-habitually-go',
       emoji: '🚶',
       phonetic: 'ndi-no-EN-da',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndaenda',
-      shona: 'Ndaenda',
-      english: 'I went / I have gone',
+      target: 'Ndaenda',
+      native: 'I went / I have gone',
       literal: 'I-went (completed past)',
       emoji: '⬅️',
       phonetic: 'nda-EN-da',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndichaenda',
-      shona: 'Ndichaenda',
-      english: 'I will go',
+      target: 'Ndichaenda',
+      native: 'I will go',
       literal: 'I-will-go (future)',
       emoji: '➡️',
       phonetic: 'ndi-cha-EN-da',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Kuenda across three tenses',
     explanation: "Ndi-no-enda (habitual), Nda-enda (past), Ndiri ku-enda (ongoing now), Ndi-cha-enda (future). The stem -enda stays constant. Only the tense prefix changes. This is the template for ALL Shona verbs.",
     examples: [
-      { shona: 'Ndinoenda kuchikoro', english: 'I go to school (habitually)' },
-      { shona: 'Ndaenda kuchikoro', english: 'I went to school' },
-      { shona: 'Ndichaenda kuchikoro', english: 'I will go to school' },
+      { target: 'Ndinoenda kuchikoro', native: 'I go to school (habitually)' },
+      { target: 'Ndaenda kuchikoro', native: 'I went to school' },
+      { target: 'Ndichaenda kuchikoro', native: 'I will go to school' },
     ],
   },
 
@@ -113,9 +113,9 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Ndaenda ku[place]. Ndichaenda kuZimbabwe gore rinouya.', english: 'I went to [place]. I will go to Zimbabwe next year.', correct: true, feedback: "Past and future — both tenses, real destinations. That's a real conversation about travel." },
-          { shona: 'Ndinoenda', english: 'I go (habitual)', correct: false, feedback: "Use the right tense — Ndaenda (I went) for past, Ndichaenda (I will go) for future." },
-          { shona: 'Handizivi', english: "I don't know", correct: false, feedback: "Think of a real place you've been: 'Ndaenda ku...' And a place you want to go: 'Ndichaenda ku...'" },
+          { target: 'Ndaenda ku[place]. Ndichaenda kuZimbabwe gore rinouya.', native: 'I went to [place]. I will go to Zimbabwe next year.', correct: true, feedback: "Past and future — both tenses, real destinations. That's a real conversation about travel." },
+          { target: 'Ndinoenda', native: 'I go (habitual)', correct: false, feedback: "Use the right tense — Ndaenda (I went) for past, Ndichaenda (I will go) for future." },
+          { target: 'Handizivi', native: "I don't know", correct: false, feedback: "Think of a real place you've been: 'Ndaenda ku...' And a place you want to go: 'Ndichaenda ku...'" },
         ],
       },
       {

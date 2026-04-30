@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'mberi',
-      shona: 'Mberi',
-      english: 'Forward / Ahead / Future',
+      target: 'Mberi',
+      native: 'Forward / Ahead / Future',
       literal: 'In front / Before',
       emoji: '⬆️',
       phonetic: 'MBE-ri',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'shure',
-      shona: 'Shure',
-      english: 'Behind / Back / Past',
+      target: 'Shure',
+      native: 'Behind / Back / Past',
       literal: 'Behind / After',
       emoji: '⬇️',
       phonetic: 'SHU-re',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'enda_mberi',
-      shona: 'Enda mberi',
-      english: 'Go forward / Continue ahead',
+      target: 'Enda mberi',
+      native: 'Go forward / Continue ahead',
       literal: 'Go ahead',
       emoji: '🚶⬆️',
       phonetic: 'EN-da MBE-ri',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Enda + direction = go that way',
     explanation: "'Enda' (go) + direction word = movement instruction. Enda mberi (go forward), Enda shure (go back), Enda kurudyi (go right), Enda kuruboshwe (go left). One verb, all directions.",
     examples: [
-      { shona: 'Enda mberi', english: 'Go forward' },
-      { shona: 'Dzorera shure', english: 'Go back / Return' },
-      { shona: 'Uri mberi kwangu', english: 'You are ahead of me' },
+      { target: 'Enda mberi', native: 'Go forward' },
+      { target: 'Dzorera shure', native: 'Go back / Return' },
+      { target: 'Uri mberi kwangu', native: 'You are ahead of me' },
     ],
   },
 
@@ -108,15 +108,15 @@ const lesson: LessonData = {
     lines: [
       {
         speaker: 'npc',
-        shona: 'Enda mberi, unomira pane imba huru.',
-        english: 'Go forward, you stop at the big house.',
+        target: 'Enda mberi, unomira pane imba huru.',
+        native: 'Go forward, you stop at the big house.',
       },
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Ndinzwisisa. Ndinoenda mberi, ndomira pane imba huru. Ndatenda.', english: 'I understand. I go forward, I stop at the big house. Thank you.', correct: true, feedback: "You repeated the directions back — a great confirmation technique. The person nods." },
-          { shona: 'Ndanzwisisa', english: 'I understand', correct: false, feedback: "Repeat the directions back to confirm — 'Ndinoenda mberi, ndomira pane imba huru. Ndatenda.'" },
-          { shona: 'Enda mberi', english: 'Go forward', correct: false, feedback: "Confirm you understood — repeat what they said: 'Ndinoenda mberi, ndomira pane imba huru.'" },
+          { target: 'Ndinzwisisa. Ndinoenda mberi, ndomira pane imba huru. Ndatenda.', native: 'I understand. I go forward, I stop at the big house. Thank you.', correct: true, feedback: "You repeated the directions back — a great confirmation technique. The person nods." },
+          { target: 'Ndanzwisisa', native: 'I understand', correct: false, feedback: "Repeat the directions back to confirm — 'Ndinoenda mberi, ndomira pane imba huru. Ndatenda.'" },
+          { target: 'Enda mberi', native: 'Go forward', correct: false, feedback: "Confirm you understood — repeat what they said: 'Ndinoenda mberi, ndomira pane imba huru.'" },
         ],
       },
       {

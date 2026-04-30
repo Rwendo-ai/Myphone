@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'nguva_ngani',
-      shona: 'Nguva ngani?',
-      english: 'What time is it?',
+      target: 'Nguva ngani?',
+      native: 'What time is it?',
       literal: 'Time how-many?',
       emoji: '🕐',
       phonetic: 'NGU-va nga-ni',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'iri_yega',
-      shona: 'Iri yega / Iri mbiri',
-      english: "It's one o'clock / It's two o'clock",
+      target: 'Iri yega / Iri mbiri',
+      native: "It's one o'clock / It's two o'clock",
       literal: "It-is one / It-is two",
       emoji: '⏰',
       phonetic: 'I-ri YE-ga / I-ri MBI-ri',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'manheru_masikati',
-      shona: 'Manheru / Masikati',
-      english: 'Evening (pm) / Afternoon',
+      target: 'Manheru / Masikati',
+      native: 'Evening (pm) / Afternoon',
       literal: 'Evening / Daytime',
       emoji: '🌅🌆',
       phonetic: 'man-HE-ru / ma-si-KA-ti',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: "Iri + number = it's [time] o'clock",
     explanation: "'Iri' means 'it is' (for impersonal statements like time). Iri yega (1 o'clock), iri mbiri (2 o'clock), iri tatu (3 o'clock). Add manheru (pm/evening) or masikati (pm/afternoon) for clarity.",
     examples: [
-      { shona: 'Iri yega', english: "It's one o'clock" },
-      { shona: 'Iri tatu masikati', english: "It's 3pm" },
-      { shona: 'Iri nomwe manheru', english: "It's 7pm" },
+      { target: 'Iri yega', native: "It's one o'clock" },
+      { target: 'Iri tatu masikati', native: "It's 3pm" },
+      { target: 'Iri nomwe manheru', native: "It's 7pm" },
     ],
   },
 
@@ -109,15 +109,15 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Nguva ngani, ndapota?', english: 'What time is it, please?', correct: true, feedback: "Polite and correct. Perfect way to ask the time from a stranger." },
-          { shona: 'Iri tatu?', english: "Is it three o'clock?", correct: false, feedback: "You're guessing — ask properly: 'Nguva ngani, ndapota?'" },
-          { shona: 'Mangani?', english: 'How many?', correct: false, feedback: "Mangani is for counting things. For time: 'Nguva ngani, ndapota?'" },
+          { target: 'Nguva ngani, ndapota?', native: 'What time is it, please?', correct: true, feedback: "Polite and correct. Perfect way to ask the time from a stranger." },
+          { target: 'Iri tatu?', native: "Is it three o'clock?", correct: false, feedback: "You're guessing — ask properly: 'Nguva ngani, ndapota?'" },
+          { target: 'Mangani?', native: 'How many?', correct: false, feedback: "Mangani is for counting things. For time: 'Nguva ngani, ndapota?'" },
         ],
       },
       {
         speaker: 'npc',
-        shona: 'Iri tatu masikati.',
-        english: "It's 3pm.",
+        target: 'Iri tatu masikati.',
+        native: "It's 3pm.",
       },
       {
         speaker: 'rwen',

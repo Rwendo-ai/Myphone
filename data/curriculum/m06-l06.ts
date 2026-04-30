@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'mari',
-      shona: 'Mari',
-      english: 'Money',
+      target: 'Mari',
+      native: 'Money',
       literal: 'Mari (money)',
       emoji: '💰',
       phonetic: 'MA-ri',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'dora',
-      shona: 'Dora / Madora',
-      english: 'Dollar / Dollars',
+      target: 'Dora / Madora',
+      native: 'Dollar / Dollars',
       literal: 'Dora (dollar), Madora (dollars)',
       emoji: '💵',
       phonetic: 'DO-ra / ma-DO-ra',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndine_mari',
-      shona: 'Ndine mari / Handina mari',
-      english: 'I have money / I have no money',
+      target: 'Ndine mari / Handina mari',
+      native: 'I have money / I have no money',
       literal: 'I-have money / I-have-not money',
       emoji: '💸',
       phonetic: 'ndi-ne MA-ri / han-di-na MA-ri',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Ndine (I have) vs Handina (I have not)',
     explanation: "'Ndine' = I have. 'Handina' = I have not/don't have. This is Ha- negation applied to the possession verb. Ndine mari (I have money), Handina mari (I have no money). Simple, powerful.",
     examples: [
-      { shona: 'Ndine mari', english: 'I have money' },
-      { shona: 'Handina mari', english: "I don't have money" },
-      { shona: 'Ndine madora gumi', english: 'I have ten dollars' },
+      { target: 'Ndine mari', native: 'I have money' },
+      { target: 'Handina mari', native: "I don't have money" },
+      { target: 'Ndine madora gumi', native: 'I have ten dollars' },
     ],
   },
 
@@ -108,15 +108,15 @@ const lesson: LessonData = {
     lines: [
       {
         speaker: 'npc',
-        shona: 'Zvinhu izvi zvinodura madora mashanu.',
-        english: 'These things cost five dollars.',
+        target: 'Zvinhu izvi zvinodura madora mashanu.',
+        native: 'These things cost five dollars.',
       },
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Ndine madora mashanu. Ndichatora.', english: 'I have five dollars. I will take it.', correct: true, feedback: "You checked, you confirmed, you committed. Market Shona working perfectly." },
-          { shona: 'Handina mari', english: "I have no money", correct: false, feedback: "But you do have money — 'Ndine madora mashanu. Ndichatora.' I have five dollars, I'll take it." },
-          { shona: 'Ndinoda', english: 'I want', correct: false, feedback: "Confirm you can pay: 'Ndine madora mashanu. Ndichatora.' — I have five dollars, I'll take it." },
+          { target: 'Ndine madora mashanu. Ndichatora.', native: 'I have five dollars. I will take it.', correct: true, feedback: "You checked, you confirmed, you committed. Market Shona working perfectly." },
+          { target: 'Handina mari', native: "I have no money", correct: false, feedback: "But you do have money — 'Ndine madora mashanu. Ndichatora.' I have five dollars, I'll take it." },
+          { target: 'Ndinoda', native: 'I want', correct: false, feedback: "Confirm you can pay: 'Ndine madora mashanu. Ndichatora.' — I have five dollars, I'll take it." },
         ],
       },
       {

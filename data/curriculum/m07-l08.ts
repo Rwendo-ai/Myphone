@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'taudzai',
-      shona: 'Taudzai / Taudzai pamwe',
-      english: 'Let\'s eat / Let\'s eat together',
+      target: 'Taudzai / Taudzai pamwe',
+      native: 'Let\'s eat / Let\'s eat together',
       literal: 'Let-us-eat / together',
       emoji: '🍽️🍽️',
       phonetic: 'tau-DZA-i / pa-mwe',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'kudya_pamwe',
-      shona: 'Kudya pamwe',
-      english: 'Eating together',
+      target: 'Kudya pamwe',
+      native: 'Eating together',
       literal: 'To-eat together',
       emoji: '👨‍👩‍👧‍👦',
       phonetic: 'ku-DYA pa-mwe',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'tikudzane',
-      shona: 'Tikudzane',
-      english: 'Let us honour each other',
+      target: 'Tikudzane',
+      native: 'Let us honour each other',
       literal: 'We-honour-each-other',
       emoji: '🤝',
       phonetic: 'ti-ku-DZA-ne',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Ta-/Ti- inclusive we commands',
     explanation: "'Taudzai' (let's eat) uses the Ti- (we) prefix in imperative form. Ta-u-dza-i = we-each-other-eat. Tikudzane = we-honour-each-other. These Ti- forms create inclusive invitations — not commands, but shared actions.",
     examples: [
-      { shona: 'Taudzai', english: "Let's eat" },
-      { shona: 'Tikudzane', english: "Let us honour each other" },
-      { shona: 'Tiende pamwe', english: "Let's go together" },
+      { target: 'Taudzai', native: "Let's eat" },
+      { target: 'Tikudzane', native: "Let us honour each other" },
+      { target: 'Tiende pamwe', native: "Let's go together" },
     ],
   },
 
@@ -108,15 +108,15 @@ const lesson: LessonData = {
     lines: [
       {
         speaker: 'npc',
-        shona: 'Taudzai vose. Tikudzane nhasi.',
-        english: 'Let everyone eat. Let us honour each other today.',
+        target: 'Taudzai vose. Tikudzane nhasi.',
+        native: 'Let everyone eat. Let us honour each other today.',
       },
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Taudzai pamwe chete! Ndinofara kudya nemi vose.', english: "Let's eat together! I am happy to eat with all of you.", correct: true, feedback: "You joined the invitation and expressed joy. You're part of this meal now." },
-          { shona: 'Ndatenda', english: 'Thank you', correct: false, feedback: "Join the invitation! 'Taudzai pamwe chete! Ndinofara kudya nemi vose.' — Let's eat together!" },
-          { shona: 'Zvakanaka', english: "That's good", correct: false, feedback: "Be more engaged — 'Taudzai pamwe chete! Ndinofara kudya nemi vose.' You're invited. Accept fully." },
+          { target: 'Taudzai pamwe chete! Ndinofara kudya nemi vose.', native: "Let's eat together! I am happy to eat with all of you.", correct: true, feedback: "You joined the invitation and expressed joy. You're part of this meal now." },
+          { target: 'Ndatenda', native: 'Thank you', correct: false, feedback: "Join the invitation! 'Taudzai pamwe chete! Ndinofara kudya nemi vose.' — Let's eat together!" },
+          { target: 'Zvakanaka', native: "That's good", correct: false, feedback: "Be more engaged — 'Taudzai pamwe chete! Ndinofara kudya nemi vose.' You're invited. Accept fully." },
         ],
       },
       {

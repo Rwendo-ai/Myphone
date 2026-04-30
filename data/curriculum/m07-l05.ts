@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'ndinopa',
-      shona: 'Ndinopa...',
-      english: 'Please bring me... / I would like...',
+      target: 'Ndinopa...',
+      native: 'Please bring me... / I would like...',
       literal: 'I-give (request form)',
       emoji: '🍽️',
       phonetic: 'ndi-NO-pa',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'menyu',
-      shona: 'Menyu',
-      english: 'Menu',
+      target: 'Menyu',
+      native: 'Menu',
       literal: 'Menyu (from English)',
       emoji: '📋',
       phonetic: 'ME-nyu',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'chakaipa_nhasi',
-      shona: 'Chii chakaipa nhasi?',
-      english: "What is today's special?",
+      target: 'Chii chakaipa nhasi?',
+      native: "What is today's special?",
       literal: 'What came-out today?',
       emoji: '⭐',
       phonetic: 'chii cha-KA-i-pa NHA-si',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: "Ndinopa — 'please bring me' (hospitality verb)",
     explanation: "'Ndinopa' literally means 'I give' but in the context of ordering food it functions as a polite request — 'please provide me with'. It's more polite than 'Ndinoda' (I want) in formal restaurant settings.",
     examples: [
-      { shona: 'Ndinopa sadza ne nyama', english: 'Please bring me sadza with meat' },
-      { shona: 'Ndinopa mvura', english: 'Please bring me water' },
-      { shona: 'Ndinoda menyu, ndapota', english: 'I would like the menu, please' },
+      { target: 'Ndinopa sadza ne nyama', native: 'Please bring me sadza with meat' },
+      { target: 'Ndinopa mvura', native: 'Please bring me water' },
+      { target: 'Ndinoda menyu, ndapota', native: 'I would like the menu, please' },
     ],
   },
 
@@ -108,15 +108,15 @@ const lesson: LessonData = {
     lines: [
       {
         speaker: 'npc',
-        shona: 'Mangwanani. Mungade chii?',
-        english: 'Good morning. What would you like?',
+        target: 'Mangwanani. Mungade chii?',
+        native: 'Good morning. What would you like?',
       },
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Mangwanani. Ndinoda menyu ndapota. Uye — chii chakaipa nhasi?', english: 'Good morning. I would like the menu please. And — what is the special today?', correct: true, feedback: "Greeted back, asked for the menu, asked about the special. The server is delighted." },
-          { shona: 'Ndinopa sadza ne nyama', english: 'Please bring me sadza with meat', correct: false, feedback: "Good order — but ask for the menu first and the special: 'Ndinoda menyu ndapota. Chii chakaipa nhasi?'" },
-          { shona: 'Ndinoda mvura', english: 'I want water', correct: false, feedback: "Ask for the menu first: 'Ndinoda menyu ndapota.' Then decide what to order." },
+          { target: 'Mangwanani. Ndinoda menyu ndapota. Uye — chii chakaipa nhasi?', native: 'Good morning. I would like the menu please. And — what is the special today?', correct: true, feedback: "Greeted back, asked for the menu, asked about the special. The server is delighted." },
+          { target: 'Ndinopa sadza ne nyama', native: 'Please bring me sadza with meat', correct: false, feedback: "Good order — but ask for the menu first and the special: 'Ndinoda menyu ndapota. Chii chakaipa nhasi?'" },
+          { target: 'Ndinoda mvura', native: 'I want water', correct: false, feedback: "Ask for the menu first: 'Ndinoda menyu ndapota.' Then decide what to order." },
         ],
       },
       {

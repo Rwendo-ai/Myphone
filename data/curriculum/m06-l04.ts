@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'svondo_muvhuro',
-      shona: 'Svondo / Muvhuro',
-      english: 'Sunday / Monday',
+      target: 'Svondo / Muvhuro',
+      native: 'Sunday / Monday',
       literal: 'Svondo (from Sunday), Muvhuro (beginning/opening)',
       emoji: '📅',
       phonetic: 'SVON-do / mu-VHU-ro',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'chipiri_chitatu',
-      shona: 'Chipiri / Chitatu',
-      english: 'Tuesday / Wednesday',
+      target: 'Chipiri / Chitatu',
+      native: 'Tuesday / Wednesday',
       literal: 'Chi-piri (second), Chi-tatu (third)',
       emoji: '📆',
       phonetic: 'chi-PI-ri / chi-TA-tu',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'chishanu_mugovera',
-      shona: 'Chishanu / Mugovera',
-      english: 'Friday / Saturday',
+      target: 'Chishanu / Mugovera',
+      native: 'Friday / Saturday',
       literal: 'Chi-shanu (fifth), Mu-govera (sharing day)',
       emoji: '🎉',
       phonetic: 'chi-SHA-nu / mu-go-VE-ra',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Chi- days are numbered days',
     explanation: "Tuesday through Friday use the Chi- prefix with number roots: Chipiri (2nd day), Chitatu (3rd), China (4th), Chishanu (5th). Monday = Muvhuro (the opener). Saturday = Mugovera (sharing day). Sunday = Svondo.",
     examples: [
-      { shona: 'Chi-piri', english: 'Tuesday (2nd day)' },
-      { shona: 'Chi-tatu', english: 'Wednesday (3rd day)' },
-      { shona: 'Chi-shanu', english: 'Friday (5th day)' },
+      { target: 'Chi-piri', native: 'Tuesday (2nd day)' },
+      { target: 'Chi-tatu', native: 'Wednesday (3rd day)' },
+      { target: 'Chi-shanu', native: 'Friday (5th day)' },
     ],
   },
 
@@ -113,9 +113,9 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Ndichaenda naChishanu. Tingaratidza naChishanu here?', english: 'I will go on Friday. Can we meet on Friday?', correct: true, feedback: "Using the day name correctly in a real scheduling context. Rwen confirms Friday." },
-          { shona: 'Chishanu', english: 'Friday (just the word)', correct: false, feedback: "Build a sentence — 'Tingaratidza naChishanu?' — Can we meet on Friday?" },
-          { shona: 'Handizivi', english: "I don't know", correct: false, feedback: "Pick a day! 'Ndichaenda naChishanu' — I will go on Friday." },
+          { target: 'Ndichaenda naChishanu. Tingaratidza naChishanu here?', native: 'I will go on Friday. Can we meet on Friday?', correct: true, feedback: "Using the day name correctly in a real scheduling context. Rwen confirms Friday." },
+          { target: 'Chishanu', native: 'Friday (just the word)', correct: false, feedback: "Build a sentence — 'Tingaratidza naChishanu?' — Can we meet on Friday?" },
+          { target: 'Handizivi', native: "I don't know", correct: false, feedback: "Pick a day! 'Ndichaenda naChishanu' — I will go on Friday." },
         ],
       },
       {

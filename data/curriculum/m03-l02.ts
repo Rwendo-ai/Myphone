@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'ndinoshanda',
-      shona: 'Ndinoshanda',
-      english: 'I work',
+      target: 'Ndinoshanda',
+      native: 'I work',
       literal: 'I-work',
       emoji: '💼',
       phonetic: 'ndi-no-SHAN-da',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndinoshanda_mu',
-      shona: 'Ndinoshanda mu...',
-      english: 'I work in / at...',
+      target: 'Ndinoshanda mu...',
+      native: 'I work in / at...',
       literal: 'I-work in...',
       emoji: '🏢',
       phonetic: 'ndi-no-shan-da MU',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'handishande',
-      shona: 'Handishande iye zvino',
-      english: "I don't work right now / I'm not working",
+      target: 'Handishande iye zvino',
+      native: "I don't work right now / I'm not working",
       literal: 'I-work-not now',
       emoji: '🏠',
       phonetic: 'han-di-SHAN-de i-ye ZVI-no',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: '-shanda root — the work verb',
     explanation: "'Shanda' is the root verb for work/labour. Add 'ndi-no-' to make 'I work' (present habitual). This 'ndinо-' pattern works for most verbs: ndinoda (I want), ndinofara (I'm happy), ndinoshanda (I work).",
     examples: [
-      { shona: 'Ndinoshanda', english: 'I work' },
-      { shona: 'Ndinoshanda mu ofisi', english: 'I work in an office' },
-      { shona: 'Ndinoshanda ku Harare', english: 'I work in Harare' },
+      { target: 'Ndinoshanda', native: 'I work' },
+      { target: 'Ndinoshanda mu ofisi', native: 'I work in an office' },
+      { target: 'Ndinoshanda ku Harare', native: 'I work in Harare' },
     ],
   },
 
@@ -113,9 +113,9 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Ndinoshanda mu [profession]. Ndinofara nebasa rangu.', english: 'I work in [profession]. I am happy with my work.', correct: true, feedback: "You shared your work AND how you feel about it. Real connection." },
-          { shona: 'Ndinoshanda', english: 'I work', correct: false, feedback: "Good start — add where or what type of work: 'Ndinoshanda mu...'" },
-          { shona: 'Handishande iye zvino', english: "I don't work right now", correct: false, feedback: "That's fine if true — and you can add what you do instead." },
+          { target: 'Ndinoshanda mu [profession]. Ndinofara nebasa rangu.', native: 'I work in [profession]. I am happy with my work.', correct: true, feedback: "You shared your work AND how you feel about it. Real connection." },
+          { target: 'Ndinoshanda', native: 'I work', correct: false, feedback: "Good start — add where or what type of work: 'Ndinoshanda mu...'" },
+          { target: 'Handishande iye zvino', native: "I don't work right now", correct: false, feedback: "That's fine if true — and you can add what you do instead." },
         ],
       },
       {

@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'manheru',
-      shona: 'Manheru',
-      english: 'Good evening',
+      target: 'Manheru',
+      native: 'Good evening',
       literal: 'Evening',
       emoji: '🌇',
       phonetic: 'man-HEH-ru',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'manheru_akanaka',
-      shona: 'Manheru akanaka',
-      english: 'Good evening (warm, welcoming)',
+      target: 'Manheru akanaka',
+      native: 'Good evening (warm, welcoming)',
       literal: 'Evening that is good',
       emoji: '🌙',
       phonetic: 'man-HEH-ru a-ka-NAH-ka',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'hona',
-      shona: 'Hona',
-      english: 'Look / See / Here',
+      target: 'Hona',
+      native: 'Look / See / Here',
       literal: 'Look (draws attention, shows something)',
       emoji: '👁️',
       phonetic: 'HOH-na',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Akanaka — the "good" modifier',
     explanation: "'Akanaka' means 'that is good' and can be added to anything to warm it up. You'll see it again and again in Shona. It's one of the most useful words in the language.",
     examples: [
-      { shona: 'Manheru', english: 'Evening / Good evening (simple)' },
-      { shona: 'Manheru akanaka', english: 'Good evening (warm, full greeting)' },
-      { shona: 'Zvakanaka', english: 'It is good / Good (general approval)' },
+      { target: 'Manheru', native: 'Evening / Good evening (simple)' },
+      { target: 'Manheru akanaka', native: 'Good evening (warm, full greeting)' },
+      { target: 'Zvakanaka', native: 'It is good / Good (general approval)' },
     ],
   },
 
@@ -108,21 +108,21 @@ const lesson: LessonData = {
     lines: [
       {
         speaker: 'npc',
-        shona: 'Manheru akanaka',
-        english: 'Good evening (welcome)',
+        target: 'Manheru akanaka',
+        native: 'Good evening (welcome)',
       },
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Manheru akanaka', english: 'Good evening (warm)', correct: true, feedback: "You matched their warmth exactly. The room smiles." },
-          { shona: 'Manheru', english: 'Good evening', correct: false, feedback: "Correct time, but 'Manheru akanaka' is warmer — match the energy they gave you." },
-          { shona: 'Maswera sei?', english: 'How did you spend the day?', correct: false, feedback: "It's evening now — use 'Manheru' not the afternoon form." },
+          { target: 'Manheru akanaka', native: 'Good evening (warm)', correct: true, feedback: "You matched their warmth exactly. The room smiles." },
+          { target: 'Manheru', native: 'Good evening', correct: false, feedback: "Correct time, but 'Manheru akanaka' is warmer — match the energy they gave you." },
+          { target: 'Maswera sei?', native: 'How did you spend the day?', correct: false, feedback: "It's evening now — use 'Manheru' not the afternoon form." },
         ],
       },
       {
         speaker: 'npc',
-        shona: 'Hona — tauya tose',
-        english: 'Look — we are all here',
+        target: 'Hona — tauya tose',
+        native: 'Look — we are all here',
       },
       {
         speaker: 'rwen',

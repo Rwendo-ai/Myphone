@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'ndinoda_rubatsiro',
-      shona: 'Ndinoda rubatsiro',
-      english: 'I need help',
+      target: 'Ndinoda rubatsiro',
+      native: 'I need help',
       literal: 'I-want/need help',
       emoji: '🆘',
       phonetic: 'ndi-no-DA ru-bat-SI-ro',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndinogona',
-      shona: 'Ndinogona',
-      english: 'I can / I am able',
+      target: 'Ndinogona',
+      native: 'I can / I am able',
       literal: 'I-can/am-able',
       emoji: '💪',
       phonetic: 'ndi-no-GO-na',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'handigoni',
-      shona: 'Handigoni',
-      english: "I can't / I am not able",
+      target: 'Handigoni',
+      native: "I can't / I am not able",
       literal: "I-can-not",
       emoji: '🚫',
       phonetic: 'han-di-GO-ni',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Ndinoda — I want / I need',
     explanation: "'Ndinoda' means both 'I want' and 'I need' depending on context. Follow it with any noun to express desire or need. It is one of Shona's most versatile phrases.",
     examples: [
-      { shona: 'Ndinoda rubatsiro', english: 'I need help' },
-      { shona: 'Ndinoda mvura', english: 'I need/want water' },
-      { shona: 'Ndinoda kuenda', english: 'I need/want to go' },
+      { target: 'Ndinoda rubatsiro', native: 'I need help' },
+      { target: 'Ndinoda mvura', native: 'I need/want water' },
+      { target: 'Ndinoda kuenda', native: 'I need/want to go' },
     ],
   },
 
@@ -113,9 +113,9 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Handigoni. Ndinoda rubatsiro, ndapota.', english: "I can't. I need help, please.", correct: true, feedback: "Perfect — honest, polite, and clear. Rwen rolls up their sleeves." },
-          { shona: 'Ndinogona', english: 'I can', correct: false, feedback: "Only say that if you truly can — asking for help when you need it is smarter." },
-          { shona: 'Handizivi', english: "I don't know", correct: false, feedback: "'Handigoni' (I can't) fits better here — you know what you're doing, you just need a hand." },
+          { target: 'Handigoni. Ndinoda rubatsiro, ndapota.', native: "I can't. I need help, please.", correct: true, feedback: "Perfect — honest, polite, and clear. Rwen rolls up their sleeves." },
+          { target: 'Ndinogona', native: 'I can', correct: false, feedback: "Only say that if you truly can — asking for help when you need it is smarter." },
+          { target: 'Handizivi', native: "I don't know", correct: false, feedback: "'Handigoni' (I can't) fits better here — you know what you're doing, you just need a hand." },
         ],
       },
       {

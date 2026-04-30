@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'mudzimu',
-      shona: 'Mudzimu / Vadzimu',
-      english: 'Ancestral spirit / Ancestral spirits',
+      target: 'Mudzimu / Vadzimu',
+      native: 'Ancestral spirit / Ancestral spirits',
       literal: 'Mu-dzimu (ancestor, class 1/2)',
       emoji: '✨',
       phonetic: 'mu-DZI-mu / va-DZI-mu',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'chiziviso',
-      shona: 'Chiziviso / Mutupo',
-      english: 'Totem / Clan symbol',
+      target: 'Chiziviso / Mutupo',
+      native: 'Totem / Clan symbol',
       literal: 'Clan identity symbol',
       emoji: '🦁',
       phonetic: 'chi-zi-VI-so / mu-TU-po',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ramangwana',
-      shona: 'Ramangwana rinobva kumashure',
-      english: 'The future comes from the past',
+      target: 'Ramangwana rinobva kumashure',
+      native: 'The future comes from the past',
       literal: 'Tomorrow comes from behind',
       emoji: '🌅',
       phonetic: 'ra-man-GWA-na ri-no-BVA ku-ma-SHU-re',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Mu/Va class for spiritual beings',
     explanation: "Ancestral spirits (mudzimu/vadzimu) use the same Mu/Va class as living people — because in Shona belief, ancestors ARE still people, still part of the family. The noun class reflects the culture's understanding of continuity.",
     examples: [
-      { shona: 'Mudzimu wangu', english: 'My ancestral spirit' },
-      { shona: 'Vadzimu vetu', english: 'Our ancestral spirits' },
-      { shona: 'Mutupo wangu ndiShumba', english: 'My totem is Lion' },
+      { target: 'Mudzimu wangu', native: 'My ancestral spirit' },
+      { target: 'Vadzimu vetu', native: 'Our ancestral spirits' },
+      { target: 'Mutupo wangu ndiShumba', native: 'My totem is Lion' },
     ],
   },
 
@@ -113,9 +113,9 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Zvakakosha. Mutupo wangu ndi...', english: 'That is important. My totem is...', correct: true, feedback: "Sharing your totem back shows you understand its significance. Rwen is moved." },
-          { shona: 'Ndanzwisisa', english: 'I understand', correct: false, feedback: "Go deeper — share your own totem: 'Mutupo wangu ndi...' or ask: 'Zvii mutupo wako?'" },
-          { shona: 'Zvakanaka', english: "That's good", correct: false, feedback: "Engage with the depth of it — 'Zvakakosha zvikuru. Mutupo wangu ndi...'" },
+          { target: 'Zvakakosha. Mutupo wangu ndi...', native: 'That is important. My totem is...', correct: true, feedback: "Sharing your totem back shows you understand its significance. Rwen is moved." },
+          { target: 'Ndanzwisisa', native: 'I understand', correct: false, feedback: "Go deeper — share your own totem: 'Mutupo wangu ndi...' or ask: 'Zvii mutupo wako?'" },
+          { target: 'Zvakanaka', native: "That's good", correct: false, feedback: "Engage with the depth of it — 'Zvakakosha zvikuru. Mutupo wangu ndi...'" },
         ],
       },
       {

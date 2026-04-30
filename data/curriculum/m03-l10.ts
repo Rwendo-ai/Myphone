@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'zita_rangu_ndi',
-      shona: 'Zita rangu ndi...',
-      english: 'My name is...',
+      target: 'Zita rangu ndi...',
+      native: 'My name is...',
       literal: 'Name my it-is...',
       emoji: '🏷️',
       phonetic: 'ZI-ta ran-gu ndi',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'nokuti',
-      shona: 'Nokuti...',
-      english: 'Because...',
+      target: 'Nokuti...',
+      native: 'Because...',
       literal: 'Because...',
       emoji: '💡',
       phonetic: 'no-KU-ti',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndinoda_kuva_shamwari',
-      shona: 'Ndinoda kuva shamwari yako',
-      english: 'I want to be your friend',
+      target: 'Ndinoda kuva shamwari yako',
+      native: 'I want to be your friend',
       literal: 'I-want to-be friend your',
       emoji: '🤝',
       phonetic: 'ndi-no-da ku-VA sha-MWA-ri ya-ko',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Nokuti — because (connecting ideas)',
     explanation: "'Nokuti' connects a statement to its reason — like 'because' in English. 'Ndinofara nokuti...' (I am happy because...), 'Ndinoda kutaura ChiShona nokuti...' (I want to speak Shona because...). It makes your speech explanatory and deep.",
     examples: [
-      { shona: 'Ndinofara nokuti ndinofarira kudzidza', english: 'I am happy because I enjoy learning' },
-      { shona: 'Ndinoda ChiShona nokuti vanhu veZimbabwe', english: 'I love Shona because of the people of Zimbabwe' },
-      { shona: 'Ndiri pano nokuti ndinoda kutaura', english: "I am here because I want to speak" },
+      { target: 'Ndinofara nokuti ndinofarira kudzidza', native: 'I am happy because I enjoy learning' },
+      { target: 'Ndinoda ChiShona nokuti vanhu veZimbabwe', native: 'I love Shona because of the people of Zimbabwe' },
+      { target: 'Ndiri pano nokuti ndinoda kutaura', native: "I am here because I want to speak" },
     ],
   },
 
@@ -113,9 +113,9 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Zita rangu ndi... Ndiri mudzidzisi. Ndabva ku... Ndine mhuri.', english: 'My name is... I am a teacher. I am from... I have a family.', correct: true, feedback: "Name, profession, origin, family — in Shona. That's a full person, fully introduced." },
-          { shona: 'Zita rangu ndi...', english: 'My name is...', correct: false, feedback: "Good start — keep going! Add profession, origin, and family." },
-          { shona: 'Handizivi', english: "I don't know", correct: false, feedback: "You know your story — start with 'Zita rangu ndi...' and keep building." },
+          { target: 'Zita rangu ndi... Ndiri mudzidzisi. Ndabva ku... Ndine mhuri.', native: 'My name is... I am a teacher. I am from... I have a family.', correct: true, feedback: "Name, profession, origin, family — in Shona. That's a full person, fully introduced." },
+          { target: 'Zita rangu ndi...', native: 'My name is...', correct: false, feedback: "Good start — keep going! Add profession, origin, and family." },
+          { target: 'Handizivi', native: "I don't know", correct: false, feedback: "You know your story — start with 'Zita rangu ndi...' and keep building." },
         ],
       },
       {
@@ -125,9 +125,9 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Ndinoda kutaura ChiShona nokuti ndinoda vanhu veZimbabwe.', english: 'I want to speak Shona because I love the people of Zimbabwe.', correct: true, feedback: "That is the most powerful sentence in this module. And you said it in Shona." },
-          { shona: 'Ndirikudzidza ChiShona', english: 'I am learning Shona', correct: false, feedback: "True — add 'nokuti...' to tell them WHY." },
-          { shona: 'Ndinoda kudzidza', english: 'I want to learn', correct: false, feedback: "Good — add the reason: 'nokuti ndinoda vanhu veZimbabwe'." },
+          { target: 'Ndinoda kutaura ChiShona nokuti ndinoda vanhu veZimbabwe.', native: 'I want to speak Shona because I love the people of Zimbabwe.', correct: true, feedback: "That is the most powerful sentence in this module. And you said it in Shona." },
+          { target: 'Ndirikudzidza ChiShona', native: 'I am learning Shona', correct: false, feedback: "True — add 'nokuti...' to tell them WHY." },
+          { target: 'Ndinoda kudzidza', native: 'I want to learn', correct: false, feedback: "Good — add the reason: 'nokuti ndinoda vanhu veZimbabwe'." },
         ],
       },
       {

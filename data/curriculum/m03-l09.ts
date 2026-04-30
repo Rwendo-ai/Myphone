@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'ndinofarira',
-      shona: 'Ndinofarira...',
-      english: 'I enjoy / I am fond of...',
+      target: 'Ndinofarira...',
+      native: 'I enjoy / I am fond of...',
       literal: 'I-am-fond-of...',
       emoji: '❤️',
       phonetic: 'ndi-no-fa-RI-ra',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndinotenga',
-      shona: 'Ndinotenga',
-      english: 'I shop / I buy things',
+      target: 'Ndinotenga',
+      native: 'I shop / I buy things',
       literal: 'I-buy/shop',
       emoji: '🛒',
       phonetic: 'ndi-no-TEN-ga',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndinoda_mimhanzi',
-      shona: 'Ndinoda mimhanzi',
-      english: 'I love music',
+      target: 'Ndinoda mimhanzi',
+      native: 'I love music',
       literal: 'I-love music',
       emoji: '🎵',
       phonetic: 'ndi-no-da mi-MHAN-zi',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Ndinofarira vs Ndinoda — enjoyment vs love',
     explanation: "'Ndinofarira' (I enjoy / I am fond of) is slightly less intense than 'ndinoda' (I love / I want). Both can describe preferences. 'Ndinoda mimhanzi' = I love music. 'Ndinofarira mimhanzi' = I enjoy music. Learn both — they shade meaning.",
     examples: [
-      { shona: 'Ndinoda mimhanzi', english: 'I love music' },
-      { shona: 'Ndinofarira kutenga', english: 'I enjoy shopping' },
-      { shona: 'Ndinofarira kurima', english: 'I enjoy farming/gardening' },
+      { target: 'Ndinoda mimhanzi', native: 'I love music' },
+      { target: 'Ndinofarira kutenga', native: 'I enjoy shopping' },
+      { target: 'Ndinofarira kurima', native: 'I enjoy farming/gardening' },
     ],
   },
 
@@ -113,9 +113,9 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Ndinoda mimhanzi. Ndinofarira kuterera nzeve dzengu.', english: 'I love music. I enjoy listening with my ears.', correct: true, feedback: "You shared something real about yourself. Rwen leans in." },
-          { shona: 'Ndinofarira kudzidza', english: 'I enjoy learning', correct: false, feedback: "That's true — go further and name something personal beyond learning." },
-          { shona: 'Handizivi', english: "I don't know", correct: false, feedback: "You know what you enjoy — name it with 'Ndinoda...' or 'Ndinofarira...'." },
+          { target: 'Ndinoda mimhanzi. Ndinofarira kuterera nzeve dzengu.', native: 'I love music. I enjoy listening with my ears.', correct: true, feedback: "You shared something real about yourself. Rwen leans in." },
+          { target: 'Ndinofarira kudzidza', native: 'I enjoy learning', correct: false, feedback: "That's true — go further and name something personal beyond learning." },
+          { target: 'Handizivi', native: "I don't know", correct: false, feedback: "You know what you enjoy — name it with 'Ndinoda...' or 'Ndinofarira...'." },
         ],
       },
       {

@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'pedyo',
-      shona: 'Pedyo',
-      english: 'Near / Close',
+      target: 'Pedyo',
+      native: 'Near / Close',
       literal: 'Near (close proximity)',
       emoji: '📍',
       phonetic: 'PE-dyo',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'kure',
-      shona: 'Kure',
-      english: 'Far / Distant',
+      target: 'Kure',
+      native: 'Far / Distant',
       literal: 'Far (distant)',
       emoji: '🏔️',
       phonetic: 'KU-re',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'pedyo_nenhino',
-      shona: 'Pedyo nenhino',
-      english: 'Very nearby / Right here',
+      target: 'Pedyo nenhino',
+      native: 'Very nearby / Right here',
       literal: 'Near with-here',
       emoji: '👆',
       phonetic: 'PE-dyo ne-NHI-no',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Pedyo ne / Kure ne — near to / far from',
     explanation: "'Ne' (and/with) connects pedyo and kure to what they describe. Pedyo ne musika (near the market), kure ne musha (far from home). 'Ne' + location creates spatial descriptions.",
     examples: [
-      { shona: 'Pedyo ne musika', english: 'Near the market' },
-      { shona: 'Kure zvikuru', english: 'Very far' },
-      { shona: 'Pedyo nenhino', english: 'Very close by' },
+      { target: 'Pedyo ne musika', native: 'Near the market' },
+      { target: 'Kure zvikuru', native: 'Very far' },
+      { target: 'Pedyo nenhino', native: 'Very close by' },
     ],
   },
 
@@ -109,15 +109,15 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Chiteshi chiri pedyo here kana kure?', english: 'Is the bus station near or far?', correct: true, feedback: "Giving options (pedyo or kure) shows you know the vocabulary and want a clear answer." },
-          { shona: 'Chiteshi chiri kupi?', english: 'Where is the bus station?', correct: false, feedback: "Good question — add pedyo/kure: 'Chiteshi chiri pedyo here kana kure?' Near or far?" },
-          { shona: 'Ndeapi nzira yechiteshi?', english: 'Which is the way to the bus station?', correct: false, feedback: "Good direction question — but first ask if it's near or far to set expectations." },
+          { target: 'Chiteshi chiri pedyo here kana kure?', native: 'Is the bus station near or far?', correct: true, feedback: "Giving options (pedyo or kure) shows you know the vocabulary and want a clear answer." },
+          { target: 'Chiteshi chiri kupi?', native: 'Where is the bus station?', correct: false, feedback: "Good question — add pedyo/kure: 'Chiteshi chiri pedyo here kana kure?' Near or far?" },
+          { target: 'Ndeapi nzira yechiteshi?', native: 'Which is the way to the bus station?', correct: false, feedback: "Good direction question — but first ask if it's near or far to set expectations." },
         ],
       },
       {
         speaker: 'npc',
-        shona: 'Pedyo nenhino — maminiti mashanu chete.',
-        english: 'Very close — only five minutes.',
+        target: 'Pedyo nenhino — maminiti mashanu chete.',
+        native: 'Very close — only five minutes.',
       },
       {
         speaker: 'rwen',

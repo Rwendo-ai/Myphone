@@ -1,7 +1,7 @@
 export interface Chunk {
   id: string;
-  shona: string;
-  english: string;
+  target: string;
+  native: string;
   literal?: string;
   emoji: string;
   phonetic: string;
@@ -9,8 +9,8 @@ export interface Chunk {
 }
 
 export interface PatternExample {
-  shona: string;
-  english: string;
+  target: string;
+  native: string;
 }
 
 export interface Pattern {
@@ -66,9 +66,9 @@ export type Exercise =
 
 export interface DialogueLine {
   speaker: 'npc' | 'user' | 'rwen';
-  shona?: string;
-  english?: string;
-  userChoices?: { shona: string; english: string; correct: boolean; feedback: string }[];
+  target?: string;
+  native?: string;
+  userChoices?: { target: string; native: string; correct: boolean; feedback: string }[];
   rwenAnimation?: string;
   rwenLine?: string;
 }

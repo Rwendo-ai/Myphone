@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'ndichasvika',
-      shona: 'Ndichasvika na...',
-      english: 'I will arrive at...',
+      target: 'Ndichasvika na...',
+      native: 'I will arrive at...',
       literal: 'I-will-arrive at...',
       emoji: '🚗',
       phonetic: 'ndi-cha-SVI-ka na',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'tinosangana',
-      shona: 'Tinosangana riini?',
-      english: 'When do we meet?',
+      target: 'Tinosangana riini?',
+      native: 'When do we meet?',
       literal: 'We-meet when?',
       emoji: '🤝',
       phonetic: 'ti-no-san-GA-na ri-I-ni',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndakamirira',
-      shona: 'Ndakamirira / Ndirikumirira',
-      english: 'I waited / I am waiting',
+      target: 'Ndakamirira / Ndirikumirira',
+      native: 'I waited / I am waiting',
       literal: 'I-waited / I-am-waiting',
       emoji: '⏳',
       phonetic: 'nda-ka-mi-RI-ra / ndi-ri-ku-mi-RI-ra',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Na + time/day = at [time], on [day]',
     explanation: "'Na' before a time or day means 'at' or 'on'. Ndichasvika nairi tatu (I'll arrive at 3). Tinosangana naChishanu (We meet on Friday). 'Na' is the time preposition.",
     examples: [
-      { shona: 'Ndichasvika na iri tatu', english: "I will arrive at 3 o'clock" },
-      { shona: 'Tinosangana naChishanu', english: 'We meet on Friday' },
-      { shona: 'Ndakamirira nguva refu', english: 'I waited a long time' },
+      { target: 'Ndichasvika na iri tatu', native: "I will arrive at 3 o'clock" },
+      { target: 'Tinosangana naChishanu', native: 'We meet on Friday' },
+      { target: 'Ndakamirira nguva refu', native: 'I waited a long time' },
     ],
   },
 
@@ -113,9 +113,9 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Ndichasvika naChishanu na iri tatu masikati.', english: "I will arrive on Friday at 3pm.", correct: true, feedback: "Day + time — a complete, specific arrival plan. The family can prepare." },
-          { shona: 'Ndichasvika mangwana', english: 'I will arrive tomorrow', correct: false, feedback: "Give a specific time too — 'Ndichasvika naChishanu na iri tatu masikati.' Friday at 3pm." },
-          { shona: 'Handizivi rinhi', english: "I don't know when", correct: false, feedback: "Pick a day and time — 'Ndichasvika naChishanu na iri tatu masikati.' Show up prepared." },
+          { target: 'Ndichasvika naChishanu na iri tatu masikati.', native: "I will arrive on Friday at 3pm.", correct: true, feedback: "Day + time — a complete, specific arrival plan. The family can prepare." },
+          { target: 'Ndichasvika mangwana', native: 'I will arrive tomorrow', correct: false, feedback: "Give a specific time too — 'Ndichasvika naChishanu na iri tatu masikati.' Friday at 3pm." },
+          { target: 'Handizivi rinhi', native: "I don't know when", correct: false, feedback: "Pick a day and time — 'Ndichasvika naChishanu na iri tatu masikati.' Show up prepared." },
         ],
       },
       {

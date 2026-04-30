@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'zai_mazai',
-      shona: 'Zai / Mazai',
-      english: 'Egg / Eggs',
+      target: 'Zai / Mazai',
+      native: 'Egg / Eggs',
       literal: 'Stem: zai, Plural: Ma-zai',
       emoji: '🥚',
       phonetic: 'ZAI / ma-ZAI',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'banga_mabanga',
-      shona: 'Banga / Mabanga',
-      english: 'Knife / Knives',
+      target: 'Banga / Mabanga',
+      native: 'Knife / Knives',
       literal: 'Stem: banga, Plural: Ma-banga',
       emoji: '🔪',
       phonetic: 'BA-nga / ma-BA-nga',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'dombo_matombo',
-      shona: 'Dombo / Matombo',
-      english: 'Stone / Stones',
+      target: 'Dombo / Matombo',
+      native: 'Stone / Stones',
       literal: 'Stem: dombo, Plural: Ma-tombo (stem changes)',
       emoji: '🪨',
       phonetic: 'DO-mbo / ma-TO-mbo',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Ma- prefix makes plurals in Ri/Ma class',
     explanation: "Singular nouns in this class appear bare (no prefix). To make them plural, add Ma-. Sometimes the stem changes slightly — dombo becomes matombo. Listen carefully.",
     examples: [
-      { shona: 'Zai → Ma-zai', english: 'Egg → Eggs' },
-      { shona: 'Banga → Ma-banga', english: 'Knife → Knives' },
-      { shona: 'Dombo → Ma-tombo', english: 'Stone → Stones' },
+      { target: 'Zai → Ma-zai', native: 'Egg → Eggs' },
+      { target: 'Banga → Ma-banga', native: 'Knife → Knives' },
+      { target: 'Dombo → Ma-tombo', native: 'Stone → Stones' },
     ],
   },
 
@@ -108,15 +108,15 @@ const lesson: LessonData = {
     lines: [
       {
         speaker: 'npc',
-        shona: 'Mazai mangani ari pano?',
-        english: 'How many eggs are here?',
+        target: 'Mazai mangani ari pano?',
+        native: 'How many eggs are here?',
       },
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Mazai matatu ari pano.', english: 'Three eggs are here.', correct: true, feedback: "Perfect — you used mazai (plural) correctly." },
-          { shona: 'Zai matatu', english: 'Three egg (singular)', correct: false, feedback: "For 'three eggs' you need the plural: Mazai matatu." },
-          { shona: 'Handizivi', english: "I don't know", correct: false, feedback: "Try counting with mazai: 'Mazai matatu ari pano' — three eggs are here." },
+          { target: 'Mazai matatu ari pano.', native: 'Three eggs are here.', correct: true, feedback: "Perfect — you used mazai (plural) correctly." },
+          { target: 'Zai matatu', native: 'Three egg (singular)', correct: false, feedback: "For 'three eggs' you need the plural: Mazai matatu." },
+          { target: 'Handizivi', native: "I don't know", correct: false, feedback: "Try counting with mazai: 'Mazai matatu ari pano' — three eggs are here." },
         ],
       },
       {

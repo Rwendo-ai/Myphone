@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'ndinoda_kuenda',
-      shona: 'Ndinoda kuenda ku...',
-      english: 'I want / need to go to...',
+      target: 'Ndinoda kuenda ku...',
+      native: 'I want / need to go to...',
       literal: 'I-want to-go to...',
       emoji: '🚶',
       phonetic: 'ndi-no-da ku-EN-da ku',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'nzira_ipi',
-      shona: 'Nzira ipi?',
-      english: 'Which way? / Which road?',
+      target: 'Nzira ipi?',
+      native: 'Which way? / Which road?',
       literal: 'Road which?',
       emoji: '🗺️',
       phonetic: 'nzi-ra I-pi',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndatenda_rubatsiro',
-      shona: 'Ndatenda rubatsiro rwako',
-      english: 'Thank you for your help',
+      target: 'Ndatenda rubatsiro rwako',
+      native: 'Thank you for your help',
       literal: 'I-thank help your',
       emoji: '🙏',
       phonetic: 'nda-TEN-da ru-bat-SI-ro rwa-ko',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Putting survival phrases together',
     explanation: "Real survival conversations mix everything: greetings, politeness, admitting you don't know, asking for help, understanding confirmation, and gratitude. The key is not individual phrases — it's chaining them naturally.",
     examples: [
-      { shona: 'Makadii? Ndibatsire ndapota.', english: 'How are you? Please help me.' },
-      { shona: 'Handanzwisisi — dzokorora ndapota.', english: "I don't understand — please repeat." },
-      { shona: 'Ndatenda zvikuru. Wakanaka.', english: 'Thank you very much. You are kind.' },
+      { target: 'Makadii? Ndibatsire ndapota.', native: 'How are you? Please help me.' },
+      { target: 'Handanzwisisi — dzokorora ndapota.', native: "I don't understand — please repeat." },
+      { target: 'Ndatenda zvikuru. Wakanaka.', native: 'Thank you very much. You are kind.' },
     ],
   },
 
@@ -109,35 +109,35 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Makadii? Ndibatsire ndapota — ndinoda kuenda ku posvo.', english: 'How are you? Please help me — I need to go to the post office.', correct: true, feedback: "Greeting + polite request + clear need. Perfect opening." },
-          { shona: 'Nzira ipi?', english: 'Which way?', correct: false, feedback: "Too abrupt without a greeting. Greet first — 'Makadii?' — then ask." },
-          { shona: 'Ndinoda rubatsiro', english: 'I need help', correct: false, feedback: "Good instinct — add a greeting first and specify where you're going." },
+          { target: 'Makadii? Ndibatsire ndapota — ndinoda kuenda ku posvo.', native: 'How are you? Please help me — I need to go to the post office.', correct: true, feedback: "Greeting + polite request + clear need. Perfect opening." },
+          { target: 'Nzira ipi?', native: 'Which way?', correct: false, feedback: "Too abrupt without a greeting. Greet first — 'Makadii?' — then ask." },
+          { target: 'Ndinoda rubatsiro', native: 'I need help', correct: false, feedback: "Good instinct — add a greeting first and specify where you're going." },
         ],
       },
       {
         speaker: 'npc',
-        shona: 'Hongu. Enda mberi, wobva wadzokorora kurudyi.',
-        english: 'Yes. Go forward, then turn right.',
+        target: 'Hongu. Enda mberi, wobva wadzokorora kurudyi.',
+        native: 'Yes. Go forward, then turn right.',
       },
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Handanzwisisi — taura zvishoma ndapota.', english: "I don't understand — please speak slowly.", correct: true, feedback: "Exactly right — you kept the conversation going by asking for clarity." },
-          { shona: 'Ndanzwisisa', english: 'I understand', correct: false, feedback: "Only say that if you truly followed. If you didn't, use 'Handanzwisisi — taura zvishoma ndapota'." },
-          { shona: 'Ndatenda', english: 'Thank you', correct: false, feedback: "Don't close the conversation before you have the information you need!" },
+          { target: 'Handanzwisisi — taura zvishoma ndapota.', native: "I don't understand — please speak slowly.", correct: true, feedback: "Exactly right — you kept the conversation going by asking for clarity." },
+          { target: 'Ndanzwisisa', native: 'I understand', correct: false, feedback: "Only say that if you truly followed. If you didn't, use 'Handanzwisisi — taura zvishoma ndapota'." },
+          { target: 'Ndatenda', native: 'Thank you', correct: false, feedback: "Don't close the conversation before you have the information you need!" },
         ],
       },
       {
         speaker: 'npc',
-        shona: 'Enda — mberi — wobva wadzokorora — kurudyi.',
-        english: 'Go — forward — then turn — right.',
+        target: 'Enda — mberi — wobva wadzokorora — kurudyi.',
+        native: 'Go — forward — then turn — right.',
       },
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Ndanzwisisa. Ndatenda rubatsiro rwako zvikuru.', english: 'I understand. Thank you very much for your help.', correct: true, feedback: "Complete, warm, grateful. Module 2 complete. You survived — and thrived." },
-          { shona: 'Ndatenda', english: 'Thank you', correct: false, feedback: "Good — and 'Ndatenda rubatsiro rwako zvikuru' is even warmer for someone who took the time to help." },
-          { shona: 'Zvinoenderana', english: "You're welcome", correct: false, feedback: "That's what they say to YOU — your line is 'Ndatenda'." },
+          { target: 'Ndanzwisisa. Ndatenda rubatsiro rwako zvikuru.', native: 'I understand. Thank you very much for your help.', correct: true, feedback: "Complete, warm, grateful. Module 2 complete. You survived — and thrived." },
+          { target: 'Ndatenda', native: 'Thank you', correct: false, feedback: "Good — and 'Ndatenda rubatsiro rwako zvikuru' is even warmer for someone who took the time to help." },
+          { target: 'Zvinoenderana', native: "You're welcome", correct: false, feedback: "That's what they say to YOU — your line is 'Ndatenda'." },
         ],
       },
       {

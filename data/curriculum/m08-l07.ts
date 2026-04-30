@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'ndinoona',
-      shona: 'Ndinoona',
-      english: 'I see / I understand',
+      target: 'Ndinoona',
+      native: 'I see / I understand',
       literal: 'I-see (habitual)',
       emoji: '👁️',
       phonetic: 'ndi-no-O-na',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndaona',
-      shona: 'Ndaona',
-      english: 'I saw / I have seen',
+      target: 'Ndaona',
+      native: 'I saw / I have seen',
       literal: 'I-saw (completed)',
       emoji: '✅',
       phonetic: 'nda-O-na',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ona',
-      shona: 'Ona!',
-      english: 'Look! / See this!',
+      target: 'Ona!',
+      native: 'Look! / See this!',
       literal: 'See! (command)',
       emoji: '👀',
       phonetic: 'O-na',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Kuona — see and understand together',
     explanation: "'Unoona here?' can mean both 'Do you see?' (physically) and 'Do you understand?' Context tells you which. This double meaning is a window into Shona philosophy — physical and intellectual sight are one concept.",
     examples: [
-      { shona: 'Ndinoona', english: 'I see / I understand' },
-      { shona: 'Ndaona zimbabwe — yakanaka', english: 'I saw Zimbabwe — it is beautiful' },
-      { shona: 'Ona chinhu ichi', english: 'Look at this thing' },
+      { target: 'Ndinoona', native: 'I see / I understand' },
+      { target: 'Ndaona zimbabwe — yakanaka', native: 'I saw Zimbabwe — it is beautiful' },
+      { target: 'Ona chinhu ichi', native: 'Look at this thing' },
     ],
   },
 
@@ -113,9 +113,9 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Ndinoona! Muti uyu wakanaka zvikuru. Ndaona miti yakadai muZimbabwe here?', english: "I see it! This tree is very beautiful. Have I seen trees like this in Zimbabwe?", correct: true, feedback: "You saw, you appreciated, you asked a follow-up. That's genuine curiosity in Shona." },
-          { shona: 'Ndinoona', english: 'I see', correct: false, feedback: "Add appreciation — 'Ndinoona! Muti uyu wakanaka zvikuru.' Show you're moved by what you see." },
-          { shona: 'Handioni', english: "I don't see it", correct: false, feedback: "Ha- negation of ona = Handioni (I don't see). But the tree is right there — 'Ndinoona!' — I see it!" },
+          { target: 'Ndinoona! Muti uyu wakanaka zvikuru. Ndaona miti yakadai muZimbabwe here?', native: "I see it! This tree is very beautiful. Have I seen trees like this in Zimbabwe?", correct: true, feedback: "You saw, you appreciated, you asked a follow-up. That's genuine curiosity in Shona." },
+          { target: 'Ndinoona', native: 'I see', correct: false, feedback: "Add appreciation — 'Ndinoona! Muti uyu wakanaka zvikuru.' Show you're moved by what you see." },
+          { target: 'Handioni', native: "I don't see it", correct: false, feedback: "Ha- negation of ona = Handioni (I don't see). But the tree is right there — 'Ndinoona!' — I see it!" },
         ],
       },
       {

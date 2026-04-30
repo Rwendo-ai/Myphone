@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'vatete',
-      shona: 'Vatete',
-      english: "Father's sisters (paternal aunts, plural)",
+      target: 'Vatete',
+      native: "Father's sisters (paternal aunts, plural)",
       literal: 'Va-tete (plural of Tete)',
       emoji: '👩‍👩‍👦',
       phonetic: 'va-TEH-te',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'muzhengwa',
-      shona: 'Muzhengwa / Cousin',
-      english: "Cousin (child of parent's sibling)",
+      target: 'Muzhengwa / Cousin',
+      native: "Cousin (child of parent's sibling)",
       literal: 'Muzhengwa (cross-cousin)',
       emoji: '🤝',
       phonetic: 'mu-ZHENG-wa',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'mhuri_yose',
-      shona: 'Mhuri yose',
-      english: 'The whole family / All of the family',
+      target: 'Mhuri yose',
+      native: 'The whole family / All of the family',
       literal: 'Family all',
       emoji: '👨‍👩‍👧‍👦',
       phonetic: 'mm-HU-ri YO-se',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Yose / Mese — all / whole',
     explanation: "'Yose' means 'all/whole' and attaches to singular nouns. 'Mese' means 'all of you' (plural people). Mhuri yose = the whole family. Vanhu vose = all people. The class determines which 'all' to use.",
     examples: [
-      { shona: 'Mhuri yose', english: 'The whole family' },
-      { shona: 'Vanhu vose', english: 'All people' },
-      { shona: 'Zvinhu zvose', english: 'All things' },
+      { target: 'Mhuri yose', native: 'The whole family' },
+      { target: 'Vanhu vose', native: 'All people' },
+      { target: 'Zvinhu zvose', native: 'All things' },
     ],
   },
 
@@ -113,9 +113,9 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Zvakanaka! Ndinofara kusangana nemhuri yose.', english: "Wonderful! I'm happy to meet the whole family.", correct: true, feedback: "Using mhuri yose correctly — the whole family is delighted." },
-          { shona: 'Makadii mese', english: 'How are all of you', correct: false, feedback: "Good start — add more: 'Ndinofara kusangana nemhuri yose.' (I'm happy to meet the whole family.)" },
-          { shona: 'Vanhu vazhinji', english: 'Many people', correct: false, feedback: "Try: 'Ndinofara kusangana nemhuri yose.' — I am happy to meet the whole family." },
+          { target: 'Zvakanaka! Ndinofara kusangana nemhuri yose.', native: "Wonderful! I'm happy to meet the whole family.", correct: true, feedback: "Using mhuri yose correctly — the whole family is delighted." },
+          { target: 'Makadii mese', native: 'How are all of you', correct: false, feedback: "Good start — add more: 'Ndinofara kusangana nemhuri yose.' (I'm happy to meet the whole family.)" },
+          { target: 'Vanhu vazhinji', native: 'Many people', correct: false, feedback: "Try: 'Ndinofara kusangana nemhuri yose.' — I am happy to meet the whole family." },
         ],
       },
       {

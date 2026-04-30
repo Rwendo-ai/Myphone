@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'ndinodzidzа',
-      shona: 'Ndinodzidzа',
-      english: 'I learn (habitually)',
+      target: 'Ndinodzidzа',
+      native: 'I learn (habitually)',
       literal: 'I-learn (habitual)',
       emoji: '📚',
       phonetic: 'ndi-no-DZI-dza',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndirikudzidza',
-      shona: 'Ndirikudzidzа',
-      english: 'I am learning (right now)',
+      target: 'Ndirikudzidzа',
+      native: 'I am learning (right now)',
       literal: 'I-am-learning (continuous)',
       emoji: '🔄',
       phonetic: 'ndi-ri-ku-DZI-dza',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndadzidzа',
-      shona: 'Ndadzidzа',
-      english: 'I learned / I have learned',
+      target: 'Ndadzidzа',
+      native: 'I learned / I have learned',
       literal: 'I-learned (completed)',
       emoji: '🎓',
       phonetic: 'nda-DZI-dza',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Kudzidza — the verb that describes your journey',
     explanation: "'Ndinodzidzа' (I learn, habitually). 'Ndirikudzidzа' (I am learning right now). 'Ndadzidzа' (I have learned). 'Ndichadzidzа' (I will learn). These four forms describe your entire relationship with Rwendo — past, present, and future.",
     examples: [
-      { shona: 'Ndinodzidzа ChiShona', english: 'I learn Shona (regularly)' },
-      { shona: 'Ndirikudzidzа zvishoma', english: 'I am learning little by little' },
-      { shona: 'Ndadzidzа mazita emhuri', english: 'I learned family names' },
+      { target: 'Ndinodzidzа ChiShona', native: 'I learn Shona (regularly)' },
+      { target: 'Ndirikudzidzа zvishoma', native: 'I am learning little by little' },
+      { target: 'Ndadzidzа mazita emhuri', native: 'I learned family names' },
     ],
   },
 
@@ -113,9 +113,9 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Ndirikudzidzа zvishoma nezvishoma. Ndadzidzа zvakawanda. Ndichadzidzа zvakawanda zvakare.', english: 'I am learning little by little. I have learned a lot. I will learn a lot more.', correct: true, feedback: "Three tenses in one answer — present, past, future. Your whole learning journey in one sentence." },
-          { shona: 'Ndinodzidzа', english: 'I learn', correct: false, feedback: "Go further — 'Ndirikudzidzа. Ndadzidzа zvakawanda. Ndichadzidzа zvakare.' Past, present, future." },
-          { shona: 'Ndatenda', english: 'Thank you', correct: false, feedback: "Show what you've done — 'Ndadzidzа zvakawanda. Ndirikudzidzа zvakare. Ndichadzidzа zvakawanda.'" },
+          { target: 'Ndirikudzidzа zvishoma nezvishoma. Ndadzidzа zvakawanda. Ndichadzidzа zvakawanda zvakare.', native: 'I am learning little by little. I have learned a lot. I will learn a lot more.', correct: true, feedback: "Three tenses in one answer — present, past, future. Your whole learning journey in one sentence." },
+          { target: 'Ndinodzidzа', native: 'I learn', correct: false, feedback: "Go further — 'Ndirikudzidzа. Ndadzidzа zvakawanda. Ndichadzidzа zvakare.' Past, present, future." },
+          { target: 'Ndatenda', native: 'Thank you', correct: false, feedback: "Show what you've done — 'Ndadzidzа zvakawanda. Ndirikudzidzа zvakare. Ndichadzidzа zvakawanda.'" },
         ],
       },
       {

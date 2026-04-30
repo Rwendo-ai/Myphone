@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'ndinoda',
-      shona: 'Ndinoda...',
-      english: 'I want / I need...',
+      target: 'Ndinoda...',
+      native: 'I want / I need...',
       literal: 'I-want/love...',
       emoji: '🎯',
       phonetic: 'ndi-no-DA',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndinoda_chete',
-      shona: '...chete',
-      english: 'only / just that',
+      target: '...chete',
+      native: 'only / just that',
       literal: 'only/alone',
       emoji: '☝️',
       phonetic: 'CHE-te',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'handidi',
-      shona: 'Handidi',
-      english: "I don't want",
+      target: 'Handidi',
+      native: "I don't want",
       literal: "I-want-not",
       emoji: '🙅',
       phonetic: 'han-DI-di',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Ndinoda → Handidi — want vs not want',
     explanation: "'Ndinoda' (I want) becomes 'Handidi' (I don't want) with the Ha- negation. Notice 'noda' changes to 'didi' — Shona verb stems shift in negation. You'll see this pattern throughout the language.",
     examples: [
-      { shona: 'Ndinoda sadza', english: 'I want sadza' },
-      { shona: 'Handidi sadza', english: "I don't want sadza" },
-      { shona: 'Ndinoda mvura chete', english: 'I just want water' },
+      { target: 'Ndinoda sadza', native: 'I want sadza' },
+      { target: 'Handidi sadza', native: "I don't want sadza" },
+      { target: 'Ndinoda mvura chete', native: 'I just want water' },
     ],
   },
 
@@ -108,21 +108,21 @@ const lesson: LessonData = {
     lines: [
       {
         speaker: 'npc',
-        shona: 'Unoda chii? Ndinayo mvura, sadza, uye chingwa.',
-        english: 'What do you want? I have water, sadza, and bread.',
+        target: 'Unoda chii? Ndinayo mvura, sadza, uye chingwa.',
+        native: 'What do you want? I have water, sadza, and bread.',
       },
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Ndinoda mvura chete, ndapota.', english: 'I just want water, please.', correct: true, feedback: "Clear, polite, and precise. The vendor knows exactly what to give you." },
-          { shona: 'Ndinoda', english: 'I want', correct: false, feedback: "Good start — but tell them what you want. 'Ndinoda mvura chete' — I just want water." },
-          { shona: 'Handidi', english: "I don't want", correct: false, feedback: "That declines everything — say what you DO want: 'Ndinoda mvura chete'." },
+          { target: 'Ndinoda mvura chete, ndapota.', native: 'I just want water, please.', correct: true, feedback: "Clear, polite, and precise. The vendor knows exactly what to give you." },
+          { target: 'Ndinoda', native: 'I want', correct: false, feedback: "Good start — but tell them what you want. 'Ndinoda mvura chete' — I just want water." },
+          { target: 'Handidi', native: "I don't want", correct: false, feedback: "That declines everything — say what you DO want: 'Ndinoda mvura chete'." },
         ],
       },
       {
         speaker: 'npc',
-        shona: 'Zvinoenderana. Tora mvura yako.',
-        english: "No problem. Take your water.",
+        target: 'Zvinoenderana. Tora mvura yako.',
+        native: "No problem. Take your water.",
       },
       {
         speaker: 'rwen',

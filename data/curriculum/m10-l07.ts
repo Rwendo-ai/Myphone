@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'kare',
-      shona: 'Kare',
-      english: 'Long ago / In the old days / Once',
+      target: 'Kare',
+      native: 'Long ago / In the old days / Once',
       literal: 'Long-ago',
       emoji: '🕰️',
       phonetic: 'KA-re',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'paivapo',
-      shona: 'Paivapo...',
-      english: 'Once upon a time / There was...',
+      target: 'Paivapo...',
+      native: 'Once upon a time / There was...',
       literal: 'There-was-there...',
       emoji: '📖',
       phonetic: 'pa-I-va-po',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndakanga',
-      shona: 'Ndakanga...',
-      english: 'I was / I used to be...',
+      target: 'Ndakanga...',
+      native: 'I was / I used to be...',
       literal: 'I-was (pluperfect past)',
       emoji: '⬅️',
       phonetic: 'nda-KAN-ga',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Ndakanga — the deep past',
     explanation: "'Ndakanga' creates a past-in-the-past — 'I was [state]' describing a condition that existed before another past event. Ndakanga ndiri mudzidzi (I was a student, in the past). It's used in storytelling to set scenes in the far past.",
     examples: [
-      { shona: 'Kare kare, paivapo munhu...', english: 'Long, long ago, there was a person...' },
-      { shona: 'Ndakanga ndiri mudiki', english: 'I used to be young / When I was young' },
-      { shona: 'Nguva yadarika...', english: 'In the past... / Once...' },
+      { target: 'Kare kare, paivapo munhu...', native: 'Long, long ago, there was a person...' },
+      { target: 'Ndakanga ndiri mudiki', native: 'I used to be young / When I was young' },
+      { target: 'Nguva yadarika...', native: 'In the past... / Once...' },
     ],
   },
 
@@ -113,9 +113,9 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Paivapo!', english: 'Once upon a time! (response)', correct: true, feedback: "You responded with 'Paivapo!' — signalling you're ready to listen. Rwen continues the story." },
-          { shona: 'Ndanzwisisa', english: 'I understand', correct: false, feedback: "The traditional response to 'Paivapo' is 'Paivapo!' — echo it back to signal you're listening." },
-          { shona: 'Zvakanaka', english: "That's good", correct: false, feedback: "Echo the opener — 'Paivapo!' That's how Shona storytelling works. The listener confirms." },
+          { target: 'Paivapo!', native: 'Once upon a time! (response)', correct: true, feedback: "You responded with 'Paivapo!' — signalling you're ready to listen. Rwen continues the story." },
+          { target: 'Ndanzwisisa', native: 'I understand', correct: false, feedback: "The traditional response to 'Paivapo' is 'Paivapo!' — echo it back to signal you're listening." },
+          { target: 'Zvakanaka', native: "That's good", correct: false, feedback: "Echo the opener — 'Paivapo!' That's how Shona storytelling works. The listener confirms." },
         ],
       },
       {

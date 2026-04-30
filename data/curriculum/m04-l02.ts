@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'chinhu',
-      shona: 'Chinhu',
-      english: 'A thing / An object',
+      target: 'Chinhu',
+      native: 'A thing / An object',
       literal: 'Chi-nhu (class 7 prefix)',
       emoji: '📦',
       phonetic: 'CHI-nhu',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'zvinhu',
-      shona: 'Zvinhu',
-      english: 'Things / Objects',
+      target: 'Zvinhu',
+      native: 'Things / Objects',
       literal: 'Zvi-nhu (class 8 plural prefix)',
       emoji: '📦📦',
       phonetic: 'ZVI-nhu',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'chikoro',
-      shona: 'Chikoro',
-      english: 'School',
+      target: 'Chikoro',
+      native: 'School',
       literal: 'Chi-koro (thing class)',
       emoji: '🏫',
       phonetic: 'chi-KO-ro',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Chi- singular, Zvi- plural (things)',
     explanation: "Things use Chi- (one thing) and Zvi- (many things). Languages use Chi- too — ChiShona, ChiRungu. Verbs describing things start with Chi- or Zvi- to match.",
     examples: [
-      { shona: 'Chi-nhu → Zvi-nhu', english: 'Thing → Things' },
-      { shona: 'Chi-koro → Zvi-koro', english: 'School → Schools' },
-      { shona: 'Chi-Shona', english: 'Shona language (Chi- class)' },
+      { target: 'Chi-nhu → Zvi-nhu', native: 'Thing → Things' },
+      { target: 'Chi-koro → Zvi-koro', native: 'School → Schools' },
+      { target: 'Chi-Shona', native: 'Shona language (Chi- class)' },
     ],
   },
 
@@ -113,9 +113,9 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Ndinoona. Chi- imwe, Zvi- vazhinji.', english: "I see. Chi- one thing, Zvi- many things.", correct: true, feedback: "You've got it. The pattern is the same as Mu/Va — just different sounds." },
-          { shona: 'Handanzwisisi zvizvi', english: "I don't understand this", correct: false, feedback: "Chi- = one thing, Zvi- = many things. Same pattern as Mu- and Va- for people." },
-          { shona: 'Ndatenda Rwen', english: 'Thank you Rwen', correct: false, feedback: "Good — but try describing the pattern: Chi- for one thing, Zvi- for many." },
+          { target: 'Ndinoona. Chi- imwe, Zvi- vazhinji.', native: "I see. Chi- one thing, Zvi- many things.", correct: true, feedback: "You've got it. The pattern is the same as Mu/Va — just different sounds." },
+          { target: 'Handanzwisisi zvizvi', native: "I don't understand this", correct: false, feedback: "Chi- = one thing, Zvi- = many things. Same pattern as Mu- and Va- for people." },
+          { target: 'Ndatenda Rwen', native: 'Thank you Rwen', correct: false, feedback: "Good — but try describing the pattern: Chi- for one thing, Zvi- for many." },
         ],
       },
       {

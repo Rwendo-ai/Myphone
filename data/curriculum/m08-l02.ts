@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'ndinouya',
-      shona: 'Ndinouya',
-      english: 'I come / I am coming',
+      target: 'Ndinouya',
+      native: 'I come / I am coming',
       literal: 'I-come (habitual)',
       emoji: '🚶‍♂️',
       phonetic: 'ndi-no-U-ya',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndauya',
-      shona: 'Ndauya',
-      english: 'I have come / I arrived',
+      target: 'Ndauya',
+      native: 'I have come / I arrived',
       literal: 'I-came (completed)',
       emoji: '✅',
       phonetic: 'nda-U-ya',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'uya_kuno',
-      shona: 'Uya kuno',
-      english: 'Come here',
+      target: 'Uya kuno',
+      native: 'Come here',
       literal: 'Come here',
       emoji: '👋',
       phonetic: 'U-ya KU-no',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Uya — the welcome command',
     explanation: "'Uya' (come) is both the verb stem and a command. As a command it's soft and welcoming — not harsh. Add 'kuno' (here) to direct it: 'Uya kuno' = come here. Add 'zvino' (now) for urgency: 'Uya zvino' = come now.",
     examples: [
-      { shona: 'Ndinouya', english: 'I come / I am coming' },
-      { shona: 'Ndauya', english: 'I have arrived / I came' },
-      { shona: 'Uya kuno, shamwari', english: 'Come here, friend' },
+      { target: 'Ndinouya', native: 'I come / I am coming' },
+      { target: 'Ndauya', native: 'I have arrived / I came' },
+      { target: 'Uya kuno, shamwari', native: 'Come here, friend' },
     ],
   },
 
@@ -113,9 +113,9 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Ndinouya! Ndichakusvika pakarepo.', english: "I'm coming! I'll reach you right away.", correct: true, feedback: "Responded immediately and confirmed your arrival. Rwen waves you over." },
-          { shona: 'Ndauya', english: 'I have come', correct: false, feedback: "That's past tense — you haven't arrived yet. Say 'Ndinouya!' — I'm coming!" },
-          { shona: 'Enda kuno', english: 'Go there', correct: false, feedback: "'Enda kuno' tells someone else to go there. You should say 'Ndinouya!' — I'm coming!" },
+          { target: 'Ndinouya! Ndichakusvika pakarepo.', native: "I'm coming! I'll reach you right away.", correct: true, feedback: "Responded immediately and confirmed your arrival. Rwen waves you over." },
+          { target: 'Ndauya', native: 'I have come', correct: false, feedback: "That's past tense — you haven't arrived yet. Say 'Ndinouya!' — I'm coming!" },
+          { target: 'Enda kuno', native: 'Go there', correct: false, feedback: "'Enda kuno' tells someone else to go there. You should say 'Ndinouya!' — I'm coming!" },
         ],
       },
       {

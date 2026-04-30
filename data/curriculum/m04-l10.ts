@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'ndinoda_kuziva',
-      shona: 'Ndinoda kuziva',
-      english: 'I want to know',
+      target: 'Ndinoda kuziva',
+      native: 'I want to know',
       literal: 'I-want to-know',
       emoji: '🔍',
       phonetic: 'ndi-no-da ku-ZI-va',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'zvinobuda',
-      shona: 'Zvinobuda zvakanaka',
-      english: 'It turns out well / It works out',
+      target: 'Zvinobuda zvakanaka',
+      native: 'It turns out well / It works out',
       literal: 'Things-come-out that-are-good',
       emoji: '✨',
       phonetic: 'zvi-no-BU-da zva-ka-NA-ka',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndazvifunza',
-      shona: 'Ndazvifunza',
-      english: 'I taught myself / I learned it',
+      target: 'Ndazvifunza',
+      native: 'I taught myself / I learned it',
       literal: 'I-taught-myself',
       emoji: '🎓',
       phonetic: 'nda-zvi-FUN-za',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Grammar summary — all classes together',
     explanation: "People: Munhu/Vanhu (Mu/Va). Things: Chinhu/Zvinhu (Chi/Zvi). Trees: Muti/Miti (Mu/Mi). Verbs match subjects. Adjectives match nouns. Tenses live in the verb. Questions go at the end. You now have the skeleton of Shona grammar.",
     examples: [
-      { shona: 'Munhu akanaka anoenda', english: 'A good person goes (class 1, adjective + verb agree)' },
-      { shona: 'Chinhu chakanaka chakaitika', english: 'A good thing happened (class 7, agreement)' },
-      { shona: 'Ndichaenda rinhi?', english: 'When will I go? (future tense + question word)' },
+      { target: 'Munhu akanaka anoenda', native: 'A good person goes (class 1, adjective + verb agree)' },
+      { target: 'Chinhu chakanaka chakaitika', native: 'A good thing happened (class 7, agreement)' },
+      { target: 'Ndichaenda rinhi?', native: 'When will I go? (future tense + question word)' },
     ],
   },
 
@@ -113,9 +113,9 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Ndiri munhu akatanga kudzidza ChiShona. Ndinoda kuziva zvinhu zvakawanda. Ndichaenda kuZimbabwe.', english: 'I am a person who started learning Shona. I want to know many things. I will go to Zimbabwe.', correct: true, feedback: "Class agreement, tenses, vocabulary — all working together. That's real Shona." },
-          { shona: 'Ndinodzidzа ChiShona', english: 'I learn Shona', correct: false, feedback: "Good start — expand it. Add noun class language, tenses, and your goals." },
-          { shona: 'Handizivi sei', english: "I don't know how", correct: false, feedback: "Start simple: 'Ndiri munhu akatanga kudzidza ChiShona.' — I am a person who started learning Shona." },
+          { target: 'Ndiri munhu akatanga kudzidza ChiShona. Ndinoda kuziva zvinhu zvakawanda. Ndichaenda kuZimbabwe.', native: 'I am a person who started learning Shona. I want to know many things. I will go to Zimbabwe.', correct: true, feedback: "Class agreement, tenses, vocabulary — all working together. That's real Shona." },
+          { target: 'Ndinodzidzа ChiShona', native: 'I learn Shona', correct: false, feedback: "Good start — expand it. Add noun class language, tenses, and your goals." },
+          { target: 'Handizivi sei', native: "I don't know how", correct: false, feedback: "Start simple: 'Ndiri munhu akatanga kudzidza ChiShona.' — I am a person who started learning Shona." },
         ],
       },
       {

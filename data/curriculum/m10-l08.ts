@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'tariro',
-      shona: 'Tariro',
-      english: 'Hope',
+      target: 'Tariro',
+      native: 'Hope',
       literal: 'Tariro (hope, expectation)',
       emoji: '🌅',
       phonetic: 'ta-RI-ro',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndinotarisira',
-      shona: 'Ndinotarisira...',
-      english: 'I hope for / I expect...',
+      target: 'Ndinotarisira...',
+      native: 'I hope for / I expect...',
       literal: 'I-hope-for...',
       emoji: '✨',
       phonetic: 'ndi-no-ta-RI-si-ra',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ramangwana',
-      shona: 'Ramangwana',
-      english: 'The future / Tomorrow',
+      target: 'Ramangwana',
+      native: 'The future / Tomorrow',
       literal: 'That-which-comes (tomorrow/future)',
       emoji: '➡️',
       phonetic: 'ra-man-GWA-na',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Tariro — hope as an active force',
     explanation: "'Ndinotarisira' (I hope/expect) is the verb form of tariro. Add it before any future desire: Ndinotarisira kuona Zimbabwe (I hope to see Zimbabwe), Ndinotarisira kudzidza ChiShona (I hope to learn Shona). Hope + ku- infinitive = I hope to [do].",
     examples: [
-      { shona: 'Ndinotarisira kuona Zimbabwe', english: 'I hope to see Zimbabwe' },
-      { shona: 'Ramangwana rakanaka', english: 'A good future / Good tomorrow' },
-      { shona: 'Tariro haiperi', english: 'Hope never ends' },
+      { target: 'Ndinotarisira kuona Zimbabwe', native: 'I hope to see Zimbabwe' },
+      { target: 'Ramangwana rakanaka', native: 'A good future / Good tomorrow' },
+      { target: 'Tariro haiperi', native: 'Hope never ends' },
     ],
   },
 
@@ -113,9 +113,9 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Ndinotarisira kuona Zimbabwe. Ndinotarisira kutaura ChiShona zvakanaka. Ndinotarisira ramangwana rakanaka.', english: 'I hope to see Zimbabwe. I hope to speak Shona well. I hope for a good future.', correct: true, feedback: "Three hopes — travel, language, life. Said in Shona. Rwen is genuinely moved." },
-          { shona: 'Ndinotarisira kuona Zimbabwe', english: 'I hope to see Zimbabwe', correct: false, feedback: "Good — add your language hope and life hope: 'Ndinotarisira kutaura ChiShona. Ndinotarisira ramangwana rakanaka.'" },
-          { shona: 'Handizivi', english: "I don't know", correct: false, feedback: "You have hopes — 'Ndinotarisira kuona Zimbabwe. Ndinotarisira kutaura ChiShona.' Say them." },
+          { target: 'Ndinotarisira kuona Zimbabwe. Ndinotarisira kutaura ChiShona zvakanaka. Ndinotarisira ramangwana rakanaka.', native: 'I hope to see Zimbabwe. I hope to speak Shona well. I hope for a good future.', correct: true, feedback: "Three hopes — travel, language, life. Said in Shona. Rwen is genuinely moved." },
+          { target: 'Ndinotarisira kuona Zimbabwe', native: 'I hope to see Zimbabwe', correct: false, feedback: "Good — add your language hope and life hope: 'Ndinotarisira kutaura ChiShona. Ndinotarisira ramangwana rakanaka.'" },
+          { target: 'Handizivi', native: "I don't know", correct: false, feedback: "You have hopes — 'Ndinotarisira kuona Zimbabwe. Ndinotarisira kutaura ChiShona.' Say them." },
         ],
       },
       {

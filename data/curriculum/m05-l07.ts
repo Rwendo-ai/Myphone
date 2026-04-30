@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'murume',
-      shona: 'Murume',
-      english: 'Husband / Man',
+      target: 'Murume',
+      native: 'Husband / Man',
       literal: 'Mu-rume (adult male)',
       emoji: '👨',
       phonetic: 'mu-RU-me',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'mukadzi',
-      shona: 'Mukadzi',
-      english: 'Wife / Woman',
+      target: 'Mukadzi',
+      native: 'Wife / Woman',
       literal: 'Mu-kadzi (adult female)',
       emoji: '👩',
       phonetic: 'mu-KA-dzi',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'rudo',
-      shona: 'Rudo',
-      english: 'Love',
+      target: 'Rudo',
+      native: 'Love',
       literal: 'Rudo (love)',
       emoji: '❤️',
       phonetic: 'RU-do',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Mu- prefix for adult people',
     explanation: "Both Murume and Mukadzi use the Mu- prefix (Class 1 — people). Adult relationship terms follow the same noun class as all people words. Vanhu vese — all people, whether husband, wife, or stranger.",
     examples: [
-      { shona: 'Murume wangu', english: 'My husband' },
-      { shona: 'Mukadzi wangu', english: 'My wife' },
-      { shona: 'Ndinomuda', english: 'I love him/her' },
+      { target: 'Murume wangu', native: 'My husband' },
+      { target: 'Mukadzi wangu', native: 'My wife' },
+      { target: 'Ndinomuda', native: 'I love him/her' },
     ],
   },
 
@@ -113,9 +113,9 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Ndinoziva. Rudo ndiwo musimboti.', english: 'I understand. Love is the foundation.', correct: true, feedback: "Using rudo (love) and musimboti (foundation) — you're speaking with real depth." },
-          { shona: 'Murume akanaka', english: 'A good husband', correct: false, feedback: "Agree with the sentiment — 'Rudo ndiwo musimboti wemhuri.' Love is the foundation of family." },
-          { shona: 'Ndanzwisisa', english: 'I understand', correct: false, feedback: "Show you understand by responding with depth: 'Rudo ndiwo musimboti wemhuri.'" },
+          { target: 'Ndinoziva. Rudo ndiwo musimboti.', native: 'I understand. Love is the foundation.', correct: true, feedback: "Using rudo (love) and musimboti (foundation) — you're speaking with real depth." },
+          { target: 'Murume akanaka', native: 'A good husband', correct: false, feedback: "Agree with the sentiment — 'Rudo ndiwo musimboti wemhuri.' Love is the foundation of family." },
+          { target: 'Ndanzwisisa', native: 'I understand', correct: false, feedback: "Show you understand by responding with depth: 'Rudo ndiwo musimboti wemhuri.'" },
         ],
       },
       {

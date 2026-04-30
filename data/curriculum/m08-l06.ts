@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'ndinotaura',
-      shona: 'Ndinotaura',
-      english: 'I speak (habitually)',
+      target: 'Ndinotaura',
+      native: 'I speak (habitually)',
       literal: 'I-speak (habitual)',
       emoji: '🗣️',
       phonetic: 'ndi-no-TAU-ra',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndinotaura_chishona',
-      shona: 'Ndinotaura ChiShona',
-      english: 'I speak Shona',
+      target: 'Ndinotaura ChiShona',
+      native: 'I speak Shona',
       literal: 'I-speak Shona-language',
       emoji: '🇿🇼',
       phonetic: 'ndi-no-TAU-ra chi-SHO-na',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'taura_zvishoma',
-      shona: 'Taura zvishoma',
-      english: 'Speak slowly / Speak a little',
+      target: 'Taura zvishoma',
+      native: 'Speak slowly / Speak a little',
       literal: 'Speak little-by-little',
       emoji: '🐢',
       phonetic: 'TAU-ra zvi-SHO-ma',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Ndinotaura [language] — I speak [language]',
     explanation: "'Ndinotaura' + language name = I speak that language. ChiShona, ChiRungu (English), ChiNdebele. All language names use the Chi- class prefix you learned in Module 4. One verb, all languages.",
     examples: [
-      { shona: 'Ndinotaura ChiShona', english: 'I speak Shona' },
-      { shona: 'Ndinotaura ChiRungu', english: 'I speak English' },
-      { shona: 'Ndinotaura ChiShona zvishoma', english: 'I speak Shona a little' },
+      { target: 'Ndinotaura ChiShona', native: 'I speak Shona' },
+      { target: 'Ndinotaura ChiRungu', native: 'I speak English' },
+      { target: 'Ndinotaura ChiShona zvishoma', native: 'I speak Shona a little' },
     ],
   },
 
@@ -108,21 +108,21 @@ const lesson: LessonData = {
     lines: [
       {
         speaker: 'npc',
-        shona: 'Unotaura ChiShona here?',
-        english: 'Do you speak Shona?',
+        target: 'Unotaura ChiShona here?',
+        native: 'Do you speak Shona?',
       },
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Hongu, ndinotaura ChiShona zvishoma. Ndiri kudzidza.', english: 'Yes, I speak Shona a little. I am learning.', correct: true, feedback: "Honest (zvishoma), proactive (ndiri kudzidza). That answer will open every door." },
-          { shona: 'Aiwa, handitauri ChiShona', english: "No, I don't speak Shona", correct: false, feedback: "But you do speak a little — 'Hongu, ndinotaura ChiShona zvishoma. Ndiri kudzidza.' Claim it." },
-          { shona: 'Ndinotaura ChiShona zvose', english: 'I speak all/complete Shona', correct: false, feedback: "Be honest — 'zvishoma' (a little). 'Ndinotaura ChiShona zvishoma. Ndiri kudzidza.'" },
+          { target: 'Hongu, ndinotaura ChiShona zvishoma. Ndiri kudzidza.', native: 'Yes, I speak Shona a little. I am learning.', correct: true, feedback: "Honest (zvishoma), proactive (ndiri kudzidza). That answer will open every door." },
+          { target: 'Aiwa, handitauri ChiShona', native: "No, I don't speak Shona", correct: false, feedback: "But you do speak a little — 'Hongu, ndinotaura ChiShona zvishoma. Ndiri kudzidza.' Claim it." },
+          { target: 'Ndinotaura ChiShona zvose', native: 'I speak all/complete Shona', correct: false, feedback: "Be honest — 'zvishoma' (a little). 'Ndinotaura ChiShona zvishoma. Ndiri kudzidza.'" },
         ],
       },
       {
         speaker: 'npc',
-        shona: 'Zvakanaka zvikuru! Tinofarira vanhu vanoedza.',
-        english: 'Very good! We appreciate people who try.',
+        target: 'Zvakanaka zvikuru! Tinofarira vanhu vanoedza.',
+        native: 'Very good! We appreciate people who try.',
       },
       {
         speaker: 'rwen',

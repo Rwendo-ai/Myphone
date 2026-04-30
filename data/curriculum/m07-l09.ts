@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'ndadya',
-      shona: 'Ndadya',
-      english: 'I have eaten',
+      target: 'Ndadya',
+      native: 'I have eaten',
       literal: 'I-ate (completed past)',
       emoji: '✅',
       phonetic: 'nda-DYA',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'mangwanani_ekudya',
-      shona: 'Zvokudya zvemangwanani',
-      english: 'Breakfast',
+      target: 'Zvokudya zvemangwanani',
+      native: 'Breakfast',
       literal: 'Food of-morning',
       emoji: '🌅🍳',
       phonetic: 'zvo-KU-dya zve-man-GWA-na-ni',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'mandakudya_nei',
-      shona: 'Mandakudya nei?',
-      english: 'What did you eat? (caring question)',
+      target: 'Mandakudya nei?',
+      native: 'What did you eat? (caring question)',
       literal: 'You-ate what?',
       emoji: '💬',
       phonetic: 'man-da-KU-dya nei',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: "Nda- (I ate) — completed past action",
     explanation: "'Ndadya' uses Nda- for completed past — I ate and am done. This pairs with morning conversations: 'Wambodya here?' (have you eaten?) → 'Ndadya' (yes, I ate) or 'Handina' (I haven't yet). Simple and essential.",
     examples: [
-      { shona: 'Ndadya sadza', english: 'I ate sadza' },
-      { shona: 'Handina kudya', english: "I haven't eaten" },
-      { shona: 'Mandakudya nei?', english: 'What did you eat?' },
+      { target: 'Ndadya sadza', native: 'I ate sadza' },
+      { target: 'Handina kudya', native: "I haven't eaten" },
+      { target: 'Mandakudya nei?', native: 'What did you eat?' },
     ],
   },
 
@@ -108,15 +108,15 @@ const lesson: LessonData = {
     lines: [
       {
         speaker: 'npc',
-        shona: 'Mangwanani! Wambodya here? Zvokudya zvemangwanani zviripo.',
-        english: 'Good morning! Have you eaten? There is breakfast.',
+        target: 'Mangwanani! Wambodya here? Zvokudya zvemangwanani zviripo.',
+        native: 'Good morning! Have you eaten? There is breakfast.',
       },
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Mangwanani, Amai! Handina. Ndinoda tii ne chingwa, ndapota.', english: "Good morning, Mother! I haven't. I would like tea and bread, please.", correct: true, feedback: "Greeted back, honest about not eating, specific polite order. Perfect morning exchange." },
-          { shona: 'Ndadya, ndatenda', english: "I've eaten, thank you", correct: false, feedback: "If you haven't eaten, be honest — accept the breakfast: 'Handina. Ndinoda tii ne chingwa, ndapota.'" },
-          { shona: 'Mangwanani', english: 'Good morning', correct: false, feedback: "Answer her question too — 'Handina. Ndinoda zvokudya zvemangwanani, ndapota.'" },
+          { target: 'Mangwanani, Amai! Handina. Ndinoda tii ne chingwa, ndapota.', native: "Good morning, Mother! I haven't. I would like tea and bread, please.", correct: true, feedback: "Greeted back, honest about not eating, specific polite order. Perfect morning exchange." },
+          { target: 'Ndadya, ndatenda', native: "I've eaten, thank you", correct: false, feedback: "If you haven't eaten, be honest — accept the breakfast: 'Handina. Ndinoda tii ne chingwa, ndapota.'" },
+          { target: 'Mangwanani', native: 'Good morning', correct: false, feedback: "Answer her question too — 'Handina. Ndinoda zvokudya zvemangwanani, ndapota.'" },
         ],
       },
       {

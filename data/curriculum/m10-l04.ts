@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'ndinorwara',
-      shona: 'Ndinorwara',
-      english: 'I am sick / I am unwell',
+      target: 'Ndinorwara',
+      native: 'I am sick / I am unwell',
       literal: 'I-am-ill',
       emoji: '🤒',
       phonetic: 'ndi-no-RWA-ra',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndiripo_zvisiri_nani',
-      shona: 'Ndiripo zvisiri nani',
-      english: 'I am not well / I am not okay',
+      target: 'Ndiripo zvisiri nani',
+      native: 'I am not well / I am not okay',
       literal: 'I-am-here that-is-not-well',
       emoji: '😔',
       phonetic: 'ndi-ri-po zvi-si-ri NA-ni',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndinova_musoro',
-      shona: 'Ndinova musoro',
-      english: 'I have a headache',
+      target: 'Ndinova musoro',
+      native: 'I have a headache',
       literal: 'I-have-pain head',
       emoji: '🤕',
       phonetic: 'ndi-no-VA mu-SO-ro',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Ndinova [body part] — I have pain in [body part]',
     explanation: "'Ndinova' + body part = I have pain there. Ndinova musoro (headache), Ndinova dumbu (stomach ache), Ndinova ruoko (arm pain). Ndinova is the pain verb — learn it and you can describe any body pain.",
     examples: [
-      { shona: 'Ndinova musoro', english: 'I have a headache' },
-      { shona: 'Ndinova dumbu', english: 'I have a stomach ache' },
-      { shona: 'Ndinova mazino', english: 'I have a toothache' },
+      { target: 'Ndinova musoro', native: 'I have a headache' },
+      { target: 'Ndinova dumbu', native: 'I have a stomach ache' },
+      { target: 'Ndinova mazino', native: 'I have a toothache' },
     ],
   },
 
@@ -113,9 +113,9 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Ndiripo zvisiri nani, Rwen. Ndinova musoro uye ndinorwara zvishoma.', english: "I'm not well, Rwen. I have a headache and I'm a bit sick.", correct: true, feedback: "Honest, specific symptoms. Rwen immediately helps you sit down and get water." },
-          { shona: 'Ndiripo, ndatenda', english: "I'm fine, thank you", correct: false, feedback: "Be honest — you're unwell: 'Ndiripo zvisiri nani. Ndinova musoro.'" },
-          { shona: 'Zvakanaka', english: "It's fine", correct: false, feedback: "Don't dismiss it — 'Ndiripo zvisiri nani. Ndinova musoro uye ndinorwara zvishoma.'" },
+          { target: 'Ndiripo zvisiri nani, Rwen. Ndinova musoro uye ndinorwara zvishoma.', native: "I'm not well, Rwen. I have a headache and I'm a bit sick.", correct: true, feedback: "Honest, specific symptoms. Rwen immediately helps you sit down and get water." },
+          { target: 'Ndiripo, ndatenda', native: "I'm fine, thank you", correct: false, feedback: "Be honest — you're unwell: 'Ndiripo zvisiri nani. Ndinova musoro.'" },
+          { target: 'Zvakanaka', native: "It's fine", correct: false, feedback: "Don't dismiss it — 'Ndiripo zvisiri nani. Ndinova musoro uye ndinorwara zvishoma.'" },
         ],
       },
       {

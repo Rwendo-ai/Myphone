@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'munhu_anoenda',
-      shona: 'Munhu anoenda',
-      english: 'The person goes',
+      target: 'Munhu anoenda',
+      native: 'The person goes',
       literal: 'Person a-no-enda (a- = class 1 subject prefix)',
       emoji: '🚶',
       phonetic: 'MU-nhu a-no-EN-da',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'chinhu_chinoita',
-      shona: 'Chinhu chinoita',
-      english: 'The thing works / happens',
+      target: 'Chinhu chinoita',
+      native: 'The thing works / happens',
       literal: 'Thing chi-no-ita (chi- = class 7 subject prefix)',
       emoji: '⚙️',
       phonetic: 'CHI-nhu chi-no-I-ta',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'muti_unomera',
-      shona: 'Muti unomera',
-      english: 'The tree grows',
+      target: 'Muti unomera',
+      native: 'The tree grows',
       literal: 'Tree u-no-mera (u- = class 3 subject prefix)',
       emoji: '🌱',
       phonetic: 'MU-ti u-no-ME-ra',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Subject prefixes match noun classes',
     explanation: "Each noun class has its own subject prefix used on verbs. Class 1 (munhu) uses a-, Class 7 (chinhu) uses chi-, Class 3 (muti) uses u-. The verb always mirrors who or what is acting.",
     examples: [
-      { shona: 'Munhu a-no-enda', english: 'Person goes (a- = class 1)' },
-      { shona: 'Chinhu chi-no-ita', english: 'Thing works (chi- = class 7)' },
-      { shona: 'Muti u-no-mera', english: 'Tree grows (u- = class 3)' },
+      { target: 'Munhu a-no-enda', native: 'Person goes (a- = class 1)' },
+      { target: 'Chinhu chi-no-ita', native: 'Thing works (chi- = class 7)' },
+      { target: 'Muti u-no-mera', native: 'Tree grows (u- = class 3)' },
     ],
   },
 
@@ -113,9 +113,9 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Hongu. Munhu anoenda. Chinhu chinoita.', english: 'Yes. A person goes. A thing works.', correct: true, feedback: "Perfect concord. The verb prefix matched the noun class every time." },
-          { shona: 'Munhu chinoenda', english: 'Person works (wrong concord)', correct: false, feedback: "Watch the verb prefix — Munhu uses a- not chi-. Munhu anoenda." },
-          { shona: 'Handizivi', english: "I don't know", correct: false, feedback: "Munhu = a- prefix, so 'Munhu anoenda'. Chinhu = chi- prefix, so 'Chinhu chinoita'." },
+          { target: 'Hongu. Munhu anoenda. Chinhu chinoita.', native: 'Yes. A person goes. A thing works.', correct: true, feedback: "Perfect concord. The verb prefix matched the noun class every time." },
+          { target: 'Munhu chinoenda', native: 'Person works (wrong concord)', correct: false, feedback: "Watch the verb prefix — Munhu uses a- not chi-. Munhu anoenda." },
+          { target: 'Handizivi', native: "I don't know", correct: false, feedback: "Munhu = a- prefix, so 'Munhu anoenda'. Chinhu = chi- prefix, so 'Chinhu chinoita'." },
         ],
       },
       {

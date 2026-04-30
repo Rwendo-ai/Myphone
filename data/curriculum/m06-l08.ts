@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'makumi_maviri',
-      shona: 'Makumi maviri',
-      english: 'Twenty',
+      target: 'Makumi maviri',
+      native: 'Twenty',
       literal: 'Tens two = 20',
       emoji: '2️⃣0️⃣',
       phonetic: 'ma-KU-mi ma-VI-ri',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'makumi_matatu',
-      shona: 'Makumi matatu',
-      english: 'Thirty',
+      target: 'Makumi matatu',
+      native: 'Thirty',
       literal: 'Tens three = 30',
       emoji: '3️⃣0️⃣',
       phonetic: 'ma-KU-mi ma-TA-tu',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'zana',
-      shona: 'Zana',
-      english: 'One hundred',
+      target: 'Zana',
+      native: 'One hundred',
       literal: 'Zana (100)',
       emoji: '💯',
       phonetic: 'ZA-na',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Makumi + number = tens',
     explanation: "'Makumi' means tens. Add any number: Makumi maviri (20), Makumi matatu (30), Makumi mana (40), Makumi mashanu (50). For 21: Makumi maviri nerimwe. For 35: Makumi matatu neshanu. Zana = 100.",
     examples: [
-      { shona: 'Makumi maviri', english: 'Twenty (2 tens)' },
-      { shona: 'Makumi maviri nerimwe', english: 'Twenty-one' },
-      { shona: 'Zana', english: 'One hundred' },
+      { target: 'Makumi maviri', native: 'Twenty (2 tens)' },
+      { target: 'Makumi maviri nerimwe', native: 'Twenty-one' },
+      { target: 'Zana', native: 'One hundred' },
     ],
   },
 
@@ -113,9 +113,9 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Ndine makore makumi [your number]. Wakaita makore mangani?', english: 'I am [your age] years old. How old are you?', correct: true, feedback: "Age shared and returned — a complete exchange using larger numbers." },
-          { shona: 'Ndine makore gumi', english: 'I am 10 years old', correct: false, feedback: "Use makumi for tens: 'Ndine makore makumi maviri (20)' or whatever your age is." },
-          { shona: 'Handizivi', english: "I don't know", correct: false, feedback: "You know your age! 'Ndine makore makumi [number].' Fill in your actual age." },
+          { target: 'Ndine makore makumi [your number]. Wakaita makore mangani?', native: 'I am [your age] years old. How old are you?', correct: true, feedback: "Age shared and returned — a complete exchange using larger numbers." },
+          { target: 'Ndine makore gumi', native: 'I am 10 years old', correct: false, feedback: "Use makumi for tens: 'Ndine makore makumi maviri (20)' or whatever your age is." },
+          { target: 'Handizivi', native: "I don't know", correct: false, feedback: "You know your age! 'Ndine makore makumi [number].' Fill in your actual age." },
         ],
       },
       {

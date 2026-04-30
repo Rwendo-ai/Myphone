@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'mutengo_uri_ngani',
-      shona: 'Mutengo uri ngani?',
-      english: 'What is the price? / How much does it cost?',
+      target: 'Mutengo uri ngani?',
+      native: 'What is the price? / How much does it cost?',
       literal: 'Price it-is how-much?',
       emoji: '🏷️',
       phonetic: 'mu-TEN-go u-ri nga-ni',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'inodura',
-      shona: 'Inodura / Ichipa',
-      english: 'It is expensive / It is cheap',
+      target: 'Inodura / Ichipa',
+      native: 'It is expensive / It is cheap',
       literal: 'It-costs-much / It-costs-little',
       emoji: '💰💸',
       phonetic: 'i-no-DU-ra / i-CHI-pa',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'deredza_mutengo',
-      shona: 'Deredza mutengo',
-      english: 'Reduce the price / Lower the price',
+      target: 'Deredza mutengo',
+      native: 'Reduce the price / Lower the price',
       literal: 'Lower/reduce price',
       emoji: '⬇️',
       phonetic: 'de-RE-dza mu-TEN-go',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Mutengo — price negotiation vocabulary',
     explanation: "'Mutengo uri ngani?' (How much?) is the most important shopping question. After hearing the price: 'Inodura' (it's expensive) opens negotiation. 'Deredza mutengo' (lower the price) is your counter. Then they'll move.",
     examples: [
-      { shona: 'Mutengo uri ngani?', english: 'How much does it cost?' },
-      { shona: 'Inodura zvikuru', english: 'It is very expensive' },
-      { shona: 'Deredza mutengo, ndapota', english: 'Please lower the price' },
+      { target: 'Mutengo uri ngani?', native: 'How much does it cost?' },
+      { target: 'Inodura zvikuru', native: 'It is very expensive' },
+      { target: 'Deredza mutengo, ndapota', native: 'Please lower the price' },
     ],
   },
 
@@ -109,22 +109,22 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Mutengo uri ngani, ndapota?', english: 'How much does it cost, please?', correct: true, feedback: "Perfect opening. The vendor is ready to talk." },
-          { shona: 'Ndinoda ichi', english: 'I want this', correct: false, feedback: "Ask the price first — 'Mutengo uri ngani, ndapota?' — then negotiate." },
-          { shona: 'Mangani?', english: 'How many?', correct: false, feedback: "For price: 'Mutengo uri ngani?' not mangani (which is for counting quantity)." },
+          { target: 'Mutengo uri ngani, ndapota?', native: 'How much does it cost, please?', correct: true, feedback: "Perfect opening. The vendor is ready to talk." },
+          { target: 'Ndinoda ichi', native: 'I want this', correct: false, feedback: "Ask the price first — 'Mutengo uri ngani, ndapota?' — then negotiate." },
+          { target: 'Mangani?', native: 'How many?', correct: false, feedback: "For price: 'Mutengo uri ngani?' not mangani (which is for counting quantity)." },
         ],
       },
       {
         speaker: 'npc',
-        shona: 'Madora gumi nerimwe.',
-        english: 'Eleven dollars.',
+        target: 'Madora gumi nerimwe.',
+        native: 'Eleven dollars.',
       },
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Inodura. Deredza mutengo, ndapota. Madora sere?', english: "It's expensive. Please lower the price. Eight dollars?", correct: true, feedback: "Negotiated! The vendor smiles — you're doing this right." },
-          { shona: 'Zvakanaka', english: "That's fine (accept price)", correct: false, feedback: "You can negotiate! Try: 'Inodura. Deredza mutengo, ndapota. Madora sere?'" },
-          { shona: 'Handida', english: "I don't want it", correct: false, feedback: "You wanted it — negotiate: 'Inodura. Deredza mutengo, ndapota.' Then offer a counter price." },
+          { target: 'Inodura. Deredza mutengo, ndapota. Madora sere?', native: "It's expensive. Please lower the price. Eight dollars?", correct: true, feedback: "Negotiated! The vendor smiles — you're doing this right." },
+          { target: 'Zvakanaka', native: "That's fine (accept price)", correct: false, feedback: "You can negotiate! Try: 'Inodura. Deredza mutengo, ndapota. Madora sere?'" },
+          { target: 'Handida', native: "I don't want it", correct: false, feedback: "You wanted it — negotiate: 'Inodura. Deredza mutengo, ndapota.' Then offer a counter price." },
         ],
       },
       {

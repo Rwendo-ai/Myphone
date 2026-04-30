@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'ndichatora',
-      shona: 'Ndichatora',
-      english: "I'll take it / I'll buy it",
+      target: 'Ndichatora',
+      native: "I'll take it / I'll buy it",
       literal: 'I-will-take',
       emoji: '🛒',
       phonetic: 'ndi-cha-TO-ra',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndatenda_mutengesi',
-      shona: 'Ndatenda, Mutengesi',
-      english: 'Thank you, Vendor',
+      target: 'Ndatenda, Mutengesi',
+      native: 'Thank you, Vendor',
       literal: 'I-thank, Seller',
       emoji: '🙏',
       phonetic: 'nda-TEN-da mu-ten-GE-si',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'zvakanaka_kutenga',
-      shona: 'Zvakanaka kutenga',
-      english: 'Good to buy / Good shopping',
+      target: 'Zvakanaka kutenga',
+      native: 'Good to buy / Good shopping',
       literal: 'It-is-good to-buy',
       emoji: '✅',
       phonetic: 'zva-ka-NA-ka ku-TEN-ga',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Full market exchange flow',
     explanation: "A complete market exchange: Greet → Ask price → React (inodura/ichipa) → Negotiate (deredza mutengo) → Agree → Confirm you have money → Commit (ndichatora) → Thank the vendor. Seven steps, all in Shona.",
     examples: [
-      { shona: 'Mangwanani. Mutengo uri ngani?', english: 'Good morning. How much does it cost?' },
-      { shona: 'Inodura. Madora mashanu?', english: "It's expensive. Five dollars?" },
-      { shona: 'Zvakanaka. Ndichatora. Ndatenda.', english: "Good. I'll take it. Thank you." },
+      { target: 'Mangwanani. Mutengo uri ngani?', native: 'Good morning. How much does it cost?' },
+      { target: 'Inodura. Madora mashanu?', native: "It's expensive. Five dollars?" },
+      { target: 'Zvakanaka. Ndichatora. Ndatenda.', native: "Good. I'll take it. Thank you." },
     ],
   },
 
@@ -109,35 +109,35 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Mangwanani. Mutengo uri ngani, ndapota?', english: 'Good morning. How much does it cost, please?', correct: true, feedback: "Greeted, asked the price, added please. Perfect market opener." },
-          { shona: 'Ndinoda ichi', english: 'I want this', correct: false, feedback: "Greet first, then ask the price: 'Mangwanani. Mutengo uri ngani, ndapota?'" },
-          { shona: 'Inodura?', english: 'Is it expensive?', correct: false, feedback: "Ask the price first, then react to it: 'Mangwanani. Mutengo uri ngani, ndapota?'" },
+          { target: 'Mangwanani. Mutengo uri ngani, ndapota?', native: 'Good morning. How much does it cost, please?', correct: true, feedback: "Greeted, asked the price, added please. Perfect market opener." },
+          { target: 'Ndinoda ichi', native: 'I want this', correct: false, feedback: "Greet first, then ask the price: 'Mangwanani. Mutengo uri ngani, ndapota?'" },
+          { target: 'Inodura?', native: 'Is it expensive?', correct: false, feedback: "Ask the price first, then react to it: 'Mangwanani. Mutengo uri ngani, ndapota?'" },
         ],
       },
       {
         speaker: 'npc',
-        shona: 'Madora gumi netatu.',
-        english: 'Thirteen dollars.',
+        target: 'Madora gumi netatu.',
+        native: 'Thirteen dollars.',
       },
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Inodura. Madora gumi, ndapota?', english: "It's expensive. Ten dollars, please?", correct: true, feedback: "Reaction + counter offer. The vendor considers." },
-          { shona: 'Zvakanaka, ndichatora', english: "Fine, I'll take it (without negotiating)", correct: false, feedback: "You can negotiate — try: 'Inodura. Madora gumi, ndapota?'" },
-          { shona: 'Handina mari', english: "I have no money", correct: false, feedback: "You have money — negotiate first: 'Inodura. Madora gumi, ndapota?'" },
+          { target: 'Inodura. Madora gumi, ndapota?', native: "It's expensive. Ten dollars, please?", correct: true, feedback: "Reaction + counter offer. The vendor considers." },
+          { target: 'Zvakanaka, ndichatora', native: "Fine, I'll take it (without negotiating)", correct: false, feedback: "You can negotiate — try: 'Inodura. Madora gumi, ndapota?'" },
+          { target: 'Handina mari', native: "I have no money", correct: false, feedback: "You have money — negotiate first: 'Inodura. Madora gumi, ndapota?'" },
         ],
       },
       {
         speaker: 'npc',
-        shona: 'Zvakanaka — madora gumi nerimwe.',
-        english: 'Okay — eleven dollars.',
+        target: 'Zvakanaka — madora gumi nerimwe.',
+        native: 'Okay — eleven dollars.',
       },
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Zvakanaka. Ndichatora. Ndine madora gumi nerimwe. Ndatenda, Mutengesi.', english: "Good. I'll take it. I have eleven dollars. Thank you, Vendor.", correct: true, feedback: "Complete. Greeted → Priced → Negotiated → Agreed → Confirmed money → Thanked. That's a full Shona market transaction." },
-          { shona: 'Ndatenda', english: 'Thank you', correct: false, feedback: "Confirm you're taking it too: 'Zvakanaka. Ndichatora. Ndatenda, Mutengesi.'" },
-          { shona: 'Inodura zvikuru', english: "It's very expensive", correct: false, feedback: "You already negotiated — eleven is fair. Complete: 'Zvakanaka. Ndichatora. Ndatenda, Mutengesi.'" },
+          { target: 'Zvakanaka. Ndichatora. Ndine madora gumi nerimwe. Ndatenda, Mutengesi.', native: "Good. I'll take it. I have eleven dollars. Thank you, Vendor.", correct: true, feedback: "Complete. Greeted → Priced → Negotiated → Agreed → Confirmed money → Thanked. That's a full Shona market transaction." },
+          { target: 'Ndatenda', native: 'Thank you', correct: false, feedback: "Confirm you're taking it too: 'Zvakanaka. Ndichatora. Ndatenda, Mutengesi.'" },
+          { target: 'Inodura zvikuru', native: "It's very expensive", correct: false, feedback: "You already negotiated — eleven is fair. Complete: 'Zvakanaka. Ndichatora. Ndatenda, Mutengesi.'" },
         ],
       },
       {

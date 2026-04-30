@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'ndakatya',
-      shona: 'Ndakatya',
-      english: 'I am afraid / I was scared',
+      target: 'Ndakatya',
+      native: 'I am afraid / I was scared',
       literal: 'I-became-afraid',
       emoji: '😨',
       phonetic: 'nda-ka-TYA',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'usatya',
-      shona: 'Usatya!',
-      english: "Don't be afraid! / Be brave!",
+      target: 'Usatya!',
+      native: "Don't be afraid! / Be brave!",
       literal: "Don't-fear!",
       emoji: '💪',
       phonetic: 'u-sat-YA',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'kushinga',
-      shona: 'Kushinga',
-      english: 'Courage / To be strong/brave',
+      target: 'Kushinga',
+      native: 'Courage / To be strong/brave',
       literal: 'To-be-strong/persistent',
       emoji: '🦁',
       phonetic: 'ku-SHIN-ga',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Ine / Usatya — fear and its antidote',
     explanation: "'Ndakatya' (I became afraid). 'Usatya' (don't be afraid — usa- negation). 'Kushinga' (courage — the noun/verb of being brave). These three words form the fear-to-courage arc that Shona uses to encourage people through difficulty.",
     examples: [
-      { shona: 'Ndakatya zvishoma', english: 'I was a little afraid' },
-      { shona: 'Usatya — ndinakwo', english: "Don't be afraid — I've got it" },
-      { shona: 'Rambai makashinga', english: 'Keep being strong (common encouragement)' },
+      { target: 'Ndakatya zvishoma', native: 'I was a little afraid' },
+      { target: 'Usatya — ndinakwo', native: "Don't be afraid — I've got it" },
+      { target: 'Rambai makashinga', native: 'Keep being strong (common encouragement)' },
     ],
   },
 
@@ -109,9 +109,9 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Ndakatya zvishoma kutanga kudzidza ChiShona. Asi ndakazoshinga.', english: 'I was a little afraid to start learning Shona. But I found courage.', correct: true, feedback: "Honest about fear, proud of courage. That is the full arc. Rwen applauds." },
-          { shona: 'Handina kutya', english: 'I was not afraid', correct: false, feedback: "Be honest — 'Ndakatya zvishoma' (I was a little afraid). Then: 'Asi ndakazoshinga.' But I found courage." },
-          { shona: 'Ndinofara', english: 'I am happy', correct: false, feedback: "Share the journey — fear first, then courage: 'Ndakatya zvishoma. Asi ndakazoshinga.'" },
+          { target: 'Ndakatya zvishoma kutanga kudzidza ChiShona. Asi ndakazoshinga.', native: 'I was a little afraid to start learning Shona. But I found courage.', correct: true, feedback: "Honest about fear, proud of courage. That is the full arc. Rwen applauds." },
+          { target: 'Handina kutya', native: 'I was not afraid', correct: false, feedback: "Be honest — 'Ndakatya zvishoma' (I was a little afraid). Then: 'Asi ndakazoshinga.' But I found courage." },
+          { target: 'Ndinofara', native: 'I am happy', correct: false, feedback: "Share the journey — fear first, then courage: 'Ndakatya zvishoma. Asi ndakazoshinga.'" },
         ],
       },
       {

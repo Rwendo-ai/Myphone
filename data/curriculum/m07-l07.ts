@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'tauya_garai',
-      shona: 'Tauya / Garai',
-      english: 'Come in / Sit down',
+      target: 'Tauya / Garai',
+      native: 'Come in / Sit down',
       literal: 'Come-here / Sit',
       emoji: '🚪🪑',
       phonetic: 'TAU-ya / ga-RAI',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'tora_nedivi',
-      shona: 'Tora, nedivi',
-      english: 'Please help yourself / Have some',
+      target: 'Tora, nedivi',
+      native: 'Please help yourself / Have some',
       literal: 'Take, this-side',
       emoji: '🤲',
       phonetic: 'TO-ra ne-DI-vi',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'mauya_zvakanaka',
-      shona: 'Mauya zvakanaka',
-      english: 'Welcome / You have arrived well',
+      target: 'Mauya zvakanaka',
+      native: 'Welcome / You have arrived well',
       literal: 'You-have-come well',
       emoji: '🌟',
       phonetic: 'ma-U-ya zva-ka-NA-ka',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Commands in hospitality — verb-first',
     explanation: "Hospitality commands start with the verb: Tauya (come), Garai (sit), Tora (take/have). These are direct but warm — not rude. In Shona, directness in hospitality is kindness, not rudeness. The warmth comes from tone and the words around them.",
     examples: [
-      { shona: 'Tauya, garai', english: 'Come in, sit down' },
-      { shona: 'Mauya zvakanaka', english: 'Welcome (you have come well)' },
-      { shona: 'Tora, nedivi — zvokudya zviripo', english: 'Please help yourself — there is food' },
+      { target: 'Tauya, garai', native: 'Come in, sit down' },
+      { target: 'Mauya zvakanaka', native: 'Welcome (you have come well)' },
+      { target: 'Tora, nedivi — zvokudya zviripo', native: 'Please help yourself — there is food' },
     ],
   },
 
@@ -108,15 +108,15 @@ const lesson: LessonData = {
     lines: [
       {
         speaker: 'npc',
-        shona: 'Mhoro, shamwari.',
-        english: 'Hello, friend.',
+        target: 'Mhoro, shamwari.',
+        native: 'Hello, friend.',
       },
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Mauya zvakanaka! Tauya, garai. Tora mvura, nedivi.', english: 'Welcome! Come in, sit down. Please have some water.', correct: true, feedback: "Welcome → come in → sit → offer water. Perfect Shona hosting sequence." },
-          { shona: 'Mhoro', english: 'Hello (simple)', correct: false, feedback: "You're the host — do more: 'Mauya zvakanaka! Tauya, garai.' Welcome them properly." },
-          { shona: 'Wambodya here?', english: 'Have you eaten?', correct: false, feedback: "Good instinct — but welcome and seat them first: 'Mauya zvakanaka! Tauya, garai.' Then ask about food." },
+          { target: 'Mauya zvakanaka! Tauya, garai. Tora mvura, nedivi.', native: 'Welcome! Come in, sit down. Please have some water.', correct: true, feedback: "Welcome → come in → sit → offer water. Perfect Shona hosting sequence." },
+          { target: 'Mhoro', native: 'Hello (simple)', correct: false, feedback: "You're the host — do more: 'Mauya zvakanaka! Tauya, garai.' Welcome them properly." },
+          { target: 'Wambodya here?', native: 'Have you eaten?', correct: false, feedback: "Good instinct — but welcome and seat them first: 'Mauya zvakanaka! Tauya, garai.' Then ask about food." },
         ],
       },
       {

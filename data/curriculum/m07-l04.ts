@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'ndine_nzara',
-      shona: 'Ndine nzara',
-      english: 'I am hungry',
+      target: 'Ndine nzara',
+      native: 'I am hungry',
       literal: 'I-have hunger',
       emoji: '😋',
       phonetic: 'ndi-ne NZA-ra',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndaguta',
-      shona: 'Ndaguta',
-      english: 'I am full / I have eaten enough',
+      target: 'Ndaguta',
+      native: 'I am full / I have eaten enough',
       literal: 'I-am-satisfied',
       emoji: '😌',
       phonetic: 'nda-GU-ta',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'wambodya',
-      shona: 'Wambodya here?',
-      english: 'Have you eaten? (caring question)',
+      target: 'Wambodya here?',
+      native: 'Have you eaten? (caring question)',
       literal: 'You-already-ate here?',
       emoji: '🍽️',
       phonetic: 'wam-bo-DYA HE-re',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Ndine nzara / Ndaguta — hunger vs fullness',
     explanation: "Ndine nzara (I have hunger = I am hungry) vs Ndaguta (I am satisfied/full). 'Ndaguta' uses the past tense of -guta (to be satisfied) — I have become satisfied. It's a statement of current state through past action.",
     examples: [
-      { shona: 'Ndine nzara', english: 'I am hungry (I have hunger)' },
-      { shona: 'Ndaguta', english: 'I am full (I have become satisfied)' },
-      { shona: 'Wambodya here?', english: 'Have you already eaten?' },
+      { target: 'Ndine nzara', native: 'I am hungry (I have hunger)' },
+      { target: 'Ndaguta', native: 'I am full (I have become satisfied)' },
+      { target: 'Wambodya here?', native: 'Have you already eaten?' },
     ],
   },
 
@@ -108,15 +108,15 @@ const lesson: LessonData = {
     lines: [
       {
         speaker: 'npc',
-        shona: 'Wambodya here, mwanangu?',
-        english: 'Have you eaten, my child?',
+        target: 'Wambodya here, mwanangu?',
+        native: 'Have you eaten, my child?',
       },
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Handina, Amai. Ndine nzara zvishoma.', english: "I haven't, Mother. I am a little hungry.", correct: true, feedback: "Honest and gentle. The mother immediately goes to prepare food. That's how it works." },
-          { shona: 'Ndaguta, ndatenda', english: "I'm full, thank you", correct: false, feedback: "If you haven't eaten, be honest — 'Handina, Amai.' Refusing food you need is not polite in this context." },
-          { shona: 'Zvakanaka', english: "I'm fine", correct: false, feedback: "Answer directly — 'Handina, Amai. Ndine nzara.' — I haven't, Mother. I'm hungry." },
+          { target: 'Handina, Amai. Ndine nzara zvishoma.', native: "I haven't, Mother. I am a little hungry.", correct: true, feedback: "Honest and gentle. The mother immediately goes to prepare food. That's how it works." },
+          { target: 'Ndaguta, ndatenda', native: "I'm full, thank you", correct: false, feedback: "If you haven't eaten, be honest — 'Handina, Amai.' Refusing food you need is not polite in this context." },
+          { target: 'Zvakanaka', native: "I'm fine", correct: false, feedback: "Answer directly — 'Handina, Amai. Ndine nzara.' — I haven't, Mother. I'm hungry." },
         ],
       },
       {

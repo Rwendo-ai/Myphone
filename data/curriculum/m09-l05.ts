@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'kombi',
-      shona: 'Kombi',
-      english: 'Minibus taxi / Kombi',
+      target: 'Kombi',
+      native: 'Minibus taxi / Kombi',
       literal: 'Kombi (from kombivan)',
       emoji: '🚌',
       phonetic: 'KOM-bi',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'mira_pano',
-      shona: 'Mira pano!',
-      english: 'Stop here!',
+      target: 'Mira pano!',
+      native: 'Stop here!',
       literal: 'Stop here!',
       emoji: '🛑',
       phonetic: 'MI-ra PA-no',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndinoda_kuburuka',
-      shona: 'Ndinoda kuburuka pano',
-      english: 'I want to get off here',
+      target: 'Ndinoda kuburuka pano',
+      native: 'I want to get off here',
       literal: 'I-want to-alight here',
       emoji: '🚪',
       phonetic: 'ndi-no-da ku-bu-RU-ka PA-no',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Mira (stop) — the command you need most',
     explanation: "'Mira' (stop) is one of the most important words you'll shout in a kombi. Mira pano (stop here), Mira pedo nechipitari (stop near the hospital). Loud, clear, and immediate — kombis don't wait.",
     examples: [
-      { shona: 'Mira pano!', english: 'Stop here!' },
-      { shona: 'Ndinoda kuburuka pano', english: 'I want to get off here' },
-      { shona: 'Uri kuenda kuhospitali?', english: 'Are you going to the hospital?' },
+      { target: 'Mira pano!', native: 'Stop here!' },
+      { target: 'Ndinoda kuburuka pano', native: 'I want to get off here' },
+      { target: 'Uri kuenda kuhospitali?', native: 'Are you going to the hospital?' },
     ],
   },
 
@@ -109,15 +109,15 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Mira pano! Ndinoda kuburuka!', english: 'Stop here! I want to get off!', correct: true, feedback: "Loud and clear. The driver stops. You get off. That's how kombi life works." },
-          { shona: 'Ndapota, mira', english: 'Please stop', correct: false, feedback: "In a kombi you need volume — 'Mira pano! Ndinoda kuburuka!' Say it loudly." },
-          { shona: 'Handida kuenda mberi', english: "I don't want to go further", correct: false, feedback: "Too wordy for a kombi. Keep it short and loud: 'Mira pano! Ndinoda kuburuka!'" },
+          { target: 'Mira pano! Ndinoda kuburuka!', native: 'Stop here! I want to get off!', correct: true, feedback: "Loud and clear. The driver stops. You get off. That's how kombi life works." },
+          { target: 'Ndapota, mira', native: 'Please stop', correct: false, feedback: "In a kombi you need volume — 'Mira pano! Ndinoda kuburuka!' Say it loudly." },
+          { target: 'Handida kuenda mberi', native: "I don't want to go further", correct: false, feedback: "Too wordy for a kombi. Keep it short and loud: 'Mira pano! Ndinoda kuburuka!'" },
         ],
       },
       {
         speaker: 'npc',
-        shona: 'Mira! Buruka!',
-        english: 'Stopping! Get off!',
+        target: 'Mira! Buruka!',
+        native: 'Stopping! Get off!',
       },
       {
         speaker: 'rwen',

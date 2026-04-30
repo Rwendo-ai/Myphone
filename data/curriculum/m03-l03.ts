@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'makore_mangani',
-      shona: 'Une makore mangani?',
-      english: 'How old are you?',
+      target: 'Une makore mangani?',
+      native: 'How old are you?',
       literal: 'You-have years how-many?',
       emoji: '🎂',
       phonetic: 'u-ne ma-KO-re man-GA-ni',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndine_makore',
-      shona: 'Ndine makore...',
-      english: 'I am ... years old',
+      target: 'Ndine makore...',
+      native: 'I am ... years old',
       literal: 'I-have years...',
       emoji: '🔢',
       phonetic: 'ndi-ne ma-KO-re',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndakazvarwa',
-      shona: 'Ndakazvarwa mu...',
-      english: 'I was born in...',
+      target: 'Ndakazvarwa mu...',
+      native: 'I was born in...',
       literal: 'I-was-born in...',
       emoji: '👶',
       phonetic: 'nda-kaz-VAR-wa mu',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Ndine — I have (possession)',
     explanation: "'Ndine' means 'I have'. In Shona, age is expressed as possession — 'I have 30 years'. This same 'ndine' pattern works for everything you possess: family, money, time. Remember it well.",
     examples: [
-      { shona: 'Ndine makore gumi', english: 'I am 10 years old (I have 10 years)' },
-      { shona: 'Ndine mhuri', english: 'I have a family' },
-      { shona: 'Ndine nguva', english: 'I have time' },
+      { target: 'Ndine makore gumi', native: 'I am 10 years old (I have 10 years)' },
+      { target: 'Ndine mhuri', native: 'I have a family' },
+      { target: 'Ndine nguva', native: 'I have time' },
     ],
   },
 
@@ -113,9 +113,9 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Ndine makore... Ndakazvarwa mu...', english: 'I am ... years old. I was born in...', correct: true, feedback: "Age and birthdate — complete answer. Rwen nods with respect." },
-          { shona: 'Handizivi', english: "I don't know", correct: false, feedback: "You know your own age — use 'Ndine makore...' and fill in the number." },
-          { shona: 'Ndatenda', english: 'Thank you', correct: false, feedback: "That's gratitude, not your age. Try 'Ndine makore...'." },
+          { target: 'Ndine makore... Ndakazvarwa mu...', native: 'I am ... years old. I was born in...', correct: true, feedback: "Age and birthdate — complete answer. Rwen nods with respect." },
+          { target: 'Handizivi', native: "I don't know", correct: false, feedback: "You know your own age — use 'Ndine makore...' and fill in the number." },
+          { target: 'Ndatenda', native: 'Thank you', correct: false, feedback: "That's gratitude, not your age. Try 'Ndine makore...'." },
         ],
       },
       {

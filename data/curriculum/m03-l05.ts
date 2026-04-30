@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'vanhu_vangu',
-      shona: 'Vanhu vangu',
-      english: 'My people',
+      target: 'Vanhu vangu',
+      native: 'My people',
       literal: 'People my',
       emoji: '👥',
       phonetic: 'van-hu van-gu',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'shamwari_yangu',
-      shona: 'Shamwari yangu',
-      english: 'My friend',
+      target: 'Shamwari yangu',
+      native: 'My friend',
       literal: 'Friend my',
       emoji: '🤝',
       phonetic: 'sha-MWA-ri yan-gu',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'musha_wangu',
-      shona: 'Musha wangu',
-      english: 'My home / My village',
+      target: 'Musha wangu',
+      native: 'My home / My village',
       literal: 'Home/village my',
       emoji: '🏡',
       phonetic: 'MU-sha wan-gu',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: '-ngu suffix — my (varies by noun class)',
     explanation: "'My' in Shona changes form depending on the noun. 'Vangu' with people nouns, 'yangu' with some nouns, 'wangu' with others. This is the noun class system at work — but the meaning is always 'my'. You'll start to feel the pattern.",
     examples: [
-      { shona: 'Vanhu vangu', english: 'My people (va- class)' },
-      { shona: 'Shamwari yangu', english: 'My friend (ya- class)' },
-      { shona: 'Musha wangu', english: 'My home (wa- class)' },
+      { target: 'Vanhu vangu', native: 'My people (va- class)' },
+      { target: 'Shamwari yangu', native: 'My friend (ya- class)' },
+      { target: 'Musha wangu', native: 'My home (wa- class)' },
     ],
   },
 
@@ -113,9 +113,9 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Hongu. Vanhu vangu vanondida. Ndinoda musha wangu.', english: 'Yes. My people love me. I love my home.', correct: true, feedback: "You spoke about belonging. That's identity in Shona — warm and rooted." },
-          { shona: 'Ndine shamwari yangu', english: 'I have my friend', correct: false, feedback: "Good — and you can go further: 'Vanhu vangu vanondida' — my people love me." },
-          { shona: 'Handizivi', english: "I don't know", correct: false, feedback: "Think about your people — 'Vanhu vangu...' and tell Rwen about them." },
+          { target: 'Hongu. Vanhu vangu vanondida. Ndinoda musha wangu.', native: 'Yes. My people love me. I love my home.', correct: true, feedback: "You spoke about belonging. That's identity in Shona — warm and rooted." },
+          { target: 'Ndine shamwari yangu', native: 'I have my friend', correct: false, feedback: "Good — and you can go further: 'Vanhu vangu vanondida' — my people love me." },
+          { target: 'Handizivi', native: "I don't know", correct: false, feedback: "Think about your people — 'Vanhu vangu...' and tell Rwen about them." },
         ],
       },
       {

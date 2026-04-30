@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'chara_chimwe',
-      shona: 'Chara chimwe hachitswanyi inda',
-      english: 'One finger cannot kill a louse — unity is needed',
+      target: 'Chara chimwe hachitswanyi inda',
+      native: 'One finger cannot kill a louse — unity is needed',
       literal: 'Finger one it-cannot-kill louse',
       emoji: '🤝',
       phonetic: 'CHA-ra chi-mwe ha-chi-tswa-NYI in-da',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ukama_igasva',
-      shona: 'Ukama igasva hunozadziswa nekudya',
-      english: 'Relationship is incomplete — completed by sharing food',
+      target: 'Ukama igasva hunozadziswa nekudya',
+      native: 'Relationship is incomplete — completed by sharing food',
       literal: 'Relationship is-incomplete it-is-completed by-eating',
       emoji: '🍽️',
       phonetic: 'u-ka-ma i-ga-SVA hu-no-za-DZI-swa ne-ku-DYA',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'kushanda_ndiko',
-      shona: 'Kushanda ndiwo mutsvairo unokudzwa',
-      english: 'Hard work is the broom that is honoured',
+      target: 'Kushanda ndiwo mutsvairo unokudzwa',
+      native: 'Hard work is the broom that is honoured',
       literal: 'Working is-the broom that-is-respected',
       emoji: '🧹',
       phonetic: 'ku-SHAN-da ndi-wo mu-tsva-I-ro u-no-ku-DZwa',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Proverbs as compressed wisdom',
     explanation: "Each proverb compresses a life lesson into an image. Chara chimwe (unity), Ukama igasva (food seals bonds), Kushanda ndiwo mutsvairo (work earns respect). Use them when the moment calls — not as performance, but as wisdom offered.",
     examples: [
-      { shona: 'Chara chimwe hachitswanyi inda', english: 'Unity is strength (one finger cannot kill a louse)' },
-      { shona: 'Ukama igasva hunozadziswa nekudya', english: 'Food completes relationships' },
-      { shona: 'Kushanda ndiwo mutsvairo unokudzwa', english: 'Work earns respect' },
+      { target: 'Chara chimwe hachitswanyi inda', native: 'Unity is strength (one finger cannot kill a louse)' },
+      { target: 'Ukama igasva hunozadziswa nekudya', native: 'Food completes relationships' },
+      { target: 'Kushanda ndiwo mutsvairo unokudzwa', native: 'Work earns respect' },
     ],
   },
 
@@ -108,15 +108,15 @@ const lesson: LessonData = {
     lines: [
       {
         speaker: 'npc',
-        shona: 'Ukadzidza rurimi rwevanhu, ukadzidza moyo wavo.',
-        english: 'If you learn the language of a people, you learn their heart.',
+        target: 'Ukadzidza rurimi rwevanhu, ukadzidza moyo wavo.',
+        native: 'If you learn the language of a people, you learn their heart.',
       },
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Zvakanaka zvikuru, Sekuru. Ndinoziva izvozvo — ChiShona chadindira moyo wangu.', english: "Very good, Grandfather. I know that — Shona has touched my heart.", correct: true, feedback: "You received wisdom and reflected it back in Shona. Sekuru nods slowly with deep respect." },
-          { shona: 'Ndanzwisisa', english: 'I understand', correct: false, feedback: "Respond with depth — 'Zvakanaka zvikuru, Sekuru. ChiShona chadindira moyo wangu.' — Shona has touched my heart." },
-          { shona: 'Ndatenda', english: 'Thank you', correct: false, feedback: "Show you received the wisdom: 'Zvakanaka zvikuru, Sekuru. ChiShona chadindira moyo wangu.'" },
+          { target: 'Zvakanaka zvikuru, Sekuru. Ndinoziva izvozvo — ChiShona chadindira moyo wangu.', native: "Very good, Grandfather. I know that — Shona has touched my heart.", correct: true, feedback: "You received wisdom and reflected it back in Shona. Sekuru nods slowly with deep respect." },
+          { target: 'Ndanzwisisa', native: 'I understand', correct: false, feedback: "Respond with depth — 'Zvakanaka zvikuru, Sekuru. ChiShona chadindira moyo wangu.' — Shona has touched my heart." },
+          { target: 'Ndatenda', native: 'Thank you', correct: false, feedback: "Show you received the wisdom: 'Zvakanaka zvikuru, Sekuru. ChiShona chadindira moyo wangu.'" },
         ],
       },
       {

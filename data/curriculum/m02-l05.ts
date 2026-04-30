@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'taura_zvishoma',
-      shona: 'Taura zvishoma, ndapota',
-      english: 'Please speak slowly',
+      target: 'Taura zvishoma, ndapota',
+      native: 'Please speak slowly',
       literal: 'Speak little-by-little, I-ask',
       emoji: '🐢',
       phonetic: 'TAU-ra zvi-SHO-ma NDA-po-ta',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'dzokorora',
-      shona: 'Dzokorora, ndapota',
-      english: 'Please repeat that',
+      target: 'Dzokorora, ndapota',
+      native: 'Please repeat that',
       literal: 'Repeat, I-ask',
       emoji: '🔄',
       phonetic: 'dzo-ko-RO-ra NDA-po-ta',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'handanzwisisi',
-      shona: 'Handanzwisisi',
-      english: "I don't understand",
+      target: 'Handanzwisisi',
+      native: "I don't understand",
       literal: "I-understand-not",
       emoji: '😕',
       phonetic: 'han-dan-zwi-SI-si',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Commands in Shona — verb first',
     explanation: "In Shona, commands start with the verb. 'Taura' (speak), 'Dzokorora' (repeat) — the action comes first. Adding 'ndapota' softens it into a polite request rather than a demand.",
     examples: [
-      { shona: 'Taura zvishoma', english: 'Speak slowly (command)' },
-      { shona: 'Taura zvishoma, ndapota', english: 'Please speak slowly (polite)' },
-      { shona: 'Dzokorora, ndapota', english: 'Please repeat (polite)' },
+      { target: 'Taura zvishoma', native: 'Speak slowly (command)' },
+      { target: 'Taura zvishoma, ndapota', native: 'Please speak slowly (polite)' },
+      { target: 'Dzokorora, ndapota', native: 'Please repeat (polite)' },
     ],
   },
 
@@ -113,9 +113,9 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Handanzwisisi. Taura zvishoma, ndapota.', english: "I don't understand. Please speak slowly.", correct: true, feedback: "Exactly right — you named the problem and asked for what you need." },
-          { shona: 'Ndanzwisisa', english: 'I understand', correct: false, feedback: "Only say that if you truly understood. Pretending slows your learning." },
-          { shona: 'Handizivi', english: "I don't know", correct: false, feedback: "Close — but 'Handanzwisisi' (I don't understand) fits better here than 'Handizivi' (I don't know)." },
+          { target: 'Handanzwisisi. Taura zvishoma, ndapota.', native: "I don't understand. Please speak slowly.", correct: true, feedback: "Exactly right — you named the problem and asked for what you need." },
+          { target: 'Ndanzwisisa', native: 'I understand', correct: false, feedback: "Only say that if you truly understood. Pretending slows your learning." },
+          { target: 'Handizivi', native: "I don't know", correct: false, feedback: "Close — but 'Handanzwisisi' (I don't understand) fits better here than 'Handizivi' (I don't know)." },
         ],
       },
       {

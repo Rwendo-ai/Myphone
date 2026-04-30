@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'ndakasuwa',
-      shona: 'Ndakasuwa',
-      english: 'I am sad / I feel sorrowful',
+      target: 'Ndakasuwa',
+      native: 'I am sad / I feel sorrowful',
       literal: 'I-became-sorrowful',
       emoji: '😢',
       phonetic: 'nda-ka-SU-wa',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'zvinosuwa',
-      shona: 'Zvinosuwa',
-      english: 'It is sad / It is difficult / I am sorry to hear that',
+      target: 'Zvinosuwa',
+      native: 'It is sad / It is difficult / I am sorry to hear that',
       literal: 'Things-are-sorrowful',
       emoji: '💔',
       phonetic: 'zvi-no-SU-wa',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'usatye',
-      shona: 'Usatye / Usasuwa',
-      english: "Don't be afraid / Don't be sad",
+      target: 'Usatye / Usasuwa',
+      native: "Don't be afraid / Don't be sad",
       literal: 'Don\'t-fear / Don\'t-sorrow',
       emoji: '🤝',
       phonetic: 'u-sat-YE / u-sa-SU-wa',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Usa- prefix — do not [verb]',
     explanation: "'Usa-' before a verb creates a negative command — 'do not'. Usatye (don't be afraid), Usasuwa (don't be sad), Usaenda (don't go), Usatuka (don't insult). This 'usa-' prefix is how you comfort, warn, or redirect in Shona.",
     examples: [
-      { shona: 'Usasuwa', english: "Don't be sad" },
-      { shona: 'Usatye', english: "Don't be afraid" },
-      { shona: 'Usaenda', english: "Don't go" },
+      { target: 'Usasuwa', native: "Don't be sad" },
+      { target: 'Usatye', native: "Don't be afraid" },
+      { target: 'Usaenda', native: "Don't go" },
     ],
   },
 
@@ -113,9 +113,9 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Zvinosuwa zvikuru, Rwen. Ndiri nawe. Usasuwa — mhuri yose iripo.', english: "I am so sorry, Rwen. I am with you. Don't be sad — the whole family is there.", correct: true, feedback: "Empathy + presence + comfort. That's how Shona friendship sounds in hard moments." },
-          { shona: 'Ndakasuwa', english: 'I am sad', correct: false, feedback: "Acknowledge HIS situation first — 'Zvinosuwa zvikuru, Rwen.' Then offer comfort: 'Usasuwa — ndiri nawe.'" },
-          { shona: 'Haitei', english: "No problem", correct: false, feedback: "Too dismissive for serious news — 'Zvinosuwa zvikuru, Rwen. Ndiri nawe.' Show real empathy." },
+          { target: 'Zvinosuwa zvikuru, Rwen. Ndiri nawe. Usasuwa — mhuri yose iripo.', native: "I am so sorry, Rwen. I am with you. Don't be sad — the whole family is there.", correct: true, feedback: "Empathy + presence + comfort. That's how Shona friendship sounds in hard moments." },
+          { target: 'Ndakasuwa', native: 'I am sad', correct: false, feedback: "Acknowledge HIS situation first — 'Zvinosuwa zvikuru, Rwen.' Then offer comfort: 'Usasuwa — ndiri nawe.'" },
+          { target: 'Haitei', native: "No problem", correct: false, feedback: "Too dismissive for serious news — 'Zvinosuwa zvikuru, Rwen. Ndiri nawe.' Show real empathy." },
         ],
       },
       {

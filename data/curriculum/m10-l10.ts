@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'ndasvika',
-      shona: 'Ndasvika',
-      english: 'I have arrived',
+      target: 'Ndasvika',
+      native: 'I have arrived',
       literal: 'I-have-arrived',
       emoji: '🏆',
       phonetic: 'nda-SVI-ka',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndinoenda_mberi',
-      shona: 'Ndinoenda mberi',
-      english: 'I keep going forward',
+      target: 'Ndinoenda mberi',
+      native: 'I keep going forward',
       literal: 'I-go forward',
       emoji: '⬆️',
       phonetic: 'ndi-no-EN-da MBE-ri',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'rwendo_ruchiripo',
-      shona: 'Rwendo ruchiripo',
-      english: 'The journey continues',
+      target: 'Rwendo ruchiripo',
+      native: 'The journey continues',
       literal: 'Journey it-continues',
       emoji: '🌅',
       phonetic: 'RWE-ndo ru-chi-RI-po',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'From A2 to beyond — the journey continues',
     explanation: "You've reached A2 functional fluency. You can greet, survive, identify yourself, discuss family, count, navigate markets, talk about food, describe your day, express emotions, tell simple stories, and use proverbs. The next step is speaking — daily, with real people, in real contexts.",
     examples: [
-      { shona: 'Ndasvika A2', english: 'I have reached A2' },
-      { shona: 'Ndinoenda mberi', english: 'I keep going forward' },
-      { shona: 'Rwendo ruchiripo — the journey continues', english: 'The journey continues' },
+      { target: 'Ndasvika A2', native: 'I have reached A2' },
+      { target: 'Ndinoenda mberi', native: 'I keep going forward' },
+      { target: 'Rwendo ruchiripo — the journey continues', native: 'The journey continues' },
     ],
   },
 
@@ -113,9 +113,9 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Ndiri murwi weshoko. Ndinodzidzа ChiShona. Ndinoda Zimbabwe. Ndasvika — asi rwendo ruchiripo. Ndinoenda mberi.', english: "I am a language learner. I learn Shona. I love Zimbabwe. I have arrived — but the journey continues. I keep going forward.", correct: true, feedback: "Five sentences. Past, present, love, arrival, and forward momentum. That is your complete Shona identity. Rwen has nothing left to teach — and everything left to celebrate." },
-          { shona: 'Ndiri mudzidzi', english: 'I am a student', correct: false, feedback: "Go deeper — who are you now after this journey? 'Ndiri murwi weshoko. Ndinoda Zimbabwe. Ndasvika. Rwendo ruchiripo.'" },
-          { shona: 'Ndinofara', english: 'I am happy', correct: false, feedback: "That's true — and say more: 'Ndiri murwi weshoko. Ndasvika A2. Ndinoenda mberi.' Complete your story." },
+          { target: 'Ndiri murwi weshoko. Ndinodzidzа ChiShona. Ndinoda Zimbabwe. Ndasvika — asi rwendo ruchiripo. Ndinoenda mberi.', native: "I am a language learner. I learn Shona. I love Zimbabwe. I have arrived — but the journey continues. I keep going forward.", correct: true, feedback: "Five sentences. Past, present, love, arrival, and forward momentum. That is your complete Shona identity. Rwen has nothing left to teach — and everything left to celebrate." },
+          { target: 'Ndiri mudzidzi', native: 'I am a student', correct: false, feedback: "Go deeper — who are you now after this journey? 'Ndiri murwi weshoko. Ndinoda Zimbabwe. Ndasvika. Rwendo ruchiripo.'" },
+          { target: 'Ndinofara', native: 'I am happy', correct: false, feedback: "That's true — and say more: 'Ndiri murwi weshoko. Ndasvika A2. Ndinoenda mberi.' Complete your story." },
         ],
       },
       {

@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'mangwanani',
-      shona: 'Mangwanani',
-      english: 'Good morning',
+      target: 'Mangwanani',
+      native: 'Good morning',
       literal: '(It has) dawned',
       emoji: '🌅',
       phonetic: 'mang-gwa-NA-ni',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'mamuka_sei',
-      shona: 'Mamuka sei?',
-      english: 'How did you wake? (respectful)',
+      target: 'Mamuka sei?',
+      native: 'How did you wake? (respectful)',
       literal: 'You (plural) woke how?',
       emoji: '👀',
       phonetic: 'ma-MU-ka SAY',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndamuka',
-      shona: 'Ndamuka, kana mamukawo',
-      english: 'I woke well, if you also woke well',
+      target: 'Ndamuka, kana mamukawo',
+      native: 'I woke well, if you also woke well',
       literal: 'I-woke, if you(pl)-woke-also',
       emoji: '✨',
       phonetic: 'nda-MU-ka KA-na ma-MU-ka-wo',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Person markers',
     explanation: 'The prefix changes who you mean. Notice the pattern — it appears on every verb.',
     examples: [
-      { shona: 'Ma-muka', english: 'You (respectful/elder) woke' },
-      { shona: 'Wa-muka', english: 'You (friend/peer) woke' },
-      { shona: 'Nd-amuka', english: 'I woke' },
+      { target: 'Ma-muka', native: 'You (respectful/elder) woke' },
+      { target: 'Wa-muka', native: 'You (friend/peer) woke' },
+      { target: 'Nd-amuka', native: 'I woke' },
     ],
   },
 
@@ -108,21 +108,21 @@ const lesson: LessonData = {
     lines: [
       {
         speaker: 'npc',
-        shona: 'Mangwanani',
-        english: 'Good morning',
+        target: 'Mangwanani',
+        native: 'Good morning',
       },
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Mangwanani, mamuka sei?', english: 'Good morning, how did you wake?', correct: true, feedback: 'Perfect — respectful and warm.' },
-          { shona: 'Mangwanani, wamuka sei?', english: 'Good morning, how did you wake? (informal)', correct: false, feedback: "Almost — but elders deserve the respectful 'ma-' form." },
-          { shona: 'Ndamuka', english: 'I woke', correct: false, feedback: "That's how you reply, not how you greet first." },
+          { target: 'Mangwanani, mamuka sei?', native: 'Good morning, how did you wake?', correct: true, feedback: 'Perfect — respectful and warm.' },
+          { target: 'Mangwanani, wamuka sei?', native: 'Good morning, how did you wake? (informal)', correct: false, feedback: "Almost — but elders deserve the respectful 'ma-' form." },
+          { target: 'Ndamuka', native: 'I woke', correct: false, feedback: "That's how you reply, not how you greet first." },
         ],
       },
       {
         speaker: 'npc',
-        shona: 'Ndamuka, kana mamukawo',
-        english: 'I woke well, if you also woke well',
+        target: 'Ndamuka, kana mamukawo',
+        native: 'I woke well, if you also woke well',
       },
       {
         speaker: 'rwen',

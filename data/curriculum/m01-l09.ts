@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'sara_zvakanaka',
-      shona: 'Sara zvakanaka',
-      english: 'Stay well (said by the person leaving)',
+      target: 'Sara zvakanaka',
+      native: 'Stay well (said by the person leaving)',
       literal: 'Stay that-is-well',
       emoji: '🏠',
       phonetic: 'SAH-ra zva-ka-NAH-ka',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'famba_zvakanaka',
-      shona: 'Famba zvakanaka',
-      english: 'Go well (said by the person staying)',
+      target: 'Famba zvakanaka',
+      native: 'Go well (said by the person staying)',
       literal: 'Go/travel that-is-well',
       emoji: '🚶',
       phonetic: 'FAM-ba zva-ka-NAH-ka',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'tichaonana',
-      shona: 'Tichaonana',
-      english: 'We will see each other again',
+      target: 'Tichaonana',
+      native: 'We will see each other again',
       literal: 'We-will-see-each-other',
       emoji: '👋',
       phonetic: 'ti-cha-o-NAH-na',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Sara vs Famba — Stay vs Go',
     explanation: "These two verbs are opposites and both use 'zvakanaka' (that is well) as a blessing. The trick: you bless the OTHER person's situation, not your own. Leaving? Say 'Sara zvakanaka' (blessing those staying). Staying? Say 'Famba zvakanaka' (blessing those going).",
     examples: [
-      { shona: 'Sara zvakanaka', english: 'Stay well (you are leaving, they stay)' },
-      { shona: 'Famba zvakanaka', english: 'Go well (you stay, they are leaving)' },
-      { shona: 'Tichaonana', english: 'We will see each other (either person can say this)' },
+      { target: 'Sara zvakanaka', native: 'Stay well (you are leaving, they stay)' },
+      { target: 'Famba zvakanaka', native: 'Go well (you stay, they are leaving)' },
+      { target: 'Tichaonana', native: 'We will see each other (either person can say this)' },
     ],
   },
 
@@ -109,9 +109,9 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Sara zvakanaka, Rwen', english: 'Stay well, Rwen', correct: true, feedback: "Perfect — you're leaving, so you bless Rwen who stays. Exactly right." },
-          { shona: 'Famba zvakanaka', english: 'Go well', correct: false, feedback: "That's the blessing for someone who is leaving — but you're the one leaving, not Rwen. Use 'Sara zvakanaka'." },
-          { shona: 'Mangwanani', english: 'Good morning', correct: false, feedback: "That's a greeting, not a farewell. Use 'Sara zvakanaka' when you're leaving." },
+          { target: 'Sara zvakanaka, Rwen', native: 'Stay well, Rwen', correct: true, feedback: "Perfect — you're leaving, so you bless Rwen who stays. Exactly right." },
+          { target: 'Famba zvakanaka', native: 'Go well', correct: false, feedback: "That's the blessing for someone who is leaving — but you're the one leaving, not Rwen. Use 'Sara zvakanaka'." },
+          { target: 'Mangwanani', native: 'Good morning', correct: false, feedback: "That's a greeting, not a farewell. Use 'Sara zvakanaka' when you're leaving." },
         ],
       },
       {

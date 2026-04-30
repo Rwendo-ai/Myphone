@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'ndira_kukadzi_kurume',
-      shona: 'Ndira / Kukadzi / Kurume',
-      english: 'January / February / March',
+      target: 'Ndira / Kukadzi / Kurume',
+      native: 'January / February / March',
       literal: 'Ndira (plant name), Kukadzi (of women), Kurume (of men/rams)',
       emoji: '🌸',
       phonetic: 'NDI-ra / ku-KA-dzi / ku-RU-me',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'chikumi_chikunguru',
-      shona: 'Chikumi / Chikunguru',
-      english: 'June / July',
+      target: 'Chikumi / Chikunguru',
+      native: 'June / July',
       literal: 'Chi-kumi (sixth), Chi-kunguru (seventh)',
       emoji: '❄️',
       phonetic: 'chi-KU-mi / chi-kun-GU-ru',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'gumiguru_zvita',
-      shona: 'Gumiguru / Zvita',
-      english: 'October / December',
+      target: 'Gumiguru / Zvita',
+      native: 'October / December',
       literal: 'Gumi-guru (big ten), Zvita (things-of-year-end)',
       emoji: '🌧️🎄',
       phonetic: 'gu-mi-GU-ru / ZVI-ta',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Some months use numbered Chi- prefix',
     explanation: "Some Shona months use the Chi- prefix with numbers: Chikumi (June = 6th month), Chikunguru (July = 7th). Others have descriptive names rooted in nature and culture: Ndira, Kukadzi, Zvita.",
     examples: [
-      { shona: 'Ndira', english: 'January' },
-      { shona: 'Chikumi', english: 'June (6th month)' },
-      { shona: 'Zvita', english: 'December (year-end things)' },
+      { target: 'Ndira', native: 'January' },
+      { target: 'Chikumi', native: 'June (6th month)' },
+      { target: 'Zvita', native: 'December (year-end things)' },
     ],
   },
 
@@ -113,9 +113,9 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Ndakazvarwa mu[month]. Ndinofarira [season/month] nokuti...', english: 'I was born in [month]. I enjoy [season/month] because...', correct: true, feedback: "Birth month and favourite season — two personal facts shared in Shona." },
-          { shona: 'Ndakazvarwa muNdira', english: 'I was born in January', correct: false, feedback: "Good — add your favourite time: 'Ndinofarira [month/season] nokuti...'" },
-          { shona: 'Handizivi muwedzi wangu', english: "I don't know my month", correct: false, feedback: "Try: 'Ndakazvarwa mu[your birth month].' Which month were you born?" },
+          { target: 'Ndakazvarwa mu[month]. Ndinofarira [season/month] nokuti...', native: 'I was born in [month]. I enjoy [season/month] because...', correct: true, feedback: "Birth month and favourite season — two personal facts shared in Shona." },
+          { target: 'Ndakazvarwa muNdira', native: 'I was born in January', correct: false, feedback: "Good — add your favourite time: 'Ndinofarira [month/season] nokuti...'" },
+          { target: 'Handizivi muwedzi wangu', native: "I don't know my month", correct: false, feedback: "Try: 'Ndakazvarwa mu[your birth month].' Which month were you born?" },
         ],
       },
       {

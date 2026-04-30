@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'ndinoda_kudzidza',
-      shona: 'Ndinoda kudzidza ChiShona',
-      english: 'I want to learn Shona',
+      target: 'Ndinoda kudzidza ChiShona',
+      native: 'I want to learn Shona',
       literal: 'I-want to-learn Shona-language',
       emoji: '📚',
       phonetic: 'ndi-no-da ku-DZI-dza chi-SHO-na',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndirikudzidza',
-      shona: 'Ndirikudzidza',
-      english: 'I am learning (right now)',
+      target: 'Ndirikudzidza',
+      native: 'I am learning (right now)',
       literal: 'I-am-learning',
       emoji: '🎓',
       phonetic: 'ndi-ri-ku-DZI-dza',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndinoda_kutaura',
-      shona: 'Ndinoda kutaura ChiShona',
-      english: 'I want to speak Shona',
+      target: 'Ndinoda kutaura ChiShona',
+      native: 'I want to speak Shona',
       literal: 'I-want to-speak Shona',
       emoji: '🗣️',
       phonetic: 'ndi-no-da ku-TAU-ra chi-SHO-na',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Ndinoda ku- + verb — I want to [do something]',
     explanation: "'Ndinoda ku-' followed by a verb infinitive means 'I want to [verb]'. The 'ku-' before a verb is the infinitive marker — like 'to' in English. 'Ku-dzidza' = to learn, 'ku-taura' = to speak, 'ku-enda' = to go.",
     examples: [
-      { shona: 'Ndinoda ku-dzidza', english: 'I want to learn' },
-      { shona: 'Ndinoda ku-taura', english: 'I want to speak' },
-      { shona: 'Ndinoda ku-enda', english: 'I want to go' },
+      { target: 'Ndinoda ku-dzidza', native: 'I want to learn' },
+      { target: 'Ndinoda ku-taura', native: 'I want to speak' },
+      { target: 'Ndinoda ku-enda', native: 'I want to go' },
     ],
   },
 
@@ -108,21 +108,21 @@ const lesson: LessonData = {
     lines: [
       {
         speaker: 'npc',
-        shona: 'Unodzidza ChiShona sei? Nei?',
-        english: 'How are you learning Shona? Why?',
+        target: 'Unodzidza ChiShona sei? Nei?',
+        native: 'How are you learning Shona? Why?',
       },
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Ndinoda kutaura ChiShona nokuti ndinoda vanhu veZimbabwe.', english: 'I want to speak Shona because I love the people of Zimbabwe.', correct: true, feedback: "That answer will stop a conversation in its tracks — in the best way. They will remember you." },
-          { shona: 'Ndirikudzidza ChiShona', english: 'I am learning Shona', correct: false, feedback: "True — and add WHY. 'Nokuti...' (because...) lets you share the reason." },
-          { shona: 'Handizivi', english: "I don't know", correct: false, feedback: "You do know — try 'Ndinoda kudzidza nokuti...' (I want to learn because...)." },
+          { target: 'Ndinoda kutaura ChiShona nokuti ndinoda vanhu veZimbabwe.', native: 'I want to speak Shona because I love the people of Zimbabwe.', correct: true, feedback: "That answer will stop a conversation in its tracks — in the best way. They will remember you." },
+          { target: 'Ndirikudzidza ChiShona', native: 'I am learning Shona', correct: false, feedback: "True — and add WHY. 'Nokuti...' (because...) lets you share the reason." },
+          { target: 'Handizivi', native: "I don't know", correct: false, feedback: "You do know — try 'Ndinoda kudzidza nokuti...' (I want to learn because...)." },
         ],
       },
       {
         speaker: 'npc',
-        shona: 'Zvakanaka zvikuru. Tinotenda zvikuru.',
-        english: 'That is wonderful. We thank you very much.',
+        target: 'Zvakanaka zvikuru. Tinotenda zvikuru.',
+        native: 'That is wonderful. We thank you very much.',
       },
       {
         speaker: 'rwen',

@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'batsira',
-      shona: 'Batsira!',
-      english: 'Help!',
+      target: 'Batsira!',
+      native: 'Help!',
       literal: 'Help! (urgent command)',
       emoji: '🆘',
       phonetic: 'bat-SI-ra',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndine_dambudziko',
-      shona: 'Ndine dambudziko',
-      english: 'I have a problem',
+      target: 'Ndine dambudziko',
+      native: 'I have a problem',
       literal: 'I-have problem',
       emoji: '⚠️',
       phonetic: 'ndi-ne dam-bu-DZI-ko',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'daidzai_chiremba',
-      shona: 'Daidzai chiremba!',
-      english: 'Call a doctor!',
+      target: 'Daidzai chiremba!',
+      native: 'Call a doctor!',
       literal: 'Call doctor! (formal plural)',
       emoji: '🏥',
       phonetic: 'dai-DZA-i chi-RE-mba',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Emergency commands — loud and direct',
     explanation: "Emergency commands are short, loud, and direct. No politeness markers (ndapota) — speed matters. Batsira! (Help!), Daidzai chiremba! (Call a doctor!), Moto! (Fire!), Mhosva! (Stop thief!). Learn them. Hope you never use them.",
     examples: [
-      { shona: 'Batsira!', english: 'Help!' },
-      { shona: 'Daidzai chiremba!', english: 'Call a doctor!' },
-      { shona: 'Ndine dambudziko guru', english: 'I have a serious problem' },
+      { target: 'Batsira!', native: 'Help!' },
+      { target: 'Daidzai chiremba!', native: 'Call a doctor!' },
+      { target: 'Ndine dambudziko guru', native: 'I have a serious problem' },
     ],
   },
 
@@ -109,15 +109,15 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Batsira! Daidzai chiremba! Munhu uyu anorwara!', english: 'Help! Call a doctor! This person is sick!', correct: true, feedback: "Three essential emergency phrases in sequence. The crowd responds immediately." },
-          { shona: 'Ndine dambudziko', english: 'I have a problem', correct: false, feedback: "Too calm for an emergency — shout: 'Batsira! Daidzai chiremba! Munhu uyu anorwara!'" },
-          { shona: 'Makadii?', english: 'How are you?', correct: false, feedback: "This is an emergency — shout: 'Batsira! Daidzai chiremba! Munhu uyu anorwara!'" },
+          { target: 'Batsira! Daidzai chiremba! Munhu uyu anorwara!', native: 'Help! Call a doctor! This person is sick!', correct: true, feedback: "Three essential emergency phrases in sequence. The crowd responds immediately." },
+          { target: 'Ndine dambudziko', native: 'I have a problem', correct: false, feedback: "Too calm for an emergency — shout: 'Batsira! Daidzai chiremba! Munhu uyu anorwara!'" },
+          { target: 'Makadii?', native: 'How are you?', correct: false, feedback: "This is an emergency — shout: 'Batsira! Daidzai chiremba! Munhu uyu anorwara!'" },
         ],
       },
       {
         speaker: 'npc',
-        shona: 'Tichiuya! Chiremba ari pedyo!',
-        english: "We're coming! There's a doctor nearby!",
+        target: 'Tichiuya! Chiremba ari pedyo!',
+        native: "We're coming! There's a doctor nearby!",
       },
       {
         speaker: 'rwen',

@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'ndatenda',
-      shona: 'Ndatenda',
-      english: 'Thank you',
+      target: 'Ndatenda',
+      native: 'Thank you',
       literal: 'I-have-been-grateful',
       emoji: '🙏',
       phonetic: 'nda-TEN-da',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndatenda_zvikuru',
-      shona: 'Ndatenda zvikuru',
-      english: 'Thank you very much',
+      target: 'Ndatenda zvikuru',
+      native: 'Thank you very much',
       literal: 'I-thank greatly/a-lot',
       emoji: '💛',
       phonetic: 'nda-TEN-da zvi-KU-ru',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'wakanaka',
-      shona: 'Wakanaka',
-      english: 'You are kind / You are good',
+      target: 'Wakanaka',
+      native: 'You are kind / You are good',
       literal: 'You-are-good',
       emoji: '✨',
       phonetic: 'wa-ka-NAH-ka',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Zvikuru — the intensifier',
     explanation: "'Zvikuru' means 'greatly' or 'very much'. Add it after almost any positive statement to strengthen it. You've seen 'akanaka' (that is good) — 'zvikuru' is its amplifier.",
     examples: [
-      { shona: 'Ndatenda', english: 'Thank you' },
-      { shona: 'Ndatenda zvikuru', english: 'Thank you very much' },
-      { shona: 'Ndinofara zvikuru', english: 'I am very happy' },
+      { target: 'Ndatenda', native: 'Thank you' },
+      { target: 'Ndatenda zvikuru', native: 'Thank you very much' },
+      { target: 'Ndinofara zvikuru', native: 'I am very happy' },
     ],
   },
 
@@ -108,15 +108,15 @@ const lesson: LessonData = {
     lines: [
       {
         speaker: 'npc',
-        shona: 'Ndiyo nzira — enda mberi uchidzika kurudyi.',
-        english: "That's the way — go forward then turn right.",
+        target: 'Ndiyo nzira — enda mberi uchidzika kurudyi.',
+        native: "That's the way — go forward then turn right.",
       },
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Ndatenda zvikuru. Wakanaka.', english: 'Thank you very much. You are kind.', correct: true, feedback: "Warm and genuine. Rwen beams." },
-          { shona: 'Ndatenda', english: 'Thank you', correct: false, feedback: "Correct — but 'Ndatenda zvikuru. Wakanaka.' shows deeper appreciation for real help." },
-          { shona: 'Zvinoenderana', english: "You're welcome", correct: false, feedback: "That's the REPLY to thanks — but right now you're the one saying thanks." },
+          { target: 'Ndatenda zvikuru. Wakanaka.', native: 'Thank you very much. You are kind.', correct: true, feedback: "Warm and genuine. Rwen beams." },
+          { target: 'Ndatenda', native: 'Thank you', correct: false, feedback: "Correct — but 'Ndatenda zvikuru. Wakanaka.' shows deeper appreciation for real help." },
+          { target: 'Zvinoenderana', native: "You're welcome", correct: false, feedback: "That's the REPLY to thanks — but right now you're the one saying thanks." },
         ],
       },
       {

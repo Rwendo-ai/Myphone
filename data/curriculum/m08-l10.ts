@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'zuva_rangu',
-      shona: 'Zuva rangu rinoita sei?',
-      english: 'What is my day like?',
+      target: 'Zuva rangu rinoita sei?',
+      native: 'What is my day like?',
       literal: 'Day my it-does how?',
       emoji: '📅',
       phonetic: 'ZU-va ran-gu ri-no-I-ta sei',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'zuva_nezuva',
-      shona: 'Zuva nezuva',
-      english: 'Every day / Day by day',
+      target: 'Zuva nezuva',
+      native: 'Every day / Day by day',
       literal: 'Day and-day',
       emoji: '🔁',
       phonetic: 'ZU-va ne-ZU-va',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndakafara_nhasi',
-      shona: 'Ndakafara nhasi',
-      english: 'I was happy today',
+      target: 'Ndakafara nhasi',
+      native: 'I was happy today',
       literal: 'I-was-happy today',
       emoji: '😊',
       phonetic: 'nda-ka-FA-ra NHA-si',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'A full day described in Shona verbs',
     explanation: "A Shona day: Ndamuka (I woke) → Ndadya (I ate) → Ndaenda (I went) → Ndinodzidzа (I learn) → Ndatenda (I thanked) → Ndakafara (I was happy) → Ndarara (I slept). Seven verbs, one complete human day.",
     examples: [
-      { shona: 'Ndamuka — ndadya — ndaenda', english: 'I woke — I ate — I went' },
-      { shona: 'Ndakafara zvikuru nhasi', english: 'I was very happy today' },
-      { shona: 'Ndarara zvakanaka', english: 'I slept well' },
+      { target: 'Ndamuka — ndadya — ndaenda', native: 'I woke — I ate — I went' },
+      { target: 'Ndakafara zvikuru nhasi', native: 'I was very happy today' },
+      { target: 'Ndarara zvakanaka', native: 'I slept well' },
     ],
   },
 
@@ -113,9 +113,9 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Ndamuka, ndadya chingwa ne tii. Ndaenda kubasa. Ndinodzidzа ChiShona manheru. Ndakafara nhasi. Ndarara zvakanaka.', english: 'I woke, ate bread and tea. I went to work. I learn Shona in the evenings. I was happy today. I slept well.', correct: true, feedback: "A complete Shona day — five verbs, past tense, real life. Module 8 complete. That's fluency." },
-          { shona: 'Ndamuka, ndadya, ndaenda', english: 'I woke, ate, went', correct: false, feedback: "Good start — add learning, emotion, and sleep to complete the day: 'Ndinodzidzа. Ndakafara. Ndarara.'" },
-          { shona: 'Zvakanaka', english: "It was good", correct: false, feedback: "Narrate the whole day! 'Ndamuka → Ndadya → Ndaenda → Ndinodzidzа → Ndakafara → Ndarara.'" },
+          { target: 'Ndamuka, ndadya chingwa ne tii. Ndaenda kubasa. Ndinodzidzа ChiShona manheru. Ndakafara nhasi. Ndarara zvakanaka.', native: 'I woke, ate bread and tea. I went to work. I learn Shona in the evenings. I was happy today. I slept well.', correct: true, feedback: "A complete Shona day — five verbs, past tense, real life. Module 8 complete. That's fluency." },
+          { target: 'Ndamuka, ndadya, ndaenda', native: 'I woke, ate, went', correct: false, feedback: "Good start — add learning, emotion, and sleep to complete the day: 'Ndinodzidzа. Ndakafara. Ndarara.'" },
+          { target: 'Zvakanaka', native: "It was good", correct: false, feedback: "Narrate the whole day! 'Ndamuka → Ndadya → Ndaenda → Ndinodzidzа → Ndakafara → Ndarara.'" },
         ],
       },
       {

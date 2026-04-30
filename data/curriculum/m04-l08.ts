@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'ndaenda',
-      shona: 'Ndaenda',
-      english: 'I went / I have gone',
+      target: 'Ndaenda',
+      native: 'I went / I have gone',
       literal: 'Nda-enda (Nda- = past completed)',
       emoji: '⬅️',
       phonetic: 'nda-EN-da',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndichaenda',
-      shona: 'Ndichaenda',
-      english: 'I will go',
+      target: 'Ndichaenda',
+      native: 'I will go',
       literal: 'Ndi-cha-enda (Ndicha- = future)',
       emoji: '➡️',
       phonetic: 'ndi-cha-EN-da',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndiri_kuenda',
-      shona: 'Ndiri kuenda',
-      english: 'I am going (right now)',
+      target: 'Ndiri kuenda',
+      native: 'I am going (right now)',
       literal: 'Ndiri ku-enda (continuous present)',
       emoji: '🔄',
       phonetic: 'NDI-ri ku-EN-da',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Tense markers inside the verb',
     explanation: "Shona tense lives inside the verb: Nda- (past), Ndi-no- (habitual present), Ndiri ku- (continuous present), Ndi-cha- (future). The stem (-enda, -uya, -taura) stays the same — only the tense prefix changes.",
     examples: [
-      { shona: 'Nda-enda', english: 'I went (past)' },
-      { shona: 'Ndino-enda', english: 'I go (habitual)' },
-      { shona: 'Ndicha-enda', english: 'I will go (future)' },
+      { target: 'Nda-enda', native: 'I went (past)' },
+      { target: 'Ndino-enda', native: 'I go (habitual)' },
+      { target: 'Ndicha-enda', native: 'I will go (future)' },
     ],
   },
 
@@ -113,9 +113,9 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Ndabva ku... Ndichaenda ku...', english: 'I came from... I will go to...', correct: true, feedback: "Past and future — you navigated both tenses correctly." },
-          { shona: 'Ndinogara ku...', english: 'I live in... (present only)', correct: false, feedback: "Good — but use past for where you came from: Ndabva ku... And future: Ndichaenda ku..." },
-          { shona: 'Handizivi', english: "I don't know", correct: false, feedback: "Try: 'Ndabva ku...' (I came from) and 'Ndichaenda ku...' (I will go to)." },
+          { target: 'Ndabva ku... Ndichaenda ku...', native: 'I came from... I will go to...', correct: true, feedback: "Past and future — you navigated both tenses correctly." },
+          { target: 'Ndinogara ku...', native: 'I live in... (present only)', correct: false, feedback: "Good — but use past for where you came from: Ndabva ku... And future: Ndichaenda ku..." },
+          { target: 'Handizivi', native: "I don't know", correct: false, feedback: "Try: 'Ndabva ku...' (I came from) and 'Ndichaenda ku...' (I will go to)." },
         ],
       },
       {

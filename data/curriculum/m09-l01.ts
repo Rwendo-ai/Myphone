@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'nzira_ipi',
-      shona: 'Nzira ipi?',
-      english: 'Which way? / Which road?',
+      target: 'Nzira ipi?',
+      native: 'Which way? / Which road?',
       literal: 'Road which?',
       emoji: '🛣️',
       phonetic: 'nzi-ra I-pi',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndeapi_nzira',
-      shona: 'Ndeapi nzira ye...?',
-      english: 'Which is the way to...?',
+      target: 'Ndeapi nzira ye...?',
+      native: 'Which is the way to...?',
       literal: 'It-is-which road of...?',
       emoji: '🗺️',
       phonetic: 'nde-A-pi nzi-ra ye',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'nzira_yakanaka',
-      shona: 'Nzira yakanaka',
-      english: 'A good road / The right way',
+      target: 'Nzira yakanaka',
+      native: 'A good road / The right way',
       literal: 'Road that-is-good',
       emoji: '✅',
       phonetic: 'nzi-ra ya-ka-NA-ka',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Nzira + ipi/ndeapi — asking which way',
     explanation: "'Ipi?' (which one?) and 'Ndeapi?' (which is it?) are question words for identifying roads and directions. 'Nzira ipi?' (which road?) is shorter and informal. 'Ndeapi nzira ye [place]?' is more formal and complete.",
     examples: [
-      { shona: 'Nzira ipi?', english: 'Which way?' },
-      { shona: 'Ndeapi nzira yeHarare?', english: 'Which is the way to Harare?' },
-      { shona: 'Nzira iyi yakanaka', english: 'This road is good' },
+      { target: 'Nzira ipi?', native: 'Which way?' },
+      { target: 'Ndeapi nzira yeHarare?', native: 'Which is the way to Harare?' },
+      { target: 'Nzira iyi yakanaka', native: 'This road is good' },
     ],
   },
 
@@ -109,15 +109,15 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Ndibatsire, ndapota. Ndeapi nzira ye musika?', english: 'Please help me. Which is the way to the market?', correct: true, feedback: "Polite, specific destination asked. The person is already pointing." },
-          { shona: 'Nzira ipi?', english: 'Which way?', correct: false, feedback: "Good start — but add where you're going: 'Ndeapi nzira ye musika?' Which way to the market?" },
-          { shona: 'Handizivi nzira', english: "I don't know the way", correct: false, feedback: "That's the problem — ask for help: 'Ndibatsire, ndapota. Ndeapi nzira ye musika?'" },
+          { target: 'Ndibatsire, ndapota. Ndeapi nzira ye musika?', native: 'Please help me. Which is the way to the market?', correct: true, feedback: "Polite, specific destination asked. The person is already pointing." },
+          { target: 'Nzira ipi?', native: 'Which way?', correct: false, feedback: "Good start — but add where you're going: 'Ndeapi nzira ye musika?' Which way to the market?" },
+          { target: 'Handizivi nzira', native: "I don't know the way", correct: false, feedback: "That's the problem — ask for help: 'Ndibatsire, ndapota. Ndeapi nzira ye musika?'" },
         ],
       },
       {
         speaker: 'npc',
-        shona: 'Enda mberi, udzoke kurudyi — musika uri pedyo.',
-        english: 'Go forward, then turn right — the market is nearby.',
+        target: 'Enda mberi, udzoke kurudyi — musika uri pedyo.',
+        native: 'Go forward, then turn right — the market is nearby.',
       },
       {
         speaker: 'rwen',

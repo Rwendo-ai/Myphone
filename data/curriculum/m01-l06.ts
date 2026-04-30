@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'zita_rako_ndiani',
-      shona: 'Zita rako ndiani?',
-      english: 'What is your name?',
+      target: 'Zita rako ndiani?',
+      native: 'What is your name?',
       literal: 'Name your it-is-who?',
       emoji: '🏷️',
       phonetic: 'ZI-ta ra-ko ndi-AH-ni',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'zita_rangu_ndi',
-      shona: 'Zita rangu ndi...',
-      english: 'My name is...',
+      target: 'Zita rangu ndi...',
+      native: 'My name is...',
       literal: 'Name my it-is...',
       emoji: '🙋',
       phonetic: 'ZI-ta ran-gu ndi',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'wakanaka_kukuziva',
-      shona: 'Wakanaka kukuziva',
-      english: 'Nice to meet you',
+      target: 'Wakanaka kukuziva',
+      native: 'Nice to meet you',
       literal: 'It-is-good to-know-you',
       emoji: '🤗',
       phonetic: 'wa-ka-NAH-ka ku-ku-ZI-va',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Rako vs Rangu — Your vs My',
     explanation: "These two endings appear constantly in Shona. 'Rako' means 'your' and 'rangu' means 'my'. They attach to nouns to show ownership. Learn them here and you'll recognise them everywhere.",
     examples: [
-      { shona: 'Zita rako', english: 'Your name' },
-      { shona: 'Zita rangu', english: 'My name' },
-      { shona: 'Imba rako', english: 'Your house' },
+      { target: 'Zita rako', native: 'Your name' },
+      { target: 'Zita rangu', native: 'My name' },
+      { target: 'Imba rako', native: 'Your house' },
     ],
   },
 
@@ -113,9 +113,9 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Zita rangu ndi...', english: 'My name is...', correct: true, feedback: "Perfect introduction. Rwen smiles — they know your name now." },
-          { shona: 'Zita rako ndiani?', english: 'What is your name?', correct: false, feedback: "That's the question — not the answer. They asked you first, now reply with 'Zita rangu ndi...'." },
-          { shona: 'Makadii?', english: 'How are you?', correct: false, feedback: "That's a greeting — they're asking for your name. Use 'Zita rangu ndi...'." },
+          { target: 'Zita rangu ndi...', native: 'My name is...', correct: true, feedback: "Perfect introduction. Rwen smiles — they know your name now." },
+          { target: 'Zita rako ndiani?', native: 'What is your name?', correct: false, feedback: "That's the question — not the answer. They asked you first, now reply with 'Zita rangu ndi...'." },
+          { target: 'Makadii?', native: 'How are you?', correct: false, feedback: "That's a greeting — they're asking for your name. Use 'Zita rangu ndi...'." },
         ],
       },
       {

@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'ndapota',
-      shona: 'Ndapota',
-      english: 'Please',
+      target: 'Ndapota',
+      native: 'Please',
       literal: 'I ask / I beg',
       emoji: '🙏',
       phonetic: 'NDA-po-ta',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndibatsire',
-      shona: 'Ndibatsire, ndapota',
-      english: 'Please help me',
+      target: 'Ndibatsire, ndapota',
+      native: 'Please help me',
       literal: 'Help-me, I-ask',
       emoji: '🤝',
       phonetic: 'ndi-bat-SI-re NDA-po-ta',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'zvinoenderana',
-      shona: 'Zvinoenderana',
-      english: "You're welcome / It's fine",
+      target: 'Zvinoenderana',
+      native: "You're welcome / It's fine",
       literal: 'It-goes-along / It matches',
       emoji: '✅',
       phonetic: 'zvi-no-en-de-RAH-na',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Ndapota — the politeness key',
     explanation: "'Ndapota' can go at the start or end of any request. It works like a key — put it in and the door opens more easily. It literally means 'I ask/beg' and softens whatever comes with it.",
     examples: [
-      { shona: 'Ndapota, ndiudze...', english: 'Please tell me...' },
-      { shona: 'Ndibatsire, ndapota', english: 'Please help me' },
-      { shona: 'Zvinoenderana', english: "You're welcome (reply to ndatenda)" },
+      { target: 'Ndapota, ndiudze...', native: 'Please tell me...' },
+      { target: 'Ndibatsire, ndapota', native: 'Please help me' },
+      { target: 'Zvinoenderana', native: "You're welcome (reply to ndatenda)" },
     ],
   },
 
@@ -109,22 +109,22 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Ndibatsire, ndapota', english: 'Please help me', correct: true, feedback: "Polite and clear. They stop and smile." },
-          { shona: 'Ndibatsire', english: 'Help me', correct: false, feedback: "Grammatically fine but adding 'ndapota' makes it a request, not a command." },
-          { shona: 'Makadii?', english: 'How are you?', correct: false, feedback: "A good start to any conversation — but follow it with your actual request." },
+          { target: 'Ndibatsire, ndapota', native: 'Please help me', correct: true, feedback: "Polite and clear. They stop and smile." },
+          { target: 'Ndibatsire', native: 'Help me', correct: false, feedback: "Grammatically fine but adding 'ndapota' makes it a request, not a command." },
+          { target: 'Makadii?', native: 'How are you?', correct: false, feedback: "A good start to any conversation — but follow it with your actual request." },
         ],
       },
       {
         speaker: 'npc',
-        shona: 'Hongu, ndinokubatsira.',
-        english: 'Yes, I will help you.',
+        target: 'Hongu, ndinokubatsira.',
+        native: 'Yes, I will help you.',
       },
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Ndatenda zvikuru', english: 'Thank you very much', correct: true, feedback: "Warm and genuine. The interaction ends well." },
-          { shona: 'Zvinoenderana', english: "You're welcome", correct: false, feedback: "That's the reply TO thank you — not the thank you itself." },
-          { shona: 'Ndapota', english: 'Please', correct: false, feedback: "They've already helped you — now it's time to thank them." },
+          { target: 'Ndatenda zvikuru', native: 'Thank you very much', correct: true, feedback: "Warm and genuine. The interaction ends well." },
+          { target: 'Zvinoenderana', native: "You're welcome", correct: false, feedback: "That's the reply TO thank you — not the thank you itself." },
+          { target: 'Ndapota', native: 'Please', correct: false, feedback: "They've already helped you — now it's time to thank them." },
         ],
       },
       {

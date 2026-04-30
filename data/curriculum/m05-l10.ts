@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'ndinokugamuchira',
-      shona: 'Ndinokugamuchira',
-      english: 'I welcome you',
+      target: 'Ndinokugamuchira',
+      native: 'I welcome you',
       literal: 'I-welcome-you',
       emoji: '🤗',
       phonetic: 'ndi-no-ku-ga-mu-CHI-ra',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'mhuri_inokugamuchira',
-      shona: 'Mhuri inokugamuchira',
-      english: 'The family welcomes you',
+      target: 'Mhuri inokugamuchira',
+      native: 'The family welcomes you',
       literal: 'Family welcomes-you',
       emoji: '🏡',
       phonetic: 'mm-HU-ri i-no-ku-ga-mu-CHI-ra',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'vanofarira_kukuziva',
-      shona: 'Vanofarira kukuziva',
-      english: 'They are happy to know you',
+      target: 'Vanofarira kukuziva',
+      native: 'They are happy to know you',
       literal: 'They-are-happy to-know-you',
       emoji: '😊',
       phonetic: 'va-no-fa-RI-ra ku-ku-ZI-va',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Ku- (infinitive) + ku- (you) — action directed at you',
     explanation: "'Ndinokugamuchira' — ndi-no-ku-gamuchira. The 'ku' before the verb stem here means 'you' (object prefix), not 'to' (infinitive). Context tells you which ku- is which. You'll feel the difference with practice.",
     examples: [
-      { shona: 'Ndinoku-gamuchira', english: 'I welcome you (ku = you, object)' },
-      { shona: 'Ndinoda ku-dzidza', english: 'I want to learn (ku = to, infinitive)' },
-      { shona: 'Ndinoku-ziva', english: 'I know you (ku = you, object)' },
+      { target: 'Ndinoku-gamuchira', native: 'I welcome you (ku = you, object)' },
+      { target: 'Ndinoda ku-dzidza', native: 'I want to learn (ku = to, infinitive)' },
+      { target: 'Ndinoku-ziva', native: 'I know you (ku = you, object)' },
     ],
   },
 
@@ -108,28 +108,28 @@ const lesson: LessonData = {
     lines: [
       {
         speaker: 'npc',
-        shona: 'Ndinokugamuchira, muzukuru wangu.',
-        english: "I welcome you, my grandchild. (Ambuya speaks)",
+        target: 'Ndinokugamuchira, muzukuru wangu.',
+        native: "I welcome you, my grandchild. (Ambuya speaks)",
       },
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Ndatenda, Ambuya. Ndinofara kukuziva. Mamuka sei?', english: 'Thank you, Grandmother. I am happy to know you. How did you wake?', correct: true, feedback: "Perfect — gratitude, joy, respectful morning greeting. Ambuya is moved." },
-          { shona: 'Ndatenda', english: 'Thank you', correct: false, feedback: "Good — add more: 'Ndatenda, Ambuya. Ndinofara kukuziva. Mamuka sei?'" },
-          { shona: 'Mhoro', english: 'Hello', correct: false, feedback: "Too simple for this moment. Use: 'Ndatenda, Ambuya. Ndinofara kukuziva. Mamuka sei?'" },
+          { target: 'Ndatenda, Ambuya. Ndinofara kukuziva. Mamuka sei?', native: 'Thank you, Grandmother. I am happy to know you. How did you wake?', correct: true, feedback: "Perfect — gratitude, joy, respectful morning greeting. Ambuya is moved." },
+          { target: 'Ndatenda', native: 'Thank you', correct: false, feedback: "Good — add more: 'Ndatenda, Ambuya. Ndinofara kukuziva. Mamuka sei?'" },
+          { target: 'Mhoro', native: 'Hello', correct: false, feedback: "Too simple for this moment. Use: 'Ndatenda, Ambuya. Ndinofara kukuziva. Mamuka sei?'" },
         ],
       },
       {
         speaker: 'npc',
-        shona: 'Ndamuka. Urikudzidza chiShona here? Zvakanaka zvikuru!',
-        english: 'I woke well. Are you learning Shona? Wonderful!',
+        target: 'Ndamuka. Urikudzidza chiShona here? Zvakanaka zvikuru!',
+        native: 'I woke well. Are you learning Shona? Wonderful!',
       },
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Hongu, Ambuya. Ndinodzidzа ChiShona nokuti ndinoda mhuri yeZimbabwe.', english: 'Yes, Grandmother. I learn Shona because I love the family of Zimbabwe.', correct: true, feedback: "That sentence — in front of the whole family — will never be forgotten. That is why you are here." },
-          { shona: 'Hongu, ndinodzidzа', english: 'Yes, I learn', correct: false, feedback: "Add the why — 'nokuti ndinoda mhuri yeZimbabwe.' Because I love the family of Zimbabwe." },
-          { shona: 'Ndanzwisisa', english: 'I understand', correct: false, feedback: "Answer her question about Shona: 'Hongu, ndinodzidzа ChiShona nokuti ndinoda mhuri yeZimbabwe.'" },
+          { target: 'Hongu, Ambuya. Ndinodzidzа ChiShona nokuti ndinoda mhuri yeZimbabwe.', native: 'Yes, Grandmother. I learn Shona because I love the family of Zimbabwe.', correct: true, feedback: "That sentence — in front of the whole family — will never be forgotten. That is why you are here." },
+          { target: 'Hongu, ndinodzidzа', native: 'Yes, I learn', correct: false, feedback: "Add the why — 'nokuti ndinoda mhuri yeZimbabwe.' Because I love the family of Zimbabwe." },
+          { target: 'Ndanzwisisa', native: 'I understand', correct: false, feedback: "Answer her question about Shona: 'Hongu, ndinodzidzа ChiShona nokuti ndinoda mhuri yeZimbabwe.'" },
         ],
       },
       {

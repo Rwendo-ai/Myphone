@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'wamuka_sei',
-      shona: 'Wamuka sei?',
-      english: 'How did you wake? (informal)',
+      target: 'Wamuka sei?',
+      native: 'How did you wake? (informal)',
       literal: 'You (singular/friend) woke how?',
       emoji: '👋',
       phonetic: 'wa-MU-ka SAY',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndamuka_wamukawo',
-      shona: 'Ndamuka, kana wamukawo',
-      english: 'I woke well, if you also woke well',
+      target: 'Ndamuka, kana wamukawo',
+      native: 'I woke well, if you also woke well',
       literal: 'I-woke, if you(friend)-woke-also',
       emoji: '😊',
       phonetic: 'nda-MU-ka KA-na wa-MU-ka-wo',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'hesi',
-      shona: 'Hesi',
-      english: 'Hey / Hi (casual)',
+      target: 'Hesi',
+      native: 'Hey / Hi (casual)',
       literal: 'Hesi (borrowed, very casual)',
       emoji: '✌️',
       phonetic: 'HEH-si',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'W- vs Ma- — Friend vs Elder',
     explanation: "One letter changes who you're talking to. W- is for a friend or peer. Ma- is for an elder or someone you respect. Get this right and Shona speakers will notice.",
     examples: [
-      { shona: 'Wa-muka sei?', english: 'How did you wake? (to a friend)' },
-      { shona: 'Ma-muka sei?', english: 'How did you wake? (to an elder)' },
-      { shona: 'Nd-amuka', english: 'I woke (about myself)' },
+      { target: 'Wa-muka sei?', native: 'How did you wake? (to a friend)' },
+      { target: 'Ma-muka sei?', native: 'How did you wake? (to an elder)' },
+      { target: 'Nd-amuka', native: 'I woke (about myself)' },
     ],
   },
 
@@ -113,9 +113,9 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Ndamuka, kana wamukawo', english: 'I woke, if you also woke', correct: true, feedback: "Perfect — that's how friends greet each other." },
-          { shona: 'Ndamuka, kana mamukawo', english: 'I woke, if you also woke (formal)', correct: false, feedback: "Close — but 'mamukawo' is for elders. With me, use 'wamukawo'." },
-          { shona: 'Mangwanani', english: 'Good morning', correct: false, feedback: "That works, but a friend expects 'Wamuka sei?' back — meet them at their level." },
+          { target: 'Ndamuka, kana wamukawo', native: 'I woke, if you also woke', correct: true, feedback: "Perfect — that's how friends greet each other." },
+          { target: 'Ndamuka, kana mamukawo', native: 'I woke, if you also woke (formal)', correct: false, feedback: "Close — but 'mamukawo' is for elders. With me, use 'wamukawo'." },
+          { target: 'Mangwanani', native: 'Good morning', correct: false, feedback: "That works, but a friend expects 'Wamuka sei?' back — meet them at their level." },
         ],
       },
       {

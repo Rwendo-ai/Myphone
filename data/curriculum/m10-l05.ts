@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'musoro_maziso',
-      shona: 'Musoro / Maziso',
-      english: 'Head / Eyes',
+      target: 'Musoro / Maziso',
+      native: 'Head / Eyes',
       literal: 'Mu-soro (head), Ma-ziso (eyes)',
       emoji: '👁️',
       phonetic: 'mu-SO-ro / ma-ZI-so',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'moyo_nzeve',
-      shona: 'Moyo / Nzeve',
-      english: 'Heart / Ear',
+      target: 'Moyo / Nzeve',
+      native: 'Heart / Ear',
       literal: 'Moyo (heart — also emotional centre), Nzeve (ear)',
       emoji: '❤️👂',
       phonetic: 'MO-yo / nze-VE',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'maoko_makumbo',
-      shona: 'Maoko / Makumbo',
-      english: 'Hands / Legs',
+      target: 'Maoko / Makumbo',
+      native: 'Hands / Legs',
       literal: 'Ma-oko (hands plural), Ma-kumbo (legs plural)',
       emoji: '🖐️🦵',
       phonetic: 'ma-O-ko / ma-KUM-bo',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Body parts and their noun classes',
     explanation: "Body parts in Shona use different noun classes. Musoro (head) is Mu/Mi class. Maziso, Maoko, Makumbo all use the Ma- plural — Ri/Ma class. Moyo (heart) is its own class. The variety is rich — the body speaks many noun classes.",
     examples: [
-      { shona: 'Musoro → Misoro', english: 'Head → Heads' },
-      { shona: 'Ruoko → Maoko', english: 'Hand → Hands' },
-      { shona: 'Gumbo → Makumbo', english: 'Leg → Legs' },
+      { target: 'Musoro → Misoro', native: 'Head → Heads' },
+      { target: 'Ruoko → Maoko', native: 'Hand → Hands' },
+      { target: 'Gumbo → Makumbo', native: 'Leg → Legs' },
     ],
   },
 
@@ -113,9 +113,9 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Ndanzwisisa. Moyo ndiwo musimboti — heart is the foundation. Maziso, maoko, makumbo — zvose zvinotungamirwa nemoyo.', english: 'I understand. The heart is the foundation. Eyes, hands, legs — all guided by the heart.', correct: true, feedback: "You heard the philosophy and reflected it back in Shona. That's a deep lesson received." },
-          { shona: 'Ndinoona moyo', english: 'I see the heart', correct: false, feedback: "Reflect the philosophy: 'Moyo ndiwo musimboti. Zvose zvinotungamirwa nemoyo.' The heart is the foundation of all." },
-          { shona: 'Ndanzwisisa', english: 'I understand', correct: false, feedback: "Show you understood — say what you learned: 'Moyo ndiwo musimboti. Maziso, maoko, makumbo — zvose zvinotungamirwa nemoyo.'" },
+          { target: 'Ndanzwisisa. Moyo ndiwo musimboti — heart is the foundation. Maziso, maoko, makumbo — zvose zvinotungamirwa nemoyo.', native: 'I understand. The heart is the foundation. Eyes, hands, legs — all guided by the heart.', correct: true, feedback: "You heard the philosophy and reflected it back in Shona. That's a deep lesson received." },
+          { target: 'Ndinoona moyo', native: 'I see the heart', correct: false, feedback: "Reflect the philosophy: 'Moyo ndiwo musimboti. Zvose zvinotungamirwa nemoyo.' The heart is the foundation of all." },
+          { target: 'Ndanzwisisa', native: 'I understand', correct: false, feedback: "Show you understood — say what you learned: 'Moyo ndiwo musimboti. Maziso, maoko, makumbo — zvose zvinotungamirwa nemoyo.'" },
         ],
       },
       {

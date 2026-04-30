@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'munhu',
-      shona: 'Munhu',
-      english: 'A person / Someone',
+      target: 'Munhu',
+      native: 'A person / Someone',
       literal: 'Mu-nhu (class 1 prefix + stem)',
       emoji: '🧑',
       phonetic: 'MU-nhu',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'vanhu',
-      shona: 'Vanhu',
-      english: 'People',
+      target: 'Vanhu',
+      native: 'People',
       literal: 'Va-nhu (class 2 plural prefix)',
       emoji: '👥',
       phonetic: 'VA-nhu',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'mukomana',
-      shona: 'Mukomana / Musikana',
-      english: 'Boy / Girl',
+      target: 'Mukomana / Musikana',
+      native: 'Boy / Girl',
       literal: 'Mu-komana / Mu-sikana (people class)',
       emoji: '🧒',
       phonetic: 'mu-ko-MA-na / mu-si-KA-na',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Mu- singular, Va- plural (people)',
     explanation: "People nouns start with Mu- (one person) and Va- (many people). This prefix also appears on verbs that describe what those people do. One prefix — two jobs.",
     examples: [
-      { shona: 'Mu-nhu → Va-nhu', english: 'Person → People' },
-      { shona: 'Mu-dzidzisi → Va-dzidzisi', english: 'Teacher → Teachers' },
-      { shona: 'Mu-komana → Va-komana', english: 'Boy → Boys' },
+      { target: 'Mu-nhu → Va-nhu', native: 'Person → People' },
+      { target: 'Mu-dzidzisi → Va-dzidzisi', native: 'Teacher → Teachers' },
+      { target: 'Mu-komana → Va-komana', native: 'Boy → Boys' },
     ],
   },
 
@@ -113,9 +113,9 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Ndanzwisisa. Munhu — mumwe. Vanhu — vazhinji.', english: 'I understand. Munhu — one. Vanhu — many.', correct: true, feedback: "Exactly. You already have the pattern." },
-          { shona: 'Handanzwisisi', english: "I don't understand", correct: false, feedback: "No worries — munhu = one person, vanhu = many people. Mu- becomes Va-." },
-          { shona: 'Ndatenda', english: 'Thank you', correct: false, feedback: "Try to respond to the lesson content — 'Munhu = one person, Vanhu = many people'." },
+          { target: 'Ndanzwisisa. Munhu — mumwe. Vanhu — vazhinji.', native: 'I understand. Munhu — one. Vanhu — many.', correct: true, feedback: "Exactly. You already have the pattern." },
+          { target: 'Handanzwisisi', native: "I don't understand", correct: false, feedback: "No worries — munhu = one person, vanhu = many people. Mu- becomes Va-." },
+          { target: 'Ndatenda', native: 'Thank you', correct: false, feedback: "Try to respond to the lesson content — 'Munhu = one person, Vanhu = many people'." },
         ],
       },
       {

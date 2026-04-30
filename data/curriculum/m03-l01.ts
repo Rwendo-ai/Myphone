@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'ndiri',
-      shona: 'Ndiri...',
-      english: 'I am...',
+      target: 'Ndiri...',
+      native: 'I am...',
       literal: 'I-am...',
       emoji: '🙋',
       phonetic: 'NDI-ri',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndiri_mudzidzisi',
-      shona: 'Ndiri mudzidzisi',
-      english: 'I am a teacher',
+      target: 'Ndiri mudzidzisi',
+      native: 'I am a teacher',
       literal: 'I-am teacher',
       emoji: '👩‍🏫',
       phonetic: 'NDI-ri mu-dzi-DZI-si',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndiri_murwi',
-      shona: 'Ndiri murwi weshoko',
-      english: 'I am a student / learner',
+      target: 'Ndiri murwi weshoko',
+      native: 'I am a student / learner',
       literal: 'I-am fighter of-word/language',
       emoji: '📖',
       phonetic: 'NDI-ri mu-rwi we-SHO-ko',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Ndiri + noun — I am [something]',
     explanation: "'Ndiri' followed by a noun tells who you are. The noun is often a person noun with the 'mu-' prefix, which you've seen before. 'Mudzidzisi' (teacher), 'murwi' (learner/fighter) — mu- marks a person doing something.",
     examples: [
-      { shona: 'Ndiri mudzidzisi', english: 'I am a teacher' },
-      { shona: 'Ndiri gadziriro', english: 'I am a doctor (informal)' },
-      { shona: 'Ndiri murwi weshoko', english: 'I am a language learner' },
+      { target: 'Ndiri mudzidzisi', native: 'I am a teacher' },
+      { target: 'Ndiri gadziriro', native: 'I am a doctor (informal)' },
+      { target: 'Ndiri murwi weshoko', native: 'I am a language learner' },
     ],
   },
 
@@ -113,9 +113,9 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Ndiri murwi weshoko. Ndinoda kudzidza ChiShona.', english: "I am a language learner. I want to learn Shona.", correct: true, feedback: "You introduced yourself with purpose. Rwen is interested." },
-          { shona: 'Ndiri mudzidzisi', english: 'I am a teacher', correct: false, feedback: "That works — now add 'Ndinoda kudzidza ChiShona' to say why you're here." },
-          { shona: 'Handizivi', english: "I don't know", correct: false, feedback: "You know who you are! Use 'Ndiri...' to share." },
+          { target: 'Ndiri murwi weshoko. Ndinoda kudzidza ChiShona.', native: "I am a language learner. I want to learn Shona.", correct: true, feedback: "You introduced yourself with purpose. Rwen is interested." },
+          { target: 'Ndiri mudzidzisi', native: 'I am a teacher', correct: false, feedback: "That works — now add 'Ndinoda kudzidza ChiShona' to say why you're here." },
+          { target: 'Handizivi', native: "I don't know", correct: false, feedback: "You know who you are! Use 'Ndiri...' to share." },
         ],
       },
       {

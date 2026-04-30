@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'amai',
-      shona: 'Amai',
-      english: 'Mother / (respectful address for older women)',
+      target: 'Amai',
+      native: 'Mother / (respectful address for older women)',
       literal: 'Amai (maternal respect)',
       emoji: '👩',
       phonetic: 'AH-mai',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'tete',
-      shona: 'Tete',
-      english: "Father's sister (paternal aunt)",
+      target: 'Tete',
+      native: "Father's sister (paternal aunt)",
       literal: 'Tete (special role in Shona culture)',
       emoji: '👩‍👦',
       phonetic: 'TEH-te',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ambuya',
-      shona: 'Ambuya',
-      english: 'Grandmother / (respectful address for elderly women)',
+      target: 'Ambuya',
+      native: 'Grandmother / (respectful address for elderly women)',
       literal: 'Ambuya (grandmother)',
       emoji: '👵',
       phonetic: 'am-BU-ya',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Amai, Tete, Ambuya — women across generations',
     explanation: "Amai (mother/respectful for older women), Tete (father's sister — has a special ceremonial role), Ambuya (grandmother/respectful for elderly). Each title carries specific relationship responsibilities in Shona culture.",
     examples: [
-      { shona: 'Amai wangu', english: 'My mother' },
-      { shona: 'Tete wangu', english: "My father's sister (paternal aunt)" },
-      { shona: 'Ambuya wangu', english: 'My grandmother' },
+      { target: 'Amai wangu', native: 'My mother' },
+      { target: 'Tete wangu', native: "My father's sister (paternal aunt)" },
+      { target: 'Ambuya wangu', native: 'My grandmother' },
     ],
   },
 
@@ -108,15 +108,15 @@ const lesson: LessonData = {
     lines: [
       {
         speaker: 'npc',
-        shona: 'Mhoro, mwanangu.',
-        english: 'Hello, my child.',
+        target: 'Mhoro, mwanangu.',
+        native: 'Hello, my child.',
       },
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Mhoro, Amai. Makadii?', english: 'Hello, Mother (respectfully). How are you?', correct: true, feedback: "Using 'Amai' for Rwen's mother shows you understand Shona family respect." },
-          { shona: 'Mhoro', english: 'Hello (simple)', correct: false, feedback: "Add the respectful title — 'Mhoro, Amai. Makadii?' shows proper tsika." },
-          { shona: 'Makadii mese', english: 'How are all of you', correct: false, feedback: "Good — but address her directly: 'Mhoro, Amai. Makadii?' — using her family title." },
+          { target: 'Mhoro, Amai. Makadii?', native: 'Hello, Mother (respectfully). How are you?', correct: true, feedback: "Using 'Amai' for Rwen's mother shows you understand Shona family respect." },
+          { target: 'Mhoro', native: 'Hello (simple)', correct: false, feedback: "Add the respectful title — 'Mhoro, Amai. Makadii?' shows proper tsika." },
+          { target: 'Makadii mese', native: 'How are all of you', correct: false, feedback: "Good — but address her directly: 'Mhoro, Amai. Makadii?' — using her family title." },
         ],
       },
       {

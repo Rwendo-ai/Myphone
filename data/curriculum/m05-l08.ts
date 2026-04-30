@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'mwana',
-      shona: 'Mwana',
-      english: 'Child / Baby',
+      target: 'Mwana',
+      native: 'Child / Baby',
       literal: 'Mwana (child, Class 1)',
       emoji: '👶',
       phonetic: 'MWA-na',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'vana',
-      shona: 'Vana',
-      english: 'Children',
+      target: 'Vana',
+      native: 'Children',
       literal: 'Va-na (plural of mwana)',
       emoji: '👧👦',
       phonetic: 'VA-na',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'mwana_wechikadzi',
-      shona: 'Mwana wechikadzi / wechibhemu',
-      english: 'Daughter / Son',
+      target: 'Mwana wechikadzi / wechibhemu',
+      native: 'Daughter / Son',
       literal: 'Child of-female / Child of-male',
       emoji: '👧👦',
       phonetic: 'MWA-na we-chi-KA-dzi / we-chi-BHE-mu',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Mwana / Vana — singular and plural',
     explanation: "Mwana (one child) becomes Vana (children) — following the Mu/Va class pattern. But mwana is irregular — it doesn't start with Mu-. Some Class 1 nouns are exceptions. The plural Va-na is regular.",
     examples: [
-      { shona: 'Mwana wangu', english: 'My child' },
-      { shona: 'Vana vangu', english: 'My children' },
-      { shona: 'Vana vose', english: 'All children' },
+      { target: 'Mwana wangu', native: 'My child' },
+      { target: 'Vana vangu', native: 'My children' },
+      { target: 'Vana vose', native: 'All children' },
     ],
   },
 
@@ -108,15 +108,15 @@ const lesson: LessonData = {
     lines: [
       {
         speaker: 'npc',
-        shona: 'Mhoro, Sekuru / Amai!',
-        english: 'Hello, Grandfather / Grandmother! (respectful title for you)',
+        target: 'Mhoro, Sekuru / Amai!',
+        native: 'Hello, Grandfather / Grandmother! (respectful title for you)',
       },
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Mhoro, mwanangu! Wakadii?', english: 'Hello, my child! How are you?', correct: true, feedback: "Using 'mwanangu' (my child) warmly — the child beams. That's Shona family love." },
-          { shona: 'Mhoro', english: 'Hello', correct: false, feedback: "Warmer — call the child 'mwanangu' (my child): 'Mhoro, mwanangu! Wakadii?'" },
-          { shona: 'Makadii', english: 'How are you (formal)', correct: false, feedback: "Too formal for a child — use 'Mhoro, mwanangu! Wakadii?' — warm and direct." },
+          { target: 'Mhoro, mwanangu! Wakadii?', native: 'Hello, my child! How are you?', correct: true, feedback: "Using 'mwanangu' (my child) warmly — the child beams. That's Shona family love." },
+          { target: 'Mhoro', native: 'Hello', correct: false, feedback: "Warmer — call the child 'mwanangu' (my child): 'Mhoro, mwanangu! Wakadii?'" },
+          { target: 'Makadii', native: 'How are you (formal)', correct: false, feedback: "Too formal for a child — use 'Mhoro, mwanangu! Wakadii?' — warm and direct." },
         ],
       },
       {

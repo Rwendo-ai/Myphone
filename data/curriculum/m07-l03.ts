@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'mvura',
-      shona: 'Mvura',
-      english: 'Water',
+      target: 'Mvura',
+      native: 'Water',
       literal: 'Mvura (water/rain — same word)',
       emoji: '💧',
       phonetic: 'mm-VU-ra',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'tii',
-      shona: 'Tii',
-      english: 'Tea',
+      target: 'Tii',
+      native: 'Tea',
       literal: 'Tii (from English "tea")',
       emoji: '🍵',
       phonetic: 'TII',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndine_nyota',
-      shona: 'Ndine nyota',
-      english: 'I am thirsty',
+      target: 'Ndine nyota',
+      native: 'I am thirsty',
       literal: 'I-have thirst',
       emoji: '😮‍💨',
       phonetic: 'ndi-ne NYO-ta',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Mvura means both water and rain',
     explanation: "In Shona, 'mvura' means water AND rain — they're the same word. This reflects the agricultural reality of Zimbabwe where rain IS water, is life. Mvura inaya = rain falls. Ndinoda mvura = I want water.",
     examples: [
-      { shona: 'Ndinoda mvura', english: 'I want water' },
-      { shona: 'Mvura inaya', english: 'It is raining (rain falls)' },
-      { shona: 'Ndine nyota', english: 'I am thirsty (I have thirst)' },
+      { target: 'Ndinoda mvura', native: 'I want water' },
+      { target: 'Mvura inaya', native: 'It is raining (rain falls)' },
+      { target: 'Ndine nyota', native: 'I am thirsty (I have thirst)' },
     ],
   },
 
@@ -108,15 +108,15 @@ const lesson: LessonData = {
     lines: [
       {
         speaker: 'npc',
-        shona: 'Unoda chii? Tii, mvura, kana chibaramhamba?',
-        english: 'What do you want? Tea, water, or juice?',
+        target: 'Unoda chii? Tii, mvura, kana chibaramhamba?',
+        native: 'What do you want? Tea, water, or juice?',
       },
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Ndatenda. Ndine nyota — ndinoda mvura, ndapota.', english: 'Thank you. I am thirsty — I want water, please.', correct: true, feedback: "Expressed your need clearly and politely. The family brings water immediately." },
-          { shona: 'Ndinoda tii', english: 'I want tea', correct: false, feedback: "Perfect answer — and add your reason: 'Ndine nyota, saka ndinoda mvura.' I'm thirsty so I want water." },
-          { shona: 'Handidi', english: "I don't want anything", correct: false, feedback: "Always accept hospitality from a Shona host — 'Ndatenda. Ndinoda mvura, ndapota.'" },
+          { target: 'Ndatenda. Ndine nyota — ndinoda mvura, ndapota.', native: 'Thank you. I am thirsty — I want water, please.', correct: true, feedback: "Expressed your need clearly and politely. The family brings water immediately." },
+          { target: 'Ndinoda tii', native: 'I want tea', correct: false, feedback: "Perfect answer — and add your reason: 'Ndine nyota, saka ndinoda mvura.' I'm thirsty so I want water." },
+          { target: 'Handidi', native: "I don't want anything", correct: false, feedback: "Always accept hospitality from a Shona host — 'Ndatenda. Ndinoda mvura, ndapota.'" },
         ],
       },
       {

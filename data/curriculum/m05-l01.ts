@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'baba',
-      shona: 'Baba',
-      english: 'Father',
+      target: 'Baba',
+      native: 'Father',
       literal: 'Father (honorific — never said casually)',
       emoji: '👨',
       phonetic: 'BAH-ba',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'babamukuru',
-      shona: 'Babamukuru',
-      english: "Father's older brother (uncle)",
+      target: 'Babamukuru',
+      native: "Father's older brother (uncle)",
       literal: 'Baba-mukuru = Father-big (senior)',
       emoji: '👴',
       phonetic: 'ba-ba-mu-KU-ru',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'babamunini',
-      shona: 'Babamunini',
-      english: "Father's younger brother (uncle)",
+      target: 'Babamunini',
+      native: "Father's younger brother (uncle)",
       literal: 'Baba-munini = Father-small (junior)',
       emoji: '🧔',
       phonetic: 'ba-ba-mu-NI-ni',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Mukuru (senior/big) vs Munini (junior/small)',
     explanation: "'Mukuru' means senior or elder. 'Munini' means junior or younger. These qualifiers appear throughout family vocabulary — Babamukuru (older uncle), Babamunini (younger uncle), Amai mukuru (older aunt).",
     examples: [
-      { shona: 'Baba-mukuru', english: "Father's older brother" },
-      { shona: 'Baba-munini', english: "Father's younger brother" },
-      { shona: 'Ndiri mu-kuru', english: 'I am the elder (of siblings)' },
+      { target: 'Baba-mukuru', native: "Father's older brother" },
+      { target: 'Baba-munini', native: "Father's younger brother" },
+      { target: 'Ndiri mu-kuru', native: 'I am the elder (of siblings)' },
     ],
   },
 
@@ -113,9 +113,9 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Makadii, Baba. Makadii, Babamukuru.', english: 'How are you, Father. How are you, Uncle (senior).', correct: true, feedback: "Respectful greetings using the correct titles. The family approves." },
-          { shona: 'Makadii mese', english: 'How are all of you', correct: false, feedback: "That works — but using specific titles (Baba, Babamukuru) shows you know the family structure." },
-          { shona: 'Mhoro', english: 'Hello', correct: false, feedback: "For elders, use Makadii and address them by their family title: 'Makadii, Baba. Makadii, Babamukuru.'" },
+          { target: 'Makadii, Baba. Makadii, Babamukuru.', native: 'How are you, Father. How are you, Uncle (senior).', correct: true, feedback: "Respectful greetings using the correct titles. The family approves." },
+          { target: 'Makadii mese', native: 'How are all of you', correct: false, feedback: "That works — but using specific titles (Baba, Babamukuru) shows you know the family structure." },
+          { target: 'Mhoro', native: 'Hello', correct: false, feedback: "For elders, use Makadii and address them by their family title: 'Makadii, Baba. Makadii, Babamukuru.'" },
         ],
       },
       {

@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'zvokudya',
-      shona: 'Zvokudya',
-      english: 'Food (general)',
+      target: 'Zvokudya',
+      native: 'Food (general)',
       literal: 'Zvo-kudya (things-to-eat)',
       emoji: '🍽️',
       phonetic: 'zvo-KU-dya',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'dovi',
-      shona: 'Dovi',
-      english: 'Peanut butter / Groundnut sauce',
+      target: 'Dovi',
+      native: 'Peanut butter / Groundnut sauce',
       literal: 'Dovi (peanut relish)',
       emoji: '🥜',
       phonetic: 'DO-vi',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'chingwa',
-      shona: 'Chingwa',
-      english: 'Bread',
+      target: 'Chingwa',
+      native: 'Bread',
       literal: 'Chi-ngwa (bread, Class 7)',
       emoji: '🍞',
       phonetic: 'CHING-wa',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Zvokudya — things-to-eat (Zvo- class)',
     explanation: "'Zvokudya' uses the Zvi/Zvo- prefix (Class 8 plural things). Zvo-kudya = things of eating. This pattern creates many food-related words: zvokunamatira (things to drink with), zvokutengesa (things to sell).",
     examples: [
-      { shona: 'Zvokudya zvakanaka', english: 'The food is good (Zvi class agreement)' },
-      { shona: 'Ndinoda zvokudya', english: 'I want food' },
-      { shona: 'Zvokudya zvakawanda', english: 'There is a lot of food' },
+      { target: 'Zvokudya zvakanaka', native: 'The food is good (Zvi class agreement)' },
+      { target: 'Ndinoda zvokudya', native: 'I want food' },
+      { target: 'Zvokudya zvakawanda', native: 'There is a lot of food' },
     ],
   },
 
@@ -108,15 +108,15 @@ const lesson: LessonData = {
     lines: [
       {
         speaker: 'npc',
-        shona: 'Unoda zvokudya zvipi?',
-        english: 'What food do you like?',
+        target: 'Unoda zvokudya zvipi?',
+        native: 'What food do you like?',
       },
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Ndinoda sadza ne dovi. Uye ndinoda chingwa zvakare.', english: 'I like sadza with dovi. And I also like bread.', correct: true, feedback: "Specific food preferences — and 'zvakare' (also) shows you're comfortable building sentences." },
-          { shona: 'Ndinoda sadza', english: 'I like sadza', correct: false, feedback: "Add more! 'Ndinoda sadza ne dovi. Uye ndinoda chingwa zvakare.' Show your full food vocabulary." },
-          { shona: 'Zvokudya zvakanaka', english: 'Food is good', correct: false, feedback: "Be specific — what foods do you like? 'Ndinoda sadza ne dovi. Ndinoda chingwa.'" },
+          { target: 'Ndinoda sadza ne dovi. Uye ndinoda chingwa zvakare.', native: 'I like sadza with dovi. And I also like bread.', correct: true, feedback: "Specific food preferences — and 'zvakare' (also) shows you're comfortable building sentences." },
+          { target: 'Ndinoda sadza', native: 'I like sadza', correct: false, feedback: "Add more! 'Ndinoda sadza ne dovi. Uye ndinoda chingwa zvakare.' Show your full food vocabulary." },
+          { target: 'Zvokudya zvakanaka', native: 'Food is good', correct: false, feedback: "Be specific — what foods do you like? 'Ndinoda sadza ne dovi. Ndinoda chingwa.'" },
         ],
       },
       {

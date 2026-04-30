@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'review_makadii',
-      shona: 'Makadii?',
-      english: 'How are you? (universal safety net)',
+      target: 'Makadii?',
+      native: 'How are you? (universal safety net)',
       literal: 'You how-are?',
       emoji: '🤝',
       phonetic: 'ma-kah-DEE',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'review_zita',
-      shona: 'Zita rako ndiani?',
-      english: 'What is your name?',
+      target: 'Zita rako ndiani?',
+      native: 'What is your name?',
       literal: 'Name your it-is-who?',
       emoji: '🏷️',
       phonetic: 'ZI-ta ra-ko ndi-AH-ni',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'review_famba',
-      shona: 'Famba zvakanaka',
-      english: 'Go well (said by the one staying)',
+      target: 'Famba zvakanaka',
+      native: 'Go well (said by the one staying)',
       literal: 'Go that-is-well',
       emoji: '🚶',
       phonetic: 'FAM-ba zva-ka-NAH-ka',
@@ -47,11 +47,11 @@ const lesson: LessonData = {
     name: 'The Full Greeting Flow',
     explanation: "A complete Shona first encounter has five beats. Each one matters. Miss a step and the conversation feels incomplete.",
     examples: [
-      { shona: 'Mangwanani / Makadii', english: '1. Time greeting' },
-      { shona: 'Mamuka sei? / Makadii?', english: '2. Wellness check' },
-      { shona: 'Zita rako ndiani?', english: '3. Name exchange' },
-      { shona: 'Wabva kupi?', english: '4. Origin' },
-      { shona: 'Famba / Sara zvakanaka', english: '5. Farewell blessing' },
+      { target: 'Mangwanani / Makadii', native: '1. Time greeting' },
+      { target: 'Mamuka sei? / Makadii?', native: '2. Wellness check' },
+      { target: 'Zita rako ndiani?', native: '3. Name exchange' },
+      { target: 'Wabva kupi?', native: '4. Origin' },
+      { target: 'Famba / Sara zvakanaka', native: '5. Farewell blessing' },
     ],
   },
 
@@ -111,35 +111,35 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Makadii?', english: 'How are you?', correct: true, feedback: "Strong opening — universal and respectful. The conversation begins." },
-          { shona: 'Hesi', english: 'Hey (casual)', correct: false, feedback: "Too casual for a first meeting with a stranger. 'Makadii?' opens the door more warmly." },
-          { shona: 'Wamuka sei?', english: 'How did you wake? (informal)', correct: false, feedback: "Reserve informal greetings for friends. With a stranger, start with 'Makadii?'." },
+          { target: 'Makadii?', native: 'How are you?', correct: true, feedback: "Strong opening — universal and respectful. The conversation begins." },
+          { target: 'Hesi', native: 'Hey (casual)', correct: false, feedback: "Too casual for a first meeting with a stranger. 'Makadii?' opens the door more warmly." },
+          { target: 'Wamuka sei?', native: 'How did you wake? (informal)', correct: false, feedback: "Reserve informal greetings for friends. With a stranger, start with 'Makadii?'." },
         ],
       },
       {
         speaker: 'npc',
-        shona: 'Ndiripo, makadiiwo? Zita rako ndiani?',
-        english: 'I am well, and you? What is your name?',
+        target: 'Ndiripo, makadiiwo? Zita rako ndiani?',
+        native: 'I am well, and you? What is your name?',
       },
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Ndiripo. Zita rangu ndi... Wabva kupi?', english: "I'm well. My name is... Where are you from?", correct: true, feedback: "You answered and kept the conversation going. That's fluency in action." },
-          { shona: 'Ndiripo', english: "I'm well", correct: false, feedback: "Good start — but answer their name question too. Use 'Zita rangu ndi...' to introduce yourself." },
-          { shona: 'Makadii?', english: 'How are you?', correct: false, feedback: "They already asked you — now share your name with 'Zita rangu ndi...'." },
+          { target: 'Ndiripo. Zita rangu ndi... Wabva kupi?', native: "I'm well. My name is... Where are you from?", correct: true, feedback: "You answered and kept the conversation going. That's fluency in action." },
+          { target: 'Ndiripo', native: "I'm well", correct: false, feedback: "Good start — but answer their name question too. Use 'Zita rangu ndi...' to introduce yourself." },
+          { target: 'Makadii?', native: 'How are you?', correct: false, feedback: "They already asked you — now share your name with 'Zita rangu ndi...'." },
         ],
       },
       {
         speaker: 'npc',
-        shona: 'Wakanaka kukuziva. Ndabva ku Harare. Famba zvakanaka!',
-        english: "Nice to meet you. I'm from Harare. Go well!",
+        target: 'Wakanaka kukuziva. Ndabva ku Harare. Famba zvakanaka!',
+        native: "Nice to meet you. I'm from Harare. Go well!",
       },
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Sara zvakanaka. Tichaonana!', english: 'Stay well. See you again!', correct: true, feedback: "You blessed them correctly — they're staying, so you said 'Sara'. And 'Tichaonana' closes it beautifully." },
-          { shona: 'Famba zvakanaka', english: 'Go well', correct: false, feedback: "They said 'Famba zvakanaka' to you — now YOU say 'Sara zvakanaka' back (you're the one leaving)." },
-          { shona: 'Ndatenda', english: 'Thank you', correct: false, feedback: "Close — but this is a farewell moment. Use 'Sara zvakanaka' and 'Tichaonana'." },
+          { target: 'Sara zvakanaka. Tichaonana!', native: 'Stay well. See you again!', correct: true, feedback: "You blessed them correctly — they're staying, so you said 'Sara'. And 'Tichaonana' closes it beautifully." },
+          { target: 'Famba zvakanaka', native: 'Go well', correct: false, feedback: "They said 'Famba zvakanaka' to you — now YOU say 'Sara zvakanaka' back (you're the one leaving)." },
+          { target: 'Ndatenda', native: 'Thank you', correct: false, feedback: "Close — but this is a farewell moment. Use 'Sara zvakanaka' and 'Tichaonana'." },
         ],
       },
       {

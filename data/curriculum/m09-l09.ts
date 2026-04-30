@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'ndinoda_kuona',
-      shona: 'Ndinoda kuona...',
-      english: 'I want to see...',
+      target: 'Ndinoda kuona...',
+      native: 'I want to see...',
       literal: 'I-want to-see...',
       emoji: '👁️',
       phonetic: 'ndi-no-da ku-O-na',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'nzvimbo_yakanaka',
-      shona: 'Nzvimbo yakanaka',
-      english: 'A beautiful place',
+      target: 'Nzvimbo yakanaka',
+      native: 'A beautiful place',
       literal: 'Place that-is-good',
       emoji: '🌅',
       phonetic: 'nzvi-mbo ya-ka-NA-ka',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'dzimba_dzamabwe',
-      shona: 'Dzimba dzamabwe',
-      english: 'Great Zimbabwe (houses of stone)',
+      target: 'Dzimba dzamabwe',
+      native: 'Great Zimbabwe (houses of stone)',
       literal: 'Houses of-stone',
       emoji: '🏛️',
       phonetic: 'DZI-mba dza-ma-BWE',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Ndinoda kuona [place] — I want to see [place]',
     explanation: "'Ndinoda kuona' + place = I want to see [place]. This pattern works for any tourist destination. Add an adjective: 'Ndinoda kuona nzvimbo yakanaka' (I want to see a beautiful place). Or get specific: 'Ndinoda kuona Victoria Falls.'",
     examples: [
-      { shona: 'Ndinoda kuona Victoria Falls', english: 'I want to see Victoria Falls' },
-      { shona: 'Dzimba dzamabwe — nzvimbo yakanaka', english: 'Great Zimbabwe — a beautiful place' },
-      { shona: 'Ndinoda kuona Zimbabwe yose', english: 'I want to see all of Zimbabwe' },
+      { target: 'Ndinoda kuona Victoria Falls', native: 'I want to see Victoria Falls' },
+      { target: 'Dzimba dzamabwe — nzvimbo yakanaka', native: 'Great Zimbabwe — a beautiful place' },
+      { target: 'Ndinoda kuona Zimbabwe yose', native: 'I want to see all of Zimbabwe' },
     ],
   },
 
@@ -113,9 +113,9 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Ndinoda kuona Dzimba dzamabwe. Uye ndinoda kuona Victoria Falls. Zimbabwe inzvimbo yakanaka zvikuru.', english: "I want to see Great Zimbabwe. And I want to see Victoria Falls. Zimbabwe is a very beautiful place.", correct: true, feedback: "Two iconic destinations + love for Zimbabwe itself. Rwen glows with pride." },
-          { shona: 'Ndinoda kuona Victoria Falls', english: 'I want to see Victoria Falls', correct: false, feedback: "Good — add Great Zimbabwe and your overall feeling: 'Ndinoda kuona Dzimba dzamabwe zvakare. Zimbabwe inzvimbo yakanaka zvikuru.'" },
-          { shona: 'Ndinoda kuona zvose', english: 'I want to see everything', correct: false, feedback: "Be specific — 'Ndinoda kuona Dzimba dzamabwe uye Victoria Falls.' Name what matters most to you." },
+          { target: 'Ndinoda kuona Dzimba dzamabwe. Uye ndinoda kuona Victoria Falls. Zimbabwe inzvimbo yakanaka zvikuru.', native: "I want to see Great Zimbabwe. And I want to see Victoria Falls. Zimbabwe is a very beautiful place.", correct: true, feedback: "Two iconic destinations + love for Zimbabwe itself. Rwen glows with pride." },
+          { target: 'Ndinoda kuona Victoria Falls', native: 'I want to see Victoria Falls', correct: false, feedback: "Good — add Great Zimbabwe and your overall feeling: 'Ndinoda kuona Dzimba dzamabwe zvakare. Zimbabwe inzvimbo yakanaka zvikuru.'" },
+          { target: 'Ndinoda kuona zvose', native: 'I want to see everything', correct: false, feedback: "Be specific — 'Ndinoda kuona Dzimba dzamabwe uye Victoria Falls.' Name what matters most to you." },
         ],
       },
       {

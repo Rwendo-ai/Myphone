@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'makadii_mese',
-      shona: 'Makadii mese?',
-      english: 'How are all of you?',
+      target: 'Makadii mese?',
+      native: 'How are all of you?',
       literal: 'You (plural) how-are all?',
       emoji: '👥',
       phonetic: 'ma-kah-DEE MEH-se',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'tiripo',
-      shona: 'Tiripo',
-      english: 'We are all well',
+      target: 'Tiripo',
+      native: 'We are all well',
       literal: 'We-are-here',
       emoji: '🤲',
       phonetic: 'ti-RI-po',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'tisangane',
-      shona: 'Tisangane',
-      english: 'Let us meet / Greetings (to a group)',
+      target: 'Tisangane',
+      native: 'Let us meet / Greetings (to a group)',
       literal: 'We-meet (together)',
       emoji: '🌟',
       phonetic: 'ti-san-GAH-ne',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Ti- prefix — We / Us',
     explanation: "'Ti-' is the first person plural prefix — it means 'we' or 'us'. You've seen 'Nd-' (I) and 'W-/Ma-' (you). Now 'Ti-' completes the set for now.",
     examples: [
-      { shona: 'Nd-iripo', english: 'I am here / I am well' },
-      { shona: 'Ti-ripo', english: 'We are here / We are all well' },
-      { shona: 'Ti-sangane', english: 'Let us meet (together)' },
+      { target: 'Nd-iripo', native: 'I am here / I am well' },
+      { target: 'Ti-ripo', native: 'We are here / We are all well' },
+      { target: 'Ti-sangane', native: 'Let us meet (together)' },
     ],
   },
 
@@ -109,15 +109,15 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Makadii mese?', english: 'How are all of you?', correct: true, feedback: "You saw everyone and greeted everyone. The whole room feels respected." },
-          { shona: 'Makadii?', english: 'How are you? (to one person)', correct: false, feedback: "You greeted one person — the others felt invisible. Use 'Makadii mese?' to include everyone." },
-          { shona: 'Manheru akanaka', english: 'Good evening (warm)', correct: false, feedback: "Good evening is right — but follow it with 'Makadii mese?' so everyone feels seen." },
+          { target: 'Makadii mese?', native: 'How are all of you?', correct: true, feedback: "You saw everyone and greeted everyone. The whole room feels respected." },
+          { target: 'Makadii?', native: 'How are you? (to one person)', correct: false, feedback: "You greeted one person — the others felt invisible. Use 'Makadii mese?' to include everyone." },
+          { target: 'Manheru akanaka', native: 'Good evening (warm)', correct: false, feedback: "Good evening is right — but follow it with 'Makadii mese?' so everyone feels seen." },
         ],
       },
       {
         speaker: 'npc',
-        shona: 'Tiripo, waswera sei?',
-        english: 'We are well, how did you spend the day?',
+        target: 'Tiripo, waswera sei?',
+        native: 'We are well, how did you spend the day?',
       },
       {
         speaker: 'rwen',

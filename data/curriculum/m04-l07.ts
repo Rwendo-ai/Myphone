@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'munhu_akanaka',
-      shona: 'Munhu akanaka',
-      english: 'A good person',
+      target: 'Munhu akanaka',
+      native: 'A good person',
       literal: 'Person a-ka-naka (a- = class 1 agreement)',
       emoji: '😊',
       phonetic: 'MU-nhu a-ka-NA-ka',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'chinhu_chakanaka',
-      shona: 'Chinhu chakanaka',
-      english: 'A good thing',
+      target: 'Chinhu chakanaka',
+      native: 'A good thing',
       literal: 'Thing cha-ka-naka (cha- = class 7 agreement)',
       emoji: '✅',
       phonetic: 'CHI-nhu cha-ka-NA-ka',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'muti_wakanaka',
-      shona: 'Muti wakanaka',
-      english: 'A good tree',
+      target: 'Muti wakanaka',
+      native: 'A good tree',
       literal: 'Tree wa-ka-naka (wa- = class 3 agreement)',
       emoji: '🌳',
       phonetic: 'MU-ti wa-ka-NA-ka',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Adjectives agree with noun class',
     explanation: "The adjective prefix mirrors the noun's subject prefix. Munhu uses a- (akanaka), Chinhu uses cha- (chakanaka), Muti uses wa- (wakanaka). Same adjective root (-kanaka), different class prefix.",
     examples: [
-      { shona: 'Munhu a-kanaka', english: 'Good person (class 1)' },
-      { shona: 'Chinhu cha-kanaka', english: 'Good thing (class 7)' },
-      { shona: 'Imba ya-kanaka', english: 'Good house (class 9)' },
+      { target: 'Munhu a-kanaka', native: 'Good person (class 1)' },
+      { target: 'Chinhu cha-kanaka', native: 'Good thing (class 7)' },
+      { target: 'Imba ya-kanaka', native: 'Good house (class 9)' },
     ],
   },
 
@@ -113,9 +113,9 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Hongu, munhu akanaka. Uye chikoro chakanaka.', english: 'Yes, a good person. And a good school.', correct: true, feedback: "Both adjectives agree correctly with their noun classes." },
-          { shona: 'Munhu chakanaka', english: 'Person chakanaka (wrong class)', correct: false, feedback: "Munhu uses a- not cha-. Munhu akanaka. Chikoro chakanaka." },
-          { shona: 'Zvakanaka', english: "It's good (general)", correct: false, feedback: "Describe the specific nouns — 'Munhu akanaka' and 'Chikoro chakanaka'." },
+          { target: 'Hongu, munhu akanaka. Uye chikoro chakanaka.', native: 'Yes, a good person. And a good school.', correct: true, feedback: "Both adjectives agree correctly with their noun classes." },
+          { target: 'Munhu chakanaka', native: 'Person chakanaka (wrong class)', correct: false, feedback: "Munhu uses a- not cha-. Munhu akanaka. Chikoro chakanaka." },
+          { target: 'Zvakanaka', native: "It's good (general)", correct: false, feedback: "Describe the specific nouns — 'Munhu akanaka' and 'Chikoro chakanaka'." },
         ],
       },
       {

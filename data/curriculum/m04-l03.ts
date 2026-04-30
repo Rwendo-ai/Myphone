@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'muti',
-      shona: 'Muti',
-      english: 'Tree / Medicine',
+      target: 'Muti',
+      native: 'Tree / Medicine',
       literal: 'Mu-ti (class 3 prefix)',
       emoji: '🌳',
       phonetic: 'MU-ti',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'miti',
-      shona: 'Miti',
-      english: 'Trees / Medicines',
+      target: 'Miti',
+      native: 'Trees / Medicines',
       literal: 'Mi-ti (class 4 plural)',
       emoji: '🌲🌲',
       phonetic: 'MI-ti',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'muriwo',
-      shona: 'Muriwo',
-      english: 'Vegetables / Relish',
+      target: 'Muriwo',
+      native: 'Vegetables / Relish',
       literal: 'Mu-riwo (plant class)',
       emoji: '🥬',
       phonetic: 'mu-RI-wo',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Mu- singular, Mi- plural (trees/plants)',
     explanation: "The Mu/Mi class covers plants, trees, and rivers. Don't confuse Mu- (plants) with Mu- (people) — the stems are different. People stems are human words; plant stems are nature words.",
     examples: [
-      { shona: 'Mu-ti → Mi-ti', english: 'Tree → Trees' },
-      { shona: 'Mu-riwo → Mi-riwo', english: 'Vegetable → Vegetables' },
-      { shona: 'Mu-sha → Mi-sha', english: 'Village → Villages' },
+      { target: 'Mu-ti → Mi-ti', native: 'Tree → Trees' },
+      { target: 'Mu-riwo → Mi-riwo', native: 'Vegetable → Vegetables' },
+      { target: 'Mu-sha → Mi-sha', native: 'Village → Villages' },
     ],
   },
 
@@ -113,9 +113,9 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Muti — muti wemichero uye mushonga?', english: 'Tree — both a fruit tree and medicine?', correct: true, feedback: "Exactly. One word, two purposes. That's the depth of Shona vocabulary." },
-          { shona: 'Muriwo uyu?', english: 'These vegetables?', correct: false, feedback: "Muriwo is vegetables. Muti is the word for both tree and medicine." },
-          { shona: 'Ndanzwisisa', english: 'I understand', correct: false, feedback: "Good — tell Rwen what you understand: Muti = tree AND medicine." },
+          { target: 'Muti — muti wemichero uye mushonga?', native: 'Tree — both a fruit tree and medicine?', correct: true, feedback: "Exactly. One word, two purposes. That's the depth of Shona vocabulary." },
+          { target: 'Muriwo uyu?', native: 'These vegetables?', correct: false, feedback: "Muriwo is vegetables. Muti is the word for both tree and medicine." },
+          { target: 'Ndanzwisisa', native: 'I understand', correct: false, feedback: "Good — tell Rwen what you understand: Muti = tree AND medicine." },
         ],
       },
       {

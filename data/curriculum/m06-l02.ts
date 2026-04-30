@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'tanhatu_nomwe_sere',
-      shona: 'Tanhatu / Nomwe / Sere',
-      english: 'Six / Seven / Eight',
+      target: 'Tanhatu / Nomwe / Sere',
+      native: 'Six / Seven / Eight',
       literal: 'Tanhatu (6), Nomwe (7), Sere (8)',
       emoji: '6️⃣7️⃣8️⃣',
       phonetic: 'tan-HA-tu / NO-mwe / SE-re',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'pfumbamwe_gumi',
-      shona: 'Pfumbamwe / Gumi',
-      english: 'Nine / Ten',
+      target: 'Pfumbamwe / Gumi',
+      native: 'Nine / Ten',
       literal: 'Pfumbamwe (9), Gumi (10)',
       emoji: '9️⃣🔟',
       phonetic: 'pfum-BA-mwe / GU-mi',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'gumi_nerimwe',
-      shona: 'Gumi nerimwe',
-      english: 'Eleven',
+      target: 'Gumi nerimwe',
+      native: 'Eleven',
       literal: 'Ten and-one = 11',
       emoji: '1️⃣1️⃣',
       phonetic: 'GU-mi ne-ri-MWE',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Gumi + ne + number = eleven onwards',
     explanation: "'Gumi' (10) + 'ne' (and) + number = any teen. Gumi nerimwe (11), gumi nepiri (12), gumi netatu (13). The pattern is simple: ten AND something. Like stacking blocks.",
     examples: [
-      { shona: 'Gumi nerimwe', english: 'Eleven (10 + 1)' },
-      { shona: 'Gumi nepiri', english: 'Twelve (10 + 2)' },
-      { shona: 'Gumi netatu', english: 'Thirteen (10 + 3)' },
+      { target: 'Gumi nerimwe', native: 'Eleven (10 + 1)' },
+      { target: 'Gumi nepiri', native: 'Twelve (10 + 2)' },
+      { target: 'Gumi netatu', native: 'Thirteen (10 + 3)' },
     ],
   },
 
@@ -108,15 +108,15 @@ const lesson: LessonData = {
     lines: [
       {
         speaker: 'npc',
-        shona: 'Verenga neni! Chimwe, piri...',
-        english: 'Count with me! One, two...',
+        target: 'Verenga neni! Chimwe, piri...',
+        native: 'Count with me! One, two...',
       },
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Tatu, china, shanu, tanhatu, nomwe, sere, pfumbamwe, gumi!', english: 'Three, four, five, six, seven, eight, nine, ten!', correct: true, feedback: "You counted to ten in Shona! The child claps." },
-          { shona: 'Tatu, china, shanu...', english: 'Three, four, five... (stopped)', correct: false, feedback: "Keep going! Tatu, china, shanu, tanhatu, nomwe, sere, pfumbamwe, gumi!" },
-          { shona: 'Handizivi', english: "I don't know", correct: false, feedback: "Try! Tatu, china, shanu, tanhatu, nomwe, sere, pfumbamwe, gumi." },
+          { target: 'Tatu, china, shanu, tanhatu, nomwe, sere, pfumbamwe, gumi!', native: 'Three, four, five, six, seven, eight, nine, ten!', correct: true, feedback: "You counted to ten in Shona! The child claps." },
+          { target: 'Tatu, china, shanu...', native: 'Three, four, five... (stopped)', correct: false, feedback: "Keep going! Tatu, china, shanu, tanhatu, nomwe, sere, pfumbamwe, gumi!" },
+          { target: 'Handizivi', native: "I don't know", correct: false, feedback: "Try! Tatu, china, shanu, tanhatu, nomwe, sere, pfumbamwe, gumi." },
         ],
       },
       {

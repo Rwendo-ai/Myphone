@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'ndinodya',
-      shona: 'Ndinodya',
-      english: 'I eat (habitually)',
+      target: 'Ndinodya',
+      native: 'I eat (habitually)',
       literal: 'I-habitually-eat',
       emoji: '🍽️',
       phonetic: 'ndi-no-DYA',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndiri_kudya',
-      shona: 'Ndiri kudya',
-      english: 'I am eating (right now)',
+      target: 'Ndiri kudya',
+      native: 'I am eating (right now)',
       literal: 'I-am eating (continuous)',
       emoji: '🔄',
       phonetic: 'NDI-ri ku-DYA',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndadya',
-      shona: 'Ndadya',
-      english: 'I ate / I have eaten',
+      target: 'Ndadya',
+      native: 'I ate / I have eaten',
       literal: 'I-ate (completed)',
       emoji: '✅',
       phonetic: 'nda-DYA',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Kudya across four forms',
     explanation: "Ndi-no-dya (I eat, habitual), Ndiri ku-dya (I am eating, now), Nda-dya (I ate, past), Ndicha-dya (I will eat, future). This four-form pattern works for EVERY Shona verb. Learn it once, apply it to all.",
     examples: [
-      { shona: 'Ndinodya sadza', english: 'I eat sadza (regularly)' },
-      { shona: 'Ndiri kudya zvino', english: 'I am eating right now' },
-      { shona: 'Ndadya sadza', english: 'I ate sadza' },
+      { target: 'Ndinodya sadza', native: 'I eat sadza (regularly)' },
+      { target: 'Ndiri kudya zvino', native: 'I am eating right now' },
+      { target: 'Ndadya sadza', native: 'I ate sadza' },
     ],
   },
 
@@ -113,9 +113,9 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Ndiri kudya. Ndadya sadza ne nyama. Zvakanakisisa.', english: 'I am eating. I had sadza with meat. It was excellent.', correct: true, feedback: "Present continuous + past + quality assessment. Perfect verb use." },
-          { shona: 'Ndinodya', english: 'I eat (habitual)', correct: false, feedback: "Use continuous present — 'Ndiri kudya zvino' — I am eating right now." },
-          { shona: 'Ndadya', english: 'I ate', correct: false, feedback: "'Ndadya' means you finished. If you're still eating, say 'Ndiri kudya zvino.'" },
+          { target: 'Ndiri kudya. Ndadya sadza ne nyama. Zvakanakisisa.', native: 'I am eating. I had sadza with meat. It was excellent.', correct: true, feedback: "Present continuous + past + quality assessment. Perfect verb use." },
+          { target: 'Ndinodya', native: 'I eat (habitual)', correct: false, feedback: "Use continuous present — 'Ndiri kudya zvino' — I am eating right now." },
+          { target: 'Ndadya', native: 'I ate', correct: false, feedback: "'Ndadya' means you finished. If you're still eating, say 'Ndiri kudya zvino.'" },
         ],
       },
       {

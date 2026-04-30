@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'ndinoterera',
-      shona: 'Ndinoterera',
-      english: 'I listen (habitually)',
+      target: 'Ndinoterera',
+      native: 'I listen (habitually)',
       literal: 'I-listen (habitual)',
       emoji: '👂',
       phonetic: 'ndi-no-te-RE-ra',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndiri_kuterera',
-      shona: 'Ndiri kuterera',
-      english: 'I am listening (right now)',
+      target: 'Ndiri kuterera',
+      native: 'I am listening (right now)',
       literal: 'I-am listening',
       emoji: '🔄',
       phonetic: 'NDI-ri ku-te-RE-ra',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'tererai',
-      shona: 'Tererai',
-      english: 'Listen (formal/plural command)',
+      target: 'Tererai',
+      native: 'Listen (formal/plural command)',
       literal: 'Listen-you-all',
       emoji: '🔇',
       phonetic: 'te-re-RAI',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: '-rerai and -rai endings for formal plural commands',
     explanation: "Formal/plural commands add -ai or -rai endings: Tererai (listen, all of you), Garai (sit down, all of you), Endai (go, all of you). These are for addressing groups or elders respectfully. Singular is shorter: Tera (listen), Gara (sit).",
     examples: [
-      { shona: 'Tererai', english: 'Listen (you all)' },
-      { shona: 'Garai', english: 'Sit down (you all)' },
-      { shona: 'Endai', english: 'Go (you all)' },
+      { target: 'Tererai', native: 'Listen (you all)' },
+      { target: 'Garai', native: 'Sit down (you all)' },
+      { target: 'Endai', native: 'Go (you all)' },
     ],
   },
 
@@ -108,15 +108,15 @@ const lesson: LessonData = {
     lines: [
       {
         speaker: 'npc',
-        shona: 'Tererai — ndichakuudzai chinhu chakakosha.',
-        english: 'Listen — I will tell you something important.',
+        target: 'Tererai — ndichakuudzai chinhu chakakosha.',
+        native: 'Listen — I will tell you something important.',
       },
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Ndiri kuterera, Sekuru. Taurirai.', english: 'I am listening, Grandfather. Please speak.', correct: true, feedback: "Confirmed your attention, used the respectful title, invited him to speak. Perfect response to an elder." },
-          { shona: 'Ndiri kuterera', english: 'I am listening', correct: false, feedback: "Good — add the title and invitation: 'Ndiri kuterera, Sekuru. Taurirai.' — I'm listening, Grandfather. Please speak." },
-          { shona: 'Zvakanaka', english: "That's good", correct: false, feedback: "Respond to the call — 'Ndiri kuterera, Sekuru. Taurirai.' — I am listening. Please speak." },
+          { target: 'Ndiri kuterera, Sekuru. Taurirai.', native: 'I am listening, Grandfather. Please speak.', correct: true, feedback: "Confirmed your attention, used the respectful title, invited him to speak. Perfect response to an elder." },
+          { target: 'Ndiri kuterera', native: 'I am listening', correct: false, feedback: "Good — add the title and invitation: 'Ndiri kuterera, Sekuru. Taurirai.' — I'm listening, Grandfather. Please speak." },
+          { target: 'Zvakanaka', native: "That's good", correct: false, feedback: "Respond to the call — 'Ndiri kuterera, Sekuru. Taurirai.' — I am listening. Please speak." },
         ],
       },
       {

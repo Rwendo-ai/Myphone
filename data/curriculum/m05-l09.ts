@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'ndine_mhuri_huru',
-      shona: 'Ndine mhuri huru',
-      english: 'I have a big family',
+      target: 'Ndine mhuri huru',
+      native: 'I have a big family',
       literal: 'I-have family big',
       emoji: '👨‍👩‍👧‍👦',
       phonetic: 'ndi-ne mm-HU-ri HU-ru',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'tinogara_pamwe',
-      shona: 'Tinogara pamwe chete',
-      english: 'We live together',
+      target: 'Tinogara pamwe chete',
+      native: 'We live together',
       literal: 'We-live together alone/only',
       emoji: '🏡',
       phonetic: 'ti-no-GA-ra pa-mwe CHE-te',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndinoda_mhuri_yangu',
-      shona: 'Ndinoda mhuri yangu',
-      english: 'I love my family',
+      target: 'Ndinoda mhuri yangu',
+      native: 'I love my family',
       literal: 'I-love family my',
       emoji: '❤️',
       phonetic: 'ndi-no-da mm-HU-ri ya-ngu',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Describing family size and relationships',
     explanation: "'Huru' means big/large. 'Duku' means small. 'Pamwe chete' means together. These words combine with family vocabulary to describe your household. Simple sentence structure: Ndine + family + description.",
     examples: [
-      { shona: 'Ndine mhuri huru', english: 'I have a big family' },
-      { shona: 'Ndine mhuri duku', english: 'I have a small family' },
-      { shona: 'Tinogara pamwe chete', english: 'We live together' },
+      { target: 'Ndine mhuri huru', native: 'I have a big family' },
+      { target: 'Ndine mhuri duku', native: 'I have a small family' },
+      { target: 'Tinogara pamwe chete', native: 'We live together' },
     ],
   },
 
@@ -113,9 +113,9 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Ndine mhuri [huru/duku]. Tinogara pamwe chete. Ndinoda mhuri yangu.', english: 'I have a [big/small] family. We live together. I love my family.', correct: true, feedback: "Three sentences — size, togetherness, love. That's a complete family portrait in Shona." },
-          { shona: 'Ndine vana vaviri', english: 'I have two children', correct: false, feedback: "Good detail — add more: 'Tinogara pamwe chete. Ndinoda mhuri yangu.'" },
-          { shona: 'Ndine mhuri', english: 'I have a family', correct: false, feedback: "Expand it — how big? 'Ndine mhuri huru/duku.' Do you live together? 'Tinogara pamwe chete.'" },
+          { target: 'Ndine mhuri [huru/duku]. Tinogara pamwe chete. Ndinoda mhuri yangu.', native: 'I have a [big/small] family. We live together. I love my family.', correct: true, feedback: "Three sentences — size, togetherness, love. That's a complete family portrait in Shona." },
+          { target: 'Ndine vana vaviri', native: 'I have two children', correct: false, feedback: "Good detail — add more: 'Tinogara pamwe chete. Ndinoda mhuri yangu.'" },
+          { target: 'Ndine mhuri', native: 'I have a family', correct: false, feedback: "Expand it — how big? 'Ndine mhuri huru/duku.' Do you live together? 'Tinogara pamwe chete.'" },
         ],
       },
       {

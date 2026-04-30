@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'ndinoirwa',
-      shona: 'Ndinoirwa',
-      english: 'I am in pain / It hurts',
+      target: 'Ndinoirwa',
+      native: 'I am in pain / It hurts',
       literal: 'I-am-pained',
       emoji: '😣',
       phonetic: 'ndi-no-IR-wa',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'kwangu',
-      shona: '...kwangu',
-      english: 'Mine / My (for places)',
+      target: '...kwangu',
+      native: 'Mine / My (for places)',
       literal: '...mine (locative possession)',
       emoji: '📍',
       phonetic: 'kwa-ngu',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndinorwara_ne',
-      shona: 'Ndinorwara ne...',
-      english: 'I am sick with... / I have...',
+      target: 'Ndinorwara ne...',
+      native: 'I am sick with... / I have...',
       literal: 'I-am-sick with...',
       emoji: '🏥',
       phonetic: 'ndi-no-RWA-ra ne',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Describing illness — ndinorwara ne + condition',
     explanation: "'Ndinorwara ne' + illness/symptom = I have [condition]. Ndinorwara ne fivha (I have a fever), Ndinorwara ne chikosoro (I have a cough), Ndinorwara ne mushonga wokuvhiringidzika (I feel dizzy). 'Ne' connects the verb to the condition.",
     examples: [
-      { shona: 'Ndinorwara ne fivha', english: 'I have a fever' },
-      { shona: 'Ndinorwara ne chikosoro', english: 'I have a cough' },
-      { shona: 'Ndinoirwa musoro wangu', english: 'My head hurts' },
+      { target: 'Ndinorwara ne fivha', native: 'I have a fever' },
+      { target: 'Ndinorwara ne chikosoro', native: 'I have a cough' },
+      { target: 'Ndinoirwa musoro wangu', native: 'My head hurts' },
     ],
   },
 
@@ -108,15 +108,15 @@ const lesson: LessonData = {
     lines: [
       {
         speaker: 'npc',
-        shona: 'Mangwanani. Ndinokubatsira sei nhasi?',
-        english: 'Good morning. How can I help you today?',
+        target: 'Mangwanani. Ndinokubatsira sei nhasi?',
+        native: 'Good morning. How can I help you today?',
       },
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Mangwanani, Chiremba. Ndinorwara. Ndinova musoro uye ndinorwara ne fivha.', english: 'Good morning, Doctor. I am sick. I have a headache and I have a fever.', correct: true, feedback: "Greeted respectfully, named the doctor correctly, described two symptoms. Perfect medical Shona." },
-          { shona: 'Ndinorwara', english: 'I am sick', correct: false, feedback: "Add your specific symptoms — 'Ndinova musoro uye ndinorwara ne fivha.' Give the doctor information." },
-          { shona: 'Ndine dambudziko', english: 'I have a problem', correct: false, feedback: "Be specific — 'Ndinorwara. Ndinova musoro uye ndinorwara ne fivha.' Headache and fever." },
+          { target: 'Mangwanani, Chiremba. Ndinorwara. Ndinova musoro uye ndinorwara ne fivha.', native: 'Good morning, Doctor. I am sick. I have a headache and I have a fever.', correct: true, feedback: "Greeted respectfully, named the doctor correctly, described two symptoms. Perfect medical Shona." },
+          { target: 'Ndinorwara', native: 'I am sick', correct: false, feedback: "Add your specific symptoms — 'Ndinova musoro uye ndinorwara ne fivha.' Give the doctor information." },
+          { target: 'Ndine dambudziko', native: 'I have a problem', correct: false, feedback: "Be specific — 'Ndinorwara. Ndinova musoro uye ndinorwara ne fivha.' Headache and fever." },
         ],
       },
       {

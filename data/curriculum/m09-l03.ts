@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'kurudyi',
-      shona: 'Kurudyi',
-      english: 'Right (direction)',
+      target: 'Kurudyi',
+      native: 'Right (direction)',
       literal: 'To-the-right',
       emoji: '➡️',
       phonetic: 'ku-RU-dyi',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'kuruboshwe',
-      shona: 'Kuruboshwe',
-      english: 'Left (direction)',
+      target: 'Kuruboshwe',
+      native: 'Left (direction)',
       literal: 'To-the-left',
       emoji: '⬅️',
       phonetic: 'ku-ru-BO-shwe',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'dzokorora_kurudyi',
-      shona: 'Dzokorora kurudyi',
-      english: 'Turn right',
+      target: 'Dzokorora kurudyi',
+      native: 'Turn right',
       literal: 'Turn to-the-right',
       emoji: '↩️',
       phonetic: 'dzo-ko-RO-ra ku-RU-dyi',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Dzokorora + direction = turn that way',
     explanation: "'Dzokorora' means turn/rotate. Dzokorora kurudyi (turn right), Dzokorora kuruboshwe (turn left). You already know 'Dzokorora ndapota' (please repeat) — same word, different context. Shona verbs are versatile.",
     examples: [
-      { shona: 'Dzokorora kurudyi', english: 'Turn right' },
-      { shona: 'Dzokorora kuruboshwe', english: 'Turn left' },
-      { shona: 'Uri kurudyi kwedu', english: 'You are to our right' },
+      { target: 'Dzokorora kurudyi', native: 'Turn right' },
+      { target: 'Dzokorora kuruboshwe', native: 'Turn left' },
+      { target: 'Uri kurudyi kwedu', native: 'You are to our right' },
     ],
   },
 
@@ -113,9 +113,9 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Mberi — rondo — kurudyi — kuruboshwe. Ndanzwisisa!', english: 'Forward — roundabout — right — left. I understand!', correct: true, feedback: "You summarised the key directions back. Clear, confident navigation." },
-          { shona: 'Dzokorora kurudyi', english: 'Turn right', correct: false, feedback: "You got part of it — there's also kuruboshwe at the end. Repeat all directions: mberi → rondo → kurudyi → kuruboshwe." },
-          { shona: 'Handanzwisisi', english: "I don't understand", correct: false, feedback: "Ask Rwen to repeat: 'Dzokorora, ndapota. Taura zvishoma.' Then try again." },
+          { target: 'Mberi — rondo — kurudyi — kuruboshwe. Ndanzwisisa!', native: 'Forward — roundabout — right — left. I understand!', correct: true, feedback: "You summarised the key directions back. Clear, confident navigation." },
+          { target: 'Dzokorora kurudyi', native: 'Turn right', correct: false, feedback: "You got part of it — there's also kuruboshwe at the end. Repeat all directions: mberi → rondo → kurudyi → kuruboshwe." },
+          { target: 'Handanzwisisi', native: "I don't understand", correct: false, feedback: "Ask Rwen to repeat: 'Dzokorora, ndapota. Taura zvishoma.' Then try again." },
         ],
       },
       {

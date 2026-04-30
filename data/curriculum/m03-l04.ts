@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'ndine_mhuri',
-      shona: 'Ndine mhuri',
-      english: 'I have a family',
+      target: 'Ndine mhuri',
+      native: 'I have a family',
       literal: 'I-have family',
       emoji: '👨‍👩‍👧‍👦',
       phonetic: 'ndi-ne mm-HU-ri',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndine_vana',
-      shona: 'Ndine vana...',
-      english: 'I have ... children',
+      target: 'Ndine vana...',
+      native: 'I have ... children',
       literal: 'I-have children...',
       emoji: '👶',
       phonetic: 'ndi-ne va-na',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndiriye_mumwe_chete',
-      shona: 'Ndiriye mumwe chete',
-      english: 'I am an only child',
+      target: 'Ndiriye mumwe chete',
+      native: 'I am an only child',
       literal: 'I-am one alone',
       emoji: '🧍',
       phonetic: 'ndi-ri-ye mu-mwe CHE-te',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Ndine + noun — I have [something]',
     explanation: "You've seen 'ndine makore' (I have years = I am X years old). The same 'ndine' works for family members: ndine vana (I have children), ndine mukomana (I have a son), ndine musikana (I have a daughter). One pattern, infinite uses.",
     examples: [
-      { shona: 'Ndine mhuri', english: 'I have a family' },
-      { shona: 'Ndine vana vaviri', english: 'I have two children' },
-      { shona: 'Ndine mukomana mumwe', english: 'I have one son' },
+      { target: 'Ndine mhuri', native: 'I have a family' },
+      { target: 'Ndine vana vaviri', native: 'I have two children' },
+      { target: 'Ndine mukomana mumwe', native: 'I have one son' },
     ],
   },
 
@@ -113,9 +113,9 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Hongu, ndine mhuri. Ndine vana...', english: 'Yes, I have a family. I have ... children.', correct: true, feedback: "You shared your family honestly. Rwen listens with genuine interest." },
-          { shona: 'Handizivi', english: "I don't know", correct: false, feedback: "You know your own family — 'Ndine mhuri' or 'Ndiriye mumwe chete' are both good starts." },
-          { shona: 'Ndiriye mumwe chete', english: 'I am an only child', correct: false, feedback: "That's a perfectly valid and complete answer." },
+          { target: 'Hongu, ndine mhuri. Ndine vana...', native: 'Yes, I have a family. I have ... children.', correct: true, feedback: "You shared your family honestly. Rwen listens with genuine interest." },
+          { target: 'Handizivi', native: "I don't know", correct: false, feedback: "You know your own family — 'Ndine mhuri' or 'Ndiriye mumwe chete' are both good starts." },
+          { target: 'Ndiriye mumwe chete', native: 'I am an only child', correct: false, feedback: "That's a perfectly valid and complete answer." },
         ],
       },
       {

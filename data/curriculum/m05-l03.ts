@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'mukoma',
-      shona: 'Mukoma',
-      english: 'Older sibling (used by a younger sibling)',
+      target: 'Mukoma',
+      native: 'Older sibling (used by a younger sibling)',
       literal: 'Mu-koma (one who came before)',
       emoji: '👫',
       phonetic: 'mu-KO-ma',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'munin_ina',
-      shona: "Munin'ina",
-      english: 'Younger sibling',
+      target: "Munin'ina",
+      native: 'Younger sibling',
       literal: "Mu-nin'ina (the younger one)",
       emoji: '🧒',
       phonetic: "mu-ni-NI-na",
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'hanzvadzi',
-      shona: 'Hanzvadzi',
-      english: 'Cross-gender sibling (brother\'s sister / sister\'s brother)',
+      target: 'Hanzvadzi',
+      native: 'Cross-gender sibling (brother\'s sister / sister\'s brother)',
       literal: 'Hanzvadzi (opposite-gender sibling)',
       emoji: '👫',
       phonetic: 'han-ZVA-dzi',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: "Sibling terms express age and gender relationship",
     explanation: "Mukoma = older sibling (younger person speaking). Munin'ina = younger sibling. Hanzvadzi = cross-gender sibling. These terms encode both the age difference and the gender relationship — Shona is precise about family.",
     examples: [
-      { shona: 'Mukoma wangu', english: 'My older sibling' },
-      { shona: "Munin'ina wangu", english: 'My younger sibling' },
-      { shona: 'Hanzvadzi yangu', english: 'My cross-gender sibling' },
+      { target: 'Mukoma wangu', native: 'My older sibling' },
+      { target: "Munin'ina wangu", native: 'My younger sibling' },
+      { target: 'Hanzvadzi yangu', native: 'My cross-gender sibling' },
     ],
   },
 
@@ -113,9 +113,9 @@ const lesson: LessonData = {
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Makadii, Mukoma. Makadii, Munin\'ina.', english: 'How are you, older sibling. How are you, younger sibling.', correct: true, feedback: "Using their relational titles — that's proper Shona family respect." },
-          { shona: 'Makadii mese vanhu', english: 'How are you all people', correct: false, feedback: "Address them with their titles — Mukoma for the older, Munin'ina for the younger." },
-          { shona: 'Ndatenda', english: 'Thank you', correct: false, feedback: "Greet them — 'Makadii, Mukoma. Makadii, Munin'ina.' — respectful introductions." },
+          { target: 'Makadii, Mukoma. Makadii, Munin\'ina.', native: 'How are you, older sibling. How are you, younger sibling.', correct: true, feedback: "Using their relational titles — that's proper Shona family respect." },
+          { target: 'Makadii mese vanhu', native: 'How are you all people', correct: false, feedback: "Address them with their titles — Mukoma for the older, Munin'ina for the younger." },
+          { target: 'Ndatenda', native: 'Thank you', correct: false, feedback: "Greet them — 'Makadii, Mukoma. Makadii, Munin'ina.' — respectful introductions." },
         ],
       },
       {

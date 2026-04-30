@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'sadza',
-      shona: 'Sadza',
-      english: 'Sadza (maize meal staple)',
+      target: 'Sadza',
+      native: 'Sadza (maize meal staple)',
       literal: 'Sadza — the national staple food',
       emoji: '🍚',
       phonetic: 'SA-dza',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'muriwo',
-      shona: 'Muriwo',
-      english: 'Vegetables / Relish',
+      target: 'Muriwo',
+      native: 'Vegetables / Relish',
       literal: 'Mu-riwo (vegetable relish)',
       emoji: '🥬',
       phonetic: 'mu-RI-wo',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'nyama',
-      shona: 'Nyama',
-      english: 'Meat',
+      target: 'Nyama',
+      native: 'Meat',
       literal: 'Nyama (meat)',
       emoji: '🥩',
       phonetic: 'NYA-ma',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Sadza ne muriwo — the pairing pattern',
     explanation: "'Ne' (and/with) connects sadza to its accompaniment: Sadza ne muriwo (sadza with vegetables), Sadza ne nyama (sadza with meat). 'Ne' is one of Shona's most useful small words — connecting things in pairs.",
     examples: [
-      { shona: 'Sadza ne muriwo', english: 'Sadza with vegetables' },
-      { shona: 'Sadza ne nyama', english: 'Sadza with meat' },
-      { shona: 'Ndinoda sadza', english: 'I want sadza' },
+      { target: 'Sadza ne muriwo', native: 'Sadza with vegetables' },
+      { target: 'Sadza ne nyama', native: 'Sadza with meat' },
+      { target: 'Ndinoda sadza', native: 'I want sadza' },
     ],
   },
 
@@ -108,15 +108,15 @@ const lesson: LessonData = {
     lines: [
       {
         speaker: 'npc',
-        shona: 'Tora sadza, mwanangu. Sadza ne nyama.',
-        english: 'Take sadza, my child. Sadza with meat.',
+        target: 'Tora sadza, mwanangu. Sadza ne nyama.',
+        native: 'Take sadza, my child. Sadza with meat.',
       },
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Ndatenda zvikuru, Amai. Ndinofara sadza ne nyama.', english: 'Thank you very much, Mother. I love sadza with meat.', correct: true, feedback: "Grateful, warm, specific. Rwen's mother beams. You've honoured the meal." },
-          { shona: 'Ndatenda', english: 'Thank you', correct: false, feedback: "Warmer — add what you're grateful for: 'Ndatenda zvikuru, Amai. Ndinofara sadza ne nyama.'" },
-          { shona: 'Handidi sadza', english: "I don't want sadza", correct: false, feedback: "Never refuse sadza from a host — it's a cultural slight. Accept graciously: 'Ndatenda zvikuru, Amai.'" },
+          { target: 'Ndatenda zvikuru, Amai. Ndinofara sadza ne nyama.', native: 'Thank you very much, Mother. I love sadza with meat.', correct: true, feedback: "Grateful, warm, specific. Rwen's mother beams. You've honoured the meal." },
+          { target: 'Ndatenda', native: 'Thank you', correct: false, feedback: "Warmer — add what you're grateful for: 'Ndatenda zvikuru, Amai. Ndinofara sadza ne nyama.'" },
+          { target: 'Handidi sadza', native: "I don't want sadza", correct: false, feedback: "Never refuse sadza from a host — it's a cultural slight. Accept graciously: 'Ndatenda zvikuru, Amai.'" },
         ],
       },
       {

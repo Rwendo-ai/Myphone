@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'maswera_sei',
-      shona: 'Maswera sei?',
-      english: 'How did you spend the day? (respectful)',
+      target: 'Maswera sei?',
+      native: 'How did you spend the day? (respectful)',
       literal: 'You (plural) spent-the-day how?',
       emoji: '☀️',
       phonetic: 'ma-SWEH-ra SAY',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'ndaswera_maswerawo',
-      shona: 'Ndaswera, kana maswerawo',
-      english: 'I spent well, if you also spent well',
+      target: 'Ndaswera, kana maswerawo',
+      native: 'I spent well, if you also spent well',
       literal: 'I-spent-day, if you(pl)-spent-day-also',
       emoji: '✨',
       phonetic: 'nda-SWEH-ra KA-na ma-SWEH-ra-wo',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'masikati',
-      shona: 'Masikati',
-      english: 'Good afternoon',
+      target: 'Masikati',
+      native: 'Good afternoon',
       literal: 'Afternoon (time of day)',
       emoji: '🌤️',
       phonetic: 'mah-si-KAH-ti',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Muka vs Swera — Morning vs Afternoon root',
     explanation: "The root changes with the time of day. 'Muka' means woke — used in the morning. 'Swera' means spent the day — used from midday onwards. Same prefixes, different roots.",
     examples: [
-      { shona: 'Ma-muka sei?', english: 'How did you wake? (morning, respectful)' },
-      { shona: 'Ma-swera sei?', english: 'How did you spend the day? (afternoon, respectful)' },
-      { shona: 'Nd-a-swera', english: 'I spent the day (well)' },
+      { target: 'Ma-muka sei?', native: 'How did you wake? (morning, respectful)' },
+      { target: 'Ma-swera sei?', native: 'How did you spend the day? (afternoon, respectful)' },
+      { target: 'Nd-a-swera', native: 'I spent the day (well)' },
     ],
   },
 
@@ -108,21 +108,21 @@ const lesson: LessonData = {
     lines: [
       {
         speaker: 'npc',
-        shona: 'Masikati',
-        english: 'Good afternoon',
+        target: 'Masikati',
+        native: 'Good afternoon',
       },
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Masikati. Maswera sei?', english: 'Good afternoon. How did you spend the day?', correct: true, feedback: "Excellent — you matched the moment and showed genuine interest." },
-          { shona: 'Mangwanani', english: 'Good morning', correct: false, feedback: "It's afternoon — 'Mangwanani' is the morning greeting. Time matters in Shona." },
-          { shona: 'Masikati', english: 'Good afternoon', correct: false, feedback: "Good start — but following up with 'Maswera sei?' shows you care about how they are." },
+          { target: 'Masikati. Maswera sei?', native: 'Good afternoon. How did you spend the day?', correct: true, feedback: "Excellent — you matched the moment and showed genuine interest." },
+          { target: 'Mangwanani', native: 'Good morning', correct: false, feedback: "It's afternoon — 'Mangwanani' is the morning greeting. Time matters in Shona." },
+          { target: 'Masikati', native: 'Good afternoon', correct: false, feedback: "Good start — but following up with 'Maswera sei?' shows you care about how they are." },
         ],
       },
       {
         speaker: 'npc',
-        shona: 'Ndaswera, kana maswerawo',
-        english: 'I spent well, if you also spent well',
+        target: 'Ndaswera, kana maswerawo',
+        native: 'I spent well, if you also spent well',
       },
       {
         speaker: 'rwen',

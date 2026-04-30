@@ -16,8 +16,8 @@ const lesson: LessonData = {
   chunks: [
     {
       id: 'chimwe_piri_tatu',
-      shona: 'Chimwe / Piri / Tatu',
-      english: 'One / Two / Three',
+      target: 'Chimwe / Piri / Tatu',
+      native: 'One / Two / Three',
       literal: 'Chimwe (one/same), Piri (two), Tatu (three)',
       emoji: '1️⃣2️⃣3️⃣',
       phonetic: 'CHI-mwe / PI-ri / TA-tu',
@@ -25,8 +25,8 @@ const lesson: LessonData = {
     },
     {
       id: 'china_shanu',
-      shona: 'China / Shanu',
-      english: 'Four / Five',
+      target: 'China / Shanu',
+      native: 'Four / Five',
       literal: 'China (four), Shanu (five)',
       emoji: '4️⃣5️⃣',
       phonetic: 'CHI-na / SHA-nu',
@@ -34,8 +34,8 @@ const lesson: LessonData = {
     },
     {
       id: 'mangani',
-      shona: 'Mangani?',
-      english: 'How many?',
+      target: 'Mangani?',
+      native: 'How many?',
       literal: 'How-many?',
       emoji: '❓',
       phonetic: 'man-GA-ni',
@@ -47,9 +47,9 @@ const lesson: LessonData = {
     name: 'Shona numbers 1–5',
     explanation: "Chimwe (1), Piri (2), Tatu (3), China (4), Shanu (5). Notice 'chimwe' — it also means 'one same/together'. Piri sounds like 'pair'. Tatu sounds like 'tattoo'. Build memory hooks for each.",
     examples: [
-      { shona: 'Vana vatatu', english: 'Three children' },
-      { shona: 'Mazai mashanu', english: 'Five eggs' },
-      { shona: 'Vana vangani?', english: 'How many children?' },
+      { target: 'Vana vatatu', native: 'Three children' },
+      { target: 'Mazai mashanu', native: 'Five eggs' },
+      { target: 'Vana vangani?', native: 'How many children?' },
     ],
   },
 
@@ -108,15 +108,15 @@ const lesson: LessonData = {
     lines: [
       {
         speaker: 'npc',
-        shona: 'Unoda mazai mangani?',
-        english: 'How many eggs do you want?',
+        target: 'Unoda mazai mangani?',
+        native: 'How many eggs do you want?',
       },
       {
         speaker: 'user',
         userChoices: [
-          { shona: 'Ndinoda mazai mashanu, ndapota.', english: 'I want five eggs, please.', correct: true, feedback: "Perfect — number + noun + please. Clean market Shona." },
-          { shona: 'Shanu', english: 'Five (just the number)', correct: false, feedback: "Good — wrap it in a sentence: 'Ndinoda mazai mashanu, ndapota.' — I want five eggs please." },
-          { shona: 'Ndinoda mazai', english: 'I want eggs (no number)', correct: false, feedback: "Add how many — 'Ndinoda mazai mashanu' — I want five eggs." },
+          { target: 'Ndinoda mazai mashanu, ndapota.', native: 'I want five eggs, please.', correct: true, feedback: "Perfect — number + noun + please. Clean market Shona." },
+          { target: 'Shanu', native: 'Five (just the number)', correct: false, feedback: "Good — wrap it in a sentence: 'Ndinoda mazai mashanu, ndapota.' — I want five eggs please." },
+          { target: 'Ndinoda mazai', native: 'I want eggs (no number)', correct: false, feedback: "Add how many — 'Ndinoda mazai mashanu' — I want five eggs." },
         ],
       },
       {
