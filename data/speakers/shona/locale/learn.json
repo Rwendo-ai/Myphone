@@ -26,6 +26,14 @@
   },
   "lesson": {
     "not_found": "Chidzidzo hachina kuwanikwa: {{id}}",
+    "locked": {
+      "subscription_title": "Yakakiyiwa — pulani inobhadharwa inodiwa",
+      "subscription_body": "Mamoduru 5-10 ndere chikamu cheText AI tier nepamusoro. Wedzera kuti uenderere mberi naRwen.",
+      "subscription_cta": "Ona pulani",
+      "course_title": "Yakakiyiwa — chidzidzo hachina kuvhurwa",
+      "course_body": "Chidzidzo ichi ndecherudzi rwausati wavhura. Wedzera rudzi paaccount yako kuti utange.",
+      "course_cta": "Ona zvirimo"
+    },
     "phases": {
       "hook": "Mamiriro Ezvinhu",
       "chunks": "Mashoko Matsva",

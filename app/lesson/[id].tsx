@@ -17,6 +17,7 @@ import MultipleChoice from '../../components/exercises/MultipleChoice';
 import { DialogueLine } from '../../types/lesson';
 import { useSettings } from '../../lib/SettingsContext';
 import { getCourseLesson } from '../../data/courses';
+import { canAccessLesson } from '../../lib/entitlements';
 
 type Phase = 'hook' | 'chunks' | 'pattern' | 'practice' | 'dialogue' | 'recall' | 'mission';
 
@@ -25,9 +26,15 @@ const PHASES: Phase[] = ['hook', 'chunks', 'pattern', 'practice', 'dialogue', 'r
 export default function LessonScreen() {
   const { t } = useTranslation('learn');
   const { id } = useLocalSearchParams<{ id: string }>();
-  const { speaker, activeCourseId } = useSettings();
+  const { speaker, activeCourseId, entitlementContext } = useSettings();
   const lesson = getCourseLesson(activeCourseId, speaker.id, id);
   const { user } = useAuth();
+
+  // Phase E gating — runs before any lesson UI renders. DEV_UNLOCK_ALL
+  // short-circuits to allowed.
+  const entitlement = activeCourseId
+    ? canAccessLesson(activeCourseId, id, entitlementContext)
+    : { allowed: false as const, reason: 'course_required' as const };
 
   const [phase, setPhase] = useState<Phase>('hook');
   const [chunkIndex, setChunkIndex] = useState(0);
@@ -43,6 +50,36 @@ export default function LessonScreen() {
     return (
       <SafeAreaView style={styles.safe}>
         <Text style={{ padding: 20, color: Colors.gray[600] }}>{t('lesson.not_found', { id })}</Text>
+      </SafeAreaView>
+    );
+  }
+
+  if (!entitlement.allowed) {
+    return (
+      <SafeAreaView style={[styles.safe, { backgroundColor: Colors.primary }]} edges={['top']}>
+        <View style={styles.lockedContainer}>
+          <Text style={styles.lockedEmoji}>🔒</Text>
+          <Text style={styles.lockedTitle}>
+            {entitlement.reason === 'subscription_required'
+              ? t('lesson.locked.subscription_title')
+              : t('lesson.locked.course_title')}
+          </Text>
+          <Text style={styles.lockedBody}>
+            {entitlement.reason === 'subscription_required'
+              ? t('lesson.locked.subscription_body')
+              : t('lesson.locked.course_body')}
+          </Text>
+          <Pressable style={styles.lockedCta} onPress={() => router.replace('/profile/plans')}>
+            <Text style={styles.lockedCtaText}>
+              {entitlement.reason === 'subscription_required'
+                ? t('lesson.locked.subscription_cta')
+                : t('lesson.locked.course_cta')}
+            </Text>
+          </Pressable>
+          <Pressable style={styles.lockedBack} onPress={() => router.back()}>
+            <Text style={styles.lockedBackText}>{t('screen_header.back')}</Text>
+          </Pressable>
+        </View>
       </SafeAreaView>
     );
   }
@@ -534,6 +571,16 @@ const styles = StyleSheet.create({
   recallHeader: { padding: Spacing.lg, paddingBottom: 0 },
   recallTitle: { fontSize: FontSize.xl, fontWeight: FontWeight.bold, color: Colors.primary },
   recallSubtitle: { fontSize: FontSize.sm, color: Colors.gray[500], marginTop: 4 },
+
+  // Locked state (Phase E gating)
+  lockedContainer: { flex: 1, padding: Spacing.xl, alignItems: 'center', justifyContent: 'center', gap: Spacing.lg },
+  lockedEmoji: { fontSize: 64 },
+  lockedTitle: { fontSize: FontSize.xxl, fontWeight: FontWeight.extrabold, color: Colors.white, textAlign: 'center' },
+  lockedBody: { fontSize: FontSize.md, color: 'rgba(255,255,255,0.7)', textAlign: 'center', lineHeight: 22 },
+  lockedCta: { backgroundColor: Colors.xp, paddingVertical: Spacing.md, paddingHorizontal: Spacing.xxl, borderRadius: BorderRadius.full, marginTop: Spacing.md },
+  lockedCtaText: { color: Colors.white, fontSize: FontSize.md, fontWeight: FontWeight.bold },
+  lockedBack: { paddingVertical: Spacing.md },
+  lockedBackText: { color: 'rgba(255,255,255,0.6)', fontSize: FontSize.md },
 
   // Mission
   missionContainer: { padding: Spacing.lg, alignItems: 'center', gap: Spacing.lg, paddingBottom: Spacing.xxl },

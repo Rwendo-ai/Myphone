@@ -10,6 +10,7 @@ import { PACKS, DEFAULT_PACK_ID, resolvePackLanguages } from '../data/packs';
 import { SPEAKERS, getSpeaker, english as defaultSpeaker } from '../data/speakers';
 import { COURSES, getCourse } from '../data/courses';
 import { JURISDICTIONS, getJurisdiction, AU as defaultJurisdiction } from '../data/jurisdictions';
+import { SubscriptionTier, EntitlementContext } from './entitlements';
 import { Theme, THEMES, DEFAULT_THEME } from '../constants/themes';
 
 /**
@@ -39,6 +40,16 @@ interface Settings {
   setSpeakerPack: (id: SpeakerPackId) => void;
   setActiveCourseId: (id: CoursePackId | null) => void;
   setJurisdictionId: (id: JurisdictionPackId) => void;
+
+  // ── entitlements (Phase E) ────────────────────────────────────────────────
+  tier: SubscriptionTier;
+  setTier: (t: SubscriptionTier) => void;
+  ownedCourseIds: CoursePackId[];
+  setOwnedCourseIds: (ids: CoursePackId[]) => void;
+  starterCourseId: CoursePackId | null;
+  setStarterCourseId: (id: CoursePackId | null) => void;
+  /** Cached EntitlementContext for entitlements.canAccess* helpers */
+  entitlementContext: EntitlementContext;
 
   // ── v2 legacy surface (kept for one release; derived from v3 fields) ─────
   activePack: LanguagePack;
@@ -81,6 +92,14 @@ const SettingsContext = createContext<Settings>({
   setActiveCourseId: () => {},
   setJurisdictionId: () => {},
 
+  tier: 'free',
+  setTier: () => {},
+  ownedCourseIds: [],
+  setOwnedCourseIds: () => {},
+  starterCourseId: 'language-shona',
+  setStarterCourseId: () => {},
+  entitlementContext: { tier: 'free', ownedCourseIds: [], starterCourseId: 'language-shona' },
+
   activePack: defaultLegacyPack,
   spokenLanguage: defaultLegacyLanguages.spoken,
   learnedLanguage: defaultLegacyLanguages.learned,
@@ -100,6 +119,11 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
   const [activeCourseId,   setActiveCourseId]   = useState<CoursePackId | null>('language-shona');
   const [jurisdictionId,   setJurisdictionId]   = useState<JurisdictionPackId>('AU');
 
+  // entitlements
+  const [tier,             setTier]             = useState<SubscriptionTier>('free');
+  const [ownedCourseIds,   setOwnedCourseIds]   = useState<CoursePackId[]>(['language-shona']);
+  const [starterCourseId,  setStarterCourseId]  = useState<CoursePackId | null>('language-shona');
+
   // v2 legacy state — ProfileLoader writes both old + new fields during migration
   const [activePack, setActivePack] = useState<LanguagePack>(defaultLegacyPack);
 
@@ -116,6 +140,12 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
   const courses = useMemo(
     () => Object.values(COURSES).filter(c => c.meta.availableForSpeakers.includes(speakerId)),
     [speakerId],
+  );
+
+  // ── entitlement context for canAccess* helpers ────────────────────────────
+  const entitlementContext: EntitlementContext = useMemo(
+    () => ({ tier, ownedCourseIds, starterCourseId }),
+    [tier, ownedCourseIds, starterCourseId],
   );
 
   // ── derive v2 legacy fields from v3 ───────────────────────────────────────
@@ -155,6 +185,14 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
       setSpeakerPack,
       setActiveCourseId,
       setJurisdictionId,
+      // entitlements
+      tier,
+      setTier,
+      ownedCourseIds,
+      setOwnedCourseIds,
+      starterCourseId,
+      setStarterCourseId,
+      entitlementContext,
       // v2 legacy
       activePack,
       spokenLanguage: spoken,

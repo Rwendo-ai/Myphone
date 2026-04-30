@@ -16,6 +16,14 @@
   },
   "lesson": {
     "not_found": "Lesson not found: {{id}}",
+    "locked": {
+      "subscription_title": "Locked — paid plan needed",
+      "subscription_body": "Modules 5-10 are part of the Text AI tier and above. Upgrade to keep going with Rwen.",
+      "subscription_cta": "See plans",
+      "course_title": "Locked — course not active",
+      "course_body": "This lesson belongs to a course you haven't activated yet. Add the course to your account to start.",
+      "course_cta": "See courses"
+    },
     "phases": {
       "hook": "The Scene",
       "chunks": "New Words",
