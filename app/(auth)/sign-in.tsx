@@ -3,11 +3,13 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../lib/AuthContext';
 import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
 
 export default function SignInScreen() {
+  const { t } = useTranslation('auth');
   const { signIn } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -15,14 +17,14 @@ export default function SignInScreen() {
 
   const handleSignIn = async () => {
     if (!email.trim() || !password.trim()) {
-      Alert.alert('Missing fields', 'Please enter your email and password.');
+      Alert.alert(t('sign_in.missing_title'), t('sign_in.missing_body'));
       return;
     }
     setLoading(true);
     const { error } = await signIn(email.trim(), password);
     setLoading(false);
     if (error) {
-      Alert.alert('Sign in failed', error);
+      Alert.alert(t('sign_in.fail_title'), error);
     }
   };
 
@@ -39,22 +41,22 @@ export default function SignInScreen() {
           style={styles.back}
           onPress={() => router.canGoBack() ? router.back() : router.replace('/welcome')}
         >
-          <Text style={styles.backText}>← Back</Text>
+          <Text style={styles.backText}>{t('back')}</Text>
         </Pressable>
 
         <View style={styles.header}>
-          <Text style={styles.title}>Welcome back</Text>
-          <Text style={styles.subtitle}>Sign in to continue your journey</Text>
+          <Text style={styles.title}>{t('sign_in.title')}</Text>
+          <Text style={styles.subtitle}>{t('sign_in.subtitle')}</Text>
         </View>
 
         <View style={styles.form}>
           <View style={styles.field}>
-            <Text style={styles.label}>Email</Text>
+            <Text style={styles.label}>{t('sign_in.email_label')}</Text>
             <TextInput
               style={styles.input}
               value={email}
               onChangeText={setEmail}
-              placeholder="you@example.com"
+              placeholder={t('sign_in.email_placeholder')}
               placeholderTextColor="rgba(255,255,255,0.3)"
               keyboardType="email-address"
               autoCapitalize="none"
@@ -64,12 +66,12 @@ export default function SignInScreen() {
           </View>
 
           <View style={styles.field}>
-            <Text style={styles.label}>Password</Text>
+            <Text style={styles.label}>{t('sign_in.password_label')}</Text>
             <TextInput
               style={styles.input}
               value={password}
               onChangeText={setPassword}
-              placeholder="Your password"
+              placeholder={t('sign_in.password_placeholder')}
               placeholderTextColor="rgba(255,255,255,0.3)"
               secureTextEntry
               returnKeyType="done"
@@ -85,12 +87,12 @@ export default function SignInScreen() {
         >
           {loading
             ? <ActivityIndicator color={Colors.white} />
-            : <Text style={styles.primaryBtnText}>Sign In</Text>
+            : <Text style={styles.primaryBtnText}>{t('sign_in.submit')}</Text>
           }
         </Pressable>
 
         <Pressable style={styles.switchLink} onPress={() => router.replace('/sign-up')}>
-          <Text style={styles.switchText}>New to Rwendo? <Text style={styles.switchTextBold}>Create account</Text></Text>
+          <Text style={styles.switchText}>{t('sign_in.switch_text')}<Text style={styles.switchTextBold}>{t('sign_in.switch_action')}</Text></Text>
         </Pressable>
       </KeyboardAwareScrollView>
     </LinearGradient>

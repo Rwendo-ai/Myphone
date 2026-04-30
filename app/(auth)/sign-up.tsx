@@ -3,6 +3,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../lib/AuthContext';
 import { Colors } from '../../constants/colors';
@@ -31,6 +32,7 @@ function CheckBox({ checked, onPress, children }: { checked: boolean; onPress: (
 }
 
 export default function SignUpScreen() {
+  const { t } = useTranslation('auth');
   const { signUp } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -61,7 +63,7 @@ export default function SignUpScreen() {
     const { error } = await signUp(email.trim(), password, username.trim());
     if (error) {
       setLoading(false);
-      Alert.alert('Sign up failed', error);
+      Alert.alert(t('sign_up.fail_title'), error);
       return;
     }
     // Record consent timestamps
@@ -80,8 +82,8 @@ export default function SignUpScreen() {
     } catch {}
     setLoading(false);
     Alert.alert(
-      'Check your email',
-      `We sent a confirmation link to ${email.trim()}. Click it to activate your account, then sign in.`,
+      t('sign_up.check_email_title'),
+      t('sign_up.check_email_body', { email: email.trim() }),
       [{ text: 'OK', onPress: () => router.replace('/sign-in') }]
     );
   };
@@ -96,21 +98,21 @@ export default function SignUpScreen() {
         extraScrollHeight={32}
       >
         <Pressable style={styles.back} onPress={() => router.back()}>
-          <Text style={styles.backText}>← Back</Text>
+          <Text style={styles.backText}>{t('back')}</Text>
         </Pressable>
 
-        <Text style={styles.title}>Create account</Text>
-        <Text style={styles.subtitle}>Join Rwendo and start your journey</Text>
+        <Text style={styles.title}>{t('sign_up.title')}</Text>
+        <Text style={styles.subtitle}>{t('sign_up.subtitle')}</Text>
 
         {/* Fields */}
         <View style={styles.form}>
           <View style={styles.field}>
-            <Text style={styles.label}>Display name</Text>
+            <Text style={styles.label}>{t('sign_up.username_label')}</Text>
             <TextInput
               style={styles.input}
               value={username}
               onChangeText={setUsername}
-              placeholder="What should Rwen call you?"
+              placeholder={t('sign_up.username_placeholder')}
               placeholderTextColor="rgba(255,255,255,0.3)"
               autoCapitalize="words"
               autoCorrect={false}
@@ -119,12 +121,12 @@ export default function SignUpScreen() {
           </View>
 
           <View style={styles.field}>
-            <Text style={styles.label}>Email</Text>
+            <Text style={styles.label}>{t('sign_up.email_label')}</Text>
             <TextInput
               style={styles.input}
               value={email}
               onChangeText={setEmail}
-              placeholder="you@example.com"
+              placeholder={t('sign_up.email_placeholder')}
               placeholderTextColor="rgba(255,255,255,0.3)"
               keyboardType="email-address"
               autoCapitalize="none"
@@ -134,28 +136,28 @@ export default function SignUpScreen() {
           </View>
 
           <View style={styles.field}>
-            <Text style={styles.label}>Password</Text>
+            <Text style={styles.label}>{t('sign_up.password_label')}</Text>
             <View style={styles.passwordRow}>
               <TextInput
                 style={[styles.input, { flex: 1 }]}
                 value={password}
                 onChangeText={setPassword}
-                placeholder="Min. 8 characters"
+                placeholder={t('sign_up.password_placeholder')}
                 placeholderTextColor="rgba(255,255,255,0.3)"
                 secureTextEntry={!showPassword}
                 returnKeyType="done"
               />
               <Pressable onPress={() => setShowPassword(v => !v)} style={styles.showBtn}>
-                <Text style={styles.showBtnText}>{showPassword ? 'Hide' : 'Show'}</Text>
+                <Text style={styles.showBtnText}>{showPassword ? t('sign_up.hide') : t('sign_up.show')}</Text>
               </Pressable>
             </View>
             {password.length > 0 && (
               <View style={styles.rules}>
-                <PasswordRule met={hasLength} text="At least 8 characters" />
-                <PasswordRule met={hasUpper} text="One uppercase letter (A-Z)" />
-                <PasswordRule met={hasLower} text="One lowercase letter (a-z)" />
-                <PasswordRule met={hasNumber} text="One number (0-9)" />
-                <PasswordRule met={hasSpecial} text="One special character (!@#$...)" />
+                <PasswordRule met={hasLength}  text={t('sign_up.rules.length')} />
+                <PasswordRule met={hasUpper}   text={t('sign_up.rules.upper')} />
+                <PasswordRule met={hasLower}   text={t('sign_up.rules.lower')} />
+                <PasswordRule met={hasNumber}  text={t('sign_up.rules.number')} />
+                <PasswordRule met={hasSpecial} text={t('sign_up.rules.special')} />
               </View>
             )}
           </View>
@@ -163,37 +165,37 @@ export default function SignUpScreen() {
 
         {/* Consent checkboxes */}
         <View style={styles.consents}>
-          <Text style={styles.consentsTitle}>Before you continue</Text>
+          <Text style={styles.consentsTitle}>{t('sign_up.consents_title')}</Text>
 
           <CheckBox checked={agreeTerms} onPress={() => setAgreeTerms(v => !v)}>
             <Text style={styles.checkText}>
-              I have read and agree to the{' '}
+              {t('sign_up.consent_terms_pre')}
               <Text style={styles.link} onPress={() => router.push('/(legal)/terms-of-service')}>
-                Terms of Service
+                {t('sign_up.consent_terms_link')}
               </Text>
-              , including the arbitration clause and class action waiver in Section 15
+              {t('sign_up.consent_terms_post')}
             </Text>
           </CheckBox>
 
           <CheckBox checked={agreePrivacy} onPress={() => setAgreePrivacy(v => !v)}>
             <Text style={styles.checkText}>
-              I have read and agree to the{' '}
+              {t('sign_up.consent_privacy_pre')}
               <Text style={styles.link} onPress={() => router.push('/(legal)/privacy-policy')}>
-                Privacy Policy
+                {t('sign_up.consent_privacy_link')}
               </Text>
-              , including how my data is processed by Anthropic (Claude AI) and ElevenLabs (voice)
+              {t('sign_up.consent_privacy_post')}
             </Text>
           </CheckBox>
 
           <CheckBox checked={confirmAge} onPress={() => setConfirmAge(v => !v)}>
             <Text style={styles.checkText}>
-              I confirm I am 13 years of age or older (or a parent/guardian is accepting these terms on behalf of a minor aged 13-17)
+              {t('sign_up.consent_age')}
             </Text>
           </CheckBox>
 
           <CheckBox checked={confirmAI} onPress={() => setConfirmAI(v => !v)}>
             <Text style={styles.checkText}>
-              I understand that Rwen is an artificial intelligence (AI), not a human, and that AI responses may contain errors and are not professional advice
+              {t('sign_up.consent_ai')}
             </Text>
           </CheckBox>
         </View>
@@ -206,17 +208,17 @@ export default function SignUpScreen() {
         >
           {loading
             ? <ActivityIndicator color={Colors.white} />
-            : <Text style={styles.primaryBtnText}>Create Account</Text>
+            : <Text style={styles.primaryBtnText}>{t('sign_up.submit')}</Text>
           }
         </Pressable>
 
         {!allConsentsGiven && (
-          <Text style={styles.consentHint}>Please agree to all items above to continue</Text>
+          <Text style={styles.consentHint}>{t('sign_up.consent_hint')}</Text>
         )}
 
         <Pressable style={styles.switchLink} onPress={() => router.replace('/sign-in')}>
           <Text style={styles.switchText}>
-            Already have an account? <Text style={styles.switchTextBold}>Sign in</Text>
+            {t('sign_up.switch_text')}<Text style={styles.switchTextBold}>{t('sign_up.switch_action')}</Text>
           </Text>
         </Pressable>
       </KeyboardAwareScrollView>

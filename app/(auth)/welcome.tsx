@@ -1,11 +1,13 @@
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import RwenImage from '../../components/rwen/RwenImage';
 import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
 
 export default function WelcomeScreen() {
+  const { t } = useTranslation('auth');
   return (
     <LinearGradient colors={[Colors.primary, '#0D2140']} style={styles.container}>
       <View style={styles.rwenSection}>
@@ -13,16 +15,16 @@ export default function WelcomeScreen() {
       </View>
 
       <View style={styles.bottom}>
-        <Text style={styles.title}>Rwendo</Text>
-        <Text style={styles.subtitle}>Every journey begins with hello</Text>
-        <Text style={styles.tagline}>Learn any language with Rwen, your AI companion</Text>
+        <Text style={styles.title}>{t('welcome.title')}</Text>
+        <Text style={styles.subtitle}>{t('welcome.subtitle')}</Text>
+        <Text style={styles.tagline}>{t('welcome.tagline')}</Text>
 
         <View style={styles.actions}>
           <Pressable style={styles.primaryButton} onPress={() => router.push('/sign-up')}>
-            <Text style={styles.primaryButtonText}>Get Started</Text>
+            <Text style={styles.primaryButtonText}>{t('welcome.get_started')}</Text>
           </Pressable>
           <Pressable style={styles.secondaryButton} onPress={() => router.push('/sign-in')}>
-            <Text style={styles.secondaryButtonText}>I already have an account</Text>
+            <Text style={styles.secondaryButtonText}>{t('welcome.have_account')}</Text>
           </Pressable>
         </View>
       </View>

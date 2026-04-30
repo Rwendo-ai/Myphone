@@ -2,6 +2,7 @@ import { View, Text, StyleSheet, Pressable, ScrollView, TextInput, ActivityIndic
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import { useState, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import RwenImage from '../../components/rwen/RwenImage';
 import { useAuth } from '../../lib/AuthContext';
 import { useSettings, RWEN_VOICES, RwenVoiceKey } from '../../lib/SettingsContext';
@@ -17,96 +18,39 @@ const COMPANION_STEPS: Step[] = ['language','gender','age','path','companion_typ
 const TRAVEL_STEPS: Step[]    = ['language','gender','age','path','travel_destination','travel_when','travel_purpose','voice','complete'];
 const BASE_STEPS: Step[]      = ['language','gender','age','path'];
 
-const LANGUAGES = [
-  { id: 'english', name: 'English', nativeName: 'English', flag: '🇬🇧' },
-  { id: 'shona',   name: 'Shona',   nativeName: 'ChiShona', flag: '🇿🇼' },
-];
-const GENDERS = [
-  { id: 'male',             label: 'Male',             emoji: '👨' },
-  { id: 'female',           label: 'Female',           emoji: '👩' },
-  { id: 'nonbinary',        label: 'Non-binary',       emoji: '🧑' },
-  { id: 'prefer_not_to_say',label: 'Prefer not to say',emoji: '🤐' },
-];
-const APP_PATHS = [
-  { id: 'learn'     as AppPath, emoji: '📚', title: 'Learn a Language',   desc: 'Structured lessons, XP, streaks — reach A2 fluency with Rwen as your guide.', available: true },
-  { id: 'companion' as AppPath, emoji: '🦎', title: 'Create an AI Friend', desc: 'Rwen becomes your personal companion — talk, laugh, and grow together.', available: true },
-  { id: 'travel'    as AppPath, emoji: '✈️', title: 'Travel Mode',         desc: 'Phrasebook, cultural guide, and Zimbabwe navigation.', available: false },
-];
-const ABILITIES = [
-  { id: 'beginner',       label: 'Complete beginner',  desc: 'I know zero words' },
-  { id: 'basics',         label: 'I know a few words', desc: 'Hello, goodbye, maybe a bit more' },
-  { id: 'conversational', label: 'Some knowledge',     desc: 'I can have simple exchanges' },
-  { id: 'intermediate',   label: 'Intermediate',       desc: 'I can hold a conversation but make mistakes' },
-];
-const LEARN_REASONS = [
-  { id: 'family',   label: 'Connect with family or partner' },
-  { id: 'travel',   label: 'Visiting Zimbabwe / travelling' },
-  { id: 'culture',  label: 'Cultural interest or heritage' },
-  { id: 'work',     label: 'Work or business' },
-  { id: 'study',    label: 'Academic study' },
-  { id: 'fun',      label: 'Fun and personal challenge' },
-  { id: 'heritage', label: 'Grew up with it but want to improve' },
-];
-const TIME_OPTIONS = [
-  { id: '5min',  label: '5 minutes a day',   desc: 'Quick learner' },
-  { id: '10min', label: '10 minutes a day',  desc: 'Steady pace' },
-  { id: '20min', label: '20 minutes a day',  desc: 'Serious student' },
-  { id: '30min', label: '30+ minutes a day', desc: 'Fully committed' },
-];
-const CHALLENGES = [
-  { id: 'pronunciation', label: 'Pronunciation', desc: "Can't make the sounds" },
-  { id: 'grammar',       label: 'Grammar',       desc: 'The rules confuse me' },
-  { id: 'vocabulary',    label: 'Vocabulary',    desc: 'I forget words quickly' },
-  { id: 'confidence',    label: 'Confidence',    desc: "I'm scared to speak" },
-  { id: 'consistency',   label: 'Consistency',   desc: 'I always give up' },
-];
-const COMPANION_TYPES = [
-  { id: 'friend',  label: 'A friend',          desc: 'Someone to talk to and share my day', emoji: '🤝' },
-  { id: 'support', label: 'Emotional support', desc: 'A patient listener for hard days',    emoji: '💙' },
-  { id: 'study',   label: 'Study buddy',       desc: 'Keep me accountable and learning',    emoji: '📖' },
-  { id: 'work',    label: 'Work support',      desc: 'Think through professional challenges',emoji: '💼' },
-];
-const COMPANION_TOPICS = [
-  { id: 'daily_life', label: 'Daily life & what happened today' },
-  { id: 'goals',      label: 'Goals and ambitions' },
-  { id: 'humour',     label: 'Things that made me laugh' },
-  { id: 'culture',    label: 'Music, movies, culture' },
-  { id: 'thoughts',   label: 'Thoughts and opinions' },
-  { id: 'language',   label: 'Language practice' },
-  { id: 'everything', label: 'Everything — no preference' },
-];
-const TRAVEL_DESTS = [
-  { id: 'harare',    label: 'Harare',              emoji: '🏙️' },
-  { id: 'victoria',  label: 'Victoria Falls',      emoji: '🌊' },
-  { id: 'bulawayo',  label: 'Bulawayo',            emoji: '🏛️' },
-  { id: 'great_zim', label: 'Great Zimbabwe',      emoji: '🗿' },
-  { id: 'hwange',    label: 'Hwange National Park',emoji: '🦁' },
-  { id: 'multiple',  label: 'Multiple places',     emoji: '🗺️' },
-];
-const TRAVEL_WHEN = [
-  { id: '1month',   label: 'Within 1 month' },
-  { id: '3months',  label: '1–3 months' },
-  { id: '6months',  label: '3–6 months' },
-  { id: 'planning', label: '6+ months / still planning' },
-];
-const TRAVEL_PURPOSES = [
-  { id: 'tourism',  label: 'Tourism & sightseeing' },
-  { id: 'family',   label: 'Family visit' },
-  { id: 'business', label: 'Business' },
-  { id: 'safari',   label: 'Safari & wildlife' },
-  { id: 'volunteer',label: 'Volunteering' },
-  { id: 'study',    label: 'Study or research' },
-];
+// Option IDs + emoji metadata. Human-readable labels live in locales/<lang>/auth.json.
+const LANGUAGE_IDS = ['english', 'shona'] as const;
+const LANGUAGE_FLAGS: Record<string, string> = { english: '🇬🇧', shona: '🇿🇼' };
+
+const GENDER_IDS = ['male', 'female', 'nonbinary', 'prefer_not_to_say'] as const;
+const GENDER_EMOJIS: Record<string, string> = { male: '👨', female: '👩', nonbinary: '🧑', prefer_not_to_say: '🤐' };
+
+const APP_PATH_IDS: AppPath[] = ['learn', 'companion', 'travel'];
+const APP_PATH_EMOJIS: Record<AppPath, string> = { learn: '📚', companion: '🦎', travel: '✈️' };
+const APP_PATH_AVAILABLE: Record<AppPath, boolean> = { learn: true, companion: true, travel: false };
+
+const ABILITY_IDS = ['beginner', 'basics', 'conversational', 'intermediate'] as const;
+const LEARN_REASON_IDS = ['family', 'travel', 'culture', 'work', 'study', 'fun', 'heritage'] as const;
+const TIME_OPTION_IDS = ['5min', '10min', '20min', '30min'] as const;
+const CHALLENGE_IDS = ['pronunciation', 'grammar', 'vocabulary', 'confidence', 'consistency'] as const;
+const COMPANION_TYPE_IDS = ['friend', 'support', 'study', 'work'] as const;
+const COMPANION_TYPE_EMOJIS: Record<string, string> = { friend: '🤝', support: '💙', study: '📖', work: '💼' };
+const COMPANION_TOPIC_IDS = ['daily_life', 'goals', 'humour', 'culture', 'thoughts', 'language', 'everything'] as const;
+const TRAVEL_DEST_IDS = ['harare', 'victoria', 'bulawayo', 'great_zim', 'hwange', 'multiple'] as const;
+const TRAVEL_DEST_EMOJIS: Record<string, string> = { harare: '🏙️', victoria: '🌊', bulawayo: '🏛️', great_zim: '🗿', hwange: '🦁', multiple: '🗺️' };
+const TRAVEL_WHEN_IDS = ['1month', '3months', '6months', 'planning'] as const;
+const TRAVEL_PURPOSE_IDS = ['tourism', 'family', 'business', 'safari', 'volunteer', 'study'] as const;
 
 // ── Sub-components ────────────────────────────────────────────────────────────
 
 function ProgressHeader({ current, total, title, sub }: { current: number; total: number; title: string; sub?: string }) {
+  const { t } = useTranslation('auth');
   return (
     <View style={styles.stepHeader}>
       <View style={styles.progressBg}>
         <View style={[styles.progressFill, { width: `${(current / total) * 100}%` }]} />
       </View>
-      <Text style={styles.stepCount}>{current} of {total}</Text>
+      <Text style={styles.stepCount}>{t('onboarding.step_count', { current, total })}</Text>
       <Text style={styles.title}>{title}</Text>
       {sub && <Text style={styles.sub}>{sub}</Text>}
     </View>
@@ -137,14 +81,15 @@ function Chip({ label, selected, onPress }: { label: string; selected: boolean; 
   );
 }
 
-function Nav({ onBack, onNext, nextLabel = 'Continue →', disabled }: {
+function Nav({ onBack, onNext, nextLabel, disabled }: {
   onBack?: () => void; onNext: () => void; nextLabel?: string; disabled?: boolean;
 }) {
+  const { t } = useTranslation('auth');
   return (
     <View style={styles.nav}>
-      {onBack && <Pressable style={styles.navBack} onPress={onBack}><Text style={styles.navBackText}>← Back</Text></Pressable>}
+      {onBack && <Pressable style={styles.navBack} onPress={onBack}><Text style={styles.navBackText}>{t('back')}</Text></Pressable>}
       <Pressable style={[styles.navNext, disabled && styles.navNextDisabled, !onBack && { flex: 1 }]} onPress={onNext} disabled={disabled}>
-        <Text style={styles.navNextText}>{nextLabel}</Text>
+        <Text style={styles.navNextText}>{nextLabel ?? t('continue')}</Text>
       </Pressable>
     </View>
   );
@@ -153,6 +98,7 @@ function Nav({ onBack, onNext, nextLabel = 'Continue →', disabled }: {
 // ── Main ──────────────────────────────────────────────────────────────────────
 
 export default function OnboardingScreen() {
+  const { t } = useTranslation('auth');
   const { user, setOnboardingComplete } = useAuth();
   const { setActivePack, setRwenVoice } = useSettings();
 
@@ -204,7 +150,7 @@ export default function OnboardingScreen() {
 
   const handleAgeNext = () => {
     const age = getAge();
-    if (age === null || age > 120) { setAgeError('Please enter a valid date of birth.'); return; }
+    if (age === null || age > 120) { setAgeError(t('onboarding.date.error_invalid')); return; }
     setAgeError('');
     // Stage 1: 18+ required. Stage 2 will add parental consent for 13-17 (AU: 16+).
     if (age < 18) { setStep('age_blocked'); return; }
@@ -269,25 +215,29 @@ export default function OnboardingScreen() {
 
         {step === 'language' && (
           <View style={styles.block}>
-            <ProgressHeader current={1} total={total} title="What language do you speak?" sub="This sets your app language" />
-            {LANGUAGES.map(l => <Card key={l.id} emoji={l.flag} label={l.name} desc={l.nativeName}
-              selected={appLanguage === l.id} onPress={() => { setAppLanguage(l.id); goNext(); }} />)}
+            <ProgressHeader current={1} total={total} title={t('onboarding.step_language.title')} sub={t('onboarding.step_language.sub')} />
+            {LANGUAGE_IDS.map(id => <Card key={id} emoji={LANGUAGE_FLAGS[id]} label={t(`onboarding.languages.${id}.name`)} desc={t(`onboarding.languages.${id}.nativeName`)}
+              selected={appLanguage === id} onPress={() => { setAppLanguage(id); goNext(); }} />)}
           </View>
         )}
 
         {step === 'gender' && (
           <View style={styles.block}>
-            <ProgressHeader current={stepIndex} total={total} title="How do you identify?" sub="Personalises Rwen's responses" />
-            {GENDERS.map(g => <Card key={g.id} emoji={g.emoji} label={g.label} selected={gender === g.id} onPress={() => setGender(g.id)} />)}
+            <ProgressHeader current={stepIndex} total={total} title={t('onboarding.step_gender.title')} sub={t('onboarding.step_gender.sub')} />
+            {GENDER_IDS.map(id => <Card key={id} emoji={GENDER_EMOJIS[id]} label={t(`onboarding.genders.${id}`)} selected={gender === id} onPress={() => setGender(id)} />)}
             <Nav onBack={goBack} onNext={() => goNext()} disabled={!gender} />
           </View>
         )}
 
         {step === 'age' && (
           <View style={styles.block}>
-            <ProgressHeader current={stepIndex} total={total} title="When were you born?" sub="You must be 13 or older to use Rwendo" />
+            <ProgressHeader current={stepIndex} total={total} title={t('onboarding.step_age.title')} sub={t('onboarding.step_age.sub')} />
             <View style={styles.dateRow}>
-              {[{v:birthDay,s:setBirthDay,p:'DD',l:'Day',m:2},{v:birthMonth,s:setBirthMonth,p:'MM',l:'Month',m:2},{v:birthYear,s:setBirthYear,p:'YYYY',l:'Year',m:4,flex:2}].map((f, i) => (
+              {[
+                { v: birthDay,   s: setBirthDay,   p: t('onboarding.date.day_placeholder'),   l: t('onboarding.date.day'),   m: 2 },
+                { v: birthMonth, s: setBirthMonth, p: t('onboarding.date.month_placeholder'), l: t('onboarding.date.month'), m: 2 },
+                { v: birthYear,  s: setBirthYear,  p: t('onboarding.date.year_placeholder'),  l: t('onboarding.date.year'),  m: 4, flex: 2 },
+              ].map((f, i) => (
                 <View key={i} style={[styles.dateField, f.flex ? { flex: f.flex } : {}]}>
                   <Text style={styles.dateLabel}>{f.l}</Text>
                   <TextInput style={styles.dateInput} placeholder={f.p} placeholderTextColor="rgba(255,255,255,0.3)"
@@ -296,7 +246,7 @@ export default function OnboardingScreen() {
               ))}
             </View>
             {ageError ? <Text style={styles.error}>{ageError}</Text> : null}
-            <Text style={styles.ageNote}>Users under 13 cannot access Rwendo. Users 13–17 have some features restricted.</Text>
+            <Text style={styles.ageNote}>{t('onboarding.date.note')}</Text>
             <Nav onBack={goBack} onNext={handleAgeNext} disabled={!birthDay || !birthMonth || !birthYear} />
           </View>
         )}
@@ -305,27 +255,21 @@ export default function OnboardingScreen() {
           <View style={styles.block}>
             <View style={styles.blockedCard}>
               <RwenImage pose="sad" size={100} />
-              <Text style={styles.blockedTitle}>You need to be 18+</Text>
+              <Text style={styles.blockedTitle}>{t('onboarding.blocked.title')}</Text>
               <Text style={styles.blockedText}>
-                Rwendo currently requires users to be 18 or older to access all features — including the AI companion.
+                {t('onboarding.blocked.body')}
               </Text>
               <View style={styles.blockedBox}>
-                <Text style={styles.blockedBoxTitle}>📋 Family Plan — Coming Soon</Text>
+                <Text style={styles.blockedBoxTitle}>{t('onboarding.blocked.family_plan_title')}</Text>
                 <Text style={styles.blockedBoxText}>
-                  We're building a Family Plan that allows users aged 13–17 (or 16+ in Australia) to access Rwendo with parental consent.{'\n\n'}
-                  Here's how it will work:{'\n'}
-                  • Parent downloads Rwendo{'\n'}
-                  • Parent completes identity verification{'\n'}
-                  • Parent adds your email and generates a code{'\n'}
-                  • You enter the code to access your account{'\n'}
-                  • Parent can review your activity at any time
+                  {t('onboarding.blocked.family_plan_body')}
                 </Text>
               </View>
               <Pressable style={styles.blockedBack} onPress={() => { setBirthDay(''); setBirthMonth(''); setBirthYear(''); setStep('age'); }}>
-                <Text style={styles.blockedBackText}>← Re-enter date of birth</Text>
+                <Text style={styles.blockedBackText}>{t('onboarding.blocked.reenter_dob')}</Text>
               </Pressable>
               <Pressable style={styles.blockedSignOut} onPress={() => { supabase.auth.signOut(); router.replace('/welcome'); }}>
-                <Text style={styles.blockedSignOutText}>Exit Rwendo</Text>
+                <Text style={styles.blockedSignOutText}>{t('onboarding.blocked.exit')}</Text>
               </Pressable>
             </View>
           </View>
@@ -333,27 +277,29 @@ export default function OnboardingScreen() {
 
         {step === 'path' && (
           <View style={styles.block}>
-            <ProgressHeader current={stepIndex} total={total} title="What brings you to Rwendo?" />
-            {APP_PATHS.map(p => <Card key={p.id} emoji={p.emoji} label={p.title} desc={p.desc}
-              selected={path === p.id} disabled={!p.available}
-              onPress={() => { if (!p.available) return; setPath(p.id); goNext(p.id === 'learn' ? 'learn_ability' : p.id === 'companion' ? 'companion_type' : 'travel_destination'); }} />)}
+            <ProgressHeader current={stepIndex} total={total} title={t('onboarding.step_path.title')} />
+            {APP_PATH_IDS.map(id => (
+              <Card key={id} emoji={APP_PATH_EMOJIS[id]} label={t(`onboarding.paths.${id}.title`)} desc={t(`onboarding.paths.${id}.desc`)}
+                selected={path === id} disabled={!APP_PATH_AVAILABLE[id]}
+                onPress={() => { if (!APP_PATH_AVAILABLE[id]) return; setPath(id); goNext(id === 'learn' ? 'learn_ability' : id === 'companion' ? 'companion_type' : 'travel_destination'); }} />
+            ))}
           </View>
         )}
 
         {step === 'learn_ability' && (
           <View style={styles.block}>
-            <ProgressHeader current={stepIndex} total={total} title="How much Shona do you know?" />
-            {ABILITIES.map(a => <Card key={a.id} label={a.label} desc={a.desc} selected={ability === a.id} onPress={() => setAbility(a.id)} />)}
+            <ProgressHeader current={stepIndex} total={total} title={t('onboarding.step_learn_ability.title')} />
+            {ABILITY_IDS.map(id => <Card key={id} label={t(`onboarding.abilities.${id}.label`)} desc={t(`onboarding.abilities.${id}.desc`)} selected={ability === id} onPress={() => setAbility(id)} />)}
             <Nav onBack={goBack} onNext={() => goNext()} disabled={!ability} />
           </View>
         )}
 
         {step === 'learn_reasons' && (
           <View style={styles.block}>
-            <ProgressHeader current={stepIndex} total={total} title="Why do you want to learn Shona?" sub="Select all that apply" />
+            <ProgressHeader current={stepIndex} total={total} title={t('onboarding.step_learn_reasons.title')} sub={t('onboarding.step_learn_reasons.sub')} />
             <View style={styles.chips}>
-              {LEARN_REASONS.map(r => <Chip key={r.id} label={r.label} selected={reasons.includes(r.id)}
-                onPress={() => setReasons(p => p.includes(r.id) ? p.filter(x => x !== r.id) : [...p, r.id])} />)}
+              {LEARN_REASON_IDS.map(id => <Chip key={id} label={t(`onboarding.learn_reasons.${id}`)} selected={reasons.includes(id)}
+                onPress={() => setReasons(p => p.includes(id) ? p.filter(x => x !== id) : [...p, id])} />)}
             </View>
             <Nav onBack={goBack} onNext={() => goNext()} disabled={reasons.length === 0} />
           </View>
@@ -361,45 +307,45 @@ export default function OnboardingScreen() {
 
         {step === 'learn_time' && (
           <View style={styles.block}>
-            <ProgressHeader current={stepIndex} total={total} title="How much time can you give each day?" />
-            {TIME_OPTIONS.map(t => <Card key={t.id} label={t.label} desc={t.desc} selected={timeCommit === t.id} onPress={() => setTimeCommit(t.id)} />)}
+            <ProgressHeader current={stepIndex} total={total} title={t('onboarding.step_learn_time.title')} />
+            {TIME_OPTION_IDS.map(id => <Card key={id} label={t(`onboarding.time_options.${id}.label`)} desc={t(`onboarding.time_options.${id}.desc`)} selected={timeCommit === id} onPress={() => setTimeCommit(id)} />)}
             <Nav onBack={goBack} onNext={() => goNext()} disabled={!timeCommit} />
           </View>
         )}
 
         {step === 'learn_challenge' && (
           <View style={styles.block}>
-            <ProgressHeader current={stepIndex} total={total} title="What worries you most?" sub="Rwen will focus here" />
-            {CHALLENGES.map(c => <Card key={c.id} label={c.label} desc={c.desc} selected={challenge === c.id} onPress={() => setChallenge(c.id)} />)}
+            <ProgressHeader current={stepIndex} total={total} title={t('onboarding.step_learn_challenge.title')} sub={t('onboarding.step_learn_challenge.sub')} />
+            {CHALLENGE_IDS.map(id => <Card key={id} label={t(`onboarding.challenges.${id}.label`)} desc={t(`onboarding.challenges.${id}.desc`)} selected={challenge === id} onPress={() => setChallenge(id)} />)}
             <Nav onBack={goBack} onNext={() => goNext()} disabled={!challenge} />
           </View>
         )}
 
         {step === 'learn_connection' && (
           <View style={styles.block}>
-            <ProgressHeader current={stepIndex} total={total} title="Is there someone specific you want to speak Shona with?" sub="Optional — makes Rwen's support much more personal" />
+            <ProgressHeader current={stepIndex} total={total} title={t('onboarding.step_learn_connection.title')} sub={t('onboarding.step_learn_connection.sub')} />
             <TextInput style={styles.textarea}
-              placeholder={'e.g. "My grandmother in Harare"\n"My partner\'s family"\n\nLeave blank to skip.'}
+              placeholder={t('onboarding.connection_placeholder')}
               placeholderTextColor="rgba(255,255,255,0.3)"
               value={connection} onChangeText={setConnection} multiline numberOfLines={4} />
-            <Nav onBack={goBack} onNext={() => goNext()} nextLabel={connection ? 'Continue →' : 'Skip →'} />
+            <Nav onBack={goBack} onNext={() => goNext()} nextLabel={connection ? t('continue') : t('skip')} />
           </View>
         )}
 
         {step === 'companion_type' && (
           <View style={styles.block}>
-            <ProgressHeader current={stepIndex} total={total} title="What kind of companion do you need?" />
-            {COMPANION_TYPES.map(c => <Card key={c.id} emoji={c.emoji} label={c.label} desc={c.desc} selected={companionType === c.id} onPress={() => setCompanionType(c.id)} />)}
+            <ProgressHeader current={stepIndex} total={total} title={t('onboarding.step_companion_type.title')} />
+            {COMPANION_TYPE_IDS.map(id => <Card key={id} emoji={COMPANION_TYPE_EMOJIS[id]} label={t(`onboarding.companion_types.${id}.label`)} desc={t(`onboarding.companion_types.${id}.desc`)} selected={companionType === id} onPress={() => setCompanionType(id)} />)}
             <Nav onBack={goBack} onNext={() => goNext()} disabled={!companionType} />
           </View>
         )}
 
         {step === 'companion_topics' && (
           <View style={styles.block}>
-            <ProgressHeader current={stepIndex} total={total} title="What do you want to talk about?" sub="Select all that apply" />
+            <ProgressHeader current={stepIndex} total={total} title={t('onboarding.step_companion_topics.title')} sub={t('onboarding.step_companion_topics.sub')} />
             <View style={styles.chips}>
-              {COMPANION_TOPICS.map(t => <Chip key={t.id} label={t.label} selected={compTopics.includes(t.id)}
-                onPress={() => setCompTopics(p => p.includes(t.id) ? p.filter(x => x !== t.id) : [...p, t.id])} />)}
+              {COMPANION_TOPIC_IDS.map(id => <Chip key={id} label={t(`onboarding.companion_topics.${id}`)} selected={compTopics.includes(id)}
+                onPress={() => setCompTopics(p => p.includes(id) ? p.filter(x => x !== id) : [...p, id])} />)}
             </View>
             <Nav onBack={goBack} onNext={() => goNext()} disabled={compTopics.length === 0} />
           </View>
@@ -407,9 +353,9 @@ export default function OnboardingScreen() {
 
         {step === 'travel_destination' && (
           <View style={styles.block}>
-            <ProgressHeader current={stepIndex} total={total} title="Where in Zimbabwe are you heading?" />
+            <ProgressHeader current={stepIndex} total={total} title={t('onboarding.step_travel_destination.title')} />
             <View style={styles.chips}>
-              {TRAVEL_DESTS.map(d => <Chip key={d.id} label={`${d.emoji} ${d.label}`} selected={travelDest === d.id} onPress={() => setTravelDest(d.id)} />)}
+              {TRAVEL_DEST_IDS.map(id => <Chip key={id} label={`${TRAVEL_DEST_EMOJIS[id]} ${t(`onboarding.travel_dests.${id}`)}`} selected={travelDest === id} onPress={() => setTravelDest(id)} />)}
             </View>
             <Nav onBack={goBack} onNext={() => goNext()} disabled={!travelDest} />
           </View>
@@ -417,18 +363,18 @@ export default function OnboardingScreen() {
 
         {step === 'travel_when' && (
           <View style={styles.block}>
-            <ProgressHeader current={stepIndex} total={total} title="When are you travelling?" />
-            {TRAVEL_WHEN.map(w => <Card key={w.id} label={w.label} selected={travelWhen === w.id} onPress={() => setTravelWhen(w.id)} />)}
+            <ProgressHeader current={stepIndex} total={total} title={t('onboarding.step_travel_when.title')} />
+            {TRAVEL_WHEN_IDS.map(id => <Card key={id} label={t(`onboarding.travel_when.${id}`)} selected={travelWhen === id} onPress={() => setTravelWhen(id)} />)}
             <Nav onBack={goBack} onNext={() => goNext()} disabled={!travelWhen} />
           </View>
         )}
 
         {step === 'travel_purpose' && (
           <View style={styles.block}>
-            <ProgressHeader current={stepIndex} total={total} title="Purpose of your trip?" sub="Select all that apply" />
+            <ProgressHeader current={stepIndex} total={total} title={t('onboarding.step_travel_purpose.title')} sub={t('onboarding.step_travel_purpose.sub')} />
             <View style={styles.chips}>
-              {TRAVEL_PURPOSES.map(p => <Chip key={p.id} label={p.label} selected={travelPurposes.includes(p.id)}
-                onPress={() => setTravelPurposes(prev => prev.includes(p.id) ? prev.filter(x => x !== p.id) : [...prev, p.id])} />)}
+              {TRAVEL_PURPOSE_IDS.map(id => <Chip key={id} label={t(`onboarding.travel_purposes.${id}`)} selected={travelPurposes.includes(id)}
+                onPress={() => setTravelPurposes(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id])} />)}
             </View>
             <Nav onBack={goBack} onNext={() => goNext()} disabled={travelPurposes.length === 0} />
           </View>
@@ -436,9 +382,11 @@ export default function OnboardingScreen() {
 
         {step === 'voice' && (
           <View style={styles.block}>
-            <ProgressHeader current={stepIndex} total={total} title="Choose Rwen's voice" sub="Change anytime in Profile" />
-            {(Object.entries(RWEN_VOICES) as [RwenVoiceKey, typeof RWEN_VOICES[RwenVoiceKey]][]).map(([k, v]) => (
-              <Card key={k} emoji={k.startsWith('female') ? '👩' : '👨'} label={v.name} desc={v.description}
+            <ProgressHeader current={stepIndex} total={total} title={t('onboarding.step_voice.title')} sub={t('onboarding.step_voice.sub')} />
+            {(Object.keys(RWEN_VOICES) as RwenVoiceKey[]).map((k) => (
+              <Card key={k} emoji={k.startsWith('female') ? '👩' : '👨'}
+                label={t(`profile.voices.${k}.name`, { ns: 'common' })}
+                desc={t(`profile.voices.${k}.description`, { ns: 'common' })}
                 selected={voiceKey === k} onPress={() => setVoiceKey(k)} />
             ))}
             <Nav onBack={goBack} onNext={() => goNext()} />
@@ -449,18 +397,18 @@ export default function OnboardingScreen() {
           <View style={styles.block}>
             <View style={styles.completeCard}>
               <Text style={styles.completeEmoji}>🎉</Text>
-              <Text style={styles.completeTitle}>You're all set!</Text>
+              <Text style={styles.completeTitle}>{t('onboarding.complete.title')}</Text>
               <Text style={styles.completeText}>
                 {path === 'companion'
-                  ? "Rwen is ready to meet you. Your journey together starts now."
+                  ? t('onboarding.complete.text_companion')
                   : path === 'learn'
-                  ? "Your Shona journey begins. Rwen will be with you every step."
-                  : "Your Zimbabwe adventure starts here. Rwen is ready."}
+                  ? t('onboarding.complete.text_learn')
+                  : t('onboarding.complete.text_travel')}
               </Text>
               <Pressable style={[styles.launchBtn, saving && { opacity: 0.6 }]} onPress={completeOnboarding} disabled={saving}>
                 {saving
                   ? <ActivityIndicator color={Colors.white} />
-                  : <Text style={styles.launchText}>{path === 'companion' ? "Meet Rwen →" : "Start Learning →"}</Text>
+                  : <Text style={styles.launchText}>{path === 'companion' ? t('onboarding.complete.launch_companion') : t('onboarding.complete.launch_default')}</Text>
                 }
               </Pressable>
             </View>
