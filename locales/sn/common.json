@@ -1,0 +1,423 @@
+{
+  "__warnings": [
+    { "key": "nav.travel",                          "note": "Used 'Kufamba' (to travel/walk) since the app brand is 'Rwendo'. Reviewer: confirm Kufamba is OK for the tab label, or suggest e.g. 'Nzendo' (journey, plural)." },
+    { "key": "nav.profile",                         "note": "Used 'Mbiri' (info about a person). Common app conventions in Zim sometimes leave this as 'Profile'. Reviewer: pick what's natural." },
+    { "key": "stats.streak / profile.stats.streak", "note": "Translated as 'Tsvarara' (a continuous run/streak). 'Sitirikiri' (borrow from English) is also common in apps. Pick whichever feels more natural to a Shona-speaking learner." },
+    { "key": "actions.cancel",                      "note": "Used 'Kanzura' (modern borrow). Alternative: 'Rega' (let go / drop). Pick the one Zim-Shona app users will recognise." },
+    { "key": "profile.plan.upgrade / plans_screen.upgrade_to", "note": "Used 'Wedzera' (add / increase) for upgrade. Borrow 'Apgireda' is also seen. Pick what reads more natural." },
+    { "key": "profile.voices.*.description",        "note": "Tone/voice descriptions ('Warm storyteller' etc.) are subjective. Translations are functional, not poetic — feel free to rewrite." },
+    { "key": "travel.spotlight.desc",               "note": "Long-form description of Victoria Falls. Reviewer should rewrite freely — the English original was written for an English speaker, the Shona equivalent is best authored from a Shona speaker's perspective." },
+    { "key": "home.tips",                           "note": "Each tip mixes English chrome around Shona phrases. The Shona phrases (e.g. 'Mhoro', 'Ukama igasva hunozadziswa nekudya', 'Chara chimwe hachitswanyi inda', 'Makadii?') MUST stay verbatim. Only the surrounding English explanation has been translated." },
+    { "key": "about.what_card.body / about.meet_card.body / about.method_card.body / about.builders_card.body", "note": "Long-form marketing copy. Translations are literal — a native speaker should rewrite for natural flow." },
+    { "key": "help.faq",                            "note": "10 FAQ entries. Q+A pairs translated literally. Domain-specific terms (Anthropic, Claude, Supabase, ElevenLabs, App Store, RevenueCat) kept as-is. Some answers reference UI labels — when those flip in sn, the FAQ wording should track them." },
+    { "key": "edit_profile.email_hint",             "note": "Mentions support@rwendo.app verbatim — kept as English address." },
+    { "key": "privacy_screen.share.*",              "note": "Vendor names (Anthropic, ElevenLabs, Supabase) kept English. Surrounding text translated." },
+    { "key": "language_pack_screen.coming_soon_packs.*", "note": "Language names — used Shona endonyms where common (e.g. 'Spanish' → 'ChiSpanish'). Reviewer: confirm naming convention; some Shona speakers just say the English language name." },
+    { "key": "plans_screen.tiers.*.features",       "note": "Features lists are functional UI copy — literal translation, may sound stiff. Reviewer should rewrite for natural flow." },
+    { "key": "plans_screen.tiers.*.tagline",        "note": "Marketing taglines — literal. Reviewer free to rewrite for emotional resonance." },
+    { "key": "all currency / time references",      "note": "'A$10/mo', '60 min', '5 minutes a day' kept with Arabic numerals. Currency code A$ kept as-is. Reviewer: confirm convention." },
+    { "key": "profile.delete_account.confirm_body", "note": "Legal/destructive consequence text. Translation is conservative; reviewer should ensure the warning is unambiguous in Shona." }
+  ],
+  "fallback_name": "shamwari",
+  "fallback_learner": "Mudzidzi",
+  "xp_progress": "{{current}} / {{goal}} XP",
+  "actions": {
+    "cancel": "Kanzura",
+    "ok": "OK",
+    "save": "Chengeta",
+    "delete": "Bvisa"
+  },
+  "nav": {
+    "home": "Kumba",
+    "learn": "Dzidza",
+    "rwen": "Rwen",
+    "travel": "Kufamba",
+    "profile": "Mbiri"
+  },
+  "stats": {
+    "xp": "XP",
+    "streak": "Tsvarara",
+    "lessons": "Zvidzidzo"
+  },
+  "travel": {
+    "coming_soon_badge": "ZVICHAUYA",
+    "hero_title": "Zimbabwe\nKufamba",
+    "hero_sub": "Hunyanzvi hwako hweShona + ruzivo rwetsika + mutungamiri wezvekufamba — Rwendo munyika chaiyo.",
+    "teaser": {
+      "features": "Zvinhu",
+      "zimbabwe": "Zimbabwe",
+      "connections": "Hukama"
+    },
+    "whats_coming": "Zviri kuuya",
+    "lock_soon": "Munguva pfupi",
+    "features": {
+      "phrasebook":  { "title": "Bhuku reMashoko",        "desc": "Mashoko anodiwa pamamiriro ezvinhu — paendeshi, paimba yevaeni, pamusika, panenhamo" },
+      "culture":     { "title": "Mutungamiri weTsika",    "desc": "Tsika, magariro, uye zvaunofanira kutarisira muZimbabwe" },
+      "money":       { "title": "Mari neMusika",          "desc": "Mitengo, kutengeranisa, mari yeZiG, kufamba mumusika" },
+      "transport":   { "title": "Kubva kuEndeshi kuGuta", "desc": "Nzira dzemakombi, mazano emaTaxi, kufamba muHarare neBulawayo" },
+      "travellers":  { "title": "Sangana neVafambi",      "desc": "Sangana nevamwe vari kudzidza Shona uye vari kushanyira Zimbabwe" },
+      "safari":      { "title": "Safari neMapaki",        "desc": "Hwange, Victoria Falls, Great Zimbabwe — mutungamiri wako" }
+    },
+    "notify": {
+      "title": "Rwen ari kurongedza",
+      "body": "Travel Mode iri kuvakwa. Ramba uchidzidza Shona yako — paunosvika muHarare, Rwen acharidziridza kukutungamira.",
+      "button": "Ndizivise paichaita",
+      "email_subject": "Ndizivise pamusoro peTravel Mode",
+      "email_body": "Mhoro Rwen, ndokumbira undizivise kana Travel Mode yatanga!",
+      "fallback_title": "Tichakuzivisa",
+      "fallback_body": "Tumira email kunaye hello@rwendo.app, isu tichakuwedzera pane runyorwa rwekutanga."
+    },
+    "spotlight": {
+      "label": "NZVIMBO YEKUSHANYIRA",
+      "title": "🌊 Victoria Falls",
+      "shona_name": "\"Mosi-oa-Tunya\"",
+      "meaning": "Hutsi Hunoita Mhepo",
+      "desc": "Imwe yeShanu Yenatural Wonders dzeNyika, paZambezi River pakati peZimbabwe neZambia. Mutsika dzeShona, inzvimbo inoyera — musha wemidzimu yemvura."
+    }
+  },
+  "home": {
+    "greetings": {
+      "morning": "Mangwanani akanaka",
+      "afternoon": "Masikati akanaka",
+      "evening": "Manheru akanaka"
+    },
+    "hero_sub": "{{greeting}} — Zuva {{day}} reRwendo rwako",
+    "daily_goal": "Chinangwa chezuva",
+    "talk_to_rwen": "Taura naRwen",
+    "talk_to_rwen_sub": "Shamwari yako yeAI yakagadzirira",
+    "continue_learning": "ENDERERA MBERI NEKUDZIDZA",
+    "all_lessons_complete": "🎉 Zvidzidzo zvose zvapera!",
+    "more_coming_soon": "Zvimwe zviri kuuya",
+    "rwens_tip_today": "Zano raRwen Nhasi",
+    "quick_access": "Kupinda Nokukurumidza",
+    "quick": {
+      "all_lessons": "Zvidzidzo Zvose",
+      "chat": "Hurukuro",
+      "travel": "Kufamba",
+      "settings": "Magadziriro"
+    },
+    "journey_title": "{{flag}} Rwendo Rwako rwe{{lang}}",
+    "journey_progress": "Zvidzidzo {{completed}} kubva pa{{total}} zvapera, mumamoduru {{units}}.",
+    "journey_remaining": "Zvasara zvidzidzo {{remaining}} kuti usvike paA2.",
+    "journey_done": "Wasvika paA2! 🎉",
+    "tips": [
+      "Rwendo rwose runotanga ne'Mhoro'. Watotanga rwendo rwako.",
+      "MuShona, 'Ukama igasva hunozadziswa nekudya' — govera zvaunodzidza nhasi.",
+      "Ma- ndere vakuru, Wa- ndere shamwari. Bhii rimwe, kuremekedza kwakawanda.",
+      "Sadza haisi chikafu chete — ndiwo tsika. Kana uchidya sadza, unodya Zimbabwe.",
+      "Chara chimwe hachitswanyi inda — ramba uchivaka, izwi neizwi.",
+      "Zano raRwen: dzidzira chidzidzo chako chekupedzisira nemuromo nhasi. Kutaura kwakanaka ka10 kupfuura kuverenga.",
+      "Makadii? — masirabi matatu anozarura masuwo ese muZimbabwe.",
+      "Uri kudzidza mutauro unotaurwa nemamiriyoni. Izwi rega rega raunoziva, hukama hwakavakwa."
+    ]
+  },
+  "daily_goal_screen": {
+    "title": "Chinangwa cheXP cheZuva",
+    "subtitle": "Unoda kudzidza zvakawanda sei zuva nezuva?",
+    "xp_value": "{{count}} XP",
+    "hint": "Unogona kuchinja izvi nguva chero. Chinangwa chinotangazve zuva rega rega panguva yepakati peusiku (nguva yedhivhaisi yako).",
+    "options": {
+      "25":  { "title": "ZvishomanaNa",  "sub": "~maminitsi 5/zuva · chidzidzo chimwe chipfupi" },
+      "50":  { "title": "Mazuva ese",    "sub": "~maminitsi 10/zuva · chidzidzo chizere chimwe" },
+      "100": { "title": "Akashinga",     "sub": "~maminitsi 20/zuva · zvidzidzo zviviri" },
+      "200": { "title": "Akapindira",    "sub": "~maminitsi 30+/zuva · sundira kusvika fluency" }
+    }
+  },
+  "about": {
+    "title": "Pamusoro peRwendo",
+    "app_name": "Rwendo",
+    "tagline": "Rwendo rwose runotanga ne'Mhoro'",
+    "version_label": "Vhezheni {{version}}",
+    "what_card": {
+      "title": "Rwendo chii?",
+      "body": "Rwendo (zita reShona rinoreva 'kufamba kunoenda kure') iApp yekudzidza mutauro neShamwari yeAI. Dzidza Shona naRwen — chameleon ane unyoro, anoshandiswa neClaude AI neElevenLabs voice — kuburikidza nenzira yezvidzidzo zvine zvikamu 7 yakavakirwa pakuongorora kwekudzidza mutauro wechipiri."
+    },
+    "meet_card": {
+      "title": "Sangana naRwen",
+      "body": "Rwen i-chameleon, chisikwa chinoshandura iwo zvichienzanirana nezvinhu zvakapoteredza. Rwen anodzidza pamusoro pako uye anoshandura mataurirwo, mafundisirwo, uye matsigirirwo aanokupa. Pawaunotaura naye, ndiko paanonyatsokuziva nani."
+    },
+    "method_card": {
+      "title": "Nzira yeRwendo",
+      "body": "Zvikamu 7 muchidzidzo chimwe: Hook → Chunks → Pattern → Practice → Dialogue → Recall → Mission. Mashoko matsva ari pakati pe3 pachidzidzo chimwe. Maminitsi 5–7 pachidzidzo. Yakavakirwa pamatanho 10 eSLA, anosanganisira spaced repetition, comprehensible input, neoutput inereva."
+    },
+    "builders_card": {
+      "title": "Yakavakwa nani",
+      "body": "Mugadziri ari woga muAustralia anotenda kuti kudzidza mutauro kunofanira kunzwa sehurukuro neshamwari, kwete basa rakaoma."
+    },
+    "link": "rwendo.app",
+    "footer": "Yakavakwa neḥwirishe ❤️ kune vose vari kudzidza Shona\nMhoro!"
+  },
+  "help": {
+    "title": "Rubatsiro neMibvunzo",
+    "intro": "Mhinduro dzakakurumidza kumibvunzo inonyanya kunzwa Rwen.",
+    "contact_btn": "Uchada rubatsiro? Tumira email kuna support@rwendo.app",
+    "faq": [
+      { "q": "Ndinotaura naRwen sei?",                                      "a": "Dzvanya pa-tab yaRwen pakati pebhawa repasi. Unogona kunyora message kana kubata bhatani re-mic kuti utaure. Dzvanya 🎙 kumusoro kurudyi kuti utange hurukuro yakasununguka pasina maoko." },
+      { "q": "Sei Rwen achiwanzobata zvimwe zvisirizvo?",                   "a": "Rwen iAI (Claude). AI inogona kukanganisa — kusanganisira mhosho dzezvokwadi nekushandura kusina kunaka. Tarisa Rwen seshamwari yekutaura, kwete sebhuku rezvidzidzo. Pamusoro pezvinokosha, ongorora nemumwe munhu anotaura Shona." },
+      { "q": "Ndinowana XP sei?",                                            "a": "Pedzisa zvidzidzo paLearn tab. Mhinduro yega yega yakanaka inopa XP, uye kupedza chidzidzo kunopa bhonasi. Chinangwa chako cheXP chezuva chinotangazve zuva rega rega." },
+      { "q": "Tsvarara inoshanda sei?",                                     "a": "Vhura app uye upedze chinhu chimwe pazuva rega rega kuti tsvarara yako irambe ichirarama. Ukashaya zuva, tsvarara inotangazve pa1." },
+      { "q": "Ndinogona kuchinja izwi raRwen here?",                        "a": "Hongu — enda kuMbiri → Izwi raRwen utore George, Charlie, Jessica, kana Alice. Kuchinja kunoshanda nokukurumidza pakutaura." },
+      { "q": "Hurukuro dzangu naRwen dzakavanzika here?",                   "a": "Mameseji ako anotumirwa kuAnthropic (Claude) kuti agadzirise mhinduro dzaRwen, uye anochengetwa muSupabase kwemwedzi 12. Anthropic HAANDIRE-shandisi hurukuro dzako kudzidzisa modeli yavo. Mavambo eizwi anobviswa mukati memaawa 24. Vhura Privacy Policy kuti uone zvizere." },
+      { "q": "Ndinokanzura subscription sei?",                               "a": "Subscription dzinochengetwa kuburikidza ne-app store yako (App Store kana Google Play). Vashandisi vekuEU/UK vane mazuva 14 ekupinda neke-out, paunogona kukanzura uchipuhwa mari yose." },
+      { "q": "Ndinodzima account sei?",                                      "a": "Mbiri → Dzima Account neZvose Zvedhata. Izvi zvinobvisa profile, kufambira zvidzidzo, uye history yehurukuro mukati memazuva 30. Chiito ichi hachigoni kudzoreredzwa." },
+      { "q": "Ndawana bug — ndoita sei?",                                   "a": "Dzvanya \"Tibate\" pasi kana utumire email kuna support@rwendo.app. Sanganisira dhivhaisi yako, vhezheni yeapp, neizvo zvawanga uchiita pawakawana bug." },
+      { "q": "Hurukuro yenguva chaiyo ichauya rini?",                       "a": "Iri kuvakwa. Mafoni ehurukuro asina maoko naRwen achauya neCompanion subscription tier mukuvandudzwa kunouya." }
+    ]
+  },
+  "edit_profile": {
+    "title": "Gadzirisa Mbiri",
+    "name_label": "Zita rinoratidzwa",
+    "name_hint": "Iri ndiro zita raunodaidzwa naRwen.",
+    "name_placeholder": "Zita rako",
+    "char_count": "{{current}}/{{max}}",
+    "email_label": "Email",
+    "email_hint": "Kuchinja email yako, taura nesupport@rwendo.app.",
+    "save_btn": "Chengeta zvachinja",
+    "error_title": "Hazvina kukwana kuchengetwa",
+    "saved_title": "Zvachengetwa",
+    "saved_body": "Zita rako rinoratidzwa rachinjwa."
+  },
+  "privacy_screen": {
+    "title": "Magadziriro eZvakavanzika",
+    "intro": "Tonga zvine Rwendo rinochengeta pamusoro pako. Kuti uone mutemo wose, verenga Privacy Policy.",
+    "sections": {
+      "your_data": "Dhata yako",
+      "what_we_share": "Zvatinogovera",
+      "your_rights": "Kodzero dzako"
+    },
+    "clear": {
+      "label": "Bvisa history yehurukuro",
+      "sub": "Bvisa meseji rega rega rawakatuma kuna Rwen.",
+      "confirm_title": "Bvisa history yehurukuro?",
+      "confirm_body": "Izvi zvichabvisa zvachose meseji rega rega rawakaita naRwen. Kufambira zvidzidzo neaccount yako zvinosara zvakakwana. Hazvigoni kudzoreredzwa.",
+      "confirm_action": "Bvisa zvose",
+      "error_title": "Hazvina kukwana kubviswa",
+      "success_title": "Zvabviswa",
+      "success_body": "History yehurukuro yako yabviswa."
+    },
+    "export_row": {
+      "label": "Buritsa dhata yangu",
+      "sub": "Tora kopi yeprofile, kufambira, nehurukuro dzako."
+    },
+    "share": {
+      "anthropic": { "label": "Anthropic (Claude)",   "sub": "Inogashira meseji yako kuti igadzire mhinduro dzaRwen. Haishandiswi pakudzidzisa." },
+      "elevenlabs": { "label": "ElevenLabs (izwi)",   "sub": "Inogadzira izwi raRwen uye inochinja rako kuita zvinyorwa. Audio inobviswa mukati memaawa 24." },
+      "supabase":  { "label": "Supabase (database)", "sub": "Inochengeta account, kufambira, nehistory yehurukuro yako." }
+    },
+    "rights": {
+      "policy_label": "Privacy Policy",
+      "policy_sub":   "Tsanangudzo izere yezvatinotora uye nei.",
+      "terms_label":  "Terms of Service",
+      "terms_sub":    "Mitemo yekushandisa Rwendo."
+    },
+    "note": "Kuti udzime account yako yose, dzokera kuMbiri → Dzima Account neZvose Zvedhata."
+  },
+  "language_pack_screen": {
+    "title": "Pakiji yeMutauro",
+    "subtitle": "Chinjira pakati pemitauro",
+    "available_now": "Iripo zvino",
+    "coming_soon_section": "Iri kuuya",
+    "available_curriculum_sub": "Zvidzidzo 100 · Mamoduru 1–10 · Nzira yeRwendo ine zvikamu 7",
+    "dev_curriculum_sub": "Curriculum iri kugadzirwa",
+    "coming_soon_label": "Iri kuuya",
+    "coming_soon_alert_title": "{{name}} — iri kuuya",
+    "coming_soon_alert_body": "Tiri kunyora curriculum ye{{name}} ikozvino. Garamira paShona-English kuti uwane Nzira yeRwendo izere, isu tichakuzivisa pakangoita {{name}}.",
+    "coming_soon_packs": {
+      "english-spanish":    "ChiSpanish",
+      "english-french":     "ChiFrench",
+      "english-portuguese": "ChiPortuguese",
+      "english-swahili":    "Swahili",
+      "english-zulu":       "Zulu",
+      "english-mandarin":   "Mandarin"
+    }
+  },
+  "change_password": {
+    "title": "Chinja Password",
+    "current_label": "Password yazvino",
+    "current_placeholder": "Password yako yazvino",
+    "new_label": "Password itsva",
+    "new_placeholder": "Pasina pasi pe-8 mavara",
+    "confirm_label": "Simbisa password itsva",
+    "confirm_placeholder": "Nyorazve password itsva",
+    "show": "Ratidza",
+    "hide": "Vanza",
+    "rules": {
+      "length": "Pasina pasi pe-8 mavara",
+      "upper": "Bhii rimwe rinokora (A-Z)",
+      "lower": "Bhii rimwe risingakwiri (a-z)",
+      "number": "Nhamba imwe (0-9)",
+      "special": "Chimwe chinhu chakasiyana (!@#$...)",
+      "different": "Inosiyana nepassword yazvino"
+    },
+    "mismatch": "MaPassword haaenderani",
+    "submit": "Vandudza password",
+    "wrong_current_title": "Password yazvino yakaipa",
+    "wrong_current_body": "Password yazvino yawapinza haina kunaka.",
+    "update_error_title": "Hazvina kukwana kuvandudza password",
+    "success_title": "Password yavandudzwa",
+    "success_body": "Password yako yachinjwa zvakanaka."
+  },
+  "export_screen": {
+    "title": "Buritsa dhata yangu",
+    "hero_title": "Dhata yako, mufaira rimwe",
+    "hero_body": "Gadzira kopi yeJSON yeprofile, kufambira zvidzidzo, nehistory yehurukuro naRwen. Unogona kuzitumira email, kuchengeta muFiles, kana kuzitumira kupi nekupi paunoda.",
+    "section_included": "Zvinosanganisirwa",
+    "items": {
+      "account":       { "label": "Account",            "desc": "Email, zuva rakavambwa account" },
+      "profile":       { "label": "Mbiri",              "desc": "Zita rinoratidzwa, magadziriro ekudzidza, magadziriro" },
+      "lesson_progress": { "label": "Kufambira chidzidzo", "desc": "Chidzidzo chega chega chakapera, nemamakisi neXP" },
+      "conversations": { "label": "Hurukuro",           "desc": "Meseji ese akatumirwa kuna Rwen" }
+    },
+    "summary_title": "Pfupiso",
+    "summary_profile_included": "Mbiri: yasanganiswa",
+    "summary_profile_missing": "Mbiri: haipo",
+    "summary_lessons": "Mareko echidzidzo: {{count}}",
+    "summary_messages": "Meseji: {{count}}",
+    "preview_btn": "Ona zvirimo",
+    "share_btn": "Gadzira & govera",
+    "share_title": "Dhata yangu yeRwendo",
+    "load_error_title": "Hazvina kukwana kuranga",
+    "load_error_body": "Edzazve mukati memunguva pfupi.",
+    "note": "Dhata yako inogadzirwa pa-dhivhaisi kubva paSupabase, uye inotumirwa chete pawunenge wasarudza kugovera. Hapana chinotumirwa kuparty yechitatu."
+  },
+  "plans_screen": {
+    "title": "Pulani",
+    "subtitle": "Sarudza rwendo runokwana iwe",
+    "hero_title": "Yakavakwa kune zvikamu zvose",
+    "hero_body": "Tanga uri free uchiine zvidzidzo zvose 100. Wedzera kana uchida Rwen seshamwari yako yekutaura.",
+    "popular_badge": "INODIWA NEVAZHINJI",
+    "current_badge": "PULANI YAKO",
+    "upgrade_to": "Wedzera ku{{name}}",
+    "footnote": "Vatengi vekuEU/UK vanowana mazuva 14 ekupinda neke-out vachiine refund izere. Kanzura nguva chero.",
+    "alert_title": "{{name}} — iri kuuya",
+    "alert_body": "Subscription dzinotanga nekuvandudzwa kunouya. Tiri kushandirana neRevenueCat kuti billing ifambe zvakanaka uye refund-friendly. Imbomira!",
+    "tiers": {
+      "free": {
+        "name": "Free",
+        "price": "A$0",
+        "tagline": "Dzidza pakufamba kwako",
+        "features": [
+          "Zvidzidzo 100 zveShona (Nzira yeRwendo izere)",
+          "XP, tsvarara, achievements",
+          "Pasina shamwari yeAI"
+        ]
+      },
+      "text_ai": {
+        "name": "Text AI",
+        "price": "A$10/mwedzi",
+        "tagline": "Taura naRwen mukunyora",
+        "features": [
+          "Zvose zviri muFree",
+          "Meseji 500 dzeAI pamwedzi",
+          "Mazano echidzidzo akagadzirirwa iwe"
+        ]
+      },
+      "voice": {
+        "name": "Voice",
+        "price": "A$15/mwedzi",
+        "tagline": "Nzwa uye taura naRwen",
+        "features": [
+          "Zvose zviri muText AI",
+          "Mhinduro 200 dzeizwi (push-to-talk)",
+          "Mazwi 4 ekusarudza"
+        ]
+      },
+      "companion": {
+        "name": "Companion",
+        "price": "A$25/mwedzi",
+        "tagline": "Hurukuro pasina maoko",
+        "features": [
+          "Zvose zviri muVoice",
+          "Maminitsi 60 ehurukuro yenguva chaiyo",
+          "Meseji nemhinduro dzeizwi pasina muganhu"
+        ]
+      },
+      "premium": {
+        "name": "Premium",
+        "price": "A$45/mwedzi",
+        "tagline": "Kuona kwakazara kweRwen",
+        "features": [
+          "Zvose zviri muCompanion",
+          "Maminitsi 120 ehurukuro yenguva chaiyo",
+          "Rwen we3D ane lip-sync (iri kuuya)"
+        ]
+      }
+    }
+  },
+  "profile": {
+    "stats": {
+      "total_xp": "XP Yose",
+      "streak": "Tsvarara",
+      "lessons": "Zvidzidzo"
+    },
+    "sections": {
+      "my_plan": "Pulani Yangu",
+      "colour_theme": "Ruvara",
+      "rwens_voice": "Izwi raRwen",
+      "learning": "Kudzidza",
+      "my_progress": "Kufambira Kwangu",
+      "account": "Account",
+      "legal": "Magwaro Emutemo",
+      "support": "Rubatsiro"
+    },
+    "plan": {
+      "free_name": "Free Plan",
+      "free_desc": "Wana zvidzidzo zvose",
+      "upgrade": "Wedzera",
+      "view_all_plans": "Ona pulani dzose"
+    },
+    "voices": {
+      "male_warm":    { "name": "George",  "description": "Munyori werunyararo une unyoro" },
+      "male_energy":  { "name": "Charlie", "description": "Ane simba, akavimbika" },
+      "female_warm":  { "name": "Jessica", "description": "Anotamba, anopenya, ane unyoro" },
+      "female_clear": { "name": "Alice",   "description": "Akajeka, mudzidzisi anokwezva" }
+    },
+    "learning": {
+      "language_pack": "Pakiji yemutauro",
+      "daily_xp_goal": "Chinangwa cheXP chezuva",
+      "daily_xp_value": "{{count}} XP",
+      "daily_reminders": "Yeuchidzo zvezuva",
+      "reminders_enabled_title": "Yeuchidzo dzakavhurwa",
+      "reminders_enabled_body": "Tichachengeta sarudzo yako. Push notifications dzichauya nekuvandudzwa kunouya."
+    },
+    "progress_rows": {
+      "completed_lessons": "Zvidzidzo zvakapera",
+      "current_streak": "Tsvarara yazvino",
+      "streak_days": "Mazuva {{count}}",
+      "total_xp_earned": "XP Yose Yakawanikwa",
+      "achievements": "Zvakatorwa"
+    },
+    "account_rows": {
+      "edit_profile": "Gadzirisa mbiri",
+      "change_password": "Chinja password",
+      "privacy_settings": "Magadziriro ezvakavanzika",
+      "export_data": "Buritsa dhata yangu"
+    },
+    "legal_rows": {
+      "terms": "Terms of Service",
+      "privacy_policy": "Privacy Policy"
+    },
+    "support_rows": {
+      "help_faq": "Rubatsiro & Mibvunzo",
+      "about": "Pamusoro peRwendo",
+      "contact_us": "Tibate",
+      "no_email_app_title": "Hapana email app",
+      "no_email_app_body": "Ndapota tumira email kuna support@rwendo.app uchishandisa email app yaunoda.",
+      "contact_email_subject": "Rubatsiro rweRwendo"
+    },
+    "sign_out": {
+      "button": "Buda",
+      "confirm_title": "Buda",
+      "confirm_body": "Une chokwadi here?",
+      "confirm_action": "Buda"
+    },
+    "delete_account": {
+      "button": "Dzima Account neZvose Zvedhata",
+      "confirm_title": "Dzima Account",
+      "confirm_body": "Izvi zvichadzima account yako nekufambira kwose nokusingaperi. Hazvigoni kudzoreredzwa.",
+      "confirm_action": "Dzima account yangu",
+      "error_title": "Mhosho",
+      "error_body": "Hazvina kukwana kudzimwa account. Ndapota edzazve."
+    }
+  }
+}

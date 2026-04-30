@@ -1,0 +1,24 @@
+{
+  "__warnings": [
+    { "key": "items.streak_30.description", "note": "'30-day streak. Rwen is proud.' — kept tonally similar in Shona. Reviewer free to rewrite." },
+    { "key": "items.module_*.title",        "note": "'Module Master' / 'Halfway There' — descriptive names. Translations are literal; reviewer can pick more evocative Shona names." },
+    { "key": "items.lessons_*.title",       "note": "'Quarter Climber' / 'Halfway Tree' — metaphor-heavy English titles. Translation tries to keep the imagery, but a Shona-speaking copywriter could do much better." },
+    { "key": "items.graduated.description_fmt", "note": "'Completed all {{total}} lessons.' — uses the {{total}} interpolation. Translation matches structure." }
+  ],
+  "title": "Zvakatorwa",
+  "subtitle": "{{unlocked}} kubva pa{{total}} zvakatorwa",
+  "items": {
+    "first_lesson": { "title": "Matanho Ekutanga",     "description": "Wapedza chidzidzo chako chekutanga." },
+    "streak_3":     { "title": "Mazuva Matatu",         "description": "Mazuva matatu motsetse." },
+    "streak_7":     { "title": "Murwi weVhiki",         "description": "Wachengeta tsvarara yako kwemazuva 7." },
+    "streak_30":    { "title": "Mwedzi weMhoro",        "description": "Tsvarara yemazuva 30. Rwen anodada nemi." },
+    "xp_100":       { "title": "Mwenje Unopenya",       "description": "Wakawana XP 100." },
+    "xp_500":       { "title": "Nyenyedzi Iri Kukwira",  "description": "Wakawana XP 500." },
+    "xp_1000":      { "title": "Nyenyedzi Dzakawanda",  "description": "Wakawana XP 1,000." },
+    "module_1":     { "title": "Tenzi weModuru",        "description": "Wapedza moduru yako yekutanga." },
+    "module_5":     { "title": "Pakati paNzira",        "description": "Wapedza mamoduru 5." },
+    "lessons_25":   { "title": "Chikamu Chimwe",        "description": "Wapedza zvidzidzo 25." },
+    "lessons_50":   { "title": "Muti weNakati",         "description": "Wapedza zvidzidzo 50." },
+    "graduated":    { "title": "Mudzidzi weRwendo",     "description_fmt": "Wapedza zvidzidzo zvose {{total}}." }
+  }
+}

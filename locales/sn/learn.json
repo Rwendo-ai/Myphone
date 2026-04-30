@@ -1,0 +1,94 @@
+{
+  "__warnings": [
+    { "key": "lesson.phases",                 "note": "Phase names are pedagogical metaphors. Reviewer free to suggest more natural Shona equivalents — e.g. 'Hook' as 'Chiroto' (dream/hook) vs 'Mavambo' (beginning)." },
+    { "key": "lesson.hook.tsika_label",       "note": "Already uses 'TSIKA' in en. Kept verbatim — it's a Shona word, just uppercased for emphasis." },
+    { "key": "lesson.hook.cta",               "note": "'Let's learn' → 'Ngatidzidze'. Reviewer: confirm the conjugation reads as inclusive (us-together) not 'I'." },
+    { "key": "lesson.mission.cta",            "note": "'Famba zvakanaka →' is already the Shona signoff (means 'Go well'). Stays Shona in both locales." },
+    { "key": "exercises.feedback_correct",    "note": "'✓ Correct!' → '✓ Zvakanaka!'. Could also be 'Chokwadi!' — pick the one that feels most encouraging." },
+    { "key": "exercises.fill_blank.wrong / translate.wrong / build_sentence.wrong", "note": "Reveal-the-answer feedback. Translation is literal." },
+    { "key": "exercises.translate.placeholder", "note": "'Type your answer' — used 'Nyora mhinduro yako'. Idiomatic." },
+    { "key": "exercises.build_sentence.placeholder", "note": "'Tap words below to build the sentence' — long instruction. Translation conveys the same meaning." }
+  ],
+  "tab": {
+    "daily_xp": "XP yeZuva",
+    "units": "Mamoduru",
+    "lesson_count": "Zvidzidzo {{count}}",
+    "unit_progress": "{{completed}}/{{total}} zvapera",
+    "coming_soon_title": "Curriculum ye{{lang}} iri kuuya",
+    "coming_soon_sub": "Tiri kuvaka zvidzidzo zvino. Dzoka munguva pfupi!"
+  },
+  "screen_header": {
+    "back": "← Dzokera"
+  },
+  "unit": {
+    "section_label": "ZVIDZIDZO",
+    "xp_value": "{{count}} XP"
+  },
+  "lesson": {
+    "not_found": "Chidzidzo hachina kuwanikwa: {{id}}",
+    "phases": {
+      "hook": "Mamiriro Ezvinhu",
+      "chunks": "Mashoko Matsva",
+      "pattern": "Pateni",
+      "practice": "Kudzidzira",
+      "dialogue": "Hurukuro",
+      "recall": "Kuyeuka",
+      "mission": "Basa Rako"
+    },
+    "quit": {
+      "title": "Buda muchidzidzo?",
+      "body": "Kufambira kwako muchidzidzo chino kucharasika. Une chokwadi here?",
+      "keep_going": "Ramba uchienda",
+      "quit": "Buda"
+    },
+    "hook": {
+      "tsika_label": "TSIKA — Mamiriro Etsika",
+      "cta": "Ngatidzidze →"
+    },
+    "chunks": {
+      "counter": "Izwi {{current}} kubva pa{{total}}",
+      "literal": "Mukunyatsoreva: \"{{value}}\"",
+      "see_pattern": "Ona pateni →",
+      "got_it": "Ndazvinzwisisa →"
+    },
+    "pattern": {
+      "start_practice": "Tanga kudzidzira →"
+    },
+    "practice": {
+      "counter": "Chiitwa {{current}} kubva pa{{total}}"
+    },
+    "dialogue": {
+      "to_recall": "Zvakanaka — zvino chokuyeuka →",
+      "continue": "Enderera mberi →"
+    },
+    "recall": {
+      "title": "Kuyeuka",
+      "counter": "{{current}} kubva pa{{total}}"
+    },
+    "mission": {
+      "complete_title": "Chidzidzo Chapera!",
+      "xp_badge": "+{{count}} XP",
+      "score": "{{score}} / {{total}} zvakanaka",
+      "card_title_prefix": "📍 ",
+      "cta": "Famba zvakanaka →"
+    }
+  },
+  "exercises": {
+    "check": "Tarisa",
+    "feedback_correct": "✓ Zvakanaka!",
+    "fill_blank": {
+      "wrong": "✗ Mhinduro ndi \"{{correct}}\""
+    },
+    "translate": {
+      "placeholder": "Nyora mhinduro yako...",
+      "wrong": "✗ Mhinduro chaiyo: {{correct}}"
+    },
+    "build_sentence": {
+      "placeholder": "Dzvanya mashoko ari pasi kuti uvake mutsetse",
+      "wrong": "✗ Chaicho: {{correct}}"
+    },
+    "multiple_choice": {
+      "wrong": "✗ Hazvisi zvachose"
+    }
+  }
+}

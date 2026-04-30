@@ -8,7 +8,13 @@ import enLearn from '../locales/en/learn.json';
 import enRwen from '../locales/en/rwen.json';
 import enAchievements from '../locales/en/achievements.json';
 
-export const SUPPORTED_LANGUAGES = ['en'] as const;
+import snCommon from '../locales/sn/common.json';
+import snAuth from '../locales/sn/auth.json';
+import snLearn from '../locales/sn/learn.json';
+import snRwen from '../locales/sn/rwen.json';
+import snAchievements from '../locales/sn/achievements.json';
+
+export const SUPPORTED_LANGUAGES = ['en', 'sn'] as const;
 export type SupportedLanguage = (typeof SUPPORTED_LANGUAGES)[number];
 
 const NAMESPACES = ['common', 'auth', 'learn', 'rwen', 'achievements'] as const;
@@ -20,6 +26,13 @@ const resources = {
     learn: enLearn,
     rwen: enRwen,
     achievements: enAchievements,
+  },
+  sn: {
+    common: snCommon,
+    auth: snAuth,
+    learn: snLearn,
+    rwen: snRwen,
+    achievements: snAchievements,
   },
 };
 

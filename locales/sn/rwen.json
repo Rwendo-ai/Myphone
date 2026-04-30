@@ -1,0 +1,32 @@
+{
+  "__warnings": [
+    { "key": "messages.welcome",            "note": "'Mhoro, {{name}}!' stays Shona in both locales (greeting verbatim). 'What's on your mind today?' translated as 'Chii chiri mupfungwa dzako nhasi?'. Reviewer: tone-check." },
+    { "key": "messages.error_generic",      "note": "Starts with 'Ndine urombo' (I am sorry, Shona) — kept verbatim. The English 'something went wrong' part flips. Mixed-language is intentional per the design (greeting/exclamation stays Shona)." },
+    { "key": "messages.auto_listen_greeting","note": "'Mhoro!' verbatim. The English 'I'm listening...' flips." },
+    { "key": "header.status_*",             "note": "Status labels include emoji — kept as-is in front, Shona behind." },
+    { "key": "input.placeholder_convo_active","note": "'Conversation active — speak or tap ⏹ to stop' — symbol kept, surrounding text translated." }
+  ],
+  "header": {
+    "title": "Rwen",
+    "status_listening": "🎤 Ari kuteerera...",
+    "status_thinking": "💭 Ari kufunga...",
+    "status_speaking": "🔊 Ari kutaura...",
+    "status_loading": "Ari kufunga...",
+    "status_idle": "Shamwari ye{{lang}} · AI"
+  },
+  "banner": {
+    "speak_now": "🎤 Taura zvino...",
+    "rwen_thinking": "💭 Rwen ari kufunga...",
+    "rwen_speaking": "🔊 Rwen ari kutaura...",
+    "done_speaking": "Ndapedza kutaura"
+  },
+  "input": {
+    "placeholder_default": "Tumira meseji kuna Rwen...",
+    "placeholder_convo_active": "Hurukuro yakavhurwa — taura kana udzvanye ⏹ kumira"
+  },
+  "messages": {
+    "welcome": "Mhoro, {{name}}! Chii chiri mupfungwa dzako nhasi?",
+    "error_generic": "Ndine urombo — pane chakaipa. Edzazve.",
+    "auto_listen_greeting": "Mhoro! Ndiri kuteerera. Taura paunenge wagadzirira."
+  }
+}
