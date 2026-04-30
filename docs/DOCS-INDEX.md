@@ -21,6 +21,9 @@ When adding a new .md file:
 | [LEGAL-REQUIREMENTS.md](./LEGAL-REQUIREMENTS.md) | Full legal research (Apple, Google, GDPR, COPPA, BIPA, AU) | 2026-04-30 |
 | [DATABASE-DESIGN.md](./DATABASE-DESIGN.md) | Database schema (v3), tables, functions, migration plan | 2026-04-30 |
 | [PHASE-H-REVENUECAT.md](./PHASE-H-REVENUECAT.md) | Phase H deployment plan — what to do when accounts are ready | 2026-05-01 |
+| [PACK-AUTHORING-SPEAKER.md](./PACK-AUTHORING-SPEAKER.md) | Self-contained recipe for authoring a new speaker pack (UI/AI/voice/tips) | 2026-04-30 |
+| [PACK-AUTHORING-COURSE.md](./PACK-AUTHORING-COURSE.md) | Self-contained recipe for authoring a new course pack (language/ai-companion/travel) | 2026-04-30 |
+| [PACK-AUTHORING-JURISDICTION.md](./PACK-AUTHORING-JURISDICTION.md) | Self-contained recipe for authoring a new jurisdiction pack (legal/currency/age/crisis) | 2026-04-30 |
 | [supabase-migrations/005-three-pack-architecture.sql](./supabase-migrations/005-three-pack-architecture.sql) | v3 schema migration — **needs run in Supabase SQL Editor** | 2026-04-30 |
 | [supabase/functions/README.md](../supabase/functions/README.md) | Edge function deployment instructions | 2026-05-01 |
 
