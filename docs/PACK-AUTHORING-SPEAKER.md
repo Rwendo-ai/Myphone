@@ -330,7 +330,56 @@ ON CONFLICT (id) DO NOTHING;
 
 This row is the catalogue entry — it doesn't store pack content (that's in the data/ files). It exists so `user_packs.pack_id` can FK to it.
 
-## 8. Validation gates
+## 8. Ship it — from authored files to live for users
+
+A drafted pack is just files. Going live for real users is a 4-stage pipeline. This section is the canonical end-to-end recipe — the registry edits in §6 and the SQL insert in §7 are pieces of it.
+
+### 8.1 Where each artifact lives
+
+| Stage | Artifact | Location |
+|---|---|---|
+| **Authored** | TypeScript + JSON files | `data/speakers/{LANG_ID}/` (in git) |
+| **Code-wired** | Pack registered in two registries | `data/speakers/index.ts` (`SPEAKERS` map) AND `lib/i18n.ts` (`SUPPORTED_LANGUAGES` + `resources` map) |
+| **Database** | Catalogue row | `available_packs` table — one row, FK target for `user_packs.pack_id` |
+| **Bundled** | Compiled into the app binary | `eas build` picks up the pack automatically — speaker packs are bundled in v1 (lazy-load is Phase 2) |
+| **Distributed** | Released to users | App Store + Play Store binary release; existing users get it on app update |
+
+### 8.2 The pipeline (in order)
+
+1. **Author + commit** the pack files per §4 of this guide.
+2. **Wire the code registries** per §6 — the pack is invisible until both `SPEAKERS` and `lib/i18n.ts` reference it.
+3. **`npx tsc --noEmit` clean**, push to main, CI passes.
+4. **Run the SQL insert from §7** in the Supabase SQL Editor (project `benocooney@gmail.com`'s Rwendo project). Without this row, anything that tries to FK to `pack_id = 'speaker:{LANG_ID}'` will fail RLS.
+5. **Cut a release build** with `eas build` (iOS + Android). The new locale rides the binary.
+6. **Distribute** via TestFlight + Play internal-testing first, then production submission. App Store review = 1-7 days; Play Store = same-day to 24h.
+7. **Existing users** get the new pack the next time they update the app. They can switch to it from Profile → App Language.
+
+### 8.3 No-OTA constraint (v1)
+
+In v1, speaker packs are **bundled**. There's no over-the-air locale shipping — adding a new speaker pack to existing installs requires a new binary release. This is acceptable because:
+
+- A speaker pack is small (~50KB JSON × 5 files + ~10KB TypeScript). Bundling 20 speakers is still under 1.5MB total.
+- Speaker packs change rarely once authored. Hot-fixing typos waits for the next release cycle.
+- A locale that fails to render is a broken UX. Bundling avoids the "downloaded a corrupt pack" failure mode.
+
+**Phase 2 trigger**: when the registry hits ~10+ packs OR a single hot-fix is urgent, move to lazy-load via Supabase Storage + AsyncStorage cache. The `lib/i18n.ts` resources map can fetch JSON dynamically without changing call sites.
+
+### 8.4 User discovery — how a real user encounters the new speaker
+
+After the binary release:
+
+- **New users** (signup): the pack appears as an option in the onboarding "Choose your language" step. Required: pack ID is in `SUPPORTED_LANGUAGES` (lib/i18n.ts §6.2) **and** the onboarding screen's option list (`app/(auth)/onboarding.tsx` — search for the speaker-options array). Adding to `SUPPORTED_LANGUAGES` is automatic from §6.2; adding to onboarding options is a separate edit and easy to miss.
+- **Existing users**: switch via Profile → App Language. The Profile screen lists every entry in `SUPPORTED_LANGUAGES`, so once §6.2 is done existing users see it. Selecting it persists `profiles.app_language` and re-renders the UI in the new pack.
+- **AI replies in the new language**: requires the pack's `aiSystemPrompt.persona` + `guardrails` + `contextTemplate` (§4.4) to be authored in this speaker's language — Claude infers the response language from the system prompt.
+
+### 8.5 What can break in production
+
+- **Pack registered in `SPEAKERS` but missing from `lib/i18n.ts` resources.** User picks the language, sees English fallback (or worse, missing-key warnings). Validate by `i18n.changeLanguage('{ISO_CODE}')` in dev before release.
+- **Missing `available_packs` row.** Any code path that writes `user_packs.pack_id = 'speaker:{LANG_ID}'` will hit FK violation. Run the insert.
+- **Voice IDs retired.** ElevenLabs voice IDs occasionally get deactivated. If `voice.id` returns 404 from the ElevenLabs API at TTS time, voice playback breaks for that speaker. Mitigation: keep at least one fallback voice across all packs (e.g. George `JBFqnCBsd6RMkjVDRZzb`); hot-fix by replacing the ID and shipping a new build. Phase 2 moves voices to a Supabase row so this can hot-fix without a release.
+- **Onboarding picker not updated.** Pack is in `SUPPORTED_LANGUAGES` but onboarding doesn't list it as a choice. New users can't pick it; existing users can via Profile.
+
+## 9. Validation gates
 
 Before declaring done, run all of these:
 
@@ -340,7 +389,7 @@ Before declaring done, run all of these:
 4. **i18n test**: in the app, set `i18n.changeLanguage('{ISO_CODE}')` programmatically — every screen renders without "missing translation" warnings.
 5. **`__warnings` review**: every locale file's `__warnings` array contains 5-15 items flagged for native review. Empty `__warnings` is suspicious — it usually means the author missed cultural nuance.
 
-## 9. Common mistakes to avoid
+## 10. Common mistakes to avoid
 
 - **Translating tips word-for-word from English.** Re-read §4.3 — they MUST mirror, not translate.
 - **Leaving the AI system prompt in English.** The persona/guardrails MUST be in this speaker's language. Claude reads it as the system prompt and replies in whatever language it sees most.
@@ -349,7 +398,7 @@ Before declaring done, run all of these:
 - **Using English voice descriptions.** The `voice.description` field shows in the Profile → Rwen's Voice picker. Author it in this speaker's language.
 - **Skipping `__warnings`.** A pack with no flagged items hasn't been honestly self-reviewed. Plan on flagging at minimum: legal/consent text, mixed-language strings, voice naming choices, formality decisions.
 
-## 10. Boundary — what a speaker pack does NOT contain
+## 11. Boundary — what a speaker pack does NOT contain
 
 Don't put in a speaker pack:
 
@@ -358,7 +407,7 @@ Don't put in a speaker pack:
 - **Voice TTS recordings of full lesson dialogue**. Voice clips are generated at runtime by ElevenLabs from the curriculum text. The speaker pack only carries voice IDs, not audio.
 - **AI Companion starter cards or Topics**. Those live in `data/courses/ai-companion/{LANG_ID}/` — they're course content for one specific course (AI Companion). Adding a speaker pack does NOT add Companion content; that's a follow-up Phase K task.
 
-## 11. Worked example: minimum French speaker pack
+## 12. Worked example: minimum French speaker pack
 
 The 7 inputs:
 - `id`: `french`
@@ -426,7 +475,7 @@ export default tips;
 
 Then locale JSONs translated, registry updates applied, DB row inserted, `npx tsc --noEmit` clean, `__warnings` flagged. Done — the app now supports French speakers.
 
-## 12. The acceptance criterion
+## 13. The acceptance criterion
 
 A speaker pack is shippable when:
 - All 4 + 5 = 9 files exist in `data/speakers/{LANG_ID}/`

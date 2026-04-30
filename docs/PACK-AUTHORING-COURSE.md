@@ -24,7 +24,7 @@ The runtime composes the experience: the user's speaker pack drives UI and AI; t
 
 ## 2. Course types
 
-Three shapes exist today; new types can be added but require type-system extension (see §10).
+Three shapes exist today; new types can be added but require type-system extension (see §11).
 
 | Type | Purpose | Examples | Variant content |
 |---|---|---|---|
@@ -33,7 +33,7 @@ Three shapes exist today; new types can be added but require type-system extensi
 | `travel` | Phrasebook + cultural guide for a destination | `travel-zimbabwe`, future `travel-japan` | Phrasebook + cultural guide per speaker |
 | (future) | e.g. `know-yourself`, `language-shona-advanced` | TBD | TBD — extends the type system |
 
-Adding a course pack of an existing type is purely authoring + registry work. Adding a course pack of a NEW type (e.g. `know-yourself`) needs new TypeScript types + new content shape definitions — see §10.
+Adding a course pack of an existing type is purely authoring + registry work. Adding a course pack of a NEW type (e.g. `know-yourself`) needs new TypeScript types + new content shape definitions — see §11.
 
 ## 3. The single input the agent needs
 
@@ -42,7 +42,7 @@ Before starting, you need:
 | Field | Example | Notes |
 |---|---|---|
 | `id` | `language-shona`, `ai-companion`, `know-yourself` | Stable forever. Lowercase, hyphen-separated. |
-| `type` | `language`, `ai-companion`, `travel` | Must be one of the existing types unless extending §10. |
+| `type` | `language`, `ai-companion`, `travel` | Must be one of the existing types unless extending §11. |
 | `displayName` | `Learn Shona`, `AI Companion`, `Know Yourself` | The UI label. In English — courses are named in English regardless of speaker variants. |
 | `targetLanguageId` | `shona` (for `language-*`) or `undefined` (others) | Only set for type=`language`. |
 | `availableForSpeakers` | `['english']`, `['english', 'shona']` | Speaker IDs of variants that exist. Start with one. |
@@ -301,7 +301,70 @@ The cadence per PRODUCT-DESIGN.md §4.4 is:
 
 **For language-type courses, this scales to ~5-7 days per (course, speaker) pair.** Don't underestimate — 100 lessons of fresh authoring with culturally-grounded Hook narratives is real work.
 
-## 10. Adding a new course type
+## 10. Ship it — from authored files to live for users
+
+Adding a course is more complex than a speaker or jurisdiction pack because courses are usually **paid** (RevenueCat) and the content is large (100 lessons × N speaker variants). This section is the canonical end-to-end recipe — the registry edit + DB row in §8 are pieces of it.
+
+### 10.1 Where each artifact lives
+
+| Stage | Artifact | Location |
+|---|---|---|
+| **Authored** | Lesson / Companion / Travel content | `data/courses/{COURSE_ID}/{SPEAKER_ID}/` (in git) |
+| **Code-wired** | `COURSES` registry + sync resolver | `data/courses/index.ts` |
+| **Database** | Catalogue row | `available_packs` table — one row per course pack |
+| **Storefront** | IAP product (paid courses only) | RevenueCat dashboard + App Store Connect + Google Play Console |
+| **Bundled** | Compiled into app binary | `eas build` — courses are bundled in v1; Phase 2 may move large packs to lazy-load |
+| **Live** | Visible in Learn tab + buyable | After binary release + RevenueCat product activation |
+| **Owned** | Per-user entitlement | `user_packs` row with `pack_id = '{COURSE_ID}'` (written by RevenueCat webhook on purchase, or by onboarding for the starter course) |
+
+### 10.2 The pipeline (in order)
+
+1. **Author + commit** content per §4-7.
+2. **Wire the code registry** per §8 — import the pack, add it to `COURSES`, and (for `language` types) extend `getCourseLesson`'s switch.
+3. **`npx tsc --noEmit` clean**, push to main.
+4. **Run the `available_packs` SQL insert** from §8 in the Supabase SQL Editor.
+5. **Phase H — RevenueCat setup** (skip entirely for free courses):
+   1. Create a product in App Store Connect (auto-renewable subscription OR non-consumable; Rwendo's model is per-course non-consumable + tier subscription).
+   2. Create the same product in Google Play Console.
+   3. Map both to one entitlement in the RevenueCat dashboard.
+   4. `UPDATE available_packs SET revenuecat_product_id = '<rc-id>' WHERE id = '{COURSE_ID}'`.
+   5. For region-priced courses, populate `available_packs.prices_by_jurisdiction` jsonb (e.g. `{"AU": 9.99, "EU": 6.99, "US": 7.99, "ZW": 0.50}`).
+6. **Cut a release build** with `eas build`. Course content rides the binary in v1.
+7. **Test purchase end-to-end** in App Store sandbox / Play Store internal test track — RevenueCat ships a sandbox preview environment. After a successful test purchase, the RevenueCat webhook should fire → write `user_packs` row → the Learn tab on next refresh shows the course as owned.
+8. **Submit for app review.** App Store: 1-7 days; Play Store: hours-days. New IAP products may be flagged for review.
+9. **Release.** Production users see the course in the Learn tab "Buy another X course" CTA → in-app purchase → ownership written via webhook → Learn tab updates on next focus.
+
+### 10.3 Bundle vs lazy-load — what gets shipped where
+
+In v1, **all course content is bundled in the binary**. A 100-lesson Shona pack is ~500KB of TypeScript; even the AI Companion English variant with full memory schema + topics is <100KB. Total course-content payload stays under 5MB even with 5-10 courses.
+
+**Phase 2 trigger**: when a single user has access to >5 courses, OR total bundle exceeds 20MB, switch to lazy-load via Supabase Storage. The async `curriculumLoader` / `companionLoader` / `travelLoader` functions in `CoursePackVariant` already exist for this — today they `await import()` from local paths; in Phase 2 they fetch JSON from `https://<supabase-project>.supabase.co/storage/v1/object/public/courses/{COURSE_ID}/{SPEAKER_ID}/{file}.json` and cache in AsyncStorage.
+
+When that switch happens, `getCourseLesson`'s sync path (used by the lesson screen) needs an AsyncStorage-backed fallback or pre-fetch on course-activation.
+
+### 10.4 RevenueCat / IAP gotchas (Phase H)
+
+- **Don't populate `available_packs.revenuecat_product_id` until the IAP product is APPROVED** in both App Store + Play Store. Otherwise the app calls StoreKit/BillingClient for a non-existent product and the Buy flow crashes or shows an empty modal.
+- **Free courses skip the entire RevenueCat step.** Set `is_free: true` on the catalogue row, leave `revenuecatProductId: null` in the meta. The Learn tab "Buy" CTA hides for free courses; first activation auto-writes `user_packs` without a purchase event.
+- **Test on a real device with a sandbox account.** The simulator does not run StoreKit. Play Store sandbox has its own quirks — use the internal-testing track, not local emulator.
+- **Pricing per jurisdiction**: when `prices_by_jurisdiction` differs from the App Store's auto-tier price for a region, the App Store wins for the actual purchase price — our jsonb is for displaying the "from $X" tease in marketing surfaces. To set a different store-side price, configure it in App Store Connect / Play Console pricing tiers.
+
+### 10.5 User discovery + ownership flow
+
+- The Learn tab filters courses by `entitlementContext.ownedCourseIds + starterCourseId` via `canAccessCourse()` (`lib/entitlements.ts`). Adding a course to the registry makes it **discoverable** in the Buy CTA but not **owned** — ownership flows from `user_packs`.
+- **New users** get their starter course via onboarding: the chosen language pack auto-writes a `user_packs` row + sets `profiles.starter_course_id`. This is free (the starter is always free for modules 1-4).
+- **Existing users** buy additional courses via Learn tab "Buy another X course" → IAP → RevenueCat webhook → `user_packs` row → Learn tab refreshes (it re-reads `entitlementContext` on focus via `useFocusEffect`).
+- **Until Phase H is live**, the Buy CTA shows a "Course store coming soon" alert — see `app/(tabs)/learn.tsx`'s `handleBuyAnother`. Replace that alert body once RevenueCat is wired.
+
+### 10.6 What can break in production
+
+- **`availableForSpeakers` mismatch.** If a course's `availableForSpeakers` doesn't include the user's speaker, the course is hidden from that user **even if they own it**. Audit when adding new variants — add the speaker ID to the array or the variant content is dead.
+- **`getLessonSync` missing for language courses.** The lesson screen calls `getCourseLesson` synchronously; without the resolver case for the new course ID, every lesson shows "Lesson not found" even though metadata loads.
+- **Unauthored speaker variant referenced in `availableForSpeakers`.** The Learn tab lists the course for that speaker, but tapping a unit lands on empty curriculum. Either author the variant or remove the speaker from the array until ready.
+- **RevenueCat webhook not firing.** Test post-purchase: `SELECT * FROM user_packs WHERE user_id = '<test_user>'` should show the new row within seconds of a sandbox purchase. If not, check the RevenueCat → Supabase webhook config.
+- **Course registered but `available_packs` row missing.** In-app the course appears (since the registry is the runtime source); but any DB query that joins `user_packs` to `available_packs` returns no rows. The user "owns" something that doesn't exist in the catalogue — analytics + admin dashboards break.
+
+## 11. Adding a new course type
 
 If `know-yourself` (or any future type) doesn't fit `language` / `ai-companion` / `travel`:
 
@@ -322,7 +385,7 @@ If `know-yourself` (or any future type) doesn't fit `language` / `ai-companion` 
 
 **Don't extend `CourseType` lightly.** Each new type is a new content surface in the app, with its own UI affordances. Talk to the product owner before adding one.
 
-## 11. Validation gates
+## 12. Validation gates
 
 Before declaring done, run:
 
@@ -333,15 +396,15 @@ Before declaring done, run:
 5. **Lesson screen smoke test** (language types): open a lesson by ID via `/lesson/<lesson-id>`. The screen renders without "Lesson not found" or undefined errors. All 7 phases play through.
 6. **`__warnings` review**: every file has flagged items for review. Empty arrays = unreviewed.
 
-## 12. Common mistakes to avoid
+## 13. Common mistakes to avoid
 
 - **Translating curriculum from another speaker variant.** Cultural framing is per-speaker. Re-author the Hook narratives, dialogue scenarios, mission tasks for THIS speaker's perspective. Translation is fine for the chunks themselves (target words don't change) but the surrounding prose does.
-- **Inventing new course types without spec'ing them.** §10 is a path; don't take it without a real reason.
+- **Inventing new course types without spec'ing them.** §11 is a path; don't take it without a real reason.
 - **Authoring fewer than 100 lessons for a language pack.** Modules 1-4 are free; modules 5-10 are paid (Phase E gating). Shipping 50 lessons effectively means modules 5+ are empty paid content. Either ship 100 or mark the course `isComingSoon: true`.
 - **Forgetting to set `availableForSpeakers`.** If you author a Shona variant of a course but don't add `'shona'` to the array, the runtime won't surface the variant.
 - **Missing `getLessonSync` for language courses.** The lesson screen calls this synchronously. Without it, lessons show "not found".
 
-## 13. Boundary — what a course pack does NOT contain
+## 14. Boundary — what a course pack does NOT contain
 
 Don't put in a course pack:
 
@@ -350,11 +413,11 @@ Don't put in a course pack:
 - **Privacy policy text or jurisdiction-specific consent disclosures**. See `PACK-AUTHORING-JURISDICTION.md`.
 - **Crisis phone numbers** (the actual numbers — Samaritans, Lifeline, etc.). Those are jurisdiction-specific. The course pack carries the *trigger phrases* in this speaker's language; the jurisdiction pack carries the phone numbers; the runtime composes them.
 
-## 14. Worked example: outline of a `know-yourself` course
+## 15. Worked example: outline of a `know-yourself` course
 
 Inputs:
 - `id`: `know-yourself`
-- `type`: `self-development` (NEW — would extend §10)
+- `type`: `self-development` (NEW — would extend §11)
 - `displayName`: `Know Yourself`
 - `targetLanguageId`: undefined
 - `availableForSpeakers`: `['english']` initially
@@ -374,7 +437,7 @@ data/courses/know-yourself/
 
 This is illustrative — actual `know-yourself` design is product-owner work.
 
-## 15. The acceptance criterion
+## 16. The acceptance criterion
 
 A course pack with one speaker variant is shippable when:
 - Course-level `index.ts` exists with valid `CoursePackMeta`

@@ -305,7 +305,80 @@ When you add a new jurisdiction, you have two choices:
 
 Most new packs use option (b) for EU members and option (a) for non-EU countries.
 
-## 11. Validation gates
+## 11. Ship it — from authored files to live for users
+
+A drafted jurisdiction pack is just files + research notes. Going live means: code committed, DB rows in, onboarding picker updated, legal text either lawyer-authored or explicitly extending AU. This section is the canonical end-to-end recipe — the registry edit in §8, DB inserts in §9, and onboarding integration in §10 are pieces of it.
+
+### 11.1 Where each artifact lives
+
+| Stage | Artifact | Location |
+|---|---|---|
+| **Authored** | Pack metadata + crisis + consent strings | `data/jurisdictions/{JURIS_ID}/index.ts` (in git) |
+| **Optional** | Lawyer-authored legal text | `data/jurisdictions/{JURIS_ID}/privacy-policy.md` (or inline as template literal in `index.ts`) |
+| **Code-wired** | `JURISDICTIONS` registry | `data/jurisdictions/index.ts` |
+| **Database** | Two rows | `jurisdictions` table (the data) + `available_packs` (catalogue stub for `user_packs` FK) |
+| **Onboarding** | Picker option | `app/(auth)/onboarding.tsx` — only for top-level options; bloc-covered jurisdictions need no edit (resolution happens via `getJurisdiction(country_code)` walking `countryCodes` arrays) |
+| **Bundled** | Compiled into app | `eas build` — jurisdictions are bundled (small + rarely change) |
+| **Live** | Visible at signup + applied to existing users | After binary release + DB inserts |
+
+### 11.2 The pipeline (in order)
+
+1. **Research + author** the pack per §3-7. Cite regulatory sources in code comments (e.g. `// minAge per APPI 2017 / Personal Information Protection Commission guidance`).
+2. **Wire the code registry** per §8. The pack is invisible until `JURISDICTIONS` references it.
+3. **`npx tsc --noEmit` clean**, push to main.
+4. **Run the two SQL inserts** from §9 in the Supabase SQL Editor — `jurisdictions` row holds the data, `available_packs` stub lets `user_packs.pack_id = 'jurisdiction:{JURIS_ID}'` satisfy FK.
+5. **Decide top-level picker vs bloc-covered** per §10. EU member states usually go bloc-covered (the EU pack catches them via `countryCodes`); non-EU countries usually get a top-level option in onboarding.
+6. **If lawyer-authored legal text is ready**, populate `privacyPolicyMd` + `termsOfServiceMd` either via `UPDATE jurisdictions ...` in Supabase OR as a code commit. v1 ships with empty markdown + a banner falling back to the AU template.
+7. **Cut a release build** with `eas build`. Jurisdictions are bundled.
+8. **Existing users in the new region**: anyone whose stored `profiles.jurisdiction_id` equals the new pack's ID gets the new pack on next session. Anyone whose stored ID is something different but whose actual country falls under the new pack's `countryCodes` will need to re-select their jurisdiction (via Profile → "Where I live") OR wait for a future "we noticed you're in {new country}, switch?" prompt.
+
+### 11.3 Lawyer-authored vs developer-authored fields
+
+| Field | Author | Notes |
+|---|---|---|
+| `id`, `name`, `countryCodes`, `currency`, `isEu`, `isUk` | Developer | Public facts. |
+| `minAge`, `coolingOffDays`, `voiceConsentRequired`, `dataResidency` | Developer (sourced from public regulation) | Cite source in code comments. Lawyer should sign off on the values before public launch. |
+| `crisisResources` | Developer (verified live) | Each phone/URL must be verified working at author time. Re-verify annually. |
+| `consentDisclosures` (3 strings) | Developer (cross-checked by lawyer) | Short factual statements about Anthropic / ElevenLabs / our entity. Lawyer sign-off before launch. |
+| `privacyPolicyMd`, `termsOfServiceMd` | **Lawyer (mandatory pre-launch)** | Until lawyer-authored, leave empty + the legal screen falls back to the AU template with a "showing AU template" banner. Acceptable as v1 stopgap; not acceptable for promoted-region launches. |
+
+### 11.4 Crisis-resource verification — the highest-stakes content
+
+Every entry in `crisisResources[]` MUST:
+
+- Resolve to a live, free-to-call hotline at author time. Test by calling. (Yes — actually call.)
+- Match the `context` it's labelled with. A suicide hotline is `crisis_general`, NOT `domestic_violence`. The runtime routes by context.
+- Stay current. Phone numbers change. Mitigation: set a calendar reminder to re-verify annually, and add a `last_verified` field to the row in a follow-up migration.
+
+If a crisis resource fails when a user is in distress, the AI Companion crisis-trigger flow lands them at a dead phone. That is a serious harm. **Verify before merging — no exceptions.**
+
+### 11.5 No-OTA constraint (v1)
+
+Jurisdictions are bundled. To add or update one in production requires a binary release. This is acceptable because:
+
+- Jurisdiction packs are tiny (~5KB per pack — mostly strings + numbers + 4-6 crisis resources).
+- They change rarely once authored. Crisis-line hot-fixes are infrequent (re-verification annually).
+- A jurisdiction that fails to load breaks the legal screens — bundling avoids the "couldn't fetch privacy policy on a metered network" failure mode.
+
+**Phase 2 trigger**: when crisis-resource hot-fixes become operationally common (e.g. a hotline number changes mid-cycle and we need to ship without a release), move `crisisResources` to a Supabase row that the app reads on session start with a bundled fallback.
+
+### 11.6 User discovery + flow
+
+- **At signup**, the jurisdiction picker (`app/(auth)/onboarding.tsx`) shows top-level options. The user's choice writes `profiles.jurisdiction_id`.
+- **Existing users** can change their jurisdiction in Profile → "Where I live". Changing it re-loads the legal screens with the new pack's text + currency.
+- **Geographic auto-detection** is not implemented. v1 uses self-declared jurisdiction only — see PRODUCT-DESIGN.md §11.5 on why (privacy + IP geolocation accuracy + travelling-user UX).
+- **Currency on the pricing screen** comes from the active jurisdiction's `currency.code/symbol`. RevenueCat returns prices in the store-side currency; cross-check that the App Store / Play Store product has the right region pricing configured for this jurisdiction.
+
+### 11.7 What can break in production
+
+- **`extends` referencing an unregistered pack.** `extends: 'EU'` works only if the EU pack is in `JURISDICTIONS`. Validate per §12 (Validation gates) before merging.
+- **Empty `privacyPolicyMd` shipping silently.** The legal screen falls back to AU but shows a banner. OK as a v1 stopgap; not OK for any promoted-region launch — get lawyer text in first.
+- **Outdated crisis numbers.** Hotlines change without notice. Annual re-verification is the only real defence; consider scheduling a quarterly cadence for high-traffic jurisdictions.
+- **Currency mismatch on the pricing page.** If RevenueCat returns prices in the wrong currency for the jurisdiction (e.g. user in Japan sees AUD), check (a) App Store / Play Store has Japan pricing configured AND (b) `available_packs.prices_by_jurisdiction` is populated with a JP entry.
+- **`countryCodes` overlap with another pack.** If two registered packs claim the same ISO country code, `getJurisdiction(country_code)` returns whichever the registry iterates to first — non-deterministic. Don't overlap.
+- **AI Companion crisis trigger fires + jurisdiction's `crisisResources` is empty.** The runtime hands off the trigger context but has no resources to surface. The user sees a generic message. Always populate at least 2 entries (one general, one mental_health) for any jurisdiction that ships.
+
+## 12. Validation gates
 
 Before declaring done:
 
@@ -318,7 +391,7 @@ Before declaring done:
 7. **`extends` chain resolves**: if `extends: 'EU'`, the EU pack must exist (it does). If extending an unauthored pack, fall back to AU.
 8. **Lawyer-authored legal text**: status documented. Either populated, or `privacyPolicyMd`/`termsOfServiceMd` are empty AND a TODO is in the file's docstring.
 
-## 12. Common mistakes to avoid
+## 13. Common mistakes to avoid
 
 - **Hardcoding `minAge: 18`.** Don't. Use the regulatory floor for the jurisdiction. 18 is rarely correct.
 - **Inventing crisis resources.** Use only real, government-recognised or established-charity hotlines. Verify each phone number is current.
@@ -327,7 +400,7 @@ Before declaring done:
 - **Authoring privacy/terms text yourself.** That's lawyer work. Leave the markdown empty + flag for legal review.
 - **Forgetting the `available_packs` row.** The jurisdictions table holds the pack content; the available_packs row is the catalogue stub that user_packs can FK to. Both required.
 
-## 13. Boundary — what a jurisdiction pack does NOT contain
+## 14. Boundary — what a jurisdiction pack does NOT contain
 
 Don't put in a jurisdiction pack:
 
@@ -337,7 +410,7 @@ Don't put in a jurisdiction pack:
 - **Course pricing per region in this file**. Pricing lives in `available_packs.prices_by_jurisdiction` jsonb, set per course pack — see Phase H. The jurisdiction pack carries the **currency code/symbol**, not the prices.
 - **AI Companion crisis trigger phrases**. Trigger phrases (regex patterns to detect distress) live in the AI Companion course pack per speaker. The jurisdiction pack carries the phone numbers shown when a trigger fires. Composition happens at runtime.
 
-## 14. Worked example: minimum Japan pack
+## 15. Worked example: minimum Japan pack
 
 Inputs:
 - `id`: `JP`
@@ -395,7 +468,7 @@ export default JP;
 
 Then registry edit, two SQL inserts, optionally add to onboarding picker. Done — Japan is live.
 
-## 15. The acceptance criterion
+## 16. The acceptance criterion
 
 A jurisdiction pack is shippable when:
 - `data/jurisdictions/{JURIS_ID}/index.ts` exists with full metadata

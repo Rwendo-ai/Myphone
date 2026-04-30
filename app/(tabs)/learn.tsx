@@ -8,6 +8,7 @@ import { useSettings } from '../../lib/SettingsContext';
 import { useProgress } from '../../hooks/useProgress';
 import { useDailyXpGoal } from '../../lib/preferences';
 import { CoursePack, CoursePackId } from '../../types/packs';
+import { canAccessCourse } from '../../lib/entitlements';
 import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
 
@@ -38,13 +39,19 @@ export default function LearnScreen() {
   const {
     spokenLanguage, learnedLanguage,
     courses, activeCourseId, setActiveCourseId,
+    entitlementContext,
   } = useSettings();
   const { xp, streakDays, completedLessons, refresh } = useProgress();
   const { goal: dailyXpGoal } = useDailyXpGoal();
 
+  // Show only courses the user actually owns (or DEV_UNLOCK_ALL). The course
+  // pack registry knows what's authored; entitlements decide what this user sees.
   const educationalCourses = useMemo(
-    () => courses.filter(c => categoryForCourse(c) !== null),
-    [courses],
+    () => courses.filter(c =>
+      categoryForCourse(c) !== null
+      && canAccessCourse(c.meta.id, entitlementContext).allowed
+    ),
+    [courses, entitlementContext],
   );
 
   const initialCategory: CourseCategory = useMemo(() => {
