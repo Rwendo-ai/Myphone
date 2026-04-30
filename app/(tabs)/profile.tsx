@@ -292,6 +292,8 @@ export default function ProfileScreen() {
           <Section title={t('profile.sections.support')}>
             <SettingsRow label={t('profile.support_rows.help_faq')} onPress={() => router.push('/profile/help')} />
             <SettingsRow label={t('profile.support_rows.about')} onPress={() => router.push('/profile/about')} />
+            <SettingsRow label={t('profile.support_rows.methodology')} onPress={() => router.push('/profile/methodology')} />
+            <SettingsRow label={t('profile.support_rows.companion_philosophy')} onPress={() => router.push('/profile/companion-philosophy')} />
             <SettingsRow
               label={t('profile.support_rows.contact_us')}
               onPress={() => {

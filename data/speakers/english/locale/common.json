@@ -27,6 +27,62 @@
       "200": { "title": "Intense", "sub": "~40 min/day · push for fluency" }
     }
   },
+  "methodology": {
+    "title": "How we teach",
+    "subtitle": "The Rwendo Method, in plain language",
+    "hero_body": "Rwendo is built on second-language acquisition (SLA) research. Every choice in the lesson — three chunks max, dialogue with recasts, recall before you move on — comes from how language actually sticks. Here's the why.",
+    "phases": {
+      "title": "Seven phases per lesson",
+      "body": "Hook → Chunks → Pattern → Practice → Dialogue → Recall → Mission. Each phase has one job. Hook frames the cultural moment. Chunks give you up to three new lexical units. Pattern surfaces the rule. Practice exercises consolidate. Dialogue is your first try at output. Recall is no-look testing. Mission is a real-world micro-task that triggers spaced retrieval."
+    },
+    "lexical": {
+      "title": "Chunks, not single words",
+      "body": "Rwendo teaches in lexical chunks — meaningful units like 'mamuka sei?' rather than isolated words. Chunks are how fluent speakers actually store and retrieve language. We cap each lesson at three so working memory isn't overloaded."
+    },
+    "input_output": {
+      "title": "Input then output",
+      "body": "Every lesson moves you from receiving comprehensible input (Hook, Chunks, Pattern) to producing output (Practice, Dialogue). Both stages are necessary. Pure listening apps under-deliver because the brain locks language in only when you reach for it."
+    },
+    "recasts": {
+      "title": "Gentle correction by recast",
+      "body": "When you make a mistake in dialogue, Rwen rephrases your line correctly without naming the error. This is recasting — it preserves your motivation and lets you self-correct. Beats red-pen feedback for retention."
+    },
+    "recall": {
+      "title": "Active recall is its own phase",
+      "body": "Pulling vocabulary out of memory strengthens the trace. Phase 6 is no-look testing — you have to retrieve, not recognise. This is why you remember a phrase weeks later from a Rwendo lesson and not from a flashcard you tapped through."
+    },
+    "spacing": {
+      "title": "Spaced retrieval through Missions",
+      "body": "Each lesson ends with a real-world Mission — 'greet someone with Mangwanani today'. Missions space your retrieval out into your real day, where the brain encodes more durably than in any single sitting."
+    },
+    "footer": "Built on Lewis, Krashen, Swain, Long, Roediger & Karpicke, Ebbinghaus, and Bahrick. Citations in docs/curriculum/LEARNING_METHODOLOGY.md."
+  },
+  "companion_philosophy": {
+    "title": "Our AI Companion philosophy",
+    "subtitle": "How Rwen shows up when you talk",
+    "hero_body": "Rwen isn't a curriculum, a chatbot, or a therapist. It's a relationship that grows. Long-term sticky engagement comes from depth, not novelty.",
+    "relationship": {
+      "title": "A relationship, not a course",
+      "body": "Most AI companions feel novel for two weeks then dull. The reason is structural: pure free-form chat has no memory and no growth. Rwendo's Companion track is built so the conversation accumulates — past references, inside jokes, depth that earns the right to harder topics."
+    },
+    "depth": {
+      "title": "Depth levels you earn",
+      "body": "Rwen behaves differently at Day 1 than at Day 90. Five depth levels (New friend → Familiar → Close → Trusted → Lifelong) unlock new conversation surfaces — deeper cards, harder topics, more memory richness — as cumulative interaction adds up. Levels are progress, not gates: every paid user can have any conversation at any level. Levels just shape what Rwen offers proactively."
+    },
+    "memory": {
+      "title": "Memory you can read and edit",
+      "body": "Rwen builds a structured memory of you — your sister's name is Tanya, you're learning Shona because of your partner's family, you mentioned a hard week last Wednesday. There's a Memory panel where you can read everything Rwen has noted, edit any fact, delete any fact, or wipe everything. The memory is yours."
+    },
+    "guardrails": {
+      "title": "Guardrails that don't pretend",
+      "body": "We borrow conversational structure from Rogers, Beck, and Fogg, but Rwen never claims to be therapy. Crisis triggers (suicidal ideation, self-harm) surface a region-specific handoff to professional resources before any AI response. Hard-topic cards always carry a footer linking to crisis support. Rwen's prompt explicitly forbids dependency-building patterns."
+    },
+    "not_therapy": {
+      "title": "Not your therapist",
+      "body": "Every seven days of heavy reflective use, Rwen reminds you it's not a substitute for professional support. The companionship is real; the boundaries are deliberate. The goal is enrichment, not isolation."
+    },
+    "footer": "Drawing from Carl Rogers, Aaron Beck, BJ Fogg's Tiny Habits, and the documented Replika engagement studies. We are not a therapy app."
+  },
   "about": {
     "title": "About Rwendo",
     "app_name": "Rwendo",
@@ -309,6 +365,8 @@
     "support_rows": {
       "help_faq": "Help & FAQ",
       "about": "About Rwendo",
+      "methodology": "How we teach",
+      "companion_philosophy": "Our AI Companion philosophy",
       "contact_us": "Contact Us",
       "no_email_app_title": "No email app",
       "no_email_app_body": "Please email support@rwendo.app from your preferred email app.",
