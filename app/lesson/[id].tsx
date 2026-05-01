@@ -6,6 +6,8 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../lib/AuthContext';
 import RwenImage from '../../components/rwen/RwenImage';
 import { saveLessonProgress } from '../../lib/progress';
+import { autoAddLessonChunks } from '../../lib/dictionary';
+import LessonToolsSheet from '../../components/lesson/LessonToolsSheet';
 import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
 import MatchPairs from '../../components/exercises/MatchPairs';
@@ -45,6 +47,7 @@ export default function LessonScreen() {
   const [totalAnswered, setTotalAnswered] = useState(0);
   const [dialogueChoice, setDialogueChoice] = useState<{ correct: boolean; feedback: string } | null>(null);
   const [saved, setSaved] = useState(false);
+  const [toolsOpen, setToolsOpen] = useState(false);
 
   if (!lesson) {
     return (
@@ -103,6 +106,11 @@ export default function LessonScreen() {
         totalQuestions: totalAnswered,
         xpEarned: xpEarned,
       }).catch((e) => console.error('saveLessonProgress failed:', e));
+      if (activeCourseId) {
+        autoAddLessonChunks(user.id, activeCourseId, lesson).catch((e) =>
+          console.error('autoAddLessonChunks failed:', e),
+        );
+      }
     }
   };
 
@@ -178,17 +186,37 @@ export default function LessonScreen() {
 
   // ── TOP BAR ──
   const TopBar = ({ light = false }: { light?: boolean }) => (
-    <View style={styles.topBar}>
-      <Pressable onPress={confirmQuit} style={styles.closeBtn}>
-        <Text style={[styles.closeText, light && { color: 'rgba(255,255,255,0.7)' }]}>←</Text>
-      </Pressable>
-      <View style={[styles.progressBg, light && { backgroundColor: 'rgba(255,255,255,0.2)' }]}>
-        <View style={[styles.progressFill, { width: `${progress * 100}%` }, light && { backgroundColor: Colors.xp }]} />
+    <>
+      <View style={styles.topBar}>
+        <Pressable onPress={confirmQuit} style={styles.closeBtn}>
+          <Text style={[styles.closeText, light && { color: 'rgba(255,255,255,0.7)' }]}>←</Text>
+        </Pressable>
+        <View style={[styles.progressBg, light && { backgroundColor: 'rgba(255,255,255,0.2)' }]}>
+          <View style={[styles.progressFill, { width: `${progress * 100}%` }, light && { backgroundColor: Colors.xp }]} />
+        </View>
+        <Text style={[styles.phaseLabel, light && { color: 'rgba(255,255,255,0.7)' }]}>
+          {t(`lesson.phases.${phase}`)}
+        </Text>
+        <Pressable
+          onPress={() => setToolsOpen(true)}
+          style={styles.toolsBtn}
+          accessibilityLabel="Open lesson tools"
+          hitSlop={8}
+        >
+          <Text style={[styles.toolsBtnText, light && { color: Colors.white }]}>🧰</Text>
+        </Pressable>
       </View>
-      <Text style={[styles.phaseLabel, light && { color: 'rgba(255,255,255,0.7)' }]}>
-        {t(`lesson.phases.${phase}`)}
-      </Text>
-    </View>
+      {user && activeCourseId && (
+        <LessonToolsSheet
+          visible={toolsOpen}
+          onClose={() => setToolsOpen(false)}
+          userId={user.id}
+          courseId={activeCourseId}
+          lesson={lesson}
+          entitlementContext={entitlementContext}
+        />
+      )}
+    </>
   );
 
   // ── RWEN IMAGE ──
@@ -562,6 +590,8 @@ const styles = StyleSheet.create({
   },
   closeBtn: { padding: 4 },
   closeText: { fontSize: FontSize.lg, color: Colors.gray[400] },
+  toolsBtn: { padding: 4 },
+  toolsBtnText: { fontSize: FontSize.lg, color: Colors.gray[600] },
   progressBg: { flex: 1, height: 8, backgroundColor: Colors.gray[100], borderRadius: BorderRadius.full },
   progressFill: { height: 8, backgroundColor: Colors.secondary, borderRadius: BorderRadius.full, minWidth: 8 },
   phaseLabel: { fontSize: FontSize.xs, color: Colors.gray[400], fontWeight: FontWeight.medium, minWidth: 60, textAlign: 'right' },
