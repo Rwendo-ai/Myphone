@@ -9,6 +9,7 @@ import { useProgress } from '../../hooks/useProgress';
 import { useDailyXpGoal } from '../../lib/preferences';
 import { CoursePack, CoursePackId } from '../../types/packs';
 import { DEV_UNLOCK_ALL } from '../../constants/dev';
+import ProfilePicButton from '../../components/ProfilePicButton';
 
 // Mid-market launch price per language course. Per-jurisdiction localisation
 // lives in `available_packs.prices_by_jurisdiction` (queried once when the
@@ -140,9 +141,12 @@ export default function LearnScreen() {
             <Text style={styles.greeting}>{greeting}</Text>
             <Text style={styles.headerTitle}>{headerTitle}</Text>
           </View>
-          <View style={styles.streakBadge}>
-            <Text style={styles.streakEmoji}>🔥</Text>
-            <Text style={styles.streakText}>{streakDays}</Text>
+          <View style={styles.headerRightCluster}>
+            <View style={styles.streakBadge}>
+              <Text style={styles.streakEmoji}>🔥</Text>
+              <Text style={styles.streakText}>{streakDays}</Text>
+            </View>
+            <ProfilePicButton variant="light" />
           </View>
         </View>
 
@@ -321,6 +325,11 @@ const styles = StyleSheet.create({
   },
   greeting: { fontSize: FontSize.sm, color: 'rgba(255,255,255,0.7)', fontWeight: FontWeight.medium },
   headerTitle: { fontSize: FontSize.xl, fontWeight: FontWeight.bold, color: Colors.white },
+  headerRightCluster: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.sm,
+  },
   streakBadge: {
     flexDirection: 'row',
     alignItems: 'center',

@@ -12,6 +12,7 @@ import { useSettings, RwenVoiceKey } from '../../lib/SettingsContext';
 import { useDailyXpGoal, useDailyReminders } from '../../lib/preferences';
 import { pickAndUploadAvatar } from '../../lib/storage';
 import { supabase } from '../../lib/supabase';
+import { speakText, stopSpeaking } from '../../lib/voice';
 import { SUPPORTED_LANGUAGES, SupportedLanguage, setAppLanguage } from '../../lib/i18n';
 import { THEMES } from '../../constants/themes';
 import { Colors } from '../../constants/colors';
@@ -225,21 +226,44 @@ export default function ProfileScreen() {
           {/* Rwen's Voice — voice options are speaker-pack-curated. A Shona
               speaker sees Shona-friendly voices, English speaker sees English
               voices. v1 both packs use the same 4 IDs (multilingual v2);
-              v1.x adds a custom Shona clone. */}
+              v1.x adds a custom Shona clone. Preview button speaks a sample. */}
           <Section title={t('profile.sections.rwens_voice')}>
             <View style={styles.voiceGrid}>
-              {speaker.voices.map((voice) => (
-                <Pressable
-                  key={voice.key}
-                  style={[styles.voiceCard, rwenVoice === voice.key && styles.voiceCardActive]}
-                  onPress={() => setRwenVoice(voice.key as RwenVoiceKey)}
-                >
-                  <Text style={styles.voiceGender}>{voice.gender === 'female' ? '👩' : '👨'}</Text>
-                  <Text style={[styles.voiceName, rwenVoice === voice.key && styles.voiceNameActive]}>{voice.name}</Text>
-                  <Text style={styles.voiceDesc}>{voice.description}</Text>
-                  {rwenVoice === voice.key && <Text style={styles.voiceCheck}>✓</Text>}
-                </Pressable>
-              ))}
+              {speaker.voices.map((voice) => {
+                const isActive = rwenVoice === voice.key;
+                return (
+                  <Pressable
+                    key={voice.key}
+                    style={[styles.voiceCard, isActive && styles.voiceCardActive]}
+                    onPress={() => setRwenVoice(voice.key as RwenVoiceKey)}
+                  >
+                    <Text style={styles.voiceGender}>{voice.gender === 'female' ? '👩' : '👨'}</Text>
+                    <Text style={[styles.voiceName, isActive && styles.voiceNameActive]}>{voice.name}</Text>
+                    <Text style={styles.voiceDesc}>{voice.description}</Text>
+                    <Pressable
+                      style={styles.voicePreviewBtn}
+                      onPress={(e) => {
+                        e.stopPropagation();
+                        stopSpeaking();
+                        const sample = speaker.id === 'shona'
+                          ? 'Mhoro! Ndini Rwen, ndingatangire kukubatsira.'
+                          : speaker.id === 'french'
+                          ? "Bonjour ! Je suis Rwen, je suis là pour vous accompagner."
+                          : speaker.id === 'chinese'
+                          ? '你好！我是 Rwen，很高兴认识你。'
+                          : speaker.id === 'tagalog'
+                          ? 'Magandang araw! Ako si Rwen, narito ako para tulungan ka.'
+                          : "Hello! I'm Rwen — pick a voice that feels right.";
+                        speakText(sample, voice.key as RwenVoiceKey);
+                      }}
+                      hitSlop={6}
+                    >
+                      <Text style={styles.voicePreviewText}>▶ Preview</Text>
+                    </Pressable>
+                    {isActive && <Text style={styles.voiceCheck}>✓</Text>}
+                  </Pressable>
+                );
+              })}
             </View>
           </Section>
 
@@ -431,6 +455,16 @@ const styles = StyleSheet.create({
   voiceNameActive: { color: Colors.primary },
   voiceDesc: { fontSize: FontSize.xs, color: Colors.gray[400], textAlign: 'center' },
   voiceCheck: { color: Colors.secondary, fontWeight: FontWeight.bold },
+  voicePreviewBtn: {
+    marginTop: Spacing.xs,
+    paddingHorizontal: Spacing.sm,
+    paddingVertical: 4,
+    borderRadius: BorderRadius.sm,
+    backgroundColor: Colors.white,
+    borderWidth: 1,
+    borderColor: Colors.gray[200],
+  },
+  voicePreviewText: { fontSize: FontSize.xs, color: Colors.secondary, fontWeight: FontWeight.medium },
 
   signOutBtn: {
     backgroundColor: Colors.white,

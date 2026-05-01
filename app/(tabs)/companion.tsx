@@ -4,6 +4,7 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import RwenImage from '../../components/rwen/RwenImage';
+import ProfilePicButton from '../../components/ProfilePicButton';
 import { useAuth } from '../../lib/AuthContext';
 import { useSettings } from '../../lib/SettingsContext';
 import { useProgress } from '../../hooks/useProgress';
@@ -224,6 +225,8 @@ export default function CompanionScreen() {
         >
           <Text style={[styles.convoBtnText, { opacity: 0.5 }]}>🎙</Text>
         </Pressable>
+
+        <ProfilePicButton variant="light" />
       </View>
 
       <KeyboardAvoidingView

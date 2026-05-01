@@ -3,6 +3,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useTranslation } from 'react-i18next';
 import RwenImage from '../../components/rwen/RwenImage';
+import ProfilePicButton from '../../components/ProfilePicButton';
 import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
 
@@ -29,6 +30,9 @@ export default function TravelScreen() {
 
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>
+      <View style={styles.profileBtnFloat} pointerEvents="box-none">
+        <ProfilePicButton variant="light" />
+      </View>
       <ScrollView showsVerticalScrollIndicator={false}>
 
         {/* Hero */}
@@ -115,6 +119,12 @@ export default function TravelScreen() {
 
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: Colors.primary },
+  profileBtnFloat: {
+    position: 'absolute',
+    top: Spacing.sm,
+    right: Spacing.md,
+    zIndex: 10,
+  },
   hero: { padding: Spacing.lg, paddingBottom: Spacing.xl },
   heroContent: { flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: Spacing.lg },
   heroText: { flex: 1, gap: Spacing.sm },

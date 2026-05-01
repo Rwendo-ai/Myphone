@@ -63,14 +63,10 @@ export default function TabLayout() {
           tabBarIcon: ({ focused }) => <TabIcon emoji="✈️" focused={focused} />,
         }}
       />
-      <Tabs.Screen
-        name="profile"
-        options={{
-          title: t('nav.profile'),
-          tabBarIcon: ({ focused }) => <TabIcon emoji="👤" focused={focused} />,
-        }}
-      />
-      {/* Hide old tabs that are now inside other screens */}
+      {/* Profile is reached via the ProfilePicButton in every screen header
+          (top-right corner). Removed from the tab bar but the route still
+          exists at /profile. */}
+      <Tabs.Screen name="profile" options={{ href: null }} />
       <Tabs.Screen name="dictionary" options={{ href: null }} />
     </Tabs>
   );

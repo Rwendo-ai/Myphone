@@ -5,6 +5,7 @@ import { useCallback } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useTranslation } from 'react-i18next';
 import RwenImage from '../../components/rwen/RwenImage';
+import ProfilePicButton from '../../components/ProfilePicButton';
 import { useAuth } from '../../lib/AuthContext';
 import { useSettings } from '../../lib/SettingsContext';
 import { useProgress } from '../../hooks/useProgress';
@@ -71,6 +72,9 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>
+      <View style={styles.profileBtnFloat} pointerEvents="box-none">
+        <ProfilePicButton variant="light" />
+      </View>
       <ScrollView showsVerticalScrollIndicator={false}>
 
         {/* Hero section */}
@@ -208,6 +212,12 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: Colors.primary },
+  profileBtnFloat: {
+    position: 'absolute',
+    top: Spacing.sm,
+    right: Spacing.md,
+    zIndex: 10,
+  },
   hero: { paddingHorizontal: Spacing.lg, paddingTop: Spacing.md, paddingBottom: Spacing.lg },
   heroTop: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: Spacing.lg },
   greetingShona: { fontSize: FontSize.xl, fontWeight: FontWeight.bold, color: Colors.xp },
