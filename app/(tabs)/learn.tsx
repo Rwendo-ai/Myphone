@@ -8,7 +8,11 @@ import { useSettings } from '../../lib/SettingsContext';
 import { useProgress } from '../../hooks/useProgress';
 import { useDailyXpGoal } from '../../lib/preferences';
 import { CoursePack, CoursePackId } from '../../types/packs';
-import { canAccessCourse } from '../../lib/entitlements';
+
+// Mid-market launch price per language course. Per-jurisdiction localisation
+// lives in `available_packs.prices_by_jurisdiction` (queried once when the
+// purchase flow is wired). RevenueCat will eventually be the source of truth.
+const COURSE_PRICE_AUD = 14.99;
 import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
 
@@ -44,14 +48,23 @@ export default function LearnScreen() {
   const { xp, streakDays, completedLessons, refresh } = useProgress();
   const { goal: dailyXpGoal } = useDailyXpGoal();
 
-  // Show only courses the user actually owns (or DEV_UNLOCK_ALL). The course
-  // pack registry knows what's authored; entitlements decide what this user sees.
+  // Every authored educational course is rendered; the visual treatment splits
+  // into owned vs. locked based on the user's entitlements (starter +
+  // user_packs rows). DEV_UNLOCK_ALL deliberately does NOT bypass this split
+  // — the developer wants to preview what testers will see. DEV_UNLOCK_ALL
+  // still lets the developer enter locked courses (canAccessLesson honours
+  // the flag), so tapping a locked card opens the lesson screen as normal in
+  // dev, while testers without the flag get the buy alert.
   const educationalCourses = useMemo(
-    () => courses.filter(c =>
-      categoryForCourse(c) !== null
-      && canAccessCourse(c.meta.id, entitlementContext).allowed
-    ),
-    [courses, entitlementContext],
+    () => courses.filter(c => categoryForCourse(c) !== null),
+    [courses],
+  );
+
+  const isOwned = useCallback(
+    (courseId: CoursePackId) =>
+      entitlementContext.starterCourseId === courseId
+      || entitlementContext.ownedCourseIds.includes(courseId),
+    [entitlementContext.starterCourseId, entitlementContext.ownedCourseIds],
   );
 
   const initialCategory: CourseCategory = useMemo(() => {
@@ -66,9 +79,19 @@ export default function LearnScreen() {
     [educationalCourses, selectedCategory],
   );
 
+  const ownedInCategory = useMemo(
+    () => coursesInCategory.filter(c => isOwned(c.meta.id)),
+    [coursesInCategory, isOwned],
+  );
+
+  const lockedInCategory = useMemo(
+    () => coursesInCategory.filter(c => !isOwned(c.meta.id)),
+    [coursesInCategory, isOwned],
+  );
+
   const courseToShow = useMemo(
-    () => coursesInCategory.find(c => c.meta.id === activeCourseId) ?? coursesInCategory[0],
-    [coursesInCategory, activeCourseId],
+    () => ownedInCategory.find(c => c.meta.id === activeCourseId) ?? ownedInCategory[0],
+    [ownedInCategory, activeCourseId],
   );
 
   const units = useMemo(() => {
@@ -97,8 +120,12 @@ export default function LearnScreen() {
     if (course.meta.id !== activeCourseId) setActiveCourseId(course.meta.id);
   };
 
-  const handleBuyAnother = () => {
-    Alert.alert(t('tab.buy.alert_title'), t('tab.buy.alert_body'));
+  const handleBuyCourse = (course: CoursePack) => {
+    Alert.alert(
+      `Buy ${course.meta.displayName}`,
+      `Unlock all 100 lessons of ${course.meta.displayName} for $${COURSE_PRICE_AUD.toFixed(2)} AUD.\n\nIn-app purchases are coming soon — we'll let you know when this is live.`,
+      [{ text: 'OK', style: 'default' }],
+    );
   };
 
   useFocusEffect(useCallback(() => { refresh(); }, [refresh]));
@@ -144,27 +171,48 @@ export default function LearnScreen() {
           })}
         </View>
 
-        <View style={styles.coursePillSection}>
-          {coursesInCategory.map(course => {
-            const isActive = course.meta.id === (courseToShow?.meta.id ?? null);
-            return (
-              <Pressable
-                key={course.meta.id}
-                style={[styles.coursePill, isActive && styles.coursePillActive]}
-                onPress={() => handleSelectCourse(course)}
-              >
-                <Text style={styles.coursePillEmoji}>{course.meta.emoji}</Text>
-                <Text style={[styles.coursePillLabel, isActive && styles.coursePillLabelActive]}>
-                  {course.meta.displayName}
-                </Text>
-                {isActive && <Text style={styles.coursePillCheck}>✓</Text>}
-              </Pressable>
-            );
-          })}
-          <Pressable style={styles.buyAnotherPill} onPress={handleBuyAnother}>
-            <Text style={styles.buyAnotherLabel}>{t(buyLabelKey[selectedCategory])}</Text>
-          </Pressable>
-        </View>
+        {ownedInCategory.length > 0 && (
+          <View style={styles.coursePillSection}>
+            {ownedInCategory.map(course => {
+              const isActive = course.meta.id === (courseToShow?.meta.id ?? null);
+              return (
+                <Pressable
+                  key={course.meta.id}
+                  style={[styles.coursePill, isActive && styles.coursePillActive]}
+                  onPress={() => handleSelectCourse(course)}
+                >
+                  <Text style={styles.coursePillEmoji}>{course.meta.emoji}</Text>
+                  <Text style={[styles.coursePillLabel, isActive && styles.coursePillLabelActive]}>
+                    {course.meta.displayName}
+                  </Text>
+                  {isActive && <Text style={styles.coursePillCheck}>✓</Text>}
+                </Pressable>
+              );
+            })}
+          </View>
+        )}
+
+        {lockedInCategory.length > 0 && (
+          <>
+            <Text style={styles.lockedHeader}>{t(buyLabelKey[selectedCategory])}</Text>
+            <View style={styles.coursePillSection}>
+              {lockedInCategory.map(course => (
+                <Pressable
+                  key={course.meta.id}
+                  style={[styles.coursePill, styles.coursePillLocked]}
+                  onPress={() => handleBuyCourse(course)}
+                >
+                  <Text style={[styles.coursePillEmoji, styles.lockedDim]}>{course.meta.emoji}</Text>
+                  <Text style={[styles.coursePillLabel, styles.lockedDim]}>
+                    {course.meta.displayName}
+                  </Text>
+                  <Text style={styles.coursePillPrice}>${COURSE_PRICE_AUD.toFixed(2)}</Text>
+                  <Text style={styles.coursePillLock}>🔒</Text>
+                </Pressable>
+              ))}
+            </View>
+          </>
+        )}
 
         {coursesInCategory.length === 0 ? (
           <View style={styles.comingSoon}>
@@ -180,6 +228,14 @@ export default function LearnScreen() {
               {t(selectedCategory === 'ai-courses'
                 ? 'tab.empty_category.ai_courses_body'
                 : 'tab.empty_category.know_yourself_body')}
+            </Text>
+          </View>
+        ) : ownedInCategory.length === 0 ? (
+          <View style={styles.comingSoon}>
+            <Text style={styles.comingSoonEmoji}>🔒</Text>
+            <Text style={styles.comingSoonTitle}>No courses unlocked yet</Text>
+            <Text style={styles.comingSoonSub}>
+              Pick a language above to start your journey.
             </Text>
           </View>
         ) : units.length === 0 ? (
@@ -339,6 +395,34 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buyAnotherLabel: { fontSize: FontSize.sm, color: Colors.gray[600], fontWeight: FontWeight.medium },
+  lockedHeader: {
+    fontSize: FontSize.sm,
+    fontWeight: FontWeight.bold,
+    color: Colors.gray[500],
+    paddingHorizontal: Spacing.lg,
+    paddingTop: Spacing.md,
+    paddingBottom: Spacing.sm,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+  },
+  coursePillLocked: {
+    backgroundColor: Colors.gray[50],
+    borderColor: Colors.gray[200],
+    borderStyle: 'dashed',
+  },
+  lockedDim: {
+    opacity: 0.55,
+  },
+  coursePillPrice: {
+    marginLeft: 'auto',
+    fontSize: FontSize.sm,
+    fontWeight: FontWeight.bold,
+    color: Colors.secondary,
+  },
+  coursePillLock: {
+    fontSize: FontSize.md,
+    marginLeft: Spacing.xs,
+  },
   unitCard: {
     flexDirection: 'row',
     backgroundColor: Colors.white,
