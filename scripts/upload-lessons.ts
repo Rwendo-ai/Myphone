@@ -93,6 +93,22 @@ async function upsertNewCatalogueRows() {
       primary_color: '#DE2910',
       secondary_color: '#FFDE00',
     },
+    {
+      id: 'course:language-tagalog',
+      pack_kind: 'course',
+      course_type: 'language',
+      target_language_id: 'tagalog',
+      available_for_speakers: ['english'],
+      name: 'Learn Tagalog',
+      description: 'English speakers learning Tagalog (Filipino) — full A2 curriculum.',
+      is_free: false,
+      is_active: true,
+      is_coming_soon: true,
+      sort_order: 14,
+      flag_emoji: '🇵🇭',
+      primary_color: '#0038A8',
+      secondary_color: '#CE1126',
+    },
   ];
   const { error } = await supabase
     .from('available_packs')
@@ -164,6 +180,7 @@ async function main() {
     ['language-english', 'shona'],
     ['language-french',  'english'],
     ['language-chinese', 'english'],
+    ['language-tagalog', 'english'],
   ];
 
   let totalUploaded = 0;

@@ -1,9 +1,9 @@
 # Curriculum Authoring Progress
 
-> Multi-session progress tracker for the 400-lesson Phase B-C authoring run. Update after every batch.
+> Multi-session progress tracker for the 500-lesson Phase B-C authoring run. Update after every batch.
 
 **Started:** 2026-05-01
-**Target:** 4 courses × 100 lessons = 400 lessons. All with Phase 8 (5 bonus XP, paid-tier-gated).
+**Target:** 5 courses × 100 lessons = 500 lessons. All with Phase 8 (5 bonus XP, paid-tier-gated).
 
 ---
 
@@ -89,15 +89,36 @@
 
 ---
 
+### 5. language-tagalog — English speaker learning Tagalog/Filipino (100 lessons)
+
+**Course pack created.** Registered in `data/courses/index.ts` as of 2026-05-01.
+
+| Module | Lessons | Status |
+|---|---|---|
+| 1 — Magandang Umaga (Greetings & po/opo) | 10 | ✅ 10/10 — Done 2026-05-01 |
+| 2 — Survival Phrases | 10 | ✅ 10/10 — Done 2026-05-01 |
+| 3 — Tungkol sa Sarili (Self & Introductions) | 10 | ✅ 10/10 — Done 2026-05-01 |
+| 4 — Markers, Pronouns, Demonstratives (ang/ng/sa, si/ni/kay, ito/iyan/iyon) | 10 | ✅ 10/10 — Done 2026-05-01 |
+| 5 — Pamilya (Family) | 10 | ✅ 10/10 — Done 2026-05-01 |
+| 6 — Numbers, Time, Money (native + Spanish-loan split) | 10 | ✅ 10/10 — Done 2026-05-01 |
+| 7 — Kain Tayo (Food & Eating) | 10 | ✅ 10/10 — Done 2026-05-01 |
+| 8 — Daily Verbs (um-/mag-, reduplication) | 10 | ✅ 10/10 — Done 2026-05-01 |
+| 9 — Direksyon (Directions, Travel, Jeepney) | 10 | ✅ 10/10 — Done 2026-05-01 |
+| 10 — Damdamin & Salawikain (Emotions, Proverbs) | 10 | ✅ 10/10 — Done 2026-05-01 |
+
+**This course's status: COMPLETE — full A2 fluency curriculum, 100/100 lessons, all with Phase 8.**
+
+---
+
 ## Aggregate
 
 | Metric | Count | % |
 |---|---|---|
-| Total target | 400 | 100% |
-| 7-phase content authored | 400 (100 Shona + 100 English + 100 French + 100 Chinese) | 100% |
-| Phase 8 attached | 400 (100 Shona + 100 English + 100 French + 100 Chinese) | 100% |
+| Total target | 500 | 100% |
+| 7-phase content authored | 500 (100 Shona + 100 English + 100 French + 100 Chinese + 100 Tagalog) | 100% |
+| Phase 8 attached | 500 (100 Shona + 100 English + 100 French + 100 Chinese + 100 Tagalog) | 100% |
 | Type-checks clean | ✅ tsc --noEmit exits 0 | 100% |
-| Uploaded to Supabase Storage | ✅ 400/400 in `course-content/lessons/` | 100% |
+| Uploaded to Supabase Storage | ✅ 500/500 in `course-content/lessons/` | 100% |
 | Native-reviewed | 0 | 0% |
 
 ---
