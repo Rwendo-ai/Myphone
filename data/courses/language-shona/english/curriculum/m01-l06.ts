@@ -143,6 +143,14 @@ const lesson: LessonData = {
     task: "Introduce yourself in Shona to one person today — even just 'Zita rangu ndi [your name]'. Watch their reaction.",
     rwenSignoff: "Your name in Shona sounds like music. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "It's the afternoon of a wedding in a village outside Mutare. The reception is winding into speeches and a relative is taking you around to introduce you to the bride's auntie — a respected senior on the bride's side who you've never met before. You'll need to greet, exchange names, and make her feel you took the introduction seriously.",
+    rwenRole: "Tete Rumbidzai — the bride's auntie, ~60, dignified and warm; at weddings she's introduced to many strangers and remembers the ones who handle her name properly.",
+    successCriteria: "User asks 'Zita rako ndiani?' to learn her name, introduces themselves with 'Zita rangu ndi [name]' (NOT just stating the bare name in English), and closes the introduction with 'Wakanaka kukuziva' rather than skipping straight past it. Greeting form should respect that she's an elder.",
+    estimatedMinutes: 3,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

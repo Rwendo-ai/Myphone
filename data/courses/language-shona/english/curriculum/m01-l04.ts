@@ -145,6 +145,14 @@ const lesson: LessonData = {
     task: "Say 'Manheru akanaka' to someone tonight — a family member, a housemate, anyone. Notice how it lands differently from a simple 'hi'.",
     rwenSignoff: "Evenings are special. Toona mangwana — see you tomorrow.",
   },
+
+  phase8: {
+    scenario: "It's 7pm. You've arrived at your friend Farai's family home for sadza and stew, and his mother opens the door — the kitchen is warm behind her and you can hear other relatives inside. This is the threshold moment, where your opening greeting sets the whole evening's tone.",
+    rwenRole: "Mai Farai — Farai's mother, ~50, hospitable and observant; a warm 'Manheru akanaka' from a guest tells her everything she needs to know.",
+    successCriteria: "User leads with the warm 'Manheru akanaka' form (NOT bare 'Manheru', NOT the afternoon 'Maswera sei?'), matches her warmth back when she returns the greeting, and uses 'Hona' or another evening-appropriate follow-up rather than reverting to morning chunks.",
+    estimatedMinutes: 2,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

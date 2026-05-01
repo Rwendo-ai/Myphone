@@ -139,6 +139,14 @@ const lesson: LessonData = {
     task: "Greet a friend or sibling with 'Wamuka sei?' this morning. See if they notice.",
     rwenSignoff: "Friends deserve the warm form. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "It's just after sunrise at the family compound. Your same-age cousin Tendai walks out of the kitchen hut as you step into the yard, and you cross paths near the morning fire — a casual peer-to-peer moment, not a formal one.",
+    rwenRole: "Tendai — your cousin, ~28, easy-going and a bit teasing; he'll laugh if you're too stiff with him.",
+    successCriteria: "User picks the informal 'Wamuka sei?' (NOT 'Mamuka sei?' — he's a peer, not an elder), replies with 'Ndamuka, kana wamukawo' mirroring the wa- form when asked back, and avoids 'Hesi' as the opener (it's too throwaway for a real wellness check).",
+    estimatedMinutes: 2,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

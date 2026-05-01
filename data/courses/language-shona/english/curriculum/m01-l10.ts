@@ -163,6 +163,14 @@ const lesson: LessonData = {
     task: "Have a complete Shona first encounter today — even if it's with yourself in the mirror. Greeting, wellness check, name, origin, farewell. All five beats.",
     rwenSignoff: "You've walked through Module 1. The door to Shona is open. Tichaonana — we will meet again in Module 2.",
   },
+
+  phase8: {
+    scenario: "It's late morning at your friend's family compound and you've been brought inside to meet his grandmother for the very first time. She's seated on a reed mat in the cool of the front room. This is THE encounter — you need to navigate the entire Module 1 cycle: time-appropriate greeting, wellness check, name exchange, origin, and a proper farewell when you eventually take your leave.",
+    rwenRole: "Mbuya Shumba — your friend's grandmother, ~75, sharp-eyed matriarch; her judgement of you will travel through the whole family, so this conversation matters more than it looks.",
+    successCriteria: "User runs all five beats of the flow — (1) time-appropriate opener like 'Mangwanani' or 'Makadii', (2) respectful wellness check 'Mamuka sei?' / 'Makadii?' in the Ma- form because she's a grandmother, (3) name exchange using 'Zita rako ndiani?' and 'Zita rangu ndi...', (4) origin via 'Wabva kupi?' / 'Ndabva ku...', and (5) when leaving says 'Sara zvakanaka' (you're leaving, she's staying) plus 'Tichaonana'. Bonus credit for 'Wakanaka kukuziva' after the name exchange.",
+    estimatedMinutes: 4,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

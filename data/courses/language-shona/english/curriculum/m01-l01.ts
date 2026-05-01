@@ -151,6 +151,14 @@ const lesson: LessonData = {
     task: "Greet someone — anyone — with 'Mangwanani' today. Even silently to yourself in the mirror counts.",
     rwenSignoff: "I'll ask you tomorrow. Famba zvakanaka — go well.",
   },
+
+  phase8: {
+    scenario: "It's just after sunrise at a roadside market in Mbare. You approach a vegetable stall where an elder vendor is laying out tomatoes and rape, and you need to open with a proper morning greeting before asking about her produce.",
+    rwenRole: "Mbuya Chipo — market vendor, ~65, warm but old-school; she notices respect immediately and warms up fast when she hears it.",
+    successCriteria: "User opens with 'Mangwanani' (not casual / not 'Makadii'), uses the respectful 'Mamuka sei?' form (NOT 'Wamuka sei?') because she's an elder, and replies 'Ndamuka, kana mamukawo' when asked back rather than dropping the mirror-respect.",
+    estimatedMinutes: 2,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

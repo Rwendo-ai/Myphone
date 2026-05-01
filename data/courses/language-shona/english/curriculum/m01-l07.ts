@@ -143,6 +143,14 @@ const lesson: LessonData = {
     task: "Tell someone where you're from using Shona today — 'Ndabva ku [your country/city]'. Even in your head counts.",
     rwenSignoff: "Your origin is your story. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "You're squeezed into a long-distance shared taxi from Harare to Bulawayo, several hours into the trip. The man next to you starts chatting and asks where you're from — he's clearly from Matabeleland and curious about your origins. The conversation is friendly but you're meeting in motion.",
+    rwenRole: "Sibanda — fellow passenger, ~45, talkative and well-travelled; he loves comparing home places and bonds quickly over shared geography.",
+    successCriteria: "User answers 'Wabva kupi?' with the correct 'Ndabva ku [place]' construction (NOT mixing it up with 'Ndinogara ku' which means where you currently live), uses the locative 'ku-' prefix correctly before the place name, and asks back 'Wabva kupi?' to keep the exchange going rather than letting it be one-sided.",
+    estimatedMinutes: 3,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

@@ -139,6 +139,14 @@ const lesson: LessonData = {
     task: "The next time someone leaves — a colleague, a family member, anyone — say 'Famba zvakanaka' instead of 'bye'. Mean it.",
     rwenSignoff: "Famba zvakanaka. Until tomorrow.",
   },
+
+  phase8: {
+    scenario: "You've spent the whole afternoon at your friend Rudo's house — tea, sadza, long conversation. It's now early evening and you're standing by the gate with your jacket on, ready to walk to the kombi. Rudo is staying. This is the farewell moment, and the direction of who-leaves-who-stays decides which blessing you give.",
+    rwenRole: "Rudo — your friend, ~30, warm and observant; she'll smile if you get the leaving/staying logic right and gently tease you if you reverse it.",
+    successCriteria: "User says 'Sara zvakanaka' to Rudo (because YOU are the one leaving — NOT 'Famba zvakanaka', which is what SHE says to YOU), correctly responds when she says 'Famba zvakanaka' back rather than getting confused, and adds 'Tichaonana' to close the goodbye warmly.",
+    estimatedMinutes: 2,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

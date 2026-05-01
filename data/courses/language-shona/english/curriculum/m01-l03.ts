@@ -145,6 +145,14 @@ const lesson: LessonData = {
     task: "Use 'Maswera sei?' in the afternoon today — with anyone. Notice how it feels different from a simple 'hi'.",
     rwenSignoff: "The afternoon is yours. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "It's about 2pm. You're walking down a dirt path between fields and you cross paths with your older neighbour heading home from his maize patch with a hoe over his shoulder. You stop to greet him properly before continuing on.",
+    rwenRole: "Baba Moyo — neighbour, ~55, a farmer who values traditional manners; he'll soften visibly if you read the time of day correctly.",
+    successCriteria: "User uses 'Masikati' or jumps straight to 'Maswera sei?' (NOT 'Mangwanani' — it's afternoon, not morning), keeps the respectful 'Ma-' form because he's older, and replies 'Ndaswera, kana maswerawo' rather than mixing in the morning 'mamukawo'.",
+    estimatedMinutes: 2,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

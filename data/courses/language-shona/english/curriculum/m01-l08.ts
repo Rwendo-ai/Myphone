@@ -140,6 +140,14 @@ const lesson: LessonData = {
     task: "The next time you walk into a room with multiple people, greet the whole room — even just in your head with 'Makadii mese?'. Feel the difference.",
     rwenSignoff: "Nobody left behind. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "It's a Saturday afternoon family gathering at your partner's homestead. You step into the main room and there are seven people sitting together — grandparents, aunts, uncles, a cousin or two — all looking up at you at once. You only know one of them by name. The pressure is on to greet the WHOLE room, not just the one face you recognise.",
+    rwenRole: "Sekuru Tafadzwa — the family elder leading the room, ~70, kind and patient but watching closely to see if you greet everyone or pick favourites.",
+    successCriteria: "User opens with 'Makadii mese?' (NOT singular 'Makadii?' which would only greet one person), uses or recognises 'Tiripo' as the group's collective reply, and stays in the inclusive plural form throughout rather than peeling off to greet only the person they know.",
+    estimatedMinutes: 3,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

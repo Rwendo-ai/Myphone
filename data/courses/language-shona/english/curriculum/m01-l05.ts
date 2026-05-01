@@ -148,6 +148,14 @@ const lesson: LessonData = {
     task: "Use 'Makadii?' to greet someone you don't know well today — a colleague, a shopkeeper, anyone. Notice how it opens the conversation.",
     rwenSignoff: "You now have a greeting for every moment. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "You're at the Mbare Musika kombi rank, climbing into a packed minibus to town. The hwindi (conductor) is hanging out the side door collecting fares — you don't know him, you're not sure if it's late morning or already past midday, and the bus is about to pull off.",
+    rwenRole: "Tatenda — kombi conductor, ~35, sharp and fast-talking; doesn't have time for fumbled greetings but respects anyone who handles the universal form smoothly.",
+    successCriteria: "User uses 'Makadii?' (the universal safety net — NOT a time-locked form like 'Mangwanani' or 'Maswera sei?' since the time is ambiguous and you don't know him), replies with 'Ndiripo, makadiiwo?' rather than a morning/afternoon-specific reply, and stays in the respectful Ma- form rather than the over-familiar 'Wakadii?'.",
+    estimatedMinutes: 2,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;
