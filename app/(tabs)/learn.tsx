@@ -73,6 +73,7 @@ export default function LearnScreen() {
   }, [educationalCourses, activeCourseId]);
 
   const [selectedCategory, setSelectedCategory] = useState<CourseCategory>(initialCategory);
+  const [showLocked, setShowLocked] = useState(false);
 
   const coursesInCategory = useMemo(
     () => educationalCourses.filter(c => categoryForCourse(c) === selectedCategory),
@@ -193,25 +194,31 @@ export default function LearnScreen() {
         )}
 
         {lockedInCategory.length > 0 && (
-          <>
-            <Text style={styles.lockedHeader}>{t(buyLabelKey[selectedCategory])}</Text>
-            <View style={styles.coursePillSection}>
-              {lockedInCategory.map(course => (
-                <Pressable
-                  key={course.meta.id}
-                  style={[styles.coursePill, styles.coursePillLocked]}
-                  onPress={() => handleBuyCourse(course)}
-                >
-                  <Text style={[styles.coursePillEmoji, styles.lockedDim]}>{course.meta.emoji}</Text>
-                  <Text style={[styles.coursePillLabel, styles.lockedDim]}>
-                    {course.meta.displayName}
-                  </Text>
-                  <Text style={styles.coursePillPrice}>${COURSE_PRICE_AUD.toFixed(2)}</Text>
-                  <Text style={styles.coursePillLock}>🔒</Text>
-                </Pressable>
-              ))}
-            </View>
-          </>
+          <View style={styles.coursePillSection}>
+            <Pressable
+              style={styles.buyAnotherPill}
+              onPress={() => setShowLocked((s) => !s)}
+            >
+              <Text style={styles.buyAnotherLabel}>
+                {showLocked ? '−' : '+'}  {t(buyLabelKey[selectedCategory])}
+              </Text>
+            </Pressable>
+
+            {showLocked && lockedInCategory.map(course => (
+              <Pressable
+                key={course.meta.id}
+                style={[styles.coursePill, styles.coursePillLocked]}
+                onPress={() => handleBuyCourse(course)}
+              >
+                <Text style={[styles.coursePillEmoji, styles.lockedDim]}>{course.meta.emoji}</Text>
+                <Text style={[styles.coursePillLabel, styles.lockedDim]}>
+                  {course.meta.displayName}
+                </Text>
+                <Text style={styles.coursePillPrice}>${COURSE_PRICE_AUD.toFixed(2)}</Text>
+                <Text style={styles.coursePillLock}>🔒</Text>
+              </Pressable>
+            ))}
+          </View>
         )}
 
         {coursesInCategory.length === 0 ? (
