@@ -143,6 +143,14 @@ const lesson: LessonData = {
     task: "Think of one thing you need help with today. Say 'Ndinoda rubatsiro' — even to yourself. Then ask.",
     rwenSignoff: "We all need each other. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "Your hired Toyota Vitz has a flat tyre on the gravel road into Mt Darwin and the spare wheel is wedged under a pile of luggage you can't shift on your own. A man on a bicycle slows down to watch — you need to flag him in honestly, not pretend you've got it.",
+    rwenRole: "Baba Munashe — ~45, smallholder farmer pedaling home from the township shops; helpful by default, but won't volunteer if you wave him on with bravado.",
+    successCriteria: "User admits 'Handigoni' (NOT 'Ndinogona' to look capable) and chains it with 'Ndinoda rubatsiro, ndapota' to convert the admission into a clean ask — pairing the pattern's negative and positive forms in one breath.",
+    estimatedMinutes: 2,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

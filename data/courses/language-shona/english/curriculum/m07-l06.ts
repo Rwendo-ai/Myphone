@@ -140,6 +140,14 @@ const lesson: LessonData = {
     task: "The next time someone cooks for you, say 'Zvakanakisisa' — even in English company. Watch how they receive that one Shona word.",
     rwenSignoff: "Compliment the cook. Always. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "You've just finished a plate of sadza ne road runner (free-range chicken) at a Domboshava kitchen — the kind of meal that took half a day to prepare over a wood fire. The cook, an elder, is hovering near the doorway pretending not to wait for your reaction, but absolutely waiting for your reaction.",
+    rwenRole: "Mai Chipo — the cook, late 50s, who poured genuine effort into this meal; quietly proud, will be moved by a sincere compliment in Shona.",
+    successCriteria: "User intensifies the compliment with the '-isisa' form ('Zvakanakisisa', NOT just 'Zvakanaka'), AND credits the cook directly with 'Makagadzira zvakanaka' rather than only commenting on the food in the abstract.",
+    estimatedMinutes: 2,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

@@ -140,6 +140,14 @@ const lesson: LessonData = {
     task: "Eat with someone today — anyone. Say 'Taudzai pamwe chete' before you start. Notice how the meal feels different when it begins with an invitation.",
     rwenSignoff: "Relationship is completed by eating together. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "You're at a muchato (wedding) in Murewa. The reception has moved into the kuvhiringa stage — guests crowded around shared platters of sadza, nyama, and rice under a white tent. The platter of meat has just reached your bench, and the elder beside you is gesturing for you to take and pass it on.",
+    rwenRole: "Tinotenda — fellow wedding guest, late 30s, seated next to the user; warm, talkative, treats the user as a peer at the shared platter.",
+    successCriteria: "User joins the shared meal verbally with 'Taudzai pamwe' or 'Kudya pamwe' (NOT eating in isolated silence), takes a modest portion before passing the platter on, and uses 'Tikudzane' or similar when acknowledging the shared honour — refusing the platter outright would break kuvhiringa.",
+    estimatedMinutes: 2,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

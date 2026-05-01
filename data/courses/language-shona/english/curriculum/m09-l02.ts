@@ -140,6 +140,14 @@ const lesson: LessonData = {
     task: "Walk somewhere today. As you walk, say 'Ndinoenda mberi' (I am going forward). When you stop, say 'Ndamira pano' (I have stopped here). Narrate your movement in Shona.",
     rwenSignoff: "The future is mberi — ahead. Keep walking toward it. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "You're walking along Lobengula Avenue in Bulawayo CBD looking for an address. A tuktuk driver pulls up alongside you offering a lift, and you decide to use him as a local guide — telling him to drive you forward toward Joshua Mqabuko Nkomo Street and stop where the bookshop sign is, all in Shona.",
+    rwenRole: "Tinashe — tuktuk driver on Lobengula Avenue, mid-20s, sharp and quick on his feet, charges by direction not metre; he genuinely listens to mberi/shure commands and will go past your stop if you don't speak up.",
+    successCriteria: "User commands movement with 'Enda mberi' (not the weaker 'Ndinoenda mberi' which describes themselves), uses 'Dzorera shure' or 'Mira pano' clearly when overshooting, and repeats Tinashe's directions back ('Ndinoenda mberi, ndomira pa...') to confirm before he drives off.",
+    estimatedMinutes: 2,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

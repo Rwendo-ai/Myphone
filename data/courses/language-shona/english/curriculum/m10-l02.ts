@@ -139,6 +139,14 @@ const lesson: LessonData = {
     task: "Think of someone going through a hard time. Say 'Zvinosuwa. Ndiri nawe' — it is sad. I am with you. Even if you only say it in your heart.",
     rwenSignoff: "Sadness shared is sadness halved. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "Late-night WhatsApp call with your friend Tendai. He's just told you his uncle in Chitungwiza passed away suddenly. The line goes quiet — he needs you to say something, in Shona, that shows you're with him.",
+    rwenRole: "Tendai — friend, grieving, on the call from his bedroom at 11pm. He's not looking for advice; he's listening for whether you can hold the moment in his language.",
+    successCriteria: "User leads with 'Zvinosuwa' (NOT 'Ndakasuwa' which centres themselves), follows with presence ('Ndiri nawe'), and uses 'Usasuwa' as gentle comfort — not as a brush-off. Order matters: acknowledge his pain first, then offer presence.",
+    estimatedMinutes: 2,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

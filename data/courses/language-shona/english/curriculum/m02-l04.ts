@@ -143,6 +143,14 @@ const lesson: LessonData = {
     task: "The next time you don't know something, say 'Handizivi' — even just quietly to yourself. Own the not-knowing.",
     rwenSignoff: "Honesty is the fastest road to fluency. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "A teenage girl stops you on the main road in Mutare and asks — in fast Shona — whether the bus to Nyanga has already left. You have absolutely no idea, but you do remember seeing one pull out earlier. Don't bluff her into missing the connection.",
+    rwenRole: "Rumbidzai — 16, school uniform, anxious, holding a Hwindi-printed bus ticket; she'll trust whatever you say, so the cost of a fake answer is real.",
+    successCriteria: "User answers honestly with 'Handizivi' (NOT 'Ndinoziva' to save face), then hedges with 'Ndinofunga...' to share the maybe-sighting as a guess rather than a fact — the lesson's negation pattern under live pressure.",
+    estimatedMinutes: 2,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

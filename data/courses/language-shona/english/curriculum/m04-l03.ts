@@ -139,6 +139,14 @@ const lesson: LessonData = {
     task: "Find a tree today. Say 'Muti' and remember it means both tree AND medicine. That one word tells you something important about Shona culture.",
     rwenSignoff: "Nature is the first pharmacy. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "You're walking through a herbalist's stall at Mbare Musika with an elderly n'anga. He picks up bark, points to a bundle of leafy greens, and gestures at the muhacha tree shading the stall — testing whether you understand that Mu-/Mi- covers trees, plants, and medicines.",
+    rwenRole: "Sekuru Maraire — a 70-year-old herbalist and former school-teacher who quietly tests whether you can name a single tree (Muti), a row of trees (Miti), and identify vegetables (Muriwo) without slipping into the Chi- or Va- class.",
+    successCriteria: "User uses 'Muti' for one tree/medicine, 'Miti' for several, and 'Muriwo' for the bundle of greens — and recognises (when asked) that 'Muti' carries both 'tree' and 'medicine' as one word, not two.",
+    estimatedMinutes: 2,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

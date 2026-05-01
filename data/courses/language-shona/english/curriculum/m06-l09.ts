@@ -139,6 +139,14 @@ const lesson: LessonData = {
     task: "Plan something in Shona today. Even a small thing — 'Ndichadya na iri tatu' (I will eat at 3). Say when you'll do something using na + time.",
     rwenSignoff: "Plans made in Shona feel real. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "Texting your friend Tinashe to lock in a kombi-rank meet-up before heading out to Sakubva market in Mutare for the weekend. He needs a specific day AND a specific time, and he keeps replying 'riini?' until you commit in Shona.",
+    rwenRole: "Tinashe — your peer friend coordinating the trip, in his late 20s, runs late by default; he'll only show up if you give him a Shona day + time, and he'll bail if you say something vague like 'mangwana' without an hour.",
+    successCriteria: "User combines a day (naChishanu / naMugovera) AND a clock time (na iri [number] masikati/manheru) in one sentence using 'Ndichasvika' or 'Tinosangana', plus uses 'Ndirikumirira' or 'Ndakamirira' if Tinashe is late — no English days, no English times.",
+    estimatedMinutes: 3,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

@@ -140,6 +140,14 @@ const lesson: LessonData = {
     task: "Count five things around you in Shona: chimwe, piri, tatu, china, shanu. Point at each one as you count.",
     rwenSignoff: "Numbers are the currency of conversation. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "Mid-morning at Mbare Musika. You stop at a tomato stall where Mai Tatenda is stacking fresh tomatoes into small piles, and you need to buy enough for tonight's relish — using only Shona numbers 1–5 and 'Mangani?' to ask quantities.",
+    rwenRole: "Mai Tatenda — tomato vendor at Mbare market, late 30s, brisk but kind; she'll happily switch to English if you stumble, so you have to stay in Shona to earn the local-rate price.",
+    successCriteria: "User uses chimwe/piri/tatu/china/shanu correctly (with proper noun-class agreement on 'matomatsi' or 'mapaira', e.g. 'mapaira mashanu'), asks 'Mangani?' to clarify price-per-pile, and lands on a quantity 1–5 in a full sentence rather than just shouting a bare number.",
+    estimatedMinutes: 2,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

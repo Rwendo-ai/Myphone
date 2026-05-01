@@ -153,6 +153,14 @@ const lesson: LessonData = {
     task: "Tell one person about Rwen's family today — describe what you learned about Shona family structure. Teaching it to someone else is the fastest way to make it yours.",
     rwenSignoff: "Mhuri yose inokugamuchira. The whole family welcomes you. Module 6 — numbers, time, and the market — begins next. Tichaonana.",
   },
+
+  phase8: {
+    scenario: "You arrive at the rural homestead in Domboshava and the whole mhuri is gathered to welcome you for the first time — mbuya, sekuru, tete, vana, vazhengwa, all on the veranda. Mbuya Esther formally welcomes you with 'Ndinokugamuchira, muzukuru wangu.' You need to respond with a complete welcome-back: gratitude, joy at meeting, and a respectful morning greeting — in one flowing turn.",
+    rwenRole: "Mbuya Esther — Rwen's grandmother, ~78, presiding over the homestead welcome; the entire mhuri is watching to see if you can carry the moment in Shona.",
+    successCriteria: "User combines all three chunks meaningfully: gratitude/welcome-back ('Ndatenda' + acknowledging 'Ndinokugamuchira'), expresses joy at knowing the family ('Ndinofara kukuziva' or 'Mhuri inokugamuchira' returned), AND uses the correct elder title 'Ambuya' with respectful 'Mamuka sei?' — not a generic 'Mhoro'.",
+    estimatedMinutes: 3,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

@@ -139,6 +139,14 @@ const lesson: LessonData = {
     task: "Name three places in Zimbabwe you most want to see. Say 'Ndinoda kuona [place]' for each. Look them up if you haven't — let Shona introduce you to Zimbabwe.",
     rwenSignoff: "Zimbabwe — nzvimbo yakanaka zvikuru. The most beautiful place. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "You're at the gate of Great Zimbabwe ruins (Dzimba dzamabwe), about to buy a tour. The local guide standing by the entrance asks, in Shona, what you most want to see — the Hill Complex, the Great Enclosure, or the Valley. Your answer in Shona will determine whether you get the standard tourist tour or the deep historical walk.",
+    rwenRole: "Tinashe — moonlighting today as a Great Zimbabwe site guide (he drove down from Bulawayo, same Tinashe archetype as l02), proud of the heritage, will switch into deeper history mode the moment he hears 'Ndinoda kuona Dzimba dzamabwe' and 'nzvimbo yakanaka' used together correctly.",
+    successCriteria: "User uses the full pattern 'Ndinoda kuona...' followed by a SPECIFIC site (Dzimba dzamabwe, Hill Complex) rather than the vague 'zvose' (everything), correctly understands 'Dzimba dzamabwe' literally means houses of stone, and adds an evaluative phrase like 'Nzvimbo yakanaka zvikuru' to signal genuine interest.",
+    estimatedMinutes: 3,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

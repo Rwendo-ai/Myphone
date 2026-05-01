@@ -140,6 +140,14 @@ const lesson: LessonData = {
     task: "Name 3 things you own today using '-ngu'. Try: Imba yangu, Buku rangu, Musha wangu. Feel how the '-ngu' suffix carries 'mine'.",
     rwenSignoff: "What's yours is yours — in every noun class. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "You've just dropped your backpack at the door of your homestead in Mt Darwin. Your young niece Tafadzwa has emptied half of it onto the woven mat and is holding up each item — your book, the keys to your house, a photo of your home village — asking 'nderani?' (whose is this?). You answer her each time using the correct possession marker.",
+    rwenRole: "Tafadzwa — the same curious 8-year-old niece, this time playing 'whose is it' with your belongings; she'll squeal in mock-victory if you say 'buku yangu' instead of 'buku rangu'.",
+    successCriteria: "User answers 'Buku rangu' for the book (ra- ending, NOT ya- or wa-), 'Imba yangu' for the photo of the house (ya- ending), and 'Musha wangu' for the village (wa- ending) — three different possession markers correctly matched to three different noun classes.",
+    estimatedMinutes: 2,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

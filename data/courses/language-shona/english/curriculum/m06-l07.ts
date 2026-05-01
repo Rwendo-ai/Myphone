@@ -148,6 +148,14 @@ const lesson: LessonData = {
     task: "Next time you buy something, mentally run the Shona negotiation: 'Mutengo uri ngani?' → hear the price → 'Inodura' (if it is) → 'Deredza mutengo.' Even in your head, it changes how you shop.",
     rwenSignoff: "Negotiation is conversation. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "At Mupedzanhamo second-hand market again, but this time at a fabric stall deep inside the rows. The first quote is wildly inflated for the muzungu — you need to ask the price in Shona, push back, and negotiate down to a fair number without walking away.",
+    rwenRole: "Mai Tatenda — Mupedzanhamo fabric trader, sharp negotiator in her 40s; she opens high to test you, drops to a reasonable price only if you say 'inodura' and counter, and respects you more if you keep it warm rather than aggressive.",
+    successCriteria: "User opens with 'Mutengo uri ngani?' (not English), reacts with 'Inodura' when the first price is high, follows with 'Deredza mutengo, ndapota' AND a specific counter-offer in madora, then closes with 'Ndichatora' once they reach a deal.",
+    estimatedMinutes: 3,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

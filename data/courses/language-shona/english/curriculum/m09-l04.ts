@@ -140,6 +140,14 @@ const lesson: LessonData = {
     task: "Name 3 places near you (pedyo) and 3 that are far (kure): 'Musika uri pedyo. Harare uri kure.' Feel the distance in the words.",
     rwenSignoff: "Every destination is either pedyo or kure. Both are reachable. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "You've pulled into Marondera Truckstop on the Harare-Mutare road and need to know whether the next petrol station is pedyo (near) or kure (far) before deciding to fill up here or push on. The attendant is the local who'll know exactly — but only if you ask using the distance pattern, not just 'is there a garage?'.",
+    rwenRole: "Petrol station attendant at Marondera Truckstop — 50ish, weathered, knows every kilometre to Rusape and Mutare by heart; he'll give you a precise pedyo/kure answer if you frame the question right, otherwise just shrugs.",
+    successCriteria: "User asks with the explicit either/or frame 'Chiteshi chiri pedyo here kana kure?' rather than a vague 'where', understands the answer when he says 'kure zvikuru' (very far) versus 'pedyo nenhino' (right here), and follows up with a connector like 'pedyo ne...' to nail down the landmark.",
+    estimatedMinutes: 2,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

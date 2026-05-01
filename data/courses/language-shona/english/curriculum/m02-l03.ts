@@ -143,6 +143,14 @@ const lesson: LessonData = {
     task: "The next time you need to apologise for something — even something small — say 'Ruregerero' out loud. Notice how saying it in Shona makes you mean it more.",
     rwenSignoff: "Forgiveness is strength. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "You're rushing through Chitungwiza Town Centre and clip an elderly man's shoulder hard enough to spin his shopping bag of mealie-meal. He stops dead and stares at you. You've got about three seconds to apologise properly before this turns ugly.",
+    rwenRole: "Sekuru Tichaona — ~68, ex-army, unsmiling, in a brown jacket; he has zero patience for a casual 'sorry' from a stranger who knocked into him.",
+    successCriteria: "User uses the FULL formal apology 'Ndinokumbira ruregerero' (NOT just 'Ruregerero' — he's an elder you physically bumped) and waits for him to release with 'Haitei' before walking off, rather than mumbling and fleeing.",
+    estimatedMinutes: 2,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

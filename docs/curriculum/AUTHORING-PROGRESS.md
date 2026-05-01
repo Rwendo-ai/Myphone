@@ -14,17 +14,17 @@
 | Module | Lessons | 7-phase content | Phase 8 retrofit | Notes |
 |---|---|---|---|---|
 | 1 — Greetings | 10 | ✅ All authored | ✅ All retrofitted | Done 2026-05-01 |
-| 2 — Survival | 10 | ✅ All authored | ⬜ Pending | |
-| 3 — Identity | 10 | ✅ All authored | ⬜ Pending | |
-| 4 — Noun classes | 10 | ✅ All authored | ⬜ Pending | |
-| 5 — Family | 10 | ✅ All authored | ⬜ Pending | |
-| 6 — Numbers/Time | 10 | ✅ All authored | ⬜ Pending | |
-| 7 — Food | 10 | ✅ All authored | ⬜ Pending | |
-| 8 — Verbs | 10 | ✅ All authored | ⬜ Pending | |
-| 9 — Directions | 10 | ✅ All authored | ⬜ Pending | |
-| 10 — Emotions | 10 | ✅ All authored | ⬜ Pending | |
+| 2 — Survival | 10 | ✅ All authored | ✅ All retrofitted | Done 2026-05-01 |
+| 3 — Identity | 10 | ✅ All authored | ✅ All retrofitted | Done 2026-05-01 |
+| 4 — Noun classes | 10 | ✅ All authored | ✅ All retrofitted | Done 2026-05-01 |
+| 5 — Family | 10 | ✅ All authored | ✅ All retrofitted | Done 2026-05-01 |
+| 6 — Numbers/Time | 10 | ✅ All authored | ✅ All retrofitted | Done 2026-05-01 |
+| 7 — Food | 10 | ✅ All authored | ✅ All retrofitted | Done 2026-05-01 |
+| 8 — Verbs | 10 | ✅ All authored | ✅ All retrofitted | Done 2026-05-01 |
+| 9 — Directions | 10 | ✅ All authored | ✅ All retrofitted | Done 2026-05-01 |
+| 10 — Emotions | 10 | ✅ All authored | ✅ All retrofitted | Done 2026-05-01 |
 
-**This course's remaining work:** add Phase 8 to all 100 existing lesson files. Mechanical retrofit informed by each lesson's chunks + dialogue.
+**This course's status: COMPLETE — full A2 fluency curriculum, 100/100 lessons, all with Phase 8.**
 
 ---
 
@@ -95,7 +95,7 @@
 |---|---|---|
 | Total target | 400 | 100% |
 | 7-phase content authored | 400 (100 Shona + 100 English + 100 French + 100 Chinese) | 100% |
-| Phase 8 attached | 310 (10 Shona Mod1 + 100 English + 100 French + 100 Chinese) | 77.5% |
+| Phase 8 attached | 400 (100 Shona + 100 English + 100 French + 100 Chinese) | 100% |
 | Type-checks clean | ✅ tsc --noEmit exits 0 | 100% |
 | Uploaded to Supabase Storage | ✅ 400/400 in `course-content/lessons/` | 100% |
 | Native-reviewed | 0 | 0% |

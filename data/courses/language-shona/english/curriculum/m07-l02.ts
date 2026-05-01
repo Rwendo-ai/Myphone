@@ -140,6 +140,14 @@ const lesson: LessonData = {
     task: "Name every food in your kitchen in Shona today — or look up the ones you don't know. Start with: Chingwa (bread), Mazai (eggs), Nyama (meat), Muriwo (vegetables).",
     rwenSignoff: "Food is culture. Name it in Shona. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "Sunday lunch is being laid out on a long table at a Murehwa rural homestead. Bowls of dovi, plates of chingwa, mazai boiled in their shells, and a steaming pot of sadza all crowd the cloth — and the host's daughter is asking, in Shona, what you actually want on your plate.",
+    rwenRole: "Tendai — the host's daughter, early 20s, energetic and curious; she serves the guests and quizzes the user on the names of each dish before scooping anything onto their plate.",
+    successCriteria: "User names at least three foods correctly using the right vocabulary (e.g., 'dovi' for the peanut sauce, 'chingwa' for bread, 'zvokudya' as the umbrella term — NOT mixing up 'sadza' for 'chingwa'), and uses 'Ndinoda... ne...' to compose a request rather than just pointing.",
+    estimatedMinutes: 2,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

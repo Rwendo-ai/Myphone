@@ -139,6 +139,14 @@ const lesson: LessonData = {
     task: "Look at the people around you today. Say 'Munhu' for one person and 'Vanhu' for a group — even silently.",
     rwenSignoff: "You've started the grammar journey. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "You're at a Sunday family braai in your cousin's backyard in Highfield. Your 8-year-old niece Tafadzwa keeps tugging your sleeve, pointing at relatives and asking you to name them in Shona — she's testing whether you know singular vs plural for people.",
+    rwenRole: "Tafadzwa — a curious 8-year-old niece who points at one uncle, then a group of aunties, and waits for you to label correctly. She giggles when you mix up Mu- and Va-.",
+    successCriteria: "User correctly says 'Munhu' for one person, 'Vanhu' for the group, and uses 'Mukomana' or 'Musikana' (NOT a Chi- or Ma- form) when Tafadzwa points at her brother — showing they grasp the people-class prefix Mu-/Va-.",
+    estimatedMinutes: 2,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

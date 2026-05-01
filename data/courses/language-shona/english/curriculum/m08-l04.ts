@@ -139,6 +139,14 @@ const lesson: LessonData = {
     task: "Every time you drink something today, say the tense: 'Ndiri kunwa [drink]' while drinking, 'Ndanwa [drink]' after. Simple, but it trains your tense instinct.",
     rwenSignoff: "Water is life. Kunwa — to drink — is to live. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "9:30am, the office kitchen at Eastlea. You're filling the kettle when Tafadzwa walks in carrying his mug. He asks 'Wanwa tii here mangwanani ano?' and offers to make a fresh round — but he wants to know your usual morning drink habit so he gets your order right tomorrow too.",
+    rwenRole: "Tafadzwa — coworker, makes the office tea round most mornings. Friendly, peer register.",
+    successCriteria: "User answers about this morning with 'Ndanwa...' (past — already drank) or 'Handisati ndanwa' (haven't yet) AND describes habitual morning drink with 'Ndinonwa [tii/kofi/mvura] mangwanani ose' (habitual + 'every morning'). Two tenses correctly distinguished.",
+    estimatedMinutes: 2,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

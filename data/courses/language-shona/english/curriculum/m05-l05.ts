@@ -139,6 +139,14 @@ const lesson: LessonData = {
     task: "Think of your extended family. How wide is your 'mhuri'? Name 3 people in your extended circle using Shona titles — Sekuru, Ambuya, Vatete, Muzhengwa.",
     rwenSignoff: "In Shona, you are never alone — the family extends in all directions. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "It's a wedding in Mt Darwin and forty people from Rwen's extended family are crammed into the yard. Tete Rumbidzai pulls you aside and quizzes you: who are vatete, who are vazhengwa, and can you say 'the whole family' properly? She wants one clean sentence about mhuri yose before she lets you go eat.",
+    rwenRole: "Tete Rumbidzai — Rwen's paternal aunt, ~50, gentle but probing; at the wedding she's playing welcoming-host and quiet-examiner at the same time.",
+    successCriteria: "User uses 'Vatete' (plural) for the paternal aunts (NOT singular 'Tete'), uses 'Muzhengwa' or 'Vazhengwa' for cousin(s), and produces 'Mhuri yose' with the correct concord 'yose' (NOT 'vose' or 'zvose').",
+    estimatedMinutes: 2,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

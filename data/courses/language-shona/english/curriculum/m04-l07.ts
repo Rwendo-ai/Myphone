@@ -139,6 +139,14 @@ const lesson: LessonData = {
     task: "Describe 3 things as 'good' today using the right class agreement. Start with what you know: Munhu akanaka, Chinhu chakanaka, Muti wakanaka.",
     rwenSignoff: "Everything agrees in Shona. That's its harmony. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "You're at a craft market in Avondale Sunday market, browsing a stall full of carved figurines, woven baskets and a potted msasa sapling. The stall-holder, a wood-carver, watches you compliment items in Shona — and silently judges whether the adjective 'good/beautiful' agrees with each item's noun class.",
+    rwenRole: "VaMutasa — a kindly 60-year-old wood-carver who beams when you praise his pieces with the right class concord, and gently corrects you with a chuckle if you say 'chinhu akanaka' instead of 'chinhu chakanaka'.",
+    successCriteria: "User says 'Munhu akanaka' to praise the carver himself (a- prefix), 'Chinhu chakanaka' for a carved figurine (cha- prefix, NOT a-), and 'Muti wakanaka' for the potted sapling (wa- prefix) — three adjectives, three different class agreements, no mismatches.",
+    estimatedMinutes: 2,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

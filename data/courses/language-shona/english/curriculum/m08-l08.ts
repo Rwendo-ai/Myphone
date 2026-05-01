@@ -140,6 +140,14 @@ const lesson: LessonData = {
     task: "Today, before an important conversation, say to yourself 'Ndiri kuterera' (I am listening). Set the intention to truly listen, not just wait for your turn to speak.",
     rwenSignoff: "Tererai — and the wisdom will find you. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "Sunday evening, 6:30pm. Munya calls from Mukumbura on patchy rural network — Sekuru wants to share something about the family's land before he forgets. Munya hands the phone over and you hear 'Tererai, mwanangu...' You need to confirm you're listening, ask Sekuru to speak, and tell Munya afterwards what you heard habitually versus what you newly learned today.",
+    rwenRole: "Sekuru via Munya — elder grandfather, formal/respectful register required (ma-, -ai endings, 'Sekuru' title). Munya is the cousin handing over the phone.",
+    successCriteria: "User responds to Sekuru with 'Ndiri kuterera, Sekuru' (continuous + title — NOT just 'Ndinoterera' habitual). Uses formal/plural 'Taurirai' (please speak, formal) not casual 'Taura'. To Munya afterwards uses 'Ndanzwa' (past — what was heard) cleanly.",
+    estimatedMinutes: 3,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

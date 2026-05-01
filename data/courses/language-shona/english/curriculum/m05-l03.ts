@@ -139,6 +139,14 @@ const lesson: LessonData = {
     task: "Think of your siblings (or close friends who feel like siblings). Assign Shona titles: Mukoma (older), Munin'ina (younger). How does precision change how you see the relationship?",
     rwenSignoff: "Siblings are your first community. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "At a family braai in Highfield, Tete Rumbidzai introduces you to her three children — one older than Rwen, one younger, and Rwen's hanzvadzi (his sister). She asks you to greet them in turn, watching to see whether you'll get the relational direction right.",
+    rwenRole: "Tete Rumbidzai — Rwen's paternal aunt, ~50, gentle but probing; she asks the kind of small questions that quietly check whether you understand who is senior to whom.",
+    successCriteria: "User uses 'Mukoma' for the older sibling and 'Munin'ina' for the younger (NOT swapped), and uses 'Hanzvadzi' (or addresses by name) for the cross-gender sister rather than calling her Mukoma/Munin'ina.",
+    estimatedMinutes: 2,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

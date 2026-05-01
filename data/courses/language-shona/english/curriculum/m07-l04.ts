@@ -140,6 +140,14 @@ const lesson: LessonData = {
     task: "Today, before every meal, say 'Ndine nzara' (I am hungry). After, say 'Ndaguta' (I am full). Connect these words to the actual feeling.",
     rwenSignoff: "Hunger and fullness — the rhythm of daily life. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "It's mid-morning at a kombi stop near Mbare Musika and you've been travelling since dawn. A relative meeting you off the kombi notices you look tired, and immediately asks the universal Zimbabwean wellness check — 'Wambodya here?' — before they'll even let you climb into the car.",
+    rwenRole: "Tete (auntie) Tendai — middle-aged, no-nonsense, the kind of relative who treats hunger as something to be solved within ten minutes; she'll detour straight to a tuckshop if the answer is wrong.",
+    successCriteria: "User answers honestly with 'Handina, ndine nzara' if hungry (NOT a polite Western 'I'm fine'), or 'Ndaguta, ndatenda' if genuinely full — and understands that Tete is asking about wellbeing, not making small talk.",
+    estimatedMinutes: 2,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

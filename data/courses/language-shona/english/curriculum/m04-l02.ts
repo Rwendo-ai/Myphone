@@ -139,6 +139,14 @@ const lesson: LessonData = {
     task: "Find 3 objects near you and say 'Chinhu ichi' (this thing) for each one. Then point at all of them and say 'Zvinhu izvi' (these things).",
     rwenSignoff: "Things are everywhere. Now you can name their class. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "It's Monday morning at a primary school in Chitungwiza. You're sitting in on a Grade 2 class as a visitor, and the teacher hands you a basket of objects — a spoon, a book, an exercise pad — and asks you to walk to the chalkboard and label each one in Shona for the children.",
+    rwenRole: "VaMutasa — a stern but kind primary-school teacher, mid-50s, who watches whether you use the Chi-/Zvi- class correctly when pointing at a single object versus a pile of them.",
+    successCriteria: "User uses 'Chinhu' for a single object, 'Zvinhu' when pointing at a pile, and says 'Chikoro' (not 'Mukoro' or 'Vakoro') when asked the word for school — and correctly identifies that 'ChiShona' uses the Chi-/Zvi- class because it's a language.",
+    estimatedMinutes: 2,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

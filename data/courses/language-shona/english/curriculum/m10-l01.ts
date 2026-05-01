@@ -139,6 +139,14 @@ const lesson: LessonData = {
     task: "Name three things that make you happy today. Say 'Ndinofara [noun/activity]' for each. Let Shona hold your joy.",
     rwenSignoff: "Mufaro — carry it with you always. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "You bump into your friend Tendai at a coffee shop in Belgravia after months apart. He looks up from his laptop, breaks into a grin, and you have to express how genuinely happy you are to see him — not just polite, but warm.",
+    rwenRole: "Tendai — your friend who notices everything, ~30, the kind of person who shuts the laptop the moment a friend walks in. He'll feel the difference between a flat 'ndinofara' and one with weight behind it.",
+    successCriteria: "User uses 'Ndinofara zvikuru' (not just 'Ndinofara') to show depth, lands 'Ndinofara kukuona' for the reunion warmth, and ideally chains a third joy statement (e.g. 'Ndinofara kuva pano') so it sounds like a real reunion not a textbook line.",
+    estimatedMinutes: 2,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

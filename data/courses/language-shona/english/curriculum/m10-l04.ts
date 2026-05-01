@@ -139,6 +139,14 @@ const lesson: LessonData = {
     task: "Check in on someone today — 'Wakadii?' (How are you?). If they're unwell, say 'Zvinosuwa. Poreswa.' (I'm sorry. Get well soon.) Use Shona to care.",
     rwenSignoff: "Health is the first wealth. Poreswa — get well. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "You wake up at your aunt's house in Highfield feeling rough — head pounding, body aching. She's already at the kitchen door with tea, asking 'Wakadii?' and you need to tell her honestly what's wrong before she leaves for work.",
+    rwenRole: "Tete Auxilia — your aunt, ~55, will absolutely call a chiremba if you're vague; she needs specifics so she can decide whether to drive you to Avondale clinic.",
+    successCriteria: "User does NOT default to 'Ndiripo, ndatenda' (the polite lie). Instead opens with 'Ndiripo zvisiri nani', then names a specific symptom using 'Ndinova [body part]' (musoro/dumbu) and adds 'Ndinorwara zvishoma' so she has enough to act on.",
+    estimatedMinutes: 2,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

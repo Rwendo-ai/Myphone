@@ -140,6 +140,14 @@ const lesson: LessonData = {
     task: "Next time you order food anywhere, mentally say the order in Shona first: 'Ndinopa [food], ndapota.' Then order in English. The Shona came first.",
     rwenSignoff: "Order with confidence. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "It's lunchtime at Garwe Restaurant in Harare — the traditional spot tourists and locals queue at for proper sadza ne huku. You've just been seated at a wooden table by the window. The waiter approaches with a notebook, switches into Shona when they hear your greeting, and is waiting for your order.",
+    rwenRole: "Tinashe — the waiter, mid 20s, sharp and friendly; he visibly warms up when guests order in Shona and will recommend the day's special if asked.",
+    successCriteria: "User asks for the menu first ('Ndinoda menyu, ndapota'), inquires about the special with 'Chii chakaipa nhasi?', and orders politely with 'Ndinopa...' (NOT 'Ndipe' which is too direct, NOT just blurting an English food name).",
+    estimatedMinutes: 3,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

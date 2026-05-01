@@ -139,6 +139,14 @@ const lesson: LessonData = {
     task: "Touch each part of your body today and name it in Shona: Musoro (head), Maziso (eyes), Nzeve (ears), Muromo (mouth), Maoko (hands), Makumbo (legs), Moyo (heart — place your hand there). Know your body in Shona.",
     rwenSignoff: "Your body speaks Shona now. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "Sunday afternoon at mbuya Esther's house in Murehwa. Over a pot of tea she's quietly asking you to describe a friend you miss back home — what their face looks like, what kind of heart they have. It's a gentle test of whether you can paint a person in Shona.",
+    rwenRole: "Mbuya Esther — ~70, sharp-eyed wisdom-keeper, will smile and pour more tea if you nail the 'moyo wakanaka' construction; she's listening for you to describe the inner person, not just outer features.",
+    successCriteria: "User uses at least two body-part nouns (maziso, musoro, maoko, makumbo) for physical description AND lands the cultural move 'Ane moyo wakanaka' to describe character — proving they understood moyo isn't just an organ.",
+    estimatedMinutes: 3,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

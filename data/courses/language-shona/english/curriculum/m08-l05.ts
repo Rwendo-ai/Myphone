@@ -139,6 +139,14 @@ const lesson: LessonData = {
     task: "Tonight, say 'Rara zvakanaka' to someone before they sleep — or say it to yourself. Mean it. A blessing costs nothing and means everything.",
     rwenSignoff: "Rara zvakanaka. Sleep is sacred. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "10:45pm WhatsApp call from Tendai in Joburg — he's just got off a late shift and wants to say goodnight before he crashes. He asks how you slept last night ('Warara sei nezuro husiku?') and what time you usually go to bed during the week.",
+    rwenRole: "Tendai — friend in Joburg, peer register, calling late, sleepy. Worried you're working too hard back home.",
+    successCriteria: "User answers about last night with 'Ndarara zvakanaka' or 'Handina kurara zvakanaka' (past), AND describes habitual bedtime with 'Ndinorara na...' (habitual + time). Closes the call with the blessing 'Rara zvakanaka' back to Tendai — not just 'Usiku wakanaka'.",
+    estimatedMinutes: 2,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

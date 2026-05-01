@@ -140,6 +140,14 @@ const lesson: LessonData = {
     task: "Think about what you spent money on today. Say it in Shona: 'Ndakatenga [item] nemadora [number].' I bought [item] for [number] dollars.",
     rwenSignoff: "Mari — it opens doors and closes others. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "At the Avondale Spar checkout in Harare, end of the month. The till total comes up in USD and you only have a mix of madora notes — you need to tell the cashier in Shona how much you have and whether you can cover the bill.",
+    rwenRole: "Avondale Spar cashier — middle-aged, professional, code-switches between English and Shona all day; she'll respond in Shona only if you start in Shona, and won't help you count if you panic in English.",
+    successCriteria: "User uses 'Ndine madora [number]' to state how much they have (correct singular dora vs plural madora), or admits 'Handina mari yakakwana' if short, and avoids saying the dollar amount in English digits.",
+    estimatedMinutes: 2,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

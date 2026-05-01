@@ -140,6 +140,14 @@ const lesson: LessonData = {
     task: "The next time someone enters your space — a room, your home, even a meeting — mentally say 'Mauya zvakanaka. Garai.' Welcome them in Shona first, then in words.",
     rwenSignoff: "The best hosts make guests feel they never left. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "An unannounced visitor — an old family friend who hasn't been around in years — has just appeared at your gate in Chitungwiza on a Saturday afternoon. You're the one home, which means you're the host. They are standing on the verandah waiting for you to do this properly.",
+    rwenRole: "Sekuru Farai — the visiting family friend, 60s, traditional; he's testing (without saying so) whether the household still keeps proper Shona hospitality form.",
+    successCriteria: "User produces the host sequence in order: 'Mauya zvakanaka' to welcome → 'Tauya' to invite in → 'Garai' to seat them → then offers water/food with 'Tora, nedivi' (NOT skipping straight to 'Wambodya here?' or asking him why he's there).",
+    estimatedMinutes: 3,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

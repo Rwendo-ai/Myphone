@@ -140,6 +140,14 @@ const lesson: LessonData = {
     task: "Choose one of these three proverbs — the one that speaks most to you right now. Say it out loud. Think about where in your life it applies. Then share it with someone, in Shona.",
     rwenSignoff: "Proverbs live on the tongue and in the heart. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "Around the fire at a rural homestead in Mhondoro at dusk. Sekuru Maraire has just told a long story about a village that nearly fell apart over a land dispute. He turns to you and asks: 'Tsumo ipi inoenderana nenyaya iyi?' — which proverb fits this story? You must choose ONE and explain briefly, in Shona, why.",
+    rwenRole: "Sekuru Maraire — wise elder by the fire, ~75, testing whether you can apply tsumo to real situations; a wrong proverb gets a kind chuckle, the right one gets a slow nod.",
+    successCriteria: "User selects 'Chara chimwe hachitswanyi inda' (the unity proverb fits the divided village) — NOT the food or work proverbs — and offers a one-line Shona reason like 'Vanhu vaida kushanda pamwe chete' or 'Ukama hwabva.' Right proverb + simple Shona justification.",
+    estimatedMinutes: 3,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

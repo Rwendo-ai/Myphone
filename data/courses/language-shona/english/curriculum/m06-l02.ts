@@ -140,6 +140,14 @@ const lesson: LessonData = {
     task: "Count from 1 to 10 in Shona out loud right now: Chimwe, piri, tatu, china, shanu, tanhatu, nomwe, sere, pfumbamwe, gumi. Then count from 10 down to 1.",
     rwenSignoff: "Gumi. You've reached ten. The whole number system is now yours to build on. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "At Mupedzanhamo second-hand clothing market on a busy Saturday. Sekuru Phiri is sorting jeans into bundles and quoting prices in dollars between six and eleven, and you need to count along with him to confirm what each pile costs.",
+    rwenRole: "Sekuru Phiri — Mupedzanhamo clothing vendor, early 60s, sharp-eyed and patient; he tests you by quoting prices fast (tanhatu, nomwe, sere) and watching whether you can repeat the number back in Shona.",
+    successCriteria: "User produces tanhatu/nomwe/sere/pfumbamwe/gumi correctly, builds at least one teen using the gumi + ne + number pattern (e.g. 'gumi nerimwe' for $11), and never falls back to English digits when Sekuru Phiri repeats the price.",
+    estimatedMinutes: 2,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

@@ -143,6 +143,14 @@ const lesson: LessonData = {
     task: "The next time someone explains something to you, reply with 'Ndanzwisisa' (in your head or out loud). Affirm your own understanding.",
     rwenSignoff: "Understanding is the goal. You're getting there. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "You're booking a guided walk at a lodge reception in Masvingo and the manager is laying out the route, pickup time, and what to bring — half English, half Shona. He asks 'Wanzwisisa here?' and you've genuinely caught about 70% of it. Don't fake the rest.",
+    rwenRole: "Mr Chinembiri — ~40, lodge manager near Great Zimbabwe ruins, polite but precise; he'd rather repeat himself than have a confused tourist wandering off at 5am.",
+    successCriteria: "User says 'Ndanzwisisa' for the parts they got, then immediately uses 'Handanzwisisi' for the specific part they missed (asking him to repeat just that piece) — distinguishing the two rather than blanket-claiming understanding, and uses 'Ndanzwa' as the soft ack on the second pass.",
+    estimatedMinutes: 2,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

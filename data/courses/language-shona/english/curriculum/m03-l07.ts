@@ -145,6 +145,14 @@ const lesson: LessonData = {
     task: "Say out loud WHY you are learning Shona — in Shona. 'Ndinoda kudzidza ChiShona nokuti...' Finish that sentence with your real reason.",
     rwenSignoff: "Your reason is your motivation. Keep it close. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "At an OK Zimbabwe supermarket checkout in Eastgate, Harare. The cashier hears you stumble through 'Mangwanani' and 'Makadii', smiles, and — surprised — asks how come a foreigner is learning ChiShona.",
+    rwenRole: "Mai Tafadzwa — supermarket cashier, ~40, has just been chatting in Shona with the customer ahead of you and is delighted/shocked to be answered in Shona by you.",
+    successCriteria: "User uses 'Ndinoda kudzidza ChiShona' (NOT 'Ndinoda ChiShona' — keep the ku- infinitive), or 'Ndirikudzidza' for the in-progress sense, and finishes with 'nokuti...' to give a real reason — the why, not just the what.",
+    estimatedMinutes: 2,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

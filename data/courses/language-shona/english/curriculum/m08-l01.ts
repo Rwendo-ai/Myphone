@@ -139,6 +139,14 @@ const lesson: LessonData = {
     task: "Say where you went today (Ndaenda ku...) and where you'll go tomorrow (Ndichaenda ku...). Make your actual movements Shona.",
     rwenSignoff: "Every journey in Shona is a journey deeper into the language. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "Friday evening, 7pm. Tendai pings you on WhatsApp video — he moved to Joburg eight months ago and you haven't properly caught up since. He opens with 'Wakadini? Waenda kupi week ino?' and wants the rundown of where you've been and what's next on your travel side.",
+    rwenRole: "Tendai — your old high-school friend, now living in Yeoville, Joburg. Casual, peer register (wa-, not ma-). He's nostalgic for Harare and lives for travel stories.",
+    successCriteria: "User uses 'Ndaenda ku...' (past) for at least one place visited this week AND 'Ndichaenda ku...' (future) for an upcoming trip — both with real destinations. Stays in peer register (wa-/u-) since Tendai is a friend, not 'mwa-/ma-' formal forms.",
+    estimatedMinutes: 2,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

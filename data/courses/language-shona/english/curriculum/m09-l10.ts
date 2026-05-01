@@ -148,6 +148,14 @@ const lesson: LessonData = {
     task: "Plan a Shona journey today — real or imaginary. From where you are to somewhere specific. Use: Ndeapi nzira ye[place]? → Enda mberi → Dzokorora kurudyi/kuruboshwe → Ndasvika! Make the whole journey in Shona.",
     rwenSignoff: "Wasvika! You navigated Module 9. Every road in Zimbabwe now has a Shona name for you. Module 10 — the heart — begins next. Tichaonana.",
   },
+
+  phase8: {
+    scenario: "Capstone run: from the airport you must reach the city centre via the Mbare kombi rank using everything from Module 9 — find chiteshi chekombi, board the right kombi, ask the conductor to drop you near a landmark, and confirm 'Ndasvika' on arrival. Multiple Shona speakers, one journey, no English fallback.",
+    rwenRole: "Brian — kombi conductor on the Mbare-Avondale route (the recurring conductor from l03 and l05), he's now your final examiner; he runs the kombi, calls the route, and only stops where you tell him to using the full direction stack you've learned.",
+    successCriteria: "User asks 'Chiteshi chekombi chiri kupi?' to find the rank, states destination with 'Ndinoda kuenda kutown', confirms directions back ('Mberi, kurudyi — ndanzwisisa'), shouts 'Mira pano!' at the right landmark, and closes the journey with 'Ndasvika!' — chaining at least four Module 9 patterns into one continuous Shona journey without dropping into English.",
+    estimatedMinutes: 3,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

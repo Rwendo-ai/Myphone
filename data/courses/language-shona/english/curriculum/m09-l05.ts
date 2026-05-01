@@ -140,6 +140,14 @@ const lesson: LessonData = {
     task: "Next time you're on any public transport, mentally practice: 'Mira pano! Ndinoda kuburuka.' Feel the confidence of knowing you could navigate a Harare kombi.",
     rwenSignoff: "The kombi is Zimbabwe's heartbeat. Now you can ride it. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "You're squashed against the window of a packed kombi screaming down the Mbare-Avondale route and your stop — the Avondale shops — is coming up in 30 seconds. The conductor is shouting fares at the front and won't notice you unless you bark, in proper kombi-volume Shona, that you want to get off right now.",
+    rwenRole: "Brian — kombi conductor on the Mbare-Avondale route (same Brian as l03), hanging out the door with crumpled bond notes; he literally only responds to short, loud, idiomatic kombi commands and will sail past your stop if you say it too softly or too politely.",
+    successCriteria: "User shouts 'Mira pano!' loud and short (NOT 'Ndapota munomira here?' which is too soft for a kombi), follows with 'Ndinoda kuburuka!' using the correct verb kuburuka (not kuenda), and crucially does NOT pad with ndapota the way you would with an elder — kombi register is direct.",
+    estimatedMinutes: 2,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

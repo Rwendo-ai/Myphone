@@ -139,6 +139,14 @@ const lesson: LessonData = {
     task: "What day is today in Shona? Say it. What day is tomorrow? Say that too. Plan your week — even one day — in Shona.",
     rwenSignoff: "Mazuva anoenda nekukasira — days pass quickly. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "Outside a sadza pot stall in Glen View on a Tuesday lunchtime. Sekuru Phiri runs a pot every weekday but takes Sunday off, and you want to plan which day to bring your cousin for lunch — you have to discuss the week in Shona to lock in a day.",
+    rwenRole: "Sekuru Phiri — sadza pot vendor in Glen View, mid-60s, chatty and proud of his weekly schedule; he names days in Shona only and expects you to keep up with Muvhuro through Mugovera without dropping into English.",
+    successCriteria: "User correctly names at least three weekdays in Shona (Muvhuro, Chipiri/Chitatu/China/Chishanu, Mugovera) and commits to a specific day using 'na' (e.g. 'Ndichauya naChishanu'), without saying 'Friday' or any English day name.",
+    estimatedMinutes: 2,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

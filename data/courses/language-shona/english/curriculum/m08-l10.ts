@@ -139,6 +139,14 @@ const lesson: LessonData = {
     task: "Tonight before sleep, describe your actual day in Shona: 'Ndamuka → Ndadya → Ndaenda → [what you did] → Ndakafara [how you felt] → Ndichatora kurara.' Make today's Shona diary entry.",
     rwenSignoff: "Module 8 complete. Action verbs — the engine of language. Module 9 — Zimbabwe's roads and skies — begins next. Rara zvakanaka. Tichaonana.",
   },
+
+  phase8: {
+    scenario: "Sunday night, 9pm. WhatsApp voice note from Tendai in Joburg — he wants you to narrate your whole Sunday in Shona, beginning to end, as practice. Then he asks what you'll do differently tomorrow (Monday). You need to deliver a full-day narration plus a planned-tomorrow line.",
+    rwenRole: "Tendai — friend in Joburg, peer register, your accountability buddy for Shona practice. Patient but expects the full narration, not shortcuts.",
+    successCriteria: "User narrates the day in past tense chained verbs: 'Ndamuka → Ndadya → Ndaenda → Ndinodzidza/Ndaverenga → Ndakafara → Ndarara' (at least five past-tense verbs in sequence) AND closes with at least one 'Ndichaita...' / 'Ndichaenda...' future statement for tomorrow. Past chain + planned tomorrow, both required.",
+    estimatedMinutes: 3,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

@@ -140,6 +140,14 @@ const lesson: LessonData = {
     task: "Say 'Ndirikuenda kuZimbabwe' today — as a statement of intention, not just practice. Whether it's a dream or a plan — say it in Shona. Make it real.",
     rwenSignoff: "Zimbabwe is waiting. Ndege inobhururuka. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "You've just walked out of arrivals at Robert Gabriel Mugabe International and the airport taxis are gone — you need to get to a kombi rank to reach town. A passer-by waiting at the pickup zone might know which way the airport kombis leave from, but you'll have to ask in Shona, naming nhandare yendege and your destination clearly.",
+    rwenRole: "Mai Tatenda — passer-by waiting outside the airport terminal (not Eastgate this time — she's collecting a relative), warm and pleasantly surprised to hear airport-Shona from a foreigner; willing to walk you to the kombi pick-up if you greet properly first.",
+    successCriteria: "User uses 'Nhandare yendege' to refer back to where they are (showing they know the term, not just 'airport'), states intent with 'Ndirikuenda kuHarare' or 'kutown' using ku- prefix correctly, and says 'kekutanga' if she asks whether it's their first time — closing the cultural loop.",
+    estimatedMinutes: 2,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

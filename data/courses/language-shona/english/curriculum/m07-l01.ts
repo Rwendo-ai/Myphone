@@ -140,6 +140,14 @@ const lesson: LessonData = {
     task: "Look up a sadza recipe today. As you read through the ingredients, name each one in Shona if you can. You're building a food vocabulary that tastes like Zimbabwe.",
     rwenSignoff: "Sadza is home. Wherever you eat it, you're in Zimbabwe. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "It's late afternoon in a smoky thatched kitchen in Domboshava. A heavy black pot of sadza is stiffening on the open fire, a bowl of muriwo wenyevhe sits ready, and you've been pulled in to help dish up for the evening meal — your first time being trusted with the cooking pot.",
+    rwenRole: "Mai Chipo — the household's matriarch, late 50s, stirring sadza with a mugoti; she gently asks the user what to pair it with and whether the portions look right.",
+    successCriteria: "User correctly pairs the staple with a relish using 'ne' (e.g., 'Sadza ne nyama' or 'Sadza ne muriwo' — NOT 'Sadza na nyama'), accepts the offered plate gratefully instead of refusing, and identifies 'nyama' / 'muriwo' by name when Mai Chipo points at the pots.",
+    estimatedMinutes: 2,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

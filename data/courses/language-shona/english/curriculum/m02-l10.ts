@@ -161,6 +161,14 @@ const lesson: LessonData = {
     task: "Imagine you are lost somewhere in Zimbabwe today. Play through the conversation in your head — greeting, asking for help, not understanding, asking for repetition, thanking. Run it all the way through.",
     rwenSignoff: "You can survive anywhere now. Module 3 — who you are — begins next. Tichaonana.",
   },
+
+  phase8: {
+    scenario: "It's late afternoon in Marondera and you need to reach the hospital to visit a friend, but your phone's offline and the signposts are gone. A woman is closing up her tuck shop on the main road — she's your last shot before dark. Run the full survival chain.",
+    rwenRole: "Amai Rufaro — ~38, tuck-shop owner on the main Marondera-Harare road, kind but cashing up and ready to leave; one shot to land the conversation cleanly.",
+    successCriteria: "User chains all three chunks naturally: opens with greeting + 'Ndinoda kuenda ku chipatara' (NOT just 'Nzira ipi?' cold), uses 'Nzira ipi?' to clarify the route after she gestures, and closes with the full 'Ndatenda rubatsiro rwako' (NOT bare 'Ndatenda') — proving Module 2 chains end-to-end.",
+    estimatedMinutes: 3,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

@@ -139,6 +139,14 @@ const lesson: LessonData = {
     task: "Say 'Rudo ndiwo musimboti wemhuri' (Love is the foundation of family) today. Think about who you love and say their relationship title in Shona.",
     rwenSignoff: "Love holds the family together. Rudo. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "At the wedding in Mt Darwin, Sekuru Mukoma corners you near the pots of sadza and asks, with a half-smile, whether you have a murume or mukadzi back home — and whether you understand that rudo is the musimboti of mhuri. He wants a sentence, not a yes/no.",
+    rwenRole: "Sekuru Mukoma — Rwen's uncle at the ceremony, ~55, full of mbira-music wisdom and just enough mischief to push you to speak up.",
+    successCriteria: "User uses 'Murume' or 'Mukadzi' with correct possessive 'wangu' (NOT 'rangu' or 'yangu' — wrong noun class), and produces a full sentence about rudo (e.g. 'Rudo ndiwo musimboti wemhuri') rather than a one-word reply.",
+    estimatedMinutes: 2,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

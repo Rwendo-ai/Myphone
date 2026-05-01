@@ -139,6 +139,14 @@ const lesson: LessonData = {
     task: "Find something beautiful today and say 'Ona! [describe it]. Zvakanakisisa.' Point at it, name it, appreciate it — in Shona.",
     rwenSignoff: "See more. Understand more. They are the same journey. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "Tuesday 5:45pm. You and Tafadzwa are squeezed into a packed kombi heading from Eastlea to town after work. He nudges you and points out the window: 'Ona! Waona musha uyu? Wakanaka.' He wants to know if you've ever seen a house like that, and whether you understand the joke he then makes about the sign on the gate.",
+    rwenRole: "Tafadzwa — coworker, peer register, chatty on the kombi ride home. Mixes 'do you see' (literal) with 'do you understand' (the joke).",
+    successCriteria: "User uses 'Ndaona' (past — yes I've seen one) or 'Handisati ndaona' (haven't seen yet) for the house, AND uses 'Ndinoona' to confirm understanding the joke (the dual-meaning of kuona). Distinguishes physical seeing from understanding via context.",
+    estimatedMinutes: 2,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

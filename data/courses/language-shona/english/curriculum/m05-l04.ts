@@ -140,6 +140,14 @@ const lesson: LessonData = {
     task: "Next time you see an elderly man or woman, mentally say 'Sekuru' or 'Ambuya'. Notice how the Shona word changes your perception of respect.",
     rwenSignoff: "Elders carry the memory of the family. Sekuru. Ambuya. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "You've travelled out to the rural homestead in Domboshava for a kurova guva ceremony. An elderly man you've never met sits on a stool by the cooking fire and waves you over — Rwen whispers that he's not blood-related, but the family treats him as Sekuru. You need to greet him using the right honorific and acknowledge yourself as muzukuru.",
+    rwenRole: "Sekuru Mukoma — at the ceremony, ~70, dignified, the kind of elder who measures you by your first three words.",
+    successCriteria: "User addresses him as 'Sekuru' (NOT 'Baba' — wrong generation, NOT 'Mukoma' — wrong meaning here), responds to his 'muzukuru' framing (e.g. 'Mangwanani, Sekuru' rather than ignoring the title), and uses the respectful 'Mamuka sei?' form rather than 'Wamuka sei?'.",
+    estimatedMinutes: 3,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

@@ -143,6 +143,14 @@ const lesson: LessonData = {
     task: "Say your age in Shona today — 'Ndine makore [your age]'. If you know your birth year, try 'Ndakazvarwa mu [year]' too.",
     rwenSignoff: "Age is wisdom. Yours, in Shona. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "A traditional wedding (muchato wechivanhu) at a homestead in Murewa. While the bride's aunts arrange the gifts, an older guest sitting on a reed mat next to you asks how old you are so she knows how to address you.",
+    rwenRole: "Tete Rumbidzai — wedding guest and the groom's paternal aunt, ~55, formal and warm; asking your age so she can place you correctly within the family hierarchy.",
+    successCriteria: "User answers with 'Ndine makore...' + a number (NOT 'Ndiri makore...' — possession not identity), adds 'Ndakazvarwa mu...' with a year when she follows up, and recognises that her question is calibrating respect, not being nosy.",
+    estimatedMinutes: 2,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

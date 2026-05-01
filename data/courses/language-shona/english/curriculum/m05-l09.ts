@@ -139,6 +139,14 @@ const lesson: LessonData = {
     task: "Describe your family in 3 Shona sentences: 1) How many? 2) Who is in it? 3) One thing you love about them. Say it out loud.",
     rwenSignoff: "Mhuri ndirwo rugare — family is peace. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "Video call to mbuya in Murehwa — Mbuya Esther has called specifically to hear about your family. She says, 'Ndiudze nezvemhuri yako.' You have one minute of patchy signal to give her three sentences: how big your family is, whether you live together, and that you love them.",
+    rwenRole: "Mbuya Esther — Rwen's grandmother, ~78, in the rural homestead in Murehwa, soft-spoken but probing; she'll listen patiently and then ask one quiet follow-up.",
+    successCriteria: "User produces all three structures: 'Ndine mhuri huru/duku' (size), 'Tinogara pamwe chete' or a clean alternative (living arrangement), and 'Ndinoda mhuri yangu' (love) — concord 'yangu' must be correct (NOT 'wangu' or 'rangu').",
+    estimatedMinutes: 3,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

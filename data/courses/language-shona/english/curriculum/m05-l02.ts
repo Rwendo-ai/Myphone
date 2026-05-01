@@ -140,6 +140,14 @@ const lesson: LessonData = {
     task: "Think of the women in your family and assign Shona titles: Amai (mother), Ambuya (grandmother), Tete (father's sister). How does naming them this way change how you think about them?",
     rwenSignoff: "Women are the backbone of the Shona family. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "It's a video call to mbuya in Murehwa — Rwen's grandmother Esther has called to meet you for the first time. Tete Rumbidzai is sitting beside her on the call too. You only have a few minutes before the network drops, and you need to greet both women using the correct titles.",
+    rwenRole: "Mbuya Esther — Rwen's grandmother, ~78, in the rural homestead in Murehwa, soft-spoken but probing; she calls every younger woman 'mwanangu' and notices instantly when you address her properly.",
+    successCriteria: "User addresses the grandmother as 'Ambuya' (NOT 'Amai' — that's a generation off) and the paternal aunt as 'Tete' (NOT 'Amai' or 'Ambuya'), and uses both titles within the same short greeting rather than just one.",
+    estimatedMinutes: 2,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

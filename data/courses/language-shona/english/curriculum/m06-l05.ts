@@ -139,6 +139,14 @@ const lesson: LessonData = {
     task: "Say your birth month in Shona: 'Ndakazvarwa mu[month].' Say the current month in Shona. If you don't know it, look it up — that's learning too.",
     rwenSignoff: "The months have names in Shona. Now you know yours. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "At Sakubva market in Mutare, browsing a fruit stall where the seasonal produce changes by month. Mai Tatenda points at mangoes and asks when they're at their best in your home region — you swap birth months and favourite seasons in Shona.",
+    rwenRole: "Mai Tatenda — fruit vendor at Sakubva market, late 30s, curious and warm; she's making small-talk to build rapport and uses Shona month names exclusively, expecting you to volunteer at least your birth month back.",
+    successCriteria: "User states their birth month in Shona using 'Ndakazvarwa mu[Ndira/Kukadzi/...]' with the mu- prefix, names at least one other Shona month accurately (Chikumi or Zvita), and ties a month to a season (rainy/dry) rather than just listing them.",
+    estimatedMinutes: 2,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

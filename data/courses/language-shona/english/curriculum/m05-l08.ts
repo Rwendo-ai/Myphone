@@ -140,6 +140,14 @@ const lesson: LessonData = {
     task: "If you have children, say 'Vana vangu' (my children) today and feel the warmth in it. If you don't, think of a child you care about and say 'Mwana wangu' — my child — with that same warmth.",
     rwenSignoff: "Children are the future. Vana ndivanhu vemangwana. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "Sunday afternoon at the family gathering in Highfield — five small kids barrel out of the kitchen and surround you, calling you Sekuru/Amai. Tete Rumbidzai watches from the doorway to see whether you'll fumble with awkward English or actually use 'mwanangu' and 'vana' the way family does.",
+    rwenRole: "Tete Rumbidzai — Rwen's paternal aunt, ~50, gentle but probing; with the children she's looking for warmth, not just grammatical correctness.",
+    successCriteria: "User addresses an individual child as 'mwana' / 'mwanangu' (NOT 'vana' singular) and the group as 'Vana' with correct possessive 'vangu' (NOT 'wangu'), and chooses a warm 'Mhoro' rather than an over-formal 'Makadii' for kids.",
+    estimatedMinutes: 2,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

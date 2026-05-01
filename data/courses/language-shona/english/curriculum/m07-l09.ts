@@ -140,6 +140,14 @@ const lesson: LessonData = {
     task: "Tomorrow morning, before you eat breakfast, say 'Mangwanani' then describe what you're about to eat in Shona. 'Ndinoda tii ne chingwa.' Make breakfast Shona.",
     rwenSignoff: "Every morning is a new lesson. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "It's just past sunrise in a Domboshava kitchen. The kettle is on the wood stove, a fresh loaf of chingwa is on the table next to a tub of margarine, and Mai Chipo is asking — as she does every single morning — whether you've eaten and what you'd like for breakfast before the day's chores begin.",
+    rwenRole: "Mai Chipo — cooking sadza and brewing tii at dawn, mid 50s; uses the morning meal as the day's check-in ritual and won't let anyone leave the kitchen unfed.",
+    successCriteria: "User greets first with 'Mangwanani' (NOT skipping straight to ordering), answers 'Wambodya here?' truthfully with 'Ndadya...' or 'Handina...', and names a specific breakfast item — e.g., 'Ndinoda tii ne chingwa' or references 'zvokudya zvemangwanani' — rather than answering vaguely.",
+    estimatedMinutes: 2,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

@@ -139,6 +139,14 @@ const lesson: LessonData = {
     task: "Write or say the three sentences: 'Ndadzidzа [something].' 'Ndirikudzidzа [something].' 'Ndichadzidzа [something].' Your past, present, and future of learning — in Shona.",
     rwenSignoff: "Kudzidza — to learn — is a lifelong verb. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "Friday 6:15pm at the Copacabana kombi rank in town. You're waiting for the kombi to fill up to head home, and Tendai is on WhatsApp from Joburg, killing time too. He's surprised you're texting him in Shona now and asks: 'Wadzidza chii kubvira pakapedzisira ndakakuona?' He wants past, present, and future of your Shona learning journey.",
+    rwenRole: "Tendai — friend in Joburg, peer register, impressed and a little jealous you're learning the language he barely uses anymore.",
+    successCriteria: "User produces all three tenses in one reply: 'Ndadzidza...' (past — what's been learned), 'Ndirikudzidza...' (present continuous — what's currently being learned), and 'Ndichadzidza...' (future — what's next). Three distinct tense forms tied to real curriculum content.",
+    estimatedMinutes: 3,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

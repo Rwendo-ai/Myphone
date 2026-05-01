@@ -143,6 +143,14 @@ const lesson: LessonData = {
     task: "Think about your family. Say 'Ndine mhuri' — and then describe one family member in Shona, using 'Ndine...'.",
     rwenSignoff: "Your family is part of your story. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "Sunday lunch at a friend's home in Avondale, Harare. The host's mother, Amai Moyo, brings out a second helping of sadza and rape and — as is normal — asks about your family back home.",
+    rwenRole: "Amai Moyo — host's mother, ~60, hospitable and motherly, genuinely wants to know about your mhuri before deciding she's adopted you for the afternoon.",
+    successCriteria: "User answers 'Ndine mhuri' with 'Ndine vana [number]' (correct va- agreement: vaviri / vatatu), or uses 'Ndiriye mumwe chete' if applicable — and avoids the trap of confusing 'mhuri' (family) with 'musha' (home). Adds at least one extra family detail with 'Ndine...'.",
+    estimatedMinutes: 3,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

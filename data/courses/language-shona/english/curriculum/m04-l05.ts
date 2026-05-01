@@ -139,6 +139,14 @@ const lesson: LessonData = {
     task: "Look at 3 things or people near you. Describe what they're doing in Shona — even if just in your head. 'Munhu anoenda. Chinhu chiripo.'",
     rwenSignoff: "Every verb reflects its subject. That's Shona harmony. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "You're at an evening study group in a UZ student lounge in Harare. Your tutor draws three quick stick-figure scenes on a whiteboard — a person walking out, a machine running, a tree growing — and asks you to caption each in Shona using subject concord. No multiple choice; you have to produce the verb prefix yourself.",
+    rwenRole: "Sekuru Maraire — an old Shona-teacher friend acting as your tutor tonight, dry humour, watching specifically for whether you pick a-, chi-, or u- to match each subject.",
+    successCriteria: "User produces 'Munhu anoenda' (a- prefix, NOT chi- or u-), 'Chinhu chinoita' (chi- prefix, NOT a-), and 'Muti unomera' (u- prefix, NOT a-) — three sentences, three different concords, all matching their noun class.",
+    estimatedMinutes: 3,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

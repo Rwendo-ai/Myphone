@@ -139,6 +139,14 @@ const lesson: LessonData = {
     task: "Write or say one complete Shona sentence that uses: a noun (with its class), an adjective that agrees, a verb that agrees, and a tense marker. Even one sentence counts.",
     rwenSignoff: "The skeleton is built. Module 5 — your Shona family — begins next. Tichaonana.",
   },
+
+  phase8: {
+    scenario: "It's the end of a long Saturday at Sekuru Maraire's homestead in Nyanga. He sits you down on a bench under the big muhacha tree, hands you a calabash of mahewu, and says: 'Tell me about yourself — but I want to hear noun classes, adjective agreement, a verb that matches its subject, and a tense.' This is your Module 4 oral exam.",
+    rwenRole: "Sekuru Maraire — the old Shona teacher in his element, listening rigorously for whether you can string everything from this module into one or two natural sentences without scaffolding.",
+    successCriteria: "User produces a complete sentence (e.g. 'Ndiri munhu akatanga kudzidza ChiShona, ndichaenda kuZimbabwe') that includes (1) a noun in its class, (2) an adjective with matching concord (e.g. munhu akanaka, NOT munhu chakanaka), (3) a verb whose subject prefix matches the noun, AND (4) at least one tense marker (Nda-, Ndinoda, Ndicha-) — all four elements in one utterance, no English fallback.",
+    estimatedMinutes: 3,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

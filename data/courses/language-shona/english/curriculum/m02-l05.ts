@@ -143,6 +143,14 @@ const lesson: LessonData = {
     task: "Watch 2 minutes of Shona audio or video online today. When you get lost, say 'Taura zvishoma' out loud — even to a recording.",
     rwenSignoff: "Slow is smooth. Smooth is fluent. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "You're in a packed kombi on the Mbare-Avondale route and the conductor is rattling off the fare schedule, stops, and how much change he owes you — all in machine-gun Shona, half of it slang. You can't catch a single word but the kombi's about to pull off.",
+    rwenRole: "Brian — kombi conductor, ~30, fast-talking and impatient with passengers who fumble their fare; will respect a learner who admits the gap, won't respect a blank stare.",
+    successCriteria: "User says 'Handanzwisisi' to name the problem, follows with 'Taura zvishoma, ndapota' (NOT just 'Dzokorora' — speed is the issue, not memory), and uses 'Dzokorora, ndapota' on the second pass when he still goes too fast.",
+    estimatedMinutes: 2,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

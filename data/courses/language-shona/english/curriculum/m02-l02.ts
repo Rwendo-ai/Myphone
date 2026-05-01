@@ -144,6 +144,14 @@ const lesson: LessonData = {
     task: "Say 'Ndatenda' to someone today — and mean it. If they did something significant, add 'zvikuru'.",
     rwenSignoff: "Gratitude is its own reward. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "You drop your wallet on the dusty road outside TM Pick n Pay in Bulawayo and don't notice. An older woman scoops it up, runs after you, and presses it back into your hands — she's out of breath. You owe her a real thank-you, not a shrug.",
+    rwenRole: "Mbuya Sibongile — ~70, headscarf, retired schoolteacher who shops weekly at TM; she's quiet but dignified, and a mumbled 'thanks' will land like an insult.",
+    successCriteria: "User says 'Ndatenda zvikuru' (NOT bare 'Ndatenda' — she ran after you, this needs the intensifier) and follows up with 'Wakanaka' to acknowledge her kindness as a person, not just the act.",
+    estimatedMinutes: 2,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

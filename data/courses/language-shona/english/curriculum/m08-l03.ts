@@ -139,6 +139,14 @@ const lesson: LessonData = {
     task: "At every meal today, say: before eating 'Ndichadya' (I will eat), while eating 'Ndiri kudya', after eating 'Ndadya'. Run the three tenses through every meal.",
     rwenSignoff: "Kudya — to eat — is to be alive. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "Sunday afternoon, 2pm. Your cousin Munya texts from rural Mukumbura: 'Wakadya here? Tiri kudya sadza ne huku pano kumusha.' He wants to know if you've eaten yet, what you ate, and what your usual lunch routine looks like in town versus rural life.",
+    rwenRole: "Munya — your cousin, mid-20s, lives at the family rural homestead in Mukumbura. Texts in Shona, peer register, loves comparing town life to kumusha.",
+    successCriteria: "User answers with the correct tense for their actual eating state — 'Ndadya' if already eaten, 'Ndiri kudya' if eating now, 'Ndichadya' if about to. AND uses 'Ndinodya...' (habitual) to describe their usual weekday lunch. Three distinct tense forms in the reply.",
+    estimatedMinutes: 3,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

@@ -140,6 +140,14 @@ const lesson: LessonData = {
     task: "Every hour today, say the time in Shona — even just in your head. 'Iri yega' at 1pm, 'Iri mbiri' at 2pm. Make time Shona.",
     rwenSignoff: "Nguva ndiyo pfuma — time is wealth. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "At the kombi rank in Mbare, mid-afternoon. Your friend Tinashe is haggling over the fare to Chitungwiza and the conductor keeps saying the kombi leaves 'pakarepo' (any minute) — you need to ask the actual time and confirm whether it's before or after 3pm.",
+    rwenRole: "Tinashe — your peer-age friend at the kombi rank, easy-going but in a rush; he'll only give you the time in Shona because he's coaching you, and he'll tease you if you forget masikati vs manheru.",
+    successCriteria: "User asks 'Nguva ngani?' (not 'Mangani?'), uses the iri + number pattern correctly to state at least one specific hour (e.g. 'Iri tatu masikati'), and distinguishes masikati (afternoon) from manheru (evening) when Tinashe checks comprehension.",
+    estimatedMinutes: 2,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

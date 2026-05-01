@@ -143,6 +143,14 @@ const lesson: LessonData = {
     task: "Say 'Ndiri...' followed by who you are today — your profession, your role, anything. Say it out loud in Shona.",
     rwenSignoff: "You are someone worth knowing. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "You're squeezed onto a Mbare-bound kombi from the Copacabana rank. The man on the seat beside you — Tendai, your age — has noticed you're not Zimbabwean and asks who you are.",
+    rwenRole: "Tendai — fellow kombi passenger, ~30s, friendly and curious, asks 'Uri ani? Unoshanda sei?' to break the ride's silence.",
+    successCriteria: "User answers using 'Ndiri...' (NOT just their English name), names a profession with 'Ndiri mudzidzisi' (or appropriate mu- noun), and adds 'Ndiri murwi weshoko' or 'Ndinoda kudzidza ChiShona' to explain why they're attempting Shona.",
+    estimatedMinutes: 2,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

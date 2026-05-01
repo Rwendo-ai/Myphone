@@ -143,6 +143,14 @@ const lesson: LessonData = {
     task: "Find something that genuinely makes you happy today. Say 'Ndinofara' — and say why: 'Ndinofara nokuti...' (I am happy because...)",
     rwenSignoff: "Joy in Shona sounds like music. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "Standing on the verandah of a guesthouse in Nyanga at the end of a hiking weekend. The host introduces you to her cousin who has just driven in from Mutare; you shake hands and need to express genuine pleasure at meeting him.",
+    rwenRole: "Tinashe — the host's cousin, late 30s, recently met, friendly handshake, expecting a warm meet-and-greet response.",
+    successCriteria: "User says 'Ndinofara kukuziva' on the handshake (NOT just 'Mhoro' — go beyond hello), uses 'Zvakanakisisa' (the intensified form, not plain 'zvakanaka') when describing the weekend, and combines the two without dropping the 'ku-' infinitive on 'kukuziva'.",
+    estimatedMinutes: 2,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

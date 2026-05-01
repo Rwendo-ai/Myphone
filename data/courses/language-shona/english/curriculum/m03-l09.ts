@@ -143,6 +143,14 @@ const lesson: LessonData = {
     task: "Name your favourite thing — music, sport, food, anything. Say 'Ndinoda...' or 'Ndinofarira...' followed by it. Own that feeling in Shona.",
     rwenSignoff: "What you love makes you who you are. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "Half-time at a Dynamos vs Highlanders match at Rufaro Stadium. A Dembare fan in a blue jersey, sitting two rows in front, turns around and asks what you actually enjoy in life — beyond football, since you clearly don't follow it like a Zimbabwean.",
+    rwenRole: "Munya — Dynamos supporter at Rufaro, late 20s, banter-energy, pushing you past surface answers about hobbies.",
+    successCriteria: "User correctly distinguishes 'Ndinoda' (deep love) from 'Ndinofarira' (enjoy/fond of) when describing two different things, e.g. 'Ndinoda mimhanzi' for a real passion vs 'Ndinofarira kutenga' for a casual interest. Names something concrete (mimhanzi / kutenga / kurima / etc.) — not abstract 'kudzidza'.",
+    estimatedMinutes: 2,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

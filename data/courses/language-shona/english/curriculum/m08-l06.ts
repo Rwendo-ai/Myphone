@@ -145,6 +145,14 @@ const lesson: LessonData = {
     task: "Say 'Ndinotaura ChiShona zvishoma' out loud today — to yourself, to someone, to a mirror. Own it. Because it's true. You do speak Shona. A little. And growing.",
     rwenSignoff: "Ndinotaura ChiShona. Say it. Mean it. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "Saturday morning, 11am, after-church chats outside the gates of a church in Highfield. Tendai is back home for the weekend and introduces you to his auntie. She raises an eyebrow at the murungu and asks, half-teasing, 'Unotaura ChiShona here mwanangu?' You need to answer her honestly and say what you've been learning.",
+    rwenRole: "Tendai's Auntie Rufaro — late 50s, churchgoer, warm but tests strangers. Use respectful 'mu-/ma-' forms with her, NOT peer register.",
+    successCriteria: "User answers 'Hongu, ndinotaura ChiShona zvishoma' (NOT 'zvose' — be honest about level) AND adds 'Ndiri kudzidza' (continuous: I am learning) — present continuous, not habitual. Stays respectful with the auntie throughout.",
+    estimatedMinutes: 2,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

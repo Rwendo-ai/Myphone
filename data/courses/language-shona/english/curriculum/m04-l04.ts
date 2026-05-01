@@ -140,6 +140,14 @@ const lesson: LessonData = {
     task: "Find 3 everyday objects and say their Shona plural with Ma-. Start with food: mazai (eggs), mabanga (knives), matombo (stones).",
     rwenSignoff: "Ma- is one of the most useful sounds in Shona. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "It's late afternoon at your aunt's kitchen in a rural homestead in Murehwa. She's prepping sadza ne huku and asks you to fetch items from the pantry shelf — one egg, then several; a knife, then several; one stone for the grinding mortar, then more. You have to call out singular vs plural correctly each time.",
+    rwenRole: "Tete Rufaro — your aunt, ~50, brisk and busy with cooking, who barks instructions and expects you to keep up: 'Ndipe zai!' then 'Ndipe mazai matatu!' She'll laugh at you good-naturedly if you forget the Ma-.",
+    successCriteria: "User says bare 'Zai/Banga/Dombo' when asked for one, but switches cleanly to 'Mazai/Mabanga/Matombo' for plurals — and notices the stem change from 'Dombo' to 'Matombo' (not the wrong 'Madombo').",
+    estimatedMinutes: 2,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

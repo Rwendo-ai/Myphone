@@ -155,6 +155,14 @@ const lesson: LessonData = {
     task: "Write or say your full Shona introduction out loud — name, profession, origin, family, what you enjoy, why you're learning Shona. Make it real. Make it yours.",
     rwenSignoff: "You have a story. Now it lives in Shona. Module 4 — the grammar that unlocks everything — begins next. Tichaonana.",
   },
+
+  phase8: {
+    scenario: "An evening welcome dinner at a small lodge in Victoria Falls. The owner has invited the staff and a few neighbours to meet the new long-term guest — you. The room quiets and she asks, in Shona, for you to tell everyone about yourself.",
+    rwenRole: "Mai Mukoma — lodge owner and host, ~50, bilingual but introducing you to staff who speak only Shona; she's genuinely proud you're going to attempt this.",
+    successCriteria: "User strings together a full self-introduction in order — 'Zita rangu ndi... | Ndiri [profession] | Ndinogara ku... + Kumusha kwangu ndi... | Ndine mhuri / Ndine vana... | Ndinoda [hobby] | Ndinoda kutaura ChiShona nokuti...' — using 'nokuti' at least once to give a reason, and closing with 'Ndinoda kuva shamwari yenyu'. No single chunk dropped.",
+    estimatedMinutes: 3,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

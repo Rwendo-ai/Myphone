@@ -140,6 +140,14 @@ const lesson: LessonData = {
     task: "Next time you need directions, say 'Ndeapi nzira ye [place]?' — even quietly before asking in English. The Shona question first.",
     rwenSignoff: "Every road has a Shona name. Find yours. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "You've stepped out of a kombi at the Mbare kombi rank and immediately lost your bearings — vendors, kombis, dust, and noise on every side. You spot a passer-by walking past the rank and need to ask, in proper Shona, which road leads to Mbare Musika so you can find your group.",
+    rwenRole: "Mai Tatenda — a passer-by at Mbare kombi rank, late 30s, balancing a shopping bag, friendly but in a hurry; she'll only slow down if you open with respect and ask cleanly using 'Ndeapi nzira ye...?'.",
+    successCriteria: "User opens politely with 'Ndibatsire, ndapota' (not just shouting at her), uses the full 'Ndeapi nzira ye Mbare Musika?' form rather than the bare 'Nzira ipi?', and confirms back the chunks she gives (mberi / kurudyi / pedyo) instead of just nodding and walking off confused.",
+    estimatedMinutes: 2,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

@@ -143,6 +143,14 @@ const lesson: LessonData = {
     task: "Think of someone important to you. Say 'Shamwari yangu ndi...' (My friend is...) using their name. Let the language carry the relationship.",
     rwenSignoff: "Your people are your wealth. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "A college reunion braai at a friend's place in Hillside, Bulawayo. Around the fire, an old classmate hands you a Zambezi lager and asks who 'your people' are now — friends, community, the lot.",
+    rwenRole: "Sipho — old college friend, late 20s, sentimental, asking about your inner circle to see how your life shaped up after graduation.",
+    successCriteria: "User correctly pairs the possessive with each noun class — 'Vanhu vangu' (va-), 'Shamwari yangu' (ya-), 'Musha wangu' (wa-) — without using the wrong agreement (e.g., NOT 'Shamwari vangu' or 'Musha yangu'). Strings together at least two of the three to describe their people.",
+    estimatedMinutes: 2,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

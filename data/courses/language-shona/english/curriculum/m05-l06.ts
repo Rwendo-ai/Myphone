@@ -139,6 +139,14 @@ const lesson: LessonData = {
     task: "Research your family's origin or ancestry. Even if you're not Shona, think about what your 'mutupo' might be — your family symbol or identity. What animal or quality represents your lineage?",
     rwenSignoff: "You come from somewhere. Vadzimu are watching. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "Late evening at the rural homestead in Murehwa. Mbuya Esther sits with you by the fire and asks, quietly, what your mutupo is and whether you remember your vadzimu. This is not small talk — she wants to know who you come from before she lets you sleep under her roof.",
+    rwenRole: "Mbuya Esther — Rwen's grandmother, ~78, custodian of the family's totem and stories; gentle but the kind of probing that decides whether you belong.",
+    successCriteria: "User says 'Mutupo wangu ndi...' (correctly using ndi-, not ari-) to share their totem, uses 'Vadzimu' (plural) when speaking of ancestors collectively (NOT singular 'Mudzimu'), and acknowledges her framing rather than deflecting with 'I don't have one'.",
+    estimatedMinutes: 3,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

@@ -139,6 +139,14 @@ const lesson: LessonData = {
     task: "Think about yesterday and tomorrow. Say 'Ndaenda ku...' for where you went yesterday, and 'Ndichaenda ku...' for where you'll go tomorrow.",
     rwenSignoff: "Time lives in the verb. Past, present, future — all within one word. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "You're catching up with an old family friend at a coffee shop in Borrowdale. Over rooibos, she asks you about your weekend in three quick beats — where you went on Saturday, what you're doing right now, and where you'll travel next week — and expects you to answer each with the correct tense baked into the verb.",
+    rwenRole: "Mai Chipo — a warm 50-something family friend, fluent in Shona and English, who switches you back to Shona whenever you slip into English and listens for whether you nail Nda-, Ndiri ku-, and Ndicha-.",
+    successCriteria: "User answers with 'Ndaenda ku...' for past (Nda- prefix, NOT Ndinoenda), 'Ndiri kuenda' or 'Ndinoita' for present, and 'Ndichaenda ku...' for future (Ndicha- prefix, NOT Nda-) — three sentences with three distinct tense markers inside the verb.",
+    estimatedMinutes: 3,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

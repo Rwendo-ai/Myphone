@@ -139,6 +139,14 @@ const lesson: LessonData = {
     task: "Every time you turn today — in a car, walking, anywhere — say 'Kurudyi' or 'Kuruboshwe'. Turn right? Kurudyi. Turn left? Kuruboshwe. Make turning Shona.",
     rwenSignoff: "Know your right. Know your left. Know your nzira. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "You're approaching the Eastgate roundabout in a kombi heading north and your stop is just past it — but you need to direct the conductor exactly which exit to call out: forward through the roundabout, then turn left at the next junction toward Newlands. Get the right/left chunks wrong and you'll end up in Borrowdale.",
+    rwenRole: "Brian — kombi conductor on the Mbare-Avondale route, 28, hangs out the sliding door collecting fares, hates ambiguous directions because he has 14 other passengers; he respects clear 'kurudyi/kuruboshwe' calls.",
+    successCriteria: "User correctly distinguishes 'kurudyi' (right) and 'kuruboshwe' (left) without flipping them under pressure, uses 'Dzokorora kuruboshwe' as a command (not the bare noun), and chains the sequence — 'Enda mberi, wobva wadzokorora kuruboshwe, mira pano' — in one confident instruction to Brian.",
+    estimatedMinutes: 3,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

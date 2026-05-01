@@ -153,6 +153,14 @@ const lesson: LessonData = {
     task: "Host a meal this week — even just tea and biscuits. Use the Shona sequence: Mauya zvakanaka → Tauya, Garai → offer food or drink → Taudzai pamwe → Zvakanakisisa → Ndinoonga at the end. Run the whole sequence.",
     rwenSignoff: "Ukama igasva hunozadziswa nekudya. Relationship completed by sharing food. Module 8 — action and daily life — begins next. Tichaonana.",
   },
+
+  phase8: {
+    scenario: "It's the close of a long Sunday lunch at the Murehwa homestead. Plates have been cleared, the elders have moved to chairs under the mango tree, and the host's daughter is walking you to the gate — this is the moment to deliver the deep, complete farewell that closes the whole module.",
+    rwenRole: "Tendai — the host's daughter, early 20s, walking the user out; warm, watching to see if the guest closes the visit with proper Shona form rather than a quick English 'thanks, bye'.",
+    successCriteria: "User delivers a layered farewell that combines compliment + deep gratitude + good night: uses 'Zvakanakisisa' for the food, 'Ndinoonga' (NOT only 'Ndatenda') to register deep gratitude, credits the whole family with 'mhuri yose / vakagadzirira', and closes with 'Famba/Sara zvakanaka' plus 'Usiku wakanaka'.",
+    estimatedMinutes: 3,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

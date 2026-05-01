@@ -139,6 +139,14 @@ const lesson: LessonData = {
     task: "Speak Shona with a real person today. Not practice — real. Find a Zimbabwean person, an online community, a language exchange partner. Use your Shona. Because language only lives when it moves between people. Rwendo ruchiripo.",
     rwenSignoff: "Ndasvika. Ndinoenda mberi. Tichaonana, murwi weshoko. We will see each other again, language warrior. Famba zvakanaka — go well, always.",
   },
+
+  phase8: {
+    scenario: "The final scene of Rwendo. Dusk at Sekuru Maraire's homestead — the same fire from earlier lessons, the same reed mat. He pours you tea, looks across the embers, and says only this: 'Nditaurire nyaya yako muChiShona.' Tell me your story in Shona. He waits. The whole journey — 100 lessons — sits in this moment.",
+    rwenRole: "Sekuru Maraire as wise elder marking the A2 capstone — he is no longer correcting; he is listening as a Zimbabwean man hearing a stranger speak his language for the first time as their own. This is the closing rite of the curriculum.",
+    successCriteria: "User produces 4-6 sentences in Shona that span TIME and FEELING: at least one PAST sentence ('Kare...' or 'Ndakanga...'), at least one EMOTION (Ndinofara / Ndakatya / Ndakasuwa), at least one HOPE construction ('Ndinotarisira ku-...'), AND closes with at least one proverb (tsumo) — Tariro haiperi, Chara chimwe hachitswanyi inda, Ukama igasva, or Kushinga ndiyo pfuma. Past + emotion + hope + tsumo, all woven together. Then 'Ndasvika.'",
+    estimatedMinutes: 4,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

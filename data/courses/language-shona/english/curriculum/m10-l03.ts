@@ -135,6 +135,14 @@ const lesson: LessonData = {
     task: "Think of something that scares you. Say 'Ndakatya [that thing].' Then say 'Asi ndakazoshinga.' But I found courage. Let Shona name both your fear and your strength.",
     rwenSignoff: "Kushinga ndiyo pfuma yakakura. Courage is the greatest wealth. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "Your cousin's daughter is about to give a speech at her Form 4 graduation in Harare. She corners you backstage, eyes wide, and whispers in Shona that she's terrified. You have ninety seconds to give her courage in her own language.",
+    rwenRole: "Rufaro — 16, your niece, talented but trembling. She doesn't need a lecture — she needs a short, strong injection of kushinga from someone she trusts.",
+    successCriteria: "User uses 'Usatya' (the imperative, not 'Ndakatya' about themselves), names 'kushinga' as the quality she already has, and lands a forward-pointing line like 'Unokwanisa' or 'Rambai makashinga' so she walks out lifted, not lectured.",
+    estimatedMinutes: 2,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

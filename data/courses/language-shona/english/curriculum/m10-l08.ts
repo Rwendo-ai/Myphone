@@ -139,6 +139,14 @@ const lesson: LessonData = {
     task: "Write or say three hopes using 'Ndinotarisira ku[verb]...' Make them real. Make them yours. Say them in Shona.",
     rwenSignoff: "Tariro haiperi. Hope never ends. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "Sunday family WhatsApp video call. Twelve faces tiled on your screen — Harare, Bulawayo, Joburg, London. Mbuya asks the question she always asks: 'Iwe, unotarisira chii nezve ramangwana?' Everyone goes quiet, waiting for you. In Shona.",
+    rwenRole: "Mbuya — matriarch on the call, ~72, will beam if you answer in Shona instead of English; the wider family will hear the answer too, so this is your chance to declare hope publicly.",
+    successCriteria: "User chains at least TWO 'Ndinotarisira ku-' constructions (e.g. kuona Zimbabwe, kutaura ChiShona, kushanya), lands the noun 'ramangwana rakanaka' once, and ideally closes with the proverb-flavoured 'Tariro haiperi' so it sounds like a real declaration of hope, not a list.",
+    estimatedMinutes: 3,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

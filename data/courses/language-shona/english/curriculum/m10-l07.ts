@@ -139,6 +139,14 @@ const lesson: LessonData = {
     task: "Begin a story from your own past: 'Kare, ndakanga ndiri mudiki...' (Long ago, I was young...) Continue with two sentences about what you were doing then. Your life story in Shona.",
     rwenSignoff: "Every story begins with 'Paivapo.' Every life is a story. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "Evening at a rural homestead in Shurugwi. Sekuru Maraire is sitting by the fire after dinner and gestures for you to sit on the reed mat. He says 'Paivapo...' and waits — he wants you to respond properly AND then tell him a short story from your own childhood, in Shona.",
+    rwenRole: "Sekuru Maraire — wise elder, ~75, master storyteller, will lean in if you echo 'Paivapo!' correctly and then begin a story with 'Kare, ndakanga ndiri mudiki...'; he's listening for the rhythm of Shona narrative, not perfect grammar.",
+    successCriteria: "User responds 'Paivapo!' to his opener (NOT 'Ndanzwisisa'), then begins their own story with 'Kare' or 'Kare kare' AND uses 'Ndakanga ndiri...' to set themselves in the deep past — at least two sentences of past-tense narrative.",
+    estimatedMinutes: 3,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

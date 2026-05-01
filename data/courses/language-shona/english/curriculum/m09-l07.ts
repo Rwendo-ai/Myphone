@@ -140,6 +140,14 @@ const lesson: LessonData = {
     task: "Imagine you're checking into a hotel in Harare. Say the full check-in sentence: 'Ndatenda. Ndinoda rumuri humwe, ndapota. Ndichasara husiku humwe.' Say it out loud.",
     rwenSignoff: "Your room is ready. Rara zvakanaka. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "You've reached a small guesthouse near the Avondale shops in Harare after a long day of navigating kombis. It's getting dark and you need to check in for one night — in Shona, because the receptionist switched into Shona mid-sentence and you want to keep up rather than retreat into English.",
+    rwenRole: "Mai Tatenda — guesthouse receptionist on the Avondale shops strip (not the same passer-by; same warm Mai-Tatenda archetype, different setting), 40s, runs the front desk solo, will absolutely lean into Shona if you started it.",
+    successCriteria: "User refers to the building as 'imba yokurara' if asked about the type of place, requests the room with 'Ndinoda rumuri' (NOT 'Ndinoda imba' which means a whole house), specifies duration with 'husiku humwe' (one night), and uses 'ndapota' here because reception register IS polite — unlike the kombi register in l05.",
+    estimatedMinutes: 2,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

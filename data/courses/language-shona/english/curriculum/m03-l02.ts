@@ -143,6 +143,14 @@ const lesson: LessonData = {
     task: "Say 'Ndinoshanda mu...' followed by your workplace or profession today. Say it like you mean it.",
     rwenSignoff: "Your work matters. Say it in Shona. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "First day at Econet's HQ in Borrowdale, Harare. In the staff kitchen on the third floor, a new colleague is making instant coffee and asks what you do and whether you're settling in.",
+    rwenRole: "Farai — new colleague at Econet HQ Borrowdale, 30s, in IT, friendly and switching easily between English and Shona to put you at ease.",
+    successCriteria: "User uses 'Ndinoshanda' (not 'Ndiri') for the work answer, places the location with 'mu' or 'ku' correctly (e.g., 'Ndinoshanda mu ofisi' / 'ku Borrowdale'), and can swap to 'Handishande iye zvino' if asked about a previous job — without confusing 'live' (gara) with 'work' (shanda).",
+    estimatedMinutes: 2,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

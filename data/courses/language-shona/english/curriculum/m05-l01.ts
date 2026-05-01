@@ -139,6 +139,14 @@ const lesson: LessonData = {
     task: "Think about your father and his brothers. Try naming them in Shona: Baba, Babamukuru (older brother), Babamunini (younger brother). Shona names their relationships precisely.",
     rwenSignoff: "In Shona, family titles are respect made visible. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "You've just arrived at the rural homestead in Domboshava for a Saturday family lunch. Two older men stand up from under the mango tree to greet you — Rwen quietly tells you one is his father's older brother, the other his father's younger brother. You need to address each by the correct title, not lump them together.",
+    rwenRole: "Sekuru Mukoma — Rwen's uncle, ~55, sharp-eyed and watching whether you'll pick the right title; he's testing you without saying so.",
+    successCriteria: "User uses 'Babamukuru' for the older brother (NOT just 'Baba' or swapped with 'Babamunini') and 'Babamunini' for the younger one, AND opens with a respectful greeting like 'Makadii' rather than a casual 'Mhoro'.",
+    estimatedMinutes: 2,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

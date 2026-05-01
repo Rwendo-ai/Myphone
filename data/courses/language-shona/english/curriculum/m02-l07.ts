@@ -143,6 +143,14 @@ const lesson: LessonData = {
     task: "Find any object near you right now. Look up what it is in Shona. Then say 'Zvii muShona?' out loud and answer yourself.",
     rwenSignoff: "Your curiosity is your teacher. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "You're at Mbare Musika browsing dried mushrooms and unfamiliar leafy greens. The vendor names each one in rapid Shona — 'howa', 'nyevhe', 'derere' — and you've got no clue which is which. Ask, don't nod.",
+    rwenRole: "Amai Florence — ~50, market vendor at Mbare Musika in Harare, sharp-eyed and proud of her produce; she lights up when a foreigner actually asks the names rather than pointing.",
+    successCriteria: "User uses 'Zvinoreva chii?' to pin down the meaning of an unfamiliar word she just used (NOT 'Zvii muShona?' — wrong direction), uses 'Zvii muShona?' when pointing at a vegetable to learn its name, and signs off with 'Ndinoda kudzidza ChiShona' to explain the curiosity.",
+    estimatedMinutes: 3,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

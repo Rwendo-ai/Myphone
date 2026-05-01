@@ -143,6 +143,14 @@ const lesson: LessonData = {
     task: "Say where you live AND where you're originally from — both in Shona. 'Ndinogara ku...' and 'Kumusha kwangu ndi...'",
     rwenSignoff: "Home is where your story starts. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "After a Sunday service at a small Methodist church in Chitungwiza. A regular member catches you outside as the congregation spills onto the dusty yard and asks where you and your family stay — and where you're truly 'from'.",
+    rwenRole: "Baba Chiweshe — church elder, ~50, quietly drawing the difference between where you currently live and your true 'kumusha'; he himself drives back to Mhondoro every weekend.",
+    successCriteria: "User uses 'Tinogara ku...' (Ti- not Ndi- because question was about the family) for current home, and 'Kumusha kwangu ndi...' for ancestral home — distinguishing the two concepts. Recognises 'kumusha' as the rural/origin home, NOT a synonym for current address.",
+    estimatedMinutes: 3,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

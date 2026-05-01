@@ -148,6 +148,14 @@ const lesson: LessonData = {
     task: "Add 'ndapota' to every request you make today — even internally. Notice how it changes the feeling of asking.",
     rwenSignoff: "Politeness opens every door. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "You're standing outside Eastgate in Harare CBD with a phone on 3% battery and no idea which kombi rank goes to Avondale. A young guy in a Castle Lager t-shirt is waiting at the corner — you have to flag him down and ask, politely, before your phone dies.",
+    rwenRole: "Tafadzwa — 22, university student catching a kombi home, friendly but in a hurry; will help if you ask properly but won't stop for a barked command.",
+    successCriteria: "User opens with 'Ndibatsire, ndapota' (NOT bare 'Ndibatsire'), uses 'Ndapota' to soften the follow-up directions question, and replies 'Zvinoenderana' when Tafadzwa says 'Ndatenda' for being patient — not the other way around.",
+    estimatedMinutes: 2,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

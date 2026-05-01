@@ -140,6 +140,14 @@ const lesson: LessonData = {
     task: "Every time you drink water today, say 'Mvura' before you drink. Feel the connection to Zimbabwe where this word means both water and rain.",
     rwenSignoff: "Mvura — water, rain, life. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "You've just stepped off a long, dusty kombi ride into a homestead in Murewa. Before you've even set down your bag, the household has produced a tray with a glass jug of cold mvura, a flask of tii, and a mazoe orange — and the host is waiting for you to choose.",
+    rwenRole: "Mai Chipo — host of the homestead, mid 50s, deeply traditional about hospitality; she will not let you sit down to talk until you have accepted something to drink.",
+    successCriteria: "User uses 'Ndine nyota' to signal need rather than pretending they're fine, requests with 'Ndinoda mvura' or 'Ndinoda tii' (NOT just pointing or refusing with 'Handidi'), and accepts the drink — refusing hospitality outright is the wrong move here.",
+    estimatedMinutes: 2,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

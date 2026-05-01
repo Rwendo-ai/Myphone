@@ -139,6 +139,14 @@ const lesson: LessonData = {
     task: "Ask 3 real questions today using Shona question words — even in your head. 'Unoda chii?' (what do you want?), 'Uchaenda rinhi?' (when will you go?), 'Munhu uyu ndiani?' (who is this person?)",
     rwenSignoff: "Questions are the engine of curiosity. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "You've just arrived at a wedding kitchen tea in a community hall in Glen View, and you don't know half the people there. To break the ice you need to ask three quick questions of the cousin guiding you around — who that auntie in the doek is, what's in the covered pot on the table, and when the bride is arriving — using Shona question words at the end of each sentence.",
+    rwenRole: "Tendai — your friendly 30-year-old cousin acting as your wedding guide, patient but pressed for time, who answers in full Shona only if your question word is correct and placed at the end.",
+    successCriteria: "User asks 'Munhu uyu ndiani?' (Ndiani for a person, NOT Chii), 'Mupoto ichi mune chii?' or similar with 'Chii?' (for a thing/object), and 'Muroora achasvika rinhi?' or 'Mucherechero unotanga rinhi?' (Rinhi for time) — three distinct question words, each correctly matched to person/thing/time.",
+    estimatedMinutes: 3,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

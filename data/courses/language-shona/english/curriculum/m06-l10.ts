@@ -161,6 +161,14 @@ const lesson: LessonData = {
     task: "Next time you buy anything, run the full Shona transaction in your head: greet → price → react → negotiate → confirm → thank. Even buying a coffee. Make it Shona.",
     rwenSignoff: "Module 6 done. You can count, tell time, handle money, and navigate a market. Module 7 — food, drink, and hosting — begins next. Tichaonana.",
   },
+
+  phase8: {
+    scenario: "Saturday morning solo run at Mbare Musika. You need to buy tomatoes, onions, and a chitenge cloth across three different stalls — running the full seven-step exchange (greet → ask price → react → negotiate → agree → confirm money → thank) at each one, with no English fallback and no help from Rwen.",
+    rwenRole: "Mai Tatenda — veteran Mbare Musika tomato vendor in her 50s, the toughest stall for a beginner; she watches whether you greet first, negotiates hard, and only addresses you as 'mutengi' (customer) once you've completed a full Shona transaction with her.",
+    successCriteria: "User executes all three chunks in sequence — opens with 'Mangwanani' + 'Mutengo uri ngani?', negotiates using 'Inodura' + 'Deredza mutengo' + a counter in madora, then closes with 'Ndichatora' + 'Ndatenda, Mutengesi' — across at least one full stall exchange, never breaking into English.",
+    estimatedMinutes: 3,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

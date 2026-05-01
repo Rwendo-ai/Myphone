@@ -140,6 +140,14 @@ const lesson: LessonData = {
     task: "Say the emergency sequence out loud today — not in crisis, but as preparation: 'Batsira! Daidzai chiremba! Ndine dambudziko!' Say it loud enough that your body remembers it. Then hope you never need it.",
     rwenSignoff: "Know these words. Mean them. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "You're walking through Mutare's Sakubva market when an elderly vendor a few stalls over collapses. The crowd hesitates — most are speaking Shona to each other and looking around for someone to take charge. You have to shout the right emergency phrases loud enough to break the freeze and get a chiremba called.",
+    rwenRole: "Petrol station attendant from Marondera (he came down to Sakubva to visit family) — same archetype as l04, calm under pressure, will physically run for help the moment he hears 'Daidzai chiremba!' shouted clearly, but won't move on a half-mumbled English call.",
+    successCriteria: "User shouts 'Batsira!' as an opener (not 'Excuse me'), follows immediately with 'Daidzai chiremba!' using the formal plural -ai imperative, drops politeness padding entirely (no ndapota — emergencies override it), and adds 'Munhu uyu anorwara' so the responders know it's a medical, not theft, situation.",
+    estimatedMinutes: 2,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

@@ -140,6 +140,14 @@ const lesson: LessonData = {
     task: "Practice the doctor visit sequence: 'Mangwanani, Chiremba. Ndinorwara. Ndinova [body part]. Ndinoda rubatsiro.' Say it until it flows naturally.",
     rwenSignoff: "Health is sacred. Know how to ask for it. Poreswa. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "Tuesday morning at a doctor's office in Avondale. The receptionist has just waved you through and Chiremba Mutasa looks up from his desk: 'Mangwanani. Ndinokubatsira sei nhasi?' You have one shot to describe a fever and a stomach ache that's been building for three days — clearly enough that he doesn't have to play twenty questions.",
+    rwenRole: "Chiremba Mutasa — GP, ~50, busy but kind, will respect a patient who comes prepared in Shona; the more specific you are, the better the consultation.",
+    successCriteria: "User opens with 'Mangwanani, Chiremba' (NOT just 'Mangwanani'), states 'Ndinorwara' as headline, then chains TWO specific symptoms using 'Ndinorwara ne fivha' and 'Ndinoirwa dumbu' (or 'Ndinova dumbu') so the doctor has actionable info.",
+    estimatedMinutes: 3,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

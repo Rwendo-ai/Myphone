@@ -145,6 +145,14 @@ const lesson: LessonData = {
     task: "Order something today using 'Ndinoda' — even if it's just in your head when you order a coffee or choose what to eat.",
     rwenSignoff: "Know what you want. Say it clearly. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "You walk into OK Mart in Gweru looking for just airtime and a bottle of water, but the shopkeeper at the counter keeps offering you a bundle deal — chips, a Coke, a chocolate bar — and a phone case you don't want. You need to be clear without being rude.",
+    rwenRole: "Sisi Nokuthula — ~28, shopkeeper at OK Mart Gweru, upbeat and a natural upseller; she'll respect a polite refusal but will keep offering until she gets one.",
+    successCriteria: "User uses 'Ndinoda' to state what they DO want (airtime + water), adds 'chete' to close the list ('mvura chete' — just water, nothing else), and uses 'Handidi, ndatenda' to politely refuse the upsell rather than going silent or just shaking their head.",
+    estimatedMinutes: 2,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

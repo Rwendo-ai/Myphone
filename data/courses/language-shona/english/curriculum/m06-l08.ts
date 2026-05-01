@@ -139,6 +139,14 @@ const lesson: LessonData = {
     task: "Say your age in Shona using Makumi: 'Ndine makore makumi [tens] ne[ones].' Then count by tens out loud: Gumi, makumi maviri, makumi matatu... up to zana.",
     rwenSignoff: "Numbers tell your story. Zana! One hundred steps forward. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "On the long-distance bus to Beitbridge, just after departure from Roadport in Harare. The conductor is calling out fares for different stops — anywhere from 20 to 100 madora depending on the destination — and you need to confirm your fare and your age for the ID list in Shona.",
+    rwenRole: "Bus conductor on the Beitbridge route — late 30s, fast-talking, used to rural elders who only speak Shona; he expects passengers to give their age and pay the fare in numbers without slowing him down.",
+    successCriteria: "User states their age using 'Ndine makore makumi [number] ne[ones]' with the makumi-tens pattern (or zana for 100), and repeats back at least one fare quote correctly using makumi or zana — no English digits, no falling back to gumi for ages over 19.",
+    estimatedMinutes: 2,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;

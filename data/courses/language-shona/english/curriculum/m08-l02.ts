@@ -139,6 +139,14 @@ const lesson: LessonData = {
     task: "Beckon someone today with 'Uya kuno' — a child, a pet, a friend. Even say it to yourself in the mirror: 'Uya kuno.' Feel the welcome in those two words.",
     rwenSignoff: "Uya kuno — come closer. The language wants you near. Famba zvakanaka.",
   },
+
+  phase8: {
+    scenario: "Lunch break at the Eastlea office canteen, 12:45pm. You spot Tafadzwa sitting alone at a corner table with his sadza. You want to wave him over to your table — and when he asks if you've already eaten, you need to say you've just arrived from a meeting.",
+    rwenRole: "Tafadzwa — coworker on your team, friendly peer in his late 20s, eats lunch at his desk most days. Casual register, jokes around.",
+    successCriteria: "User beckons with 'Uya kuno' (NOT 'Enda kuno' which sends him away) AND uses 'Ndauya' (perfect/arrival) when explaining they've just come from the meeting — not 'Ndinouya' (habitual) or 'Ndichauya' (future).",
+    estimatedMinutes: 2,
+    bonusXp: 5,
+  },
 };
 
 export default lesson;
