@@ -110,7 +110,7 @@ function Nav({ onBack, onNext, nextLabel, disabled }: {
 export default function OnboardingScreen() {
   const { t } = useTranslation('auth');
   const { user, setOnboardingComplete } = useAuth();
-  const { setActivePack, setRwenVoice, setJurisdictionId, setSpeakerPack } = useSettings();
+  const { setActivePack, setRwenVoice, setJurisdictionId, setSpeakerPack, setOwnedCourseIds, setStarterCourseId } = useSettings();
 
   const [step, setStep]     = useState<Step>('language');
   const [saving, setSaving] = useState(false);
@@ -176,8 +176,14 @@ export default function OnboardingScreen() {
     setSaving(true);
     try {
       const packId = appLanguage === 'shona' ? 'english-shona' : 'shona-english';
+      // Runtime course ID (bare). available_packs.id uses the prefixed
+      // 'course:language-english' form per migration 005; runtime + DB layers
+      // use different conventions on purpose (FKs need prefixes, JS doesn't).
+      const runtimeCourseId = appLanguage === 'shona' ? 'language-english' : 'language-shona';
       setActivePack({ id: packId, spokenLanguageId: appLanguage, learnedLanguageId: appLanguage === 'shona' ? 'english' : 'shona', isPremium: false });
       setSpeakerPack(appLanguage);
+      setOwnedCourseIds([runtimeCourseId]);
+      setStarterCourseId(runtimeCourseId);
       setJurisdictionId(jurisdictionId);
       setRwenVoice(voiceKey);
 

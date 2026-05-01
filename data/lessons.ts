@@ -236,6 +236,22 @@ export const UNITS: Unit[] = [
       { id: 'm10-l10-your-story',unitId: 'emotions', title: "Your Shona Story — A2 Complete",   xpReward: 100, vocabulary: [] },
     ],
   },
+
+  // ─────────────────────────────────────────────
+  // ENGLISH-SHONA PACK  (Shona speakers learning English)
+  // v1: ONE example unit, ONE example lesson — proves the second-variant
+  // architecture end-to-end. Full 100-lesson curriculum is Phase K.
+  // ─────────────────────────────────────────────
+  {
+    id: 'greetings-en',
+    packId: 'english-shona',
+    title: 'Kwaziso — Greetings',
+    description: 'Tanga kuzivana kuburikidza nemhoresano dzeChiNgezi',
+    emoji: '👋',
+    lessons: [
+      { id: 'm01-l01-hello', unitId: 'greetings-en', title: 'Hello — Mhoro', xpReward: 25, vocabulary: [] },
+    ],
+  },
 ];
 
 export function getUnitsForPack(packId: string): Unit[] {
