@@ -2,11 +2,15 @@ import { CoursePack, CoursePackId } from '../../types/packs';
 import { LessonData } from '../../types/lesson';
 import languageShona, { getLessonSync as getShonaLessonSync } from './language-shona';
 import languageEnglish, { getLessonSync as getEnglishLessonSync } from './language-english';
+import languageFrench, { getLessonSync as getFrenchLessonSync } from './language-french';
+import languageChinese, { getLessonSync as getChineseLessonSync } from './language-chinese';
 import aiCompanion from './ai-companion';
 
 export const COURSES: Record<CoursePackId, CoursePack> = {
   'language-shona':   languageShona,
   'language-english': languageEnglish,
+  'language-french':  languageFrench,
+  'language-chinese': languageChinese,
   'ai-companion':     aiCompanion,
 };
 
@@ -36,8 +40,10 @@ export function getCourseLesson(
   switch (courseId) {
     case 'language-shona':   return getShonaLessonSync(speakerId, lessonId);
     case 'language-english': return getEnglishLessonSync(speakerId, lessonId);
+    case 'language-french':  return getFrenchLessonSync(speakerId, lessonId);
+    case 'language-chinese': return getChineseLessonSync(speakerId, lessonId);
     default: return undefined;
   }
 }
 
-export { languageShona, languageEnglish, aiCompanion };
+export { languageShona, languageEnglish, languageFrench, languageChinese, aiCompanion };
