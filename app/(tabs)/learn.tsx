@@ -8,6 +8,7 @@ import { useSettings } from '../../lib/SettingsContext';
 import { useProgress } from '../../hooks/useProgress';
 import { useDailyXpGoal } from '../../lib/preferences';
 import { CoursePack, CoursePackId } from '../../types/packs';
+import { DEV_UNLOCK_ALL } from '../../constants/dev';
 
 // Mid-market launch price per language course. Per-jurisdiction localisation
 // lives in `available_packs.prices_by_jurisdiction` (queried once when the
@@ -196,12 +197,21 @@ export default function LearnScreen() {
         {lockedInCategory.length > 0 && (
           <View style={styles.coursePillSection}>
             <Pressable
-              style={styles.buyAnotherPill}
+              style={[styles.buyAnotherCard, showLocked && styles.buyAnotherCardOpen]}
               onPress={() => setShowLocked((s) => !s)}
             >
-              <Text style={styles.buyAnotherLabel}>
-                {showLocked ? '−' : '+'}  {t(buyLabelKey[selectedCategory])}
-              </Text>
+              <View style={styles.buyAnotherIconWrap}>
+                <Text style={styles.buyAnotherIcon}>{showLocked ? '−' : '+'}</Text>
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.buyAnotherTitle}>{t(buyLabelKey[selectedCategory])}</Text>
+                <Text style={styles.buyAnotherSub}>
+                  {showLocked
+                    ? `${lockedInCategory.length} available · tap to hide`
+                    : `${lockedInCategory.length} available · from $${COURSE_PRICE_AUD.toFixed(2)}`}
+                </Text>
+              </View>
+              <Text style={styles.buyAnotherChevron}>{showLocked ? '▾' : '▸'}</Text>
             </Pressable>
 
             {showLocked && lockedInCategory.map(course => (
@@ -258,7 +268,11 @@ export default function LearnScreen() {
             <Text style={styles.sectionTitle}>{t('tab.units')}</Text>
             {units.map((unit, index) => {
               const completedCount = unit.lessons.filter(l => completedLessons.has(l.id)).length;
-              const isLocked = index > 0 && units[index - 1].lessons.filter(l => completedLessons.has(l.id)).length < units[index - 1].lessons.length;
+              const previousIncomplete = index > 0
+                && units[index - 1].lessons.filter(l => completedLessons.has(l.id)).length < units[index - 1].lessons.length;
+              // Unit-progression lock — bypassed for the developer so they
+              // can preview every unit without grinding through prerequisites.
+              const isLocked = previousIncomplete && !DEV_UNLOCK_ALL;
               return (
                 <Pressable
                   key={unit.id}
@@ -402,6 +416,56 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buyAnotherLabel: { fontSize: FontSize.sm, color: Colors.gray[600], fontWeight: FontWeight.medium },
+
+  // Expandable "Buy another language course" card
+  buyAnotherCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: Colors.white,
+    borderRadius: BorderRadius.lg,
+    paddingHorizontal: Spacing.md,
+    paddingVertical: Spacing.md,
+    gap: Spacing.md,
+    borderWidth: 1,
+    borderColor: Colors.gray[200],
+    shadowColor: Colors.black,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.04,
+    shadowRadius: 4,
+    elevation: 1,
+  },
+  buyAnotherCardOpen: {
+    borderColor: Colors.secondary,
+    backgroundColor: '#F0F7FF',
+  },
+  buyAnotherIconWrap: {
+    width: 36,
+    height: 36,
+    borderRadius: 999,
+    backgroundColor: Colors.secondary,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  buyAnotherIcon: {
+    color: Colors.white,
+    fontSize: FontSize.lg,
+    fontWeight: FontWeight.bold,
+    lineHeight: FontSize.lg + 4,
+  },
+  buyAnotherTitle: {
+    fontSize: FontSize.md,
+    fontWeight: FontWeight.bold,
+    color: Colors.gray[800],
+  },
+  buyAnotherSub: {
+    fontSize: FontSize.xs,
+    color: Colors.gray[500],
+    marginTop: 2,
+  },
+  buyAnotherChevron: {
+    fontSize: FontSize.md,
+    color: Colors.gray[400],
+  },
   lockedHeader: {
     fontSize: FontSize.sm,
     fontWeight: FontWeight.bold,
