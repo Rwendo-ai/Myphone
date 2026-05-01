@@ -57,6 +57,13 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="companions"
+        options={{
+          title: 'Companions',
+          tabBarIcon: ({ focused }) => <TabIcon emoji="🤖" focused={focused} />,
+        }}
+      />
+      <Tabs.Screen
         name="travel"
         options={{
           title: t('nav.travel'),

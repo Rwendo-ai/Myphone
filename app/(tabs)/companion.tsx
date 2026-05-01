@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, TextInput, Pressable, ScrollView, KeyboardAvoidingView, Platform, ActivityIndicator, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useState, useRef, useEffect, useCallback } from 'react';
-import { useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams, router } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import RwenImage from '../../components/rwen/RwenImage';
 import ProfilePicButton from '../../components/ProfilePicButton';
@@ -210,20 +210,14 @@ export default function CompanionScreen() {
           </Text>
         </View>
 
-        {/* Conversation toggle — disabled until Conv AI migration ships.
-           The DIY auto-listen approach cannot do echo cancellation on a phone
-           speaker, so Rwen's TTS output bleeds back into the mic and gets
-           transcribed as user input. Proper fix is the ElevenLabs
-           Conversational AI SDK over WebRTC — see docs/AI-COMPANION-PLAN.md. */}
+        {/* Voice mode → ElevenLabs Conversational AI via WebRTC (LiveKit).
+           Requires the dev-client build (Expo Go won't load WebRTC). When the
+           preview-build APK is installed, this opens the orb-mode voice screen. */}
         <Pressable
-          style={[styles.convoBtn, styles.convoBtnDisabled]}
-          onPress={() => Alert.alert(
-            'Voice mode coming soon',
-            "We're rebuilding the voice conversation experience to work like ChatGPT's voice mode — proper turn-taking, no echo, runs hands-free for hours. Until then, use the mic icon at the bottom for push-to-talk.",
-            [{ text: 'OK' }],
-          )}
+          style={styles.convoBtn}
+          onPress={() => router.push('/companion/voice')}
         >
-          <Text style={[styles.convoBtnText, { opacity: 0.5 }]}>🎙</Text>
+          <Text style={styles.convoBtnText}>🎙</Text>
         </Pressable>
 
         <ProfilePicButton variant="light" />
