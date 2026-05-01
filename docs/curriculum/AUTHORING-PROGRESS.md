@@ -54,15 +54,17 @@
 | Module | Lessons | Status |
 |---|---|---|
 | 1 — Bonjour & Politesse | 10 | ✅ 10/10 — Done 2026-05-01 |
-| 2 — Survival Phrases | 10 | ⬜ 0/10 |
-| 3 — Self & Introductions | 10 | ⬜ 0/10 |
-| 4 — Le, La, Les & Genders | 10 | ⬜ 0/10 |
-| 5 — La Famille | 10 | ⬜ 0/10 |
-| 6 — Numbers, Time, Money | 10 | ⬜ 0/10 |
-| 7 — À Table | 10 | ⬜ 0/10 |
-| 8 — Verbes du Quotidien | 10 | ⬜ 0/10 |
-| 9 — Directions, Métro | 10 | ⬜ 0/10 |
-| 10 — Émotions & Histoire | 10 | ⬜ 0/10 |
+| 2 — Survival Phrases | 10 | ✅ 10/10 — Done 2026-05-01 |
+| 3 — Self & Introductions | 10 | ✅ 10/10 — Done 2026-05-01 |
+| 4 — Le, La, Les & Genders | 10 | ✅ 10/10 — Done 2026-05-01 |
+| 5 — La Famille | 10 | ✅ 10/10 — Done 2026-05-01 |
+| 6 — Numbers, Time, Money | 10 | ✅ 10/10 — Done 2026-05-01 |
+| 7 — À Table | 10 | ✅ 10/10 — Done 2026-05-01 |
+| 8 — Verbes du Quotidien | 10 | ✅ 10/10 — Done 2026-05-01 |
+| 9 — Directions, Métro | 10 | ✅ 10/10 — Done 2026-05-01 |
+| 10 — Émotions & Histoire | 10 | ✅ 10/10 — Done 2026-05-01 |
+
+**This course's status: COMPLETE — full A2 fluency curriculum, 100/100 lessons, all with Phase 8.**
 
 ---
 
@@ -90,10 +92,10 @@
 | Metric | Count | % |
 |---|---|---|
 | Total target | 400 | 100% |
-| 7-phase content authored | 220 (100 Shona + 100 English + 10 French + 10 Chinese) | 55% |
-| Phase 8 attached | 130 (10 Shona Mod1 + 100 English + 10 French + 10 Chinese) | 32.5% |
+| 7-phase content authored | 310 (100 Shona + 100 English + 100 French + 10 Chinese) | 77.5% |
+| Phase 8 attached | 220 (10 Shona Mod1 + 100 English + 100 French + 10 Chinese) | 55% |
 | Type-checks clean | ✅ tsc --noEmit exits 0 | 100% |
-| Uploaded to Supabase Storage | ✅ 220/220 in `course-content/lessons/` | 100% |
+| Uploaded to Supabase Storage | ✅ 310/310 in `course-content/lessons/` | 100% |
 | Native-reviewed | 0 | 0% |
 
 ---
