@@ -32,16 +32,18 @@
 
 | Module | Lessons | 7-phase content | Phase 8 | Status |
 |---|---|---|---|---|
-| 1 — Greetings | 10 | ✅ 10/10 | ✅ 10/10 | Done 2026-05-01 — 9 new lessons authored, m01-l01-hello already had Phase 8 |
-| 2 — Survival | 10 | ⬜ 0/10 | ⬜ | Author from scaffold |
-| 3 — Self & Introductions | 10 | ⬜ 0/10 | ⬜ | Author from scaffold |
-| 4 — Articles & Plurals | 10 | ⬜ 0/10 | ⬜ | Author from scaffold |
-| 5 — Family | 10 | ⬜ 0/10 | ⬜ | Author from scaffold |
-| 6 — Numbers/Time/Money | 10 | ⬜ 0/10 | ⬜ | Author from scaffold |
-| 7 — Food | 10 | ⬜ 0/10 | ⬜ | Author from scaffold |
-| 8 — Daily Verbs | 10 | ⬜ 0/10 | ⬜ | Author from scaffold |
-| 9 — Directions/Travel | 10 | ⬜ 0/10 | ⬜ | Author from scaffold |
-| 10 — Emotions/Stories | 10 | ⬜ 0/10 | ⬜ | Author from scaffold |
+| 1 — Greetings | 10 | ✅ 10/10 | ✅ 10/10 | Done 2026-05-01 |
+| 2 — Survival | 10 | ✅ 10/10 | ✅ 10/10 | Done 2026-05-01 |
+| 3 — Self & Introductions | 10 | ✅ 10/10 | ✅ 10/10 | Done 2026-05-01 |
+| 4 — Articles & Plurals | 10 | ✅ 10/10 | ✅ 10/10 | Done 2026-05-01 |
+| 5 — Family | 10 | ✅ 10/10 | ✅ 10/10 | Done 2026-05-01 |
+| 6 — Numbers/Time/Money | 10 | ✅ 10/10 | ✅ 10/10 | Done 2026-05-01 |
+| 7 — Food | 10 | ✅ 10/10 | ✅ 10/10 | Done 2026-05-01 |
+| 8 — Daily Verbs | 10 | ✅ 10/10 | ✅ 10/10 | Done 2026-05-01 |
+| 9 — Directions/Travel | 10 | ✅ 10/10 | ✅ 10/10 | Done 2026-05-01 |
+| 10 — Emotions/Stories | 10 | ✅ 10/10 | ✅ 10/10 | Done 2026-05-01 |
+
+**This course's status: COMPLETE — full A2 fluency curriculum, 100/100 lessons, all with Phase 8.**
 
 ---
 
@@ -88,9 +90,10 @@
 | Metric | Count | % |
 |---|---|---|
 | Total target | 400 | 100% |
-| 7-phase content authored | 130 (100 Shona + 10 English + 10 French + 10 Chinese) | 32.5% |
-| Phase 8 attached | 41 (10 Shona Mod1 + 10 English Mod1 + 10 French Mod1 + 10 Chinese Mod1 + 1 pre-existing) | 10.25% |
+| 7-phase content authored | 220 (100 Shona + 100 English + 10 French + 10 Chinese) | 55% |
+| Phase 8 attached | 130 (10 Shona Mod1 + 100 English + 10 French + 10 Chinese) | 32.5% |
 | Type-checks clean | ✅ tsc --noEmit exits 0 | 100% |
+| Uploaded to Supabase Storage | ✅ 220/220 in `course-content/lessons/` | 100% |
 | Native-reviewed | 0 | 0% |
 
 ---
