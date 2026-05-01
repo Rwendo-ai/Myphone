@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TextInput, Pressable, ScrollView, KeyboardAvoidingView, Platform, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, TextInput, Pressable, ScrollView, KeyboardAvoidingView, Platform, ActivityIndicator, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { useLocalSearchParams } from 'expo-router';
@@ -209,29 +209,22 @@ export default function CompanionScreen() {
           </Text>
         </View>
 
-        {/* Conversation toggle */}
+        {/* Conversation toggle — disabled until Conv AI migration ships.
+           The DIY auto-listen approach cannot do echo cancellation on a phone
+           speaker, so Rwen's TTS output bleeds back into the mic and gets
+           transcribed as user input. Proper fix is the ElevenLabs
+           Conversational AI SDK over WebRTC — see docs/AI-COMPANION-PLAN.md. */}
         <Pressable
-          style={[styles.convoBtn, convoActive && styles.convoBtnActive]}
-          onPress={convoActive ? stopConversation : startConversation}
-          disabled={loading}
+          style={[styles.convoBtn, styles.convoBtnDisabled]}
+          onPress={() => Alert.alert(
+            'Voice mode coming soon',
+            "We're rebuilding the voice conversation experience to work like ChatGPT's voice mode — proper turn-taking, no echo, runs hands-free for hours. Until then, use the mic icon at the bottom for push-to-talk.",
+            [{ text: 'OK' }],
+          )}
         >
-          <Text style={styles.convoBtnText}>{convoActive ? '⏹' : '🎙'}</Text>
+          <Text style={[styles.convoBtnText, { opacity: 0.5 }]}>🎙</Text>
         </Pressable>
       </View>
-
-      {/* Auto-conversation banner */}
-      {convoActive && (
-        <View style={[styles.convoBanner, { backgroundColor: theme.gradient[0] }]}>
-          <Text style={styles.convoBannerText}>
-            {isListening ? t('banner.speak_now') : loading ? t('banner.rwen_thinking') : t('banner.rwen_speaking')}
-          </Text>
-          {isListening && !loading && (
-            <Pressable style={styles.stopListenBtn} onPress={stopAutoListen}>
-              <Text style={styles.stopListenText}>{t('banner.done_speaking')}</Text>
-            </Pressable>
-          )}
-        </View>
-      )}
 
       <KeyboardAvoidingView
         style={styles.flex}
@@ -312,6 +305,7 @@ const styles = StyleSheet.create({
     alignItems: 'center', justifyContent: 'center',
   },
   convoBtnActive: { backgroundColor: Colors.error + '40', borderWidth: 1, borderColor: Colors.error },
+  convoBtnDisabled: { backgroundColor: 'rgba(255,255,255,0.08)', borderWidth: 1, borderColor: 'rgba(255,255,255,0.15)', borderStyle: 'dashed' },
   convoBtnText: { fontSize: 20 },
   convoBanner: {
     flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
