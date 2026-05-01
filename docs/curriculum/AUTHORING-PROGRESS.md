@@ -75,15 +75,17 @@
 | Module | Lessons | Status |
 |---|---|---|
 | 1 — Nǐ hǎo & Politeness | 10 | ✅ 10/10 — Done 2026-05-01 |
-| 2 — Survival Phrases | 10 | ⬜ 0/10 |
-| 3 — Self & Introductions | 10 | ⬜ 0/10 |
-| 4 — Tones & Measure Words | 10 | ⬜ 0/10 |
-| 5 — Jiārén (Family) | 10 | ⬜ 0/10 |
-| 6 — Numbers, Time, Money | 10 | ⬜ 0/10 |
-| 7 — Chīfàn (Eating) | 10 | ⬜ 0/10 |
-| 8 — Daily Verbs | 10 | ⬜ 0/10 |
-| 9 — Directions, Travel | 10 | ⬜ 0/10 |
-| 10 — Emotions, Stories | 10 | ⬜ 0/10 |
+| 2 — Survival Phrases | 10 | ✅ 10/10 — Done 2026-05-01 |
+| 3 — Self & Introductions | 10 | ✅ 10/10 — Done 2026-05-01 |
+| 4 — Tones & Measure Words | 10 | ✅ 10/10 — Done 2026-05-01 |
+| 5 — Jiārén (Family) | 10 | ✅ 10/10 — Done 2026-05-01 |
+| 6 — Numbers, Time, Money | 10 | ✅ 10/10 — Done 2026-05-01 |
+| 7 — Chīfàn (Eating) | 10 | ✅ 10/10 — Done 2026-05-01 |
+| 8 — Daily Verbs | 10 | ✅ 10/10 — Done 2026-05-01 |
+| 9 — Directions, Travel | 10 | ✅ 10/10 — Done 2026-05-01 |
+| 10 — Emotions, Stories | 10 | ✅ 10/10 — Done 2026-05-01 |
+
+**This course's status: COMPLETE — full A2 fluency curriculum, 100/100 lessons, all with Phase 8.**
 
 ---
 
@@ -92,10 +94,10 @@
 | Metric | Count | % |
 |---|---|---|
 | Total target | 400 | 100% |
-| 7-phase content authored | 310 (100 Shona + 100 English + 100 French + 10 Chinese) | 77.5% |
-| Phase 8 attached | 220 (10 Shona Mod1 + 100 English + 100 French + 10 Chinese) | 55% |
+| 7-phase content authored | 400 (100 Shona + 100 English + 100 French + 100 Chinese) | 100% |
+| Phase 8 attached | 310 (10 Shona Mod1 + 100 English + 100 French + 100 Chinese) | 77.5% |
 | Type-checks clean | ✅ tsc --noEmit exits 0 | 100% |
-| Uploaded to Supabase Storage | ✅ 310/310 in `course-content/lessons/` | 100% |
+| Uploaded to Supabase Storage | ✅ 400/400 in `course-content/lessons/` | 100% |
 | Native-reviewed | 0 | 0% |
 
 ---
