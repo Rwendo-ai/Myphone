@@ -1,0 +1,23 @@
+{
+  "__warnings": [
+    { "key": "items.streak_30.title", "note": "'Month of Mhoro' — kept the Shona word 'Mhoro' since it's a deliberate cross-language pun in the brand voice. Tagalog reader sees the alliteration of 'M' and gets the cultural anchor. Alternative: 'Buwan ng Mhoro' (more grammatical Tagalog) — reviewer's call." },
+    { "key": "items.first_lesson.title / streak_3.title / xp_*.title etc.", "note": "Achievement titles are short evocative phrases — translations aim for similar punch. 'Bright Spark', 'Rising Star', 'Constellation' translated metaphorically; reviewer free to rewrite for emotional resonance in Tagalog." },
+    { "key": "items.graduated.description_fmt", "note": "Uses {{total}} placeholder — translation preserves the token." }
+  ],
+  "title": "Mga Achievement",
+  "subtitle": "{{unlocked}} sa {{total}} naabot",
+  "items": {
+    "first_lesson": { "title": "Unang Hakbang",          "description": "Natapos ang pinakaunang aralin mo." },
+    "streak_3":     { "title": "Tatlong-Araw na Apoy",   "description": "3 araw na magkakasunod." },
+    "streak_7":     { "title": "Mandirigma ng Linggo",   "description": "Pinanatili ang streak ng 7 araw." },
+    "streak_30":    { "title": "Buwan ng Mhoro",         "description": "30-araw na streak. Proud si Rwen." },
+    "xp_100":       { "title": "Maliwanag na Apoy",      "description": "Nakakuha ng 100 XP." },
+    "xp_500":       { "title": "Sumisikat na Bituin",    "description": "Nakakuha ng 500 XP." },
+    "xp_1000":      { "title": "Konstelasyon",            "description": "Nakakuha ng 1,000 XP." },
+    "module_1":     { "title": "Panginoon ng Module",    "description": "Natapos ang unang module mo." },
+    "module_5":     { "title": "Nasa Kalagitnaan Na",    "description": "Natapos ang 5 module." },
+    "lessons_25":   { "title": "Quarter Climber",         "description": "Natapos ang 25 aralin." },
+    "lessons_50":   { "title": "Halfway Tree",            "description": "Natapos ang 50 aralin." },
+    "graduated":    { "title": "Rwendo Graduate",         "description_fmt": "Natapos ang lahat ng {{total}} aralin." }
+  }
+}

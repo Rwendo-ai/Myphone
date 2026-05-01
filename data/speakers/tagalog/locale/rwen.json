@@ -1,0 +1,32 @@
+{
+  "__warnings": [
+    { "key": "messages.welcome", "note": "DECISION: kept Shona 'Mhoro' verbatim. Rationale: 'Mhoro' is Rwen's signature greeting and part of the brand voice — Rwen IS culturally Shona, the user just reads about Rwen in Tagalog. Alternatives considered: flip to 'Mabuhay' or 'Magandang araw' (would lose brand consistency); flip to mixed 'Mabuhay (Mhoro), {{name}}!' (verbose). Reviewer: confirm or override." },
+    { "key": "messages.error_generic", "note": "Kept Shona 'Ndine urombo' verbatim ('I am sorry') — same brand-voice rationale as messages.welcome. The English chrome 'something went wrong' is translated to Tagalog." },
+    { "key": "messages.auto_listen_greeting", "note": "Kept 'Mhoro!' verbatim — Rwen's signature opener for hands-free conversation." },
+    { "key": "header.status_idle", "note": "'{{lang}} companion · AI' — '{{lang}}' is filled at runtime with the learned-language name. Translated 'companion' to 'kasama'." },
+    { "key": "input.placeholder_*", "note": "Chat input placeholders — kept short and readable." }
+  ],
+  "header": {
+    "title": "Rwen",
+    "status_listening": "🎤 Nakikinig...",
+    "status_thinking": "💭 Nag-iisip...",
+    "status_speaking": "🔊 Nagsasalita...",
+    "status_loading": "Nag-iisip...",
+    "status_idle": "{{lang}} kasama · AI"
+  },
+  "banner": {
+    "speak_now": "🎤 Magsalita ngayon...",
+    "rwen_thinking": "💭 Nag-iisip si Rwen...",
+    "rwen_speaking": "🔊 Nagsasalita si Rwen...",
+    "done_speaking": "Tapos na magsalita"
+  },
+  "input": {
+    "placeholder_default": "Magpadala kay Rwen...",
+    "placeholder_convo_active": "Aktibo ang usapan — magsalita o i-tap ang ⏹ para itigil"
+  },
+  "messages": {
+    "welcome": "Mhoro, {{name}}! Ano ang nasa isip mo ngayon?",
+    "error_generic": "Ndine urombo — may nangyaring mali. Subukan muli.",
+    "auto_listen_greeting": "Mhoro! Nakikinig ako. Magsalita kapag handa ka na."
+  }
+}

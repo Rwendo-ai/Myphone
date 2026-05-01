@@ -1,0 +1,127 @@
+{
+  "__warnings": [
+    { "key": "lesson.phases.*", "note": "Phase names — translated naturally (Hook → 'Ang Eksena', Chunks → 'Mga Bagong Salita', etc.). Reviewer free to keep English convention if more natural." },
+    { "key": "lesson.hook.tsika_label", "note": "'TSIKA — Cultural Context' kept the Shona word 'TSIKA' verbatim since it's part of the brand language. Tagalog speaker reads the explanation 'Cultural Context' — translated to 'Konteksto ng Kultura'." },
+    { "key": "lesson.mission.cta", "note": "'Famba zvakanaka →' is verbatim Shona ('go well') — Rwen's signature send-off. Kept verbatim in the Tagalog pack since it's intentional brand voice (the user is learning Shona)." },
+    { "key": "lesson.locked.subscription_*", "note": "Subscription gating copy — references 'Modules 5-10' and 'Text AI tier'. Kept tier name English." },
+    { "key": "lesson.phase8.*", "note": "Phase 8 'Practice with Rwen' copy — references conversation length ('2-minute chat'). Kept Arabic numerals." },
+    { "key": "exercises.*.wrong feedback", "note": "Wrong-answer feedback uses '✗ Tama: ...'. Reviewer: confirm tone is encouraging not shaming." }
+  ],
+  "tab": {
+    "daily_xp": "Daily XP",
+    "units": "Mga Unit",
+    "lesson_count": "{{count}} aralin",
+    "unit_progress": "{{completed}}/{{total}} tapos na",
+    "coming_soon_title": "Paparating ang curriculum ng {{lang}}",
+    "coming_soon_sub": "Ginagawa pa namin ang mga aralin. Bumalik ka mamaya!",
+    "categories_title": "Mga Kurso",
+    "categories": {
+      "languages": "Mga Wika",
+      "ai_courses": "Mga AI course",
+      "know_yourself": "Kilalanin ang Sarili"
+    },
+    "buy": {
+      "language_course": "+ Bumili ng iba pang language course",
+      "ai_course": "+ Bumili ng iba pang AI course",
+      "know_yourself_course": "+ Bumili ng iba pang Know Yourself course",
+      "alert_title": "Paparating",
+      "alert_body": "Magbubukas ang course store sa susunod na release."
+    },
+    "empty_category": {
+      "ai_courses_title": "Paparating ang mga AI course",
+      "ai_courses_body": "Maglulunsad ang unang course sa lalong madaling panahon. Ipapaalam namin sa iyo kapag handa na.",
+      "know_yourself_title": "Paparating ang Know Yourself",
+      "know_yourself_body": "Maglulunsad ang unang course sa lalong madaling panahon. Ipapaalam namin sa iyo kapag handa na."
+    }
+  },
+  "screen_header": {
+    "back": "← Bumalik"
+  },
+  "unit": {
+    "section_label": "MGA ARALIN",
+    "xp_value": "{{count}} XP"
+  },
+  "lesson": {
+    "not_found": "Hindi nahanap ang aralin: {{id}}",
+    "locked": {
+      "subscription_title": "Naka-lock — kailangan ng paid plan",
+      "subscription_body": "Ang Modules 5-10 ay bahagi ng Text AI tier pataas. Mag-upgrade para magpatuloy kasama si Rwen.",
+      "subscription_cta": "Tingnan ang mga plan",
+      "course_title": "Naka-lock — hindi pa active ang course",
+      "course_body": "Ang araling ito ay sa course na hindi mo pa na-activate. Idagdag ang course sa account mo para magsimula.",
+      "course_cta": "Tingnan ang mga course"
+    },
+    "phases": {
+      "hook": "Ang Eksena",
+      "chunks": "Mga Bagong Salita",
+      "pattern": "Ang Pattern",
+      "practice": "Pagsasanay",
+      "dialogue": "Usapan",
+      "recall": "Pag-alala",
+      "mission": "Iyong Misyon"
+    },
+    "quit": {
+      "title": "Itigil ang aralin?",
+      "body": "Mawawala ang progreso mo sa araling ito. Sigurado ka ba?",
+      "keep_going": "Magpatuloy",
+      "quit": "Itigil"
+    },
+    "hook": {
+      "tsika_label": "TSIKA — Konteksto ng Kultura",
+      "cta": "Mag-aral tayo →"
+    },
+    "chunks": {
+      "counter": "Salita {{current}} sa {{total}}",
+      "literal": "Literal: \"{{value}}\"",
+      "see_pattern": "Tingnan ang pattern →",
+      "got_it": "Naintindihan →"
+    },
+    "pattern": {
+      "start_practice": "Simulan ang pagsasanay →"
+    },
+    "practice": {
+      "counter": "Ehersisyo {{current}} sa {{total}}"
+    },
+    "dialogue": {
+      "to_recall": "Magaling — ngayon i-recall →",
+      "continue": "Magpatuloy →"
+    },
+    "recall": {
+      "title": "Active Recall",
+      "counter": "{{current}} sa {{total}}"
+    },
+    "mission": {
+      "complete_title": "Tapos na ang Aralin!",
+      "xp_badge": "+{{count}} XP",
+      "score": "{{score}} / {{total}} tama",
+      "card_title_prefix": "📍 ",
+      "cta": "Famba zvakanaka →"
+    },
+    "phase8": {
+      "unlocked_title": "Magsanay kasama si Rwen",
+      "unlocked_body": "Subukan ang '{{topic}}' sa usapan. Gagamitin ni Rwen ang katatatutunan mo.",
+      "unlocked_cta": "Magsimula ng 2-minutong chat →",
+      "locked_title": "Magsanay kasama si Rwen — Naka-lock",
+      "locked_body": "Magkaroon ng 2-minutong usapan tungkol sa '{{topic}}'. Gagamitin ni Rwen ang katatatutunan mo.",
+      "locked_cta": "I-unlock gamit ang Text AI →"
+    }
+  },
+  "exercises": {
+    "check": "Suriin",
+    "feedback_correct": "✓ Tama!",
+    "fill_blank": {
+      "wrong": "✗ Ang sagot ay \"{{correct}}\""
+    },
+    "translate": {
+      "placeholder": "I-type ang sagot mo...",
+      "wrong": "✗ Tamang sagot: {{correct}}"
+    },
+    "build_sentence": {
+      "placeholder": "I-tap ang mga salita sa ibaba para buuin ang pangungusap",
+      "wrong": "✗ Tama: {{correct}}"
+    },
+    "multiple_choice": {
+      "wrong": "✗ Hindi tama"
+    }
+  }
+}

@@ -1,0 +1,489 @@
+{
+  "__warnings": [
+    { "key": "GENERAL — Taglish register", "note": "Filipino UI strings frequently retain English loanwords (email, app, subscription, online, notification, account, password, profile). This pack keeps those in English where natural — purist Tagalog (e.g. 'pasaringang panemoryo' for password) sounds unnatural. Reviewer: confirm the register feels native." },
+    { "key": "nav.travel", "note": "Used 'Lakbay'. Could also be 'Biyahe' or 'Travel' (loanword). Pick what's most natural for a tab label." },
+    { "key": "nav.profile", "note": "Kept 'Profile' (loanword) — Filipinos typically read this in English in apps. Alternative: 'Talaarawan' but unusual." },
+    { "key": "stats.streak / profile.stats.streak", "note": "Kept 'Streak' as English loanword — gaming/app convention in PH. Alternative: 'Sunod-sunod' but reads stiff." },
+    { "key": "actions.cancel", "note": "Used 'Kanselahin'. Alternative: 'Bawiin'." },
+    { "key": "profile.plan.upgrade / plans_screen.upgrade_to", "note": "Used 'I-upgrade' (Taglish convention). Pure Tagalog 'Pataasin' is awkward in subscription context." },
+    { "key": "profile.voices.*.description", "note": "Voice tone descriptions are subjective — reviewer free to rewrite." },
+    { "key": "travel.spotlight.desc", "note": "Long-form Victoria Falls description. Reviewer should rewrite freely from a Filipino reader's perspective." },
+    { "key": "home.tips", "note": "REWRITTEN as Tagalog-chrome around anchor phrases from learning targets (Shona, French, Mandarin, English). Includes one Filipino salawikain ('Kapag may tiyaga, may nilaga') for cultural texture. Reviewer: confirm anchors feel pedagogically useful and chrome reads naturally." },
+    { "key": "GENERAL — locale vs pack mirror", "note": "Other strings hardcode 'Shona' as the target language assuming the en→sn direction (e.g. onboarding 'How much Shona do you know?', 'Why do you want to learn Shona?'). Those will need {{lang}} parameterisation or per-pack re-authoring. Outside scope of this draft." },
+    { "key": "about.what_card.body / meet_card.body / method_card.body / builders_card.body", "note": "Long-form marketing copy — translated naturally, reviewer may rewrite for flow." },
+    { "key": "about.footer", "note": "Ends with 'Mhoro!' — kept verbatim since Mhoro is Rwen's signature. Could also flip to 'Mabuhay!' but the brand voice intentionally retains this Shona greeting." },
+    { "key": "help.faq", "note": "10 FAQ entries. Vendor names (Anthropic, Claude, Supabase, ElevenLabs, App Store, Google Play, RevenueCat) kept English. Some answers reference UI labels — when those flip, FAQ wording should track them." },
+    { "key": "edit_profile.email_hint", "note": "Mentions support@rwendo.app — kept as English address." },
+    { "key": "privacy_screen.share.*", "note": "Vendor names kept English. Surrounding text translated." },
+    { "key": "language_pack_screen.coming_soon_packs.*", "note": "Language names — kept English exonyms (Spanish, French, etc.) which is what Filipinos use for these languages in conversation." },
+    { "key": "plans_screen.tiers.*.features / tagline", "note": "Marketing copy — literal translation may sound stiff. Reviewer free to rewrite for emotional resonance." },
+    { "key": "plans_screen — currency A$", "note": "Kept 'A$' (Australian dollar). For PH market this should likely be PHP/₱ — flag for the jurisdictions team. Reviewer: confirm currency display." },
+    { "key": "profile.delete_account.confirm_body", "note": "LEGAL — destructive consequence text. Reviewer must verify the warning is unambiguous in Tagalog." },
+    { "key": "home.greetings.* / home.tips", "note": "These keys exist for legacy fallback; actual tips come from tips.ts and greetings from greetings.ts. Mirrored values here are the pack's home-tab fallback." }
+  ],
+  "fallback_name": "kaibigan",
+  "fallback_learner": "Mag-aaral",
+  "xp_progress": "{{current}} / {{goal}} XP",
+  "actions": {
+    "cancel": "Kanselahin",
+    "ok": "OK",
+    "save": "I-save",
+    "delete": "Tanggalin"
+  },
+  "nav": {
+    "home": "Home",
+    "learn": "Mag-aral",
+    "rwen": "Rwen",
+    "travel": "Lakbay",
+    "profile": "Profile"
+  },
+  "daily_goal_screen": {
+    "title": "Pang-araw-araw na XP goal",
+    "subtitle": "Gaano karami ang gusto mong matutunan kada araw?",
+    "xp_value": "{{count}} XP",
+    "hint": "Maaari mong baguhin ito anumang oras. Nire-reset ang goal araw-araw sa hatinggabi (lokal na oras ng device mo).",
+    "options": {
+      "25":  { "title": "Kaswal",     "sub": "~5 min/araw · isang maikling aralin" },
+      "50":  { "title": "Regular",    "sub": "~10 min/araw · isang buong aralin" },
+      "100": { "title": "Seryoso",    "sub": "~20 min/araw · dalawang aralin" },
+      "200": { "title": "Buong-puso", "sub": "~40 min/araw · isulong ang fluency" }
+    }
+  },
+  "methodology": {
+    "title": "Paano kami nagtuturo",
+    "subtitle": "Ang Rwendo Method, sa simpleng wika",
+    "hero_body": "Ang Rwendo ay nakabatay sa pananaliksik ng second-language acquisition (SLA). Bawat pasya sa aralin — tatlong chunk lang, dialogue na may recasts, recall bago ka sumulong — ay galing sa kung paano talaga nananatili ang wika sa isip. Heto ang dahilan.",
+    "phases": {
+      "title": "Pitong yugto bawat aralin",
+      "body": "Hook → Chunks → Pattern → Practice → Dialogue → Recall → Mission. Bawat yugto ay may iisang gawain. Hook — i-frame ang kultural na sandali. Chunks — bigyan ka ng hanggang tatlong bagong lexical unit. Pattern — ipakita ang panuntunan. Practice — ipundar sa pamamagitan ng ehersisyo. Dialogue — unang pagkakataon mong gumamit ng output. Recall — pagsusulit nang walang tingin. Mission — totoong-buhay na maliit na gawain na nagbubunsod ng spaced retrieval."
+    },
+    "lexical": {
+      "title": "Mga chunk, hindi tig-isang salita",
+      "body": "Nagtuturo ang Rwendo sa pamamagitan ng mga lexical chunk — makahulugang yunit gaya ng 'mamuka sei?' sa halip na hiwa-hiwalay na salita. Ganito talaga iniimbak at ginagamit ng mga matatas magsalita ang wika. May limitasyong tatlo bawat aralin para hindi malulula ang working memory."
+    },
+    "input_output": {
+      "title": "Input bago output",
+      "body": "Bawat aralin ay nag-iiba mula sa pagtanggap ng comprehensible input (Hook, Chunks, Pattern) papunta sa paggawa ng output (Practice, Dialogue). Pareho silang kailangan. Hindi sapat ang puro pakikinig — naka-lock lang ang wika sa utak kapag inaabot mo ito."
+    },
+    "recasts": {
+      "title": "Magaan na pagtutuwid sa pamamagitan ng recast",
+      "body": "Kapag nagkamali ka sa dialogue, inuulit ni Rwen ang linya mo nang tama, nang hindi tinutukoy ang mali. Ito ang recasting — pinapanatili nito ang motibasyon mo at nagbibigay ng pagkakataong itama ang sarili. Mas mainam ito kaysa red-pen feedback para sa retention."
+    },
+    "recall": {
+      "title": "Active recall ay sariling yugto",
+      "body": "Ang paghugot ng bokabularyo mula sa memorya ay nagpapatibay sa daloy. Yugto 6 ay pagsusulit nang walang tingin — kailangan mong mag-retrieve, hindi lang mag-recognise. Kaya naaalala mo pa ang isang parirala matapos ang ilang linggo mula sa isang Rwendo lesson, hindi tulad ng flashcard na pinindot mo lang."
+    },
+    "spacing": {
+      "title": "Spaced retrieval sa pamamagitan ng Missions",
+      "body": "Nagtatapos ang bawat aralin sa isang totoong-buhay na Mission — 'batiin mo ng Mangwanani ang isang tao ngayon'. Pinalalawak ng Mission ang retrieval mo papunta sa totoong araw mo, kung saan mas matatag ang pag-encode kaysa sa iisang upuan."
+    },
+    "footer": "Nakabatay sa Lewis, Krashen, Swain, Long, Roediger & Karpicke, Ebbinghaus, at Bahrick. Mga sanggunian sa docs/curriculum/LEARNING_METHODOLOGY.md."
+  },
+  "companion_philosophy": {
+    "title": "Ang aming AI Companion philosophy",
+    "subtitle": "Paano lumalabas si Rwen kapag nag-uusap kayo",
+    "hero_body": "Hindi curriculum, chatbot, o therapist si Rwen. Ito ay relasyong lumalago. Ang pangmatagalang pagkakahumaling ay galing sa lalim, hindi sa pagiging bago.",
+    "relationship": {
+      "title": "Isang relasyon, hindi kurso",
+      "body": "Karamihan sa AI companion ay parang bago lang ng dalawang linggo, tapos boring na. Istraktural ang dahilan: walang memorya at walang paglago ang puro free-form chat. Ang Companion track ng Rwendo ay binuo para tumipon ang usapan — past references, inside jokes, lalim na nagbibigay-katwiran sa mas mahirap na paksa."
+    },
+    "depth": {
+      "title": "Mga depth level na kinikita mo",
+      "body": "Iba ang ugali ni Rwen sa Day 1 kaysa sa Day 90. Limang depth level (Bagong kaibigan → Pamilyar → Malapit → Mapagkakatiwalaan → Habambuhay) ang nagbubukas ng bagong surface ng usapan — mas malalim na cards, mas mahirap na paksa, mas mayamang memorya — habang dumarami ang pakikipag-ugnayan. Ang level ay progreso, hindi gate: kahit anong usapan, kahit anong level, magagawa ng bawat bayad na user. Hinuhubog lang ng level kung ano ang inaalok ni Rwen nang kusa."
+    },
+    "memory": {
+      "title": "Memorya na nababasa at nae-edit mo",
+      "body": "Bumubuo si Rwen ng istrukturadong memorya tungkol sa iyo — Tanya ang pangalan ng kapatid mo, pinag-aaralan mo ang Shona dahil sa pamilya ng partner mo, binanggit mong mahirap ang nakaraang Miyerkules. May Memory panel kung saan mo mababasa ang lahat ng natandaan ni Rwen, mae-edit ang anumang fact, matatanggal ang anumang fact, o mabubura ang lahat. Sa iyo ang memorya."
+    },
+    "guardrails": {
+      "title": "Guardrail na hindi nagkukunwari",
+      "body": "Hiniram namin ang istraktura ng usapan kina Rogers, Beck, at Fogg, ngunit hindi nagkakunwaring therapy si Rwen. Ang crisis triggers (suicidal ideation, self-harm) ay naglalabas ng region-specific handoff sa propesyonal na mapagkukunan bago ang anumang AI response. Ang hard-topic cards ay laging may footer na nagli-link sa crisis support. Hayagang ipinagbabawal sa prompt ni Rwen ang mga pattern na nagpapalago ng dependency."
+    },
+    "not_therapy": {
+      "title": "Hindi mo therapist",
+      "body": "Bawat pitong araw ng mabigat na reflective use, ipinapaalala ni Rwen na hindi siya kapalit ng propesyonal na suporta. Tunay ang companionship; sinasadya ang mga hangganan. Ang layunin ay pagpapayaman, hindi pag-iisa."
+    },
+    "footer": "Mula kina Carl Rogers, Aaron Beck, Tiny Habits ni BJ Fogg, at sa mga dokumentadong Replika engagement studies. Hindi kami therapy app."
+  },
+  "about": {
+    "title": "Tungkol sa Rwendo",
+    "app_name": "Rwendo",
+    "tagline": "Bawat paglalakbay ay nagsisimula sa pagbati",
+    "version_label": "Version {{version}}",
+    "what_card": {
+      "title": "Ano ang Rwendo?",
+      "body": "Rwendo (salitang Shona para sa \"paglalakbay\") ay isang language learning app at AI companion. Mag-aral ng Shona kasama si Rwen — isang palakaibigang hunyango na pinapatakbo ng Claude AI at boses ng ElevenLabs — sa pamamagitan ng 7-yugtong lesson method na nakabatay sa second language acquisition research."
+    },
+    "meet_card": {
+      "title": "Kilalanin si Rwen",
+      "body": "Si Rwen ay isang hunyango (chameleon), nilalang na umaangkop sa kapaligiran nito. Natututo si Rwen tungkol sa iyo at inaayon ang paraan ng pagsasalita, pagtuturo, at pagsuporta niya. Habang mas marami kang kausap, mas kilala ka ni Rwen."
+    },
+    "method_card": {
+      "title": "Ang Rwendo Method",
+      "body": "7 yugto bawat aralin: Hook → Chunks → Pattern → Practice → Dialogue → Recall → Mission. Pinakamarami 3 bagong chunk bawat aralin. 5–7 minuto bawat aralin. Binuo sa paligid ng 10 SLA pillar kasama ang spaced repetition, comprehensible input, at meaningful output."
+    },
+    "builders_card": {
+      "title": "Ginawa ni",
+      "body": "Isang nagsosolong developer na nakabase sa Australia na naniniwalang ang pag-aaral ng wika ay dapat maramdamang parang usapan kasama ng kaibigan, hindi gawaing pampagod."
+    },
+    "link": "rwendo.app",
+    "footer": "Ginawa nang may ❤️ para sa lahat ng nag-aaral ng Shona\nMhoro!"
+  },
+  "help": {
+    "title": "Tulong & FAQ",
+    "intro": "Mabilisang sagot sa mga tanong na pinakamadalas marinig ni Rwen.",
+    "contact_btn": "Hindi pa rin malinaw? Mag-email sa support@rwendo.app",
+    "faq": [
+      { "q": "Paano ako makikipag-usap kay Rwen?",                         "a": "I-tap ang Rwen tab sa gitna ng ilalim na bar. Maaari kang magpadala ng mensahe o pindutin nang matagal ang mic button para magsalita. I-tap ang 🎙 sa kanang itaas para magsimula ng hands-free na usapan." },
+      { "q": "Bakit minsan nagkakamali si Rwen?",                          "a": "AI si Rwen (Claude). Maaaring magkamali ang AI — kabilang ang factual errors at kakaibang pagsasalin. Ituring si Rwen bilang katuwang sa usapan, hindi bilang textbook. Sa anumang kritikal, i-double check sa isang taong nagsasalita ng Shona." },
+      { "q": "Paano ako kumikita ng XP?",                                  "a": "Tapusin ang mga aralin sa Learn tab. Bawat tamang sagot ay nagbibigay ng XP, at ang pagtatapos ng aralin ay may bonus. Nire-reset araw-araw ang XP goal mo." },
+      { "q": "Paano gumagana ang streak?",                                 "a": "Buksan ang app at tapusin ang kahit isang gawain bawat araw para mapanatili ang streak mo. Mag-miss ng isang araw at babalik sa 1 ang streak." },
+      { "q": "Pwede ko bang baguhin ang boses ni Rwen?",                   "a": "Oo — pumunta sa Profile → Rwen's Voice at pumili sa Jose, Charlie, Jessica, o Alice. Agad na mag-aapply ang pagbabago sa text-to-speech." },
+      { "q": "Pribado ba ang usapan ko kay Rwen?",                         "a": "Ang mga mensahe mo ay ipinapadala sa Anthropic (Claude) para iproseso at iniimbak sa Supabase hanggang 12 buwan. HINDI ginagamit ng Anthropic ang mga usapan mo para sanayin ang kanilang mga modelo. Ang voice recordings ay tinatanggal sa loob ng 24 oras. Tingnan ang Privacy Policy para sa buong detalye." },
+      { "q": "Paano ko kakanselahin ang subscription ko?",                "a": "Ang mga subscription ay pinapamahalaan sa pamamagitan ng app store mo (App Store o Google Play). May 14-day cooling-off period ang mga user sa EU/UK kung saan maaari kang kumansela para sa buong refund." },
+      { "q": "Paano ko tatanggalin ang account ko?",                       "a": "Profile → Delete Account & All Data. Inaalis nito ang profile, lesson progress, at conversation history mo sa loob ng 30 araw. Hindi maaring bawiin ang aksyon." },
+      { "q": "May nakita akong bug — ano ang gagawin ko?",                "a": "I-tap ang \"Contact Us\" sa ibaba o mag-email sa support@rwendo.app. Isama ang device mo, app version, at kung ano ang ginagawa mo nang lumabas ang bug." },
+      { "q": "Kailan darating ang real-time conversation?",               "a": "Ginagawa pa. Darating ang hands-free voice calls kay Rwen kasama ng Companion subscription tier sa darating na update." }
+    ]
+  },
+  "edit_profile": {
+    "title": "I-edit ang profile",
+    "name_label": "Display name",
+    "name_hint": "Ito ang itatawag sa iyo ni Rwen.",
+    "name_placeholder": "Pangalan mo",
+    "char_count": "{{current}}/{{max}}",
+    "email_label": "Email",
+    "email_hint": "Para baguhin ang email mo, makipag-ugnayan sa support@rwendo.app.",
+    "save_btn": "I-save ang mga pagbabago",
+    "error_title": "Hindi ma-save",
+    "saved_title": "Na-save",
+    "saved_body": "Na-update na ang display name mo."
+  },
+  "privacy_screen": {
+    "title": "Privacy settings",
+    "intro": "Pamahalaan kung anong data ang iniimbak ng Rwendo tungkol sa iyo. Para sa buong patakaran, basahin ang Privacy Policy.",
+    "sections": {
+      "your_data": "Ang data mo",
+      "what_we_share": "Ano ang ibinabahagi namin",
+      "your_rights": "Ang mga karapatan mo"
+    },
+    "clear": {
+      "label": "Burahin ang conversation history",
+      "sub": "Tanggalin ang lahat ng mensahe na ipinadala mo kay Rwen.",
+      "confirm_title": "Burahin ang conversation history?",
+      "confirm_body": "Permanenteng tatanggalin nito ang lahat ng mensahe na pinagpalitan mo kay Rwen. Mananatili ang lesson progress at account mo. Hindi maaaring bawiin.",
+      "confirm_action": "Burahin lahat",
+      "error_title": "Hindi nabura",
+      "success_title": "Nabura",
+      "success_body": "Natanggal na ang conversation history mo."
+    },
+    "export_row": {
+      "label": "I-export ang data ko",
+      "sub": "Mag-download ng kopya ng profile, progreso, at mga usapan mo."
+    },
+    "share": {
+      "anthropic": { "label": "Anthropic (Claude)",   "sub": "Tumatanggap ng mga mensahe mo para makabuo ng sagot ni Rwen. Hindi ginagamit para sa training." },
+      "elevenlabs": { "label": "ElevenLabs (boses)",  "sub": "Bumubuo ng boses ni Rwen at nagsasalin ng iyo. Tinatanggal ang audio sa loob ng 24 oras." },
+      "supabase":  { "label": "Supabase (database)", "sub": "Iniimbak ang account, progreso, at conversation history mo." }
+    },
+    "rights": {
+      "policy_label": "Privacy Policy",
+      "policy_sub":   "Buong detalye ng kinokolekta namin at kung bakit.",
+      "terms_label":  "Terms of Service",
+      "terms_sub":    "Mga panuntunan sa paggamit ng Rwendo."
+    },
+    "note": "Para tanggalin ang buong account mo, bumalik sa Profile → Delete Account & All Data."
+  },
+  "language_pack_screen": {
+    "title": "Language pack",
+    "subtitle": "Lumipat sa pagitan ng mga wika",
+    "available_now": "Available na",
+    "coming_soon_section": "Paparating",
+    "available_curriculum_sub": "100 aralin · Modules 1–10 · 7-yugtong Rwendo Method",
+    "dev_curriculum_sub": "Ginagawa pa ang curriculum",
+    "coming_soon_label": "Paparating",
+    "coming_soon_alert_title": "{{name}} — paparating",
+    "coming_soon_alert_body": "Sinusulat na namin ang curriculum ng {{name}} ngayon. Manatili sa Shona-English para sa buong Rwendo Method, at ipapaalam namin sa iyo sa sandaling handa na ang {{name}}.",
+    "coming_soon_packs": {
+      "english-spanish":    "Spanish",
+      "english-french":     "French",
+      "english-portuguese": "Portuguese",
+      "english-swahili":    "Swahili",
+      "english-zulu":       "Zulu",
+      "english-mandarin":   "Mandarin"
+    }
+  },
+  "change_password": {
+    "title": "Baguhin ang password",
+    "current_label": "Kasalukuyang password",
+    "current_placeholder": "Kasalukuyang password mo",
+    "new_label": "Bagong password",
+    "new_placeholder": "Min. 8 karakter",
+    "confirm_label": "Kumpirmahin ang bagong password",
+    "confirm_placeholder": "I-type muli ang bagong password",
+    "show": "Ipakita",
+    "hide": "Itago",
+    "rules": {
+      "length": "Hindi bababa sa 8 karakter",
+      "upper": "Isang malaking titik (A-Z)",
+      "lower": "Isang maliit na titik (a-z)",
+      "number": "Isang numero (0-9)",
+      "special": "Isang special character (!@#$...)",
+      "different": "Iba sa kasalukuyang password"
+    },
+    "mismatch": "Hindi tugma ang mga password",
+    "submit": "I-update ang password",
+    "wrong_current_title": "Maling kasalukuyang password",
+    "wrong_current_body": "Mali ang kasalukuyang password na ipinasok mo.",
+    "update_error_title": "Hindi na-update ang password",
+    "success_title": "Na-update ang password",
+    "success_body": "Matagumpay na nabago ang password mo."
+  },
+  "export_screen": {
+    "title": "I-export ang data ko",
+    "hero_title": "Ang data mo, sa isang file",
+    "hero_body": "Bumuo ng JSON copy ng profile, lesson progress, at conversation history mo kay Rwen. Maaari mo itong i-email sa sarili mo, i-save sa Files, o ipadala kahit saan na suportado ng device mo.",
+    "section_included": "Ano ang kasama",
+    "items": {
+      "account":       { "label": "Account",        "desc": "Email, petsa ng paggawa ng account" },
+      "profile":       { "label": "Profile",        "desc": "Display name, learning preferences, settings" },
+      "lesson_progress": { "label": "Lesson progress", "desc": "Bawat natapos na aralin na may iskor at XP" },
+      "conversations": { "label": "Mga usapan",     "desc": "Lahat ng mensahe na pinagpalitan kay Rwen" }
+    },
+    "summary_title": "Buod",
+    "summary_profile_included": "Profile: kasama",
+    "summary_profile_missing": "Profile: walang laman",
+    "summary_lessons": "Lesson records: {{count}}",
+    "summary_messages": "Messages: {{count}}",
+    "preview_btn": "I-preview kung ano ang nandiyan",
+    "share_btn": "Bumuo at ibahagi",
+    "share_title": "Aking Rwendo data",
+    "load_error_title": "Hindi na-load",
+    "load_error_body": "Pakisubukang muli mamaya.",
+    "note": "Ang data mo ay nabubuo sa device mismo mula sa Supabase at ipinapadala lamang kung saan mo pipiliing ibahagi. Walang in-uupload sa third-party."
+  },
+  "plans_screen": {
+    "title": "Mga Plan",
+    "subtitle": "Piliin ang paglalakbay na nababagay sa iyo",
+    "hero_title": "Binuo para sa bawat yugto",
+    "hero_body": "Magsimula nang libre kasama ang lahat ng 100 aralin. Mag-upgrade kapag gusto mo si Rwen bilang katuwang sa usapan.",
+    "popular_badge": "PINAKASIKAT",
+    "current_badge": "ANG IYONG PLAN",
+    "upgrade_to": "I-upgrade sa {{name}}",
+    "footnote": "Ang mga customer sa EU/UK ay may 14-day cooling-off period na may buong refund. Kumansela anumang oras.",
+    "alert_title": "{{name}} — paparating",
+    "alert_body": "Maglulunsad ang mga subscription kasama ng susunod na update. Nakikipagtulungan kami sa RevenueCat para maging maayos at refund-friendly ang billing. Maghintay lang!",
+    "tiers": {
+      "free": {
+        "name": "Free",
+        "price": "A$0",
+        "tagline": "Mag-aral sa sariling pace",
+        "features": [
+          "100 aralin sa Shona (buong Rwendo Method)",
+          "XP, streaks, achievements",
+          "Walang AI companion"
+        ]
+      },
+      "text_ai": {
+        "name": "Text AI",
+        "price": "A$10/buwan",
+        "tagline": "Makipag-chat kay Rwen sa pamamagitan ng pagsulat",
+        "features": [
+          "Lahat ng nasa Free",
+          "500 AI messages bawat buwan",
+          "Personalisadong lesson tips"
+        ]
+      },
+      "voice": {
+        "name": "Voice",
+        "price": "A$15/buwan",
+        "tagline": "Marinig at kausapin si Rwen",
+        "features": [
+          "Lahat ng nasa Text AI",
+          "200 voice replies (push-to-talk)",
+          "4 voice options"
+        ]
+      },
+      "companion": {
+        "name": "Companion",
+        "price": "A$25/buwan",
+        "tagline": "Hands-free na usapan",
+        "features": [
+          "Lahat ng nasa Voice",
+          "60 min real-time na usapan",
+          "Walang limitasyon sa text at voice replies"
+        ]
+      },
+      "premium": {
+        "name": "Premium",
+        "price": "A$45/buwan",
+        "tagline": "Ang kabuuang Rwen experience",
+        "features": [
+          "Lahat ng nasa Companion",
+          "120 min real-time na usapan",
+          "3D Rwen na may lip-sync (paparating)"
+        ]
+      }
+    }
+  },
+  "profile": {
+    "stats": {
+      "total_xp": "Total XP",
+      "streak": "Streak",
+      "lessons": "Mga Aralin"
+    },
+    "sections": {
+      "my_plan": "Ang Plan Ko",
+      "colour_theme": "Colour Theme",
+      "app_language": "Wika ng App",
+      "rwens_voice": "Boses ni Rwen",
+      "learning": "Pag-aaral",
+      "my_progress": "Ang Progreso Ko",
+      "account": "Account",
+      "legal": "Mga Legal na Dokumento",
+      "support": "Suporta"
+    },
+    "app_language_options": {
+      "en": "English",
+      "sn": "ChiShona"
+    },
+    "plan": {
+      "free_name": "Free Plan",
+      "free_desc": "Access sa lahat ng aralin",
+      "upgrade": "I-upgrade",
+      "view_all_plans": "Tingnan lahat ng plan"
+    },
+    "voices": {
+      "male_warm":    { "name": "Jose",    "description": "Mainit na tagapagsalaysay" },
+      "male_energy":  { "name": "Charlie", "description": "Masigla, may tiwala sa sarili" },
+      "female_warm":  { "name": "Jessica", "description": "Mapaglaro, maliwanag, mainit" },
+      "female_clear": { "name": "Alice",   "description": "Malinaw, mabisang guro" }
+    },
+    "learning": {
+      "language_pack": "Language pack",
+      "daily_xp_goal": "Pang-araw-araw na XP goal",
+      "daily_xp_value": "{{count}} XP",
+      "daily_reminders": "Pang-araw-araw na paalala",
+      "reminders_enabled_title": "Naka-enable ang mga paalala",
+      "reminders_enabled_body": "I-save namin ang preferensya mo. Darating ang push notifications sa darating na update."
+    },
+    "progress_rows": {
+      "completed_lessons": "Natapos na aralin",
+      "current_streak": "Kasalukuyang streak",
+      "streak_days": "{{count}} araw",
+      "total_xp_earned": "Total XP na nakuha",
+      "achievements": "Mga achievement"
+    },
+    "account_rows": {
+      "edit_profile": "I-edit ang profile",
+      "change_password": "Baguhin ang password",
+      "privacy_settings": "Privacy settings",
+      "export_data": "I-export ang data ko"
+    },
+    "legal_rows": {
+      "terms": "Terms of Service",
+      "privacy_policy": "Privacy Policy"
+    },
+    "support_rows": {
+      "help_faq": "Tulong & FAQ",
+      "about": "Tungkol sa Rwendo",
+      "methodology": "Paano kami nagtuturo",
+      "companion_philosophy": "Ang aming AI Companion philosophy",
+      "contact_us": "Makipag-ugnayan",
+      "no_email_app_title": "Walang email app",
+      "no_email_app_body": "Pakipadala ang email sa support@rwendo.app gamit ang ginagamit mong email app.",
+      "contact_email_subject": "Suporta sa Rwendo"
+    },
+    "sign_out": {
+      "button": "Mag-sign out",
+      "confirm_title": "Mag-sign out",
+      "confirm_body": "Sigurado ka ba?",
+      "confirm_action": "Mag-sign out"
+    },
+    "delete_account": {
+      "button": "Tanggalin ang Account at Lahat ng Data",
+      "confirm_title": "Tanggalin ang Account",
+      "confirm_body": "Permanenteng tatanggalin nito ang account at lahat ng progreso mo. Hindi maaaring bawiin.",
+      "confirm_action": "Tanggalin ang account ko",
+      "error_title": "Error",
+      "error_body": "Hindi natanggal ang account. Pakisubukang muli."
+    }
+  },
+  "stats": {
+    "xp": "XP",
+    "streak": "Streak",
+    "lessons": "Mga Aralin"
+  },
+  "travel": {
+    "coming_soon_badge": "PAPARATING",
+    "hero_title": "Zimbabwe\nTravel Mode",
+    "hero_sub": "Ang Shona skills mo + kultural na kaalaman + on-the-ground travel guide. Rwendo sa totoong mundo.",
+    "teaser": {
+      "features": "Mga feature",
+      "zimbabwe": "Zimbabwe",
+      "connections": "Mga koneksyon"
+    },
+    "whats_coming": "Ano ang paparating",
+    "lock_soon": "Malapit na",
+    "features": {
+      "phrasebook":  { "title": "Phrasebook",       "desc": "Mga survival phrase ayon sa sitwasyon — paliparan, hotel, palengke, emergency" },
+      "culture":     { "title": "Cultural Guide",   "desc": "Tsika, kaugalian, at kung ano ang aasahan sa Zimbabwe" },
+      "money":       { "title": "Pera at Palengke", "desc": "Presyo, pagtawad, ZiG currency, paglilibot sa palengke" },
+      "transport":   { "title": "Paliparan Papunta sa Lungsod", "desc": "Mga ruta ng kombi, tip sa taxi, paglilibot sa Harare at Bulawayo" },
+      "travellers":  { "title": "Makilala ang mga Manlalakbay", "desc": "Makipag-ugnayan sa iba pang nag-aaral ng Shona at bumibisita sa Zimbabwe" },
+      "safari":      { "title": "Safari at Parke",  "desc": "Hwange, Victoria Falls, Great Zimbabwe — guide mo" }
+    },
+    "notify": {
+      "title": "Inaayos na ni Rwen ang bag niya",
+      "body": "Ginagawa pa ang Travel Mode. Patuloy mong pag-aralan ang Shona mo — sa oras na lumapag ka sa Harare, handa na si Rwen na gabayan ka.",
+      "button": "Ipaalam sa akin pag handa na",
+      "email_subject": "Ipaalam tungkol sa Travel Mode",
+      "email_body": "Hi Rwen, pakipaalam sa akin kapag naglunsad na ang Travel Mode!",
+      "fallback_title": "Ipapaalam namin sa iyo",
+      "fallback_body": "Mag-email sa hello@rwendo.app at idadagdag ka namin sa early-access list."
+    },
+    "spotlight": {
+      "label": "DESTINATION SPOTLIGHT",
+      "title": "🌊 Victoria Falls",
+      "shona_name": "\"Mosi-oa-Tunya\"",
+      "meaning": "Ang Usok na Kumukulog",
+      "desc": "Isa sa Pitong Likas na Kababalaghan ng Mundo, sa Zambezi River sa pagitan ng Zimbabwe at Zambia. Sa kulturang Shona, sagradong lugar ito — ang tahanan ng mga water spirits, midzimu yemvura."
+    }
+  },
+  "home": {
+    "greetings": {
+      "morning": "Magandang umaga",
+      "afternoon": "Magandang hapon",
+      "evening": "Magandang gabi"
+    },
+    "hero_sub": "{{greeting}} — Araw {{day}} ng paglalakbay mo",
+    "daily_goal": "Goal ng araw",
+    "talk_to_rwen": "Kausapin si Rwen",
+    "talk_to_rwen_sub": "Handa na ang AI companion mo",
+    "continue_learning": "MAGPATULOY SA PAG-AARAL",
+    "all_lessons_complete": "🎉 Lahat ng aralin tapos na!",
+    "more_coming_soon": "Mas marami pa ang paparating",
+    "rwens_tip_today": "Tip ni Rwen Ngayon",
+    "quick_access": "Quick Access",
+    "quick": {
+      "all_lessons": "Lahat ng Aralin",
+      "chat": "Chat",
+      "travel": "Lakbay",
+      "settings": "Settings"
+    },
+    "journey_title": "{{flag}} Ang {{lang}} na Paglalakbay Mo",
+    "journey_progress": "{{completed}} sa {{total}} aralin tapos na sa {{units}} modyul.",
+    "journey_remaining": "{{remaining}} aralin pa para sa A2 fluency.",
+    "journey_done": "Naabot na ang A2 fluency! 🎉",
+    "tips": [
+      "Bawat malayong paglalakbay ay nagsisimula sa isang 'Mhoro'. Nagawa mo na ang unang hakbang.",
+      "Sa Shona: 'Ukama igasva hunozadziswa nekudya' — ang relasyon ay nabubuo sa pagsasalo ng pagkain. Ibahagi ang natutuhan mo ngayon.",
+      "Tulad ng salawikain natin: 'Kapag may tiyaga, may nilaga.' Konting Shona araw-araw, malayo ang mararating mo.",
+      "Sa Pranses, 'Bonjour' ay ginagamit buong umaga at hapon. Isang salita, isang araw na ngiti.",
+      "Sa Mandarin, '你好' (nǐ hǎo) ay literal na 'ikaw mabuti'. Pareho ng diwa ng 'Kumusta?'",
+      "Tip ni Rwen: bigkasin nang malakas ang huling aralin mo ngayon. Ang pagsasalita ay 10× mas epektibo kaysa pagbabasa.",
+      "Sa Ingles: 'Practice makes perfect.' Walang shortcut — pero ang konsistent na pag-aaral ay nakakaipon.",
+      "'Makadii?' sa Shona — tatlong pantig na nagbubukas ng bawat pintuan sa Zimbabwe."
+    ]
+  }
+}

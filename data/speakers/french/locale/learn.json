@@ -1,0 +1,127 @@
+{
+  "__warnings": [
+    { "key": "lesson.phases.*", "note": "Phase names translated functionally ('Hook' → 'L'accroche', 'Chunks' → 'Nouveaux mots', etc.). The English originals are pedagogical labels from SLA research — reviewer: confirm whether French learners will recognise them better translated or kept English." },
+    { "key": "lesson.mission.cta", "note": "'Famba zvakanaka' is Shona ('travel well / go in peace'). Kept verbatim — it's a brand signature like Mhoro. Reviewer: confirm." },
+    { "key": "lesson.locked.subscription_body", "note": "Mentions 'Modules 5-10' and 'Text AI tier' — UI labels kept consistent. Verify wording when subscription tier names settle in French." },
+    { "key": "lesson.phase8.unlocked_body / locked_body", "note": "Mentions a 2-minute conversation — translated literally. Reviewer: confirm 'une conversation de 2 minutes' reads natural." },
+    { "key": "exercises.translate.placeholder", "note": "'Type your answer...' — used 'Tape ta réponse…' in tu register, matching Rwen's tone. Reviewer: confirm tu/vous decision is consistent across the whole pack." },
+    { "key": "tab.coming_soon_title", "note": "'{{lang}} curriculum coming soon' — gender of 'curriculum' (m. in French) flows from the placeholder; the rest of the sentence agrees masculine." }
+  ],
+  "tab": {
+    "daily_xp": "XP du jour",
+    "units": "Unités",
+    "lesson_count": "{{count}} leçons",
+    "unit_progress": "{{completed}}/{{total}} terminées",
+    "coming_soon_title": "Le programme {{lang}} arrive bientôt",
+    "coming_soon_sub": "Nous préparons les leçons. Reviens vite !",
+    "categories_title": "Cours",
+    "categories": {
+      "languages": "Langues",
+      "ai_courses": "Cours IA",
+      "know_yourself": "Mieux te connaître"
+    },
+    "buy": {
+      "language_course": "+ Acheter un autre cours de langue",
+      "ai_course": "+ Acheter un autre cours IA",
+      "know_yourself_course": "+ Acheter un autre cours « Mieux te connaître »",
+      "alert_title": "Bientôt disponible",
+      "alert_body": "La boutique de cours ouvre à la prochaine mise à jour."
+    },
+    "empty_category": {
+      "ai_courses_title": "Les cours IA arrivent",
+      "ai_courses_body": "Le premier cours sortira bientôt. On te préviendra dès qu'il est prêt.",
+      "know_yourself_title": "« Mieux te connaître » arrive",
+      "know_yourself_body": "Le premier cours sortira bientôt. On te préviendra dès qu'il est prêt."
+    }
+  },
+  "screen_header": {
+    "back": "← Retour"
+  },
+  "unit": {
+    "section_label": "LEÇONS",
+    "xp_value": "{{count}} XP"
+  },
+  "lesson": {
+    "not_found": "Leçon introuvable : {{id}}",
+    "locked": {
+      "subscription_title": "Verrouillé — abonnement requis",
+      "subscription_body": "Les modules 5 à 10 font partie de l'abonnement Text AI et au-delà. Passe à la version supérieure pour continuer avec Rwen.",
+      "subscription_cta": "Voir les abonnements",
+      "course_title": "Verrouillé — cours non activé",
+      "course_body": "Cette leçon appartient à un cours que tu n'as pas encore activé. Ajoute le cours à ton compte pour commencer.",
+      "course_cta": "Voir les cours"
+    },
+    "phases": {
+      "hook": "L'accroche",
+      "chunks": "Nouveaux mots",
+      "pattern": "Le motif",
+      "practice": "Entraînement",
+      "dialogue": "Conversation",
+      "recall": "Rappel",
+      "mission": "Ta mission"
+    },
+    "quit": {
+      "title": "Quitter la leçon ?",
+      "body": "Ta progression dans cette leçon sera perdue. Tu es sûr ?",
+      "keep_going": "Continuer",
+      "quit": "Quitter"
+    },
+    "hook": {
+      "tsika_label": "TSIKA — Contexte culturel",
+      "cta": "On apprend →"
+    },
+    "chunks": {
+      "counter": "Mot {{current}} sur {{total}}",
+      "literal": "Littéralement : « {{value}} »",
+      "see_pattern": "Voir le motif →",
+      "got_it": "Compris →"
+    },
+    "pattern": {
+      "start_practice": "Commencer l'entraînement →"
+    },
+    "practice": {
+      "counter": "Exercice {{current}} sur {{total}}"
+    },
+    "dialogue": {
+      "to_recall": "Bravo — passons au rappel →",
+      "continue": "Continuer →"
+    },
+    "recall": {
+      "title": "Rappel actif",
+      "counter": "{{current}} sur {{total}}"
+    },
+    "mission": {
+      "complete_title": "Leçon terminée !",
+      "xp_badge": "+{{count}} XP",
+      "score": "{{score}} / {{total}} corrects",
+      "card_title_prefix": "📍 ",
+      "cta": "Famba zvakanaka →"
+    },
+    "phase8": {
+      "unlocked_title": "Pratique avec Rwen",
+      "unlocked_body": "Essaie « {{topic}} » en conversation. Rwen utilisera ce que tu viens d'apprendre.",
+      "unlocked_cta": "Commencer une discussion de 2 minutes →",
+      "locked_title": "Pratique avec Rwen — Verrouillée",
+      "locked_body": "Aie une conversation de 2 minutes sur « {{topic}} ». Rwen utilisera ce que tu viens d'apprendre.",
+      "locked_cta": "Débloquer avec Text AI →"
+    }
+  },
+  "exercises": {
+    "check": "Vérifier",
+    "feedback_correct": "✓ Correct !",
+    "fill_blank": {
+      "wrong": "✗ La réponse est « {{correct}} »"
+    },
+    "translate": {
+      "placeholder": "Tape ta réponse…",
+      "wrong": "✗ Bonne réponse : {{correct}}"
+    },
+    "build_sentence": {
+      "placeholder": "Touche les mots ci-dessous pour construire la phrase",
+      "wrong": "✗ Correct : {{correct}}"
+    },
+    "multiple_choice": {
+      "wrong": "✗ Pas tout à fait"
+    }
+  }
+}

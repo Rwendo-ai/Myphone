@@ -1,0 +1,32 @@
+{
+  "__warnings": [
+    { "key": "messages.welcome", "note": "Kept Shona 'Mhoro' verbatim — it's Rwen's signature greeting and is recognised across the app (also appears in tips, branding, and welcome flow). Reviewer: confirm this stays Mhoro for French speakers, or flip to 'Bonjour, {{name}} !' if user research shows it confuses early users." },
+    { "key": "messages.error_generic", "note": "Kept Shona 'Ndine urombo' (I'm sorry) verbatim for the same brand-signature reason. The French explanation follows. Reviewer: confirm or flip to 'Désolé —'." },
+    { "key": "messages.auto_listen_greeting", "note": "Same Mhoro decision applied. Reviewer: confirm." },
+    { "key": "header.status_idle", "note": "'{{lang}} companion · AI' — kept '{{lang}}' as-is, translated 'companion' to 'compagnon'. The {{lang}} placeholder may render the target language name in French or English depending on i18n wiring upstream." },
+    { "key": "input.placeholder_convo_active", "note": "'tap ⏹ to stop' — translated to 'appuyez sur ⏹'. Reviewer: confirm tu/vous register; we use vous here for the input hint, but tu elsewhere with Rwen. Decide whether the chrome and Rwen's voice should match register." }
+  ],
+  "header": {
+    "title": "Rwen",
+    "status_listening": "🎤 J'écoute…",
+    "status_thinking": "💭 Je réfléchis…",
+    "status_speaking": "🔊 Je parle…",
+    "status_loading": "Je réfléchis…",
+    "status_idle": "Compagnon {{lang}} · IA"
+  },
+  "banner": {
+    "speak_now": "🎤 Parle maintenant…",
+    "rwen_thinking": "💭 Rwen réfléchit…",
+    "rwen_speaking": "🔊 Rwen parle…",
+    "done_speaking": "Fini de parler"
+  },
+  "input": {
+    "placeholder_default": "Écris à Rwen…",
+    "placeholder_convo_active": "Conversation en cours — parle ou appuie sur ⏹ pour arrêter"
+  },
+  "messages": {
+    "welcome": "Mhoro, {{name}} ! Qu'est-ce qui te trotte dans la tête aujourd'hui ?",
+    "error_generic": "Ndine urombo — quelque chose s'est mal passé. Réessaie.",
+    "auto_listen_greeting": "Mhoro ! Je t'écoute. Parle quand tu veux."
+  }
+}

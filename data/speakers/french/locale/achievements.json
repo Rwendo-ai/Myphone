@@ -1,0 +1,26 @@
+{
+  "__warnings": [
+    { "key": "items.streak_30.title", "note": "'Month of Mhoro' translated to 'Mois de Mhoro' — kept Shona 'Mhoro' verbatim as it's the brand-signature greeting. Reviewer: confirm consistency with rwen.json's welcome decision." },
+    { "key": "items.first_lesson.title", "note": "'First Steps' → 'Premiers pas'. Standard idiom." },
+    { "key": "items.streak_3.title / items.streak_7.title", "note": "Names are playful/poetic ('Three-Day Spark', 'Week Warrior'). French equivalents are functional — reviewer should rewrite for emotional resonance." },
+    { "key": "items.xp_*.title", "note": "'Bright Spark', 'Rising Star', 'Constellation' — translated literally. Reviewer free to substitute equivalent French metaphors." },
+    { "key": "items.lessons_50.title", "note": "'Halfway Tree' is a Jamaican idiom in the original — used 'À mi-chemin' here as the geographic reference doesn't carry. Reviewer: confirm or propose a French cultural anchor." },
+    { "key": "items.graduated.description_fmt", "note": "Plural form uses {{total}} — French plural agreement is automatic at the placeholder; verify {{total}} > 1 case reads naturally ('Terminé toutes les {{total}} leçons')." }
+  ],
+  "title": "Récompenses",
+  "subtitle": "{{unlocked}} sur {{total}} débloquées",
+  "items": {
+    "first_lesson": { "title": "Premiers pas",          "description": "Tu as terminé ta toute première leçon." },
+    "streak_3":     { "title": "Étincelle de trois jours", "description": "3 jours d'affilée." },
+    "streak_7":     { "title": "Guerrier de la semaine",   "description": "Tu as gardé ta série en vie pendant 7 jours." },
+    "streak_30":    { "title": "Mois de Mhoro",            "description": "Série de 30 jours. Rwen est fier de toi." },
+    "xp_100":       { "title": "Belle étincelle",          "description": "Tu as gagné 100 XP." },
+    "xp_500":       { "title": "Étoile montante",          "description": "Tu as gagné 500 XP." },
+    "xp_1000":      { "title": "Constellation",            "description": "Tu as gagné 1 000 XP." },
+    "module_1":     { "title": "Maître de module",         "description": "Tu as terminé ton premier module." },
+    "module_5":     { "title": "À mi-chemin",              "description": "Tu as terminé 5 modules." },
+    "lessons_25":   { "title": "Grimpeur d'un quart",      "description": "Tu as terminé 25 leçons." },
+    "lessons_50":   { "title": "Arbre du mi-chemin",       "description": "Tu as terminé 50 leçons." },
+    "graduated":    { "title": "Diplômé Rwendo",           "description_fmt": "Tu as terminé les {{total}} leçons." }
+  }
+}

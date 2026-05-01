@@ -1,0 +1,33 @@
+{
+  "__warnings": [
+    { "key": "messages.welcome",                   "note": "DECISION: kept 'Mhoro' verbatim as Rwen's signature greeting — Rwen IS culturally Shona regardless of speaker pack. Chinese reader sees 'Mhoro,{{name}}!' as a small cultural moment, just as English speakers see 'Mhoro' in en. Alternative: flip to '你好,{{name}}!' if Mainland reviewer prefers. Reviewer's call." },
+    { "key": "messages.error_generic",             "note": "DECISION: kept 'Ndine urombo' verbatim (Shona: 'I'm sorry') — same rationale as messages.welcome. Translated trailing 'something went wrong. Try again.' to Chinese. Reviewer can flip the Shona prefix to '抱歉' if it confuses Mainland users." },
+    { "key": "messages.auto_listen_greeting",      "note": "DECISION: kept 'Mhoro!' — same rationale. Followed by Chinese instructions for the listening UI." },
+    { "key": "header.status_idle",                 "note": "Uses {{lang}} placeholder. 'companion · AI' → '伴侣 · AI'." },
+    { "key": "input.placeholder_default",          "note": "'Message Rwen...' translated as '给 Rwen 发消息……'. Chinese ellipsis convention used (……)." },
+    { "key": "banner.*",                           "note": "Listening/thinking/speaking emoji banners — translated literally." }
+  ],
+  "header": {
+    "title": "Rwen",
+    "status_listening": "🎤 正在聆听……",
+    "status_thinking": "💭 正在思考……",
+    "status_speaking": "🔊 正在说话……",
+    "status_loading": "正在思考……",
+    "status_idle": "{{lang}} 伴侣 · AI"
+  },
+  "banner": {
+    "speak_now": "🎤 请说话……",
+    "rwen_thinking": "💭 Rwen 正在思考……",
+    "rwen_speaking": "🔊 Rwen 正在说话……",
+    "done_speaking": "说完了"
+  },
+  "input": {
+    "placeholder_default": "给 Rwen 发消息……",
+    "placeholder_convo_active": "对话进行中——请说话或点击 ⏹ 停止"
+  },
+  "messages": {
+    "welcome": "Mhoro,{{name}}!今天有什么想聊的?",
+    "error_generic": "Ndine urombo——出了点问题,请再试一次。",
+    "auto_listen_greeting": "Mhoro!我在听,你随时可以开始。"
+  }
+}

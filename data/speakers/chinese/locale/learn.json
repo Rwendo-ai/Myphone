@@ -1,0 +1,128 @@
+{
+  "__warnings": [
+    { "key": "lesson.phases.*",                    "note": "Phase names — translated for natural Chinese: '场景' (Hook), '新词' (Chunks), '规律' (Pattern), '练习' (Practice), '对话' (Dialogue), '回忆' (Recall), '任务' (Mission). Reviewer: confirm phase names align with the methodology screen in common.json." },
+    { "key": "lesson.mission.cta",                 "note": "English source uses 'Famba zvakanaka →' (Shona: 'go well'). Kept verbatim as Rwen's signature send-off — Rwen IS culturally Shona regardless of the speaker pack. Reviewer: confirm or flip to '一路顺风 →'." },
+    { "key": "lesson.hook.tsika_label",            "note": "'TSIKA' is Shona for 'culture/customs' — kept verbatim with Chinese gloss '— 文化背景' since 'TSIKA' is a Rwendo brand term used across packs." },
+    { "key": "lesson.locked.subscription_body",    "note": "References 'Modules 5-10' and 'Text AI tier' — kept English for tier names since those are brand SKUs (see plans_screen tier names)." },
+    { "key": "exercises.*.wrong",                  "note": "Inline error feedback — translated literally. Reviewer: confirm punctuation conventions (✗ vs full-width 错误)." },
+    { "key": "tab.categories.*",                   "note": "Category names: 'Languages' → '语言', 'AI courses' → 'AI 课程', 'Know Yourself' → '了解自己'. Reviewer's call." },
+    { "key": "lesson.phase8.unlocked_body / locked_body", "note": "Topic placeholder '{{topic}}' will hold a target-language phrase — kept intact." }
+  ],
+  "tab": {
+    "daily_xp": "每日 XP",
+    "units": "单元",
+    "lesson_count": "{{count}} 节课",
+    "unit_progress": "{{completed}}/{{total}} 已完成",
+    "coming_soon_title": "{{lang}} 课程即将推出",
+    "coming_soon_sub": "我们正在编写课程,敬请期待!",
+    "categories_title": "课程",
+    "categories": {
+      "languages": "语言",
+      "ai_courses": "AI 课程",
+      "know_yourself": "了解自己"
+    },
+    "buy": {
+      "language_course": "+ 购买另一门语言课程",
+      "ai_course": "+ 购买另一门 AI 课程",
+      "know_yourself_course": "+ 购买另一门「了解自己」课程",
+      "alert_title": "即将推出",
+      "alert_body": "课程商店将在下个版本上线。"
+    },
+    "empty_category": {
+      "ai_courses_title": "AI 课程即将推出",
+      "ai_courses_body": "首门课程即将上线,准备好后我们会通知你。",
+      "know_yourself_title": "「了解自己」即将推出",
+      "know_yourself_body": "首门课程即将上线,准备好后我们会通知你。"
+    }
+  },
+  "screen_header": {
+    "back": "← 返回"
+  },
+  "unit": {
+    "section_label": "课程",
+    "xp_value": "{{count}} XP"
+  },
+  "lesson": {
+    "not_found": "未找到课程:{{id}}",
+    "locked": {
+      "subscription_title": "已锁定 — 需要付费方案",
+      "subscription_body": "模块 5–10 属于 Text AI 及更高方案。升级以继续和 Rwen 一起学习。",
+      "subscription_cta": "查看方案",
+      "course_title": "已锁定 — 课程未启用",
+      "course_body": "这节课属于一门你尚未启用的课程。请先把课程添加到你的账户。",
+      "course_cta": "查看课程"
+    },
+    "phases": {
+      "hook": "场景",
+      "chunks": "新词",
+      "pattern": "规律",
+      "practice": "练习",
+      "dialogue": "对话",
+      "recall": "回忆",
+      "mission": "你的任务"
+    },
+    "quit": {
+      "title": "退出本节课?",
+      "body": "本节课的进度将会丢失。你确定吗?",
+      "keep_going": "继续学",
+      "quit": "退出"
+    },
+    "hook": {
+      "tsika_label": "TSIKA — 文化背景",
+      "cta": "开始学吧 →"
+    },
+    "chunks": {
+      "counter": "第 {{current}} / {{total}} 个词",
+      "literal": "字面意思:\"{{value}}\"",
+      "see_pattern": "看看规律 →",
+      "got_it": "明白了 →"
+    },
+    "pattern": {
+      "start_practice": "开始练习 →"
+    },
+    "practice": {
+      "counter": "第 {{current}} / {{total}} 题"
+    },
+    "dialogue": {
+      "to_recall": "很好——现在来回忆一下 →",
+      "continue": "继续 →"
+    },
+    "recall": {
+      "title": "主动回忆",
+      "counter": "{{current}} / {{total}}"
+    },
+    "mission": {
+      "complete_title": "课程完成!",
+      "xp_badge": "+{{count}} XP",
+      "score": "答对 {{score}} / {{total}}",
+      "card_title_prefix": "📍 ",
+      "cta": "Famba zvakanaka →"
+    },
+    "phase8": {
+      "unlocked_title": "和 Rwen 一起练习",
+      "unlocked_body": "用对话试试「{{topic}}」。Rwen 会用上你刚学的内容。",
+      "unlocked_cta": "开启 2 分钟对话 →",
+      "locked_title": "和 Rwen 一起练习 — 已锁定",
+      "locked_body": "用 2 分钟和 Rwen 聊聊「{{topic}}」。Rwen 会用上你刚学的内容。",
+      "locked_cta": "升级到 Text AI 解锁 →"
+    }
+  },
+  "exercises": {
+    "check": "检查",
+    "feedback_correct": "✓ 正确!",
+    "fill_blank": {
+      "wrong": "✗ 答案是 \"{{correct}}\""
+    },
+    "translate": {
+      "placeholder": "输入你的答案……",
+      "wrong": "✗ 正确答案:{{correct}}"
+    },
+    "build_sentence": {
+      "placeholder": "点击下方词语来组成句子",
+      "wrong": "✗ 正确答案:{{correct}}"
+    },
+    "multiple_choice": {
+      "wrong": "✗ 不太对"
+    }
+  }
+}

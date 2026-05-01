@@ -1,0 +1,24 @@
+{
+  "__warnings": [
+    { "key": "items.streak_30.title",              "note": "English: 'Month of Mhoro'. Kept the Shona word 'Mhoro' verbatim — Rwen's signature greeting carries through. Translated as 'Mhoro 之月'. Alternative: '问候之月'." },
+    { "key": "items.lessons_50.title",             "note": "English: 'Halfway Tree' — a place reference (Halfway Tree is a famous landmark in Kingston, Jamaica; here used metaphorically for the halfway point). Translated as '半途之树'. Reviewer: this metaphor may not land for a Mainland reader; consider '行至中途' or '半山之处' as alternatives." },
+    { "key": "items.graduated.description_fmt",    "note": "Uses {{total}} placeholder — kept intact. 'Rwendo Graduate' translated as 'Rwendo 毕业生'." },
+    { "key": "all titles",                          "note": "Achievement titles aim for short, evocative Chinese — many are looser adaptations rather than literal translations. Reviewer free to rewrite for flair." }
+  ],
+  "title": "成就",
+  "subtitle": "已解锁 {{unlocked}} / {{total}}",
+  "items": {
+    "first_lesson": { "title": "迈出第一步",     "description": "完成了你的第一节课。" },
+    "streak_3":     { "title": "三日火花",       "description": "连续 3 天。" },
+    "streak_7":     { "title": "一周战士",       "description": "连胜保持了 7 天。" },
+    "streak_30":    { "title": "Mhoro 之月",     "description": "连胜 30 天。Rwen 为你骄傲。" },
+    "xp_100":       { "title": "灿烂火花",       "description": "累计 100 XP。" },
+    "xp_500":       { "title": "冉冉新星",       "description": "累计 500 XP。" },
+    "xp_1000":      { "title": "繁星点点",       "description": "累计 1,000 XP。" },
+    "module_1":     { "title": "模块达人",       "description": "完成了第一个模块。" },
+    "module_5":     { "title": "已过半程",       "description": "完成了 5 个模块。" },
+    "lessons_25":   { "title": "四分之一登顶",   "description": "完成了 25 节课。" },
+    "lessons_50":   { "title": "半途之树",       "description": "完成了 50 节课。" },
+    "graduated":    { "title": "Rwendo 毕业生",  "description_fmt": "完成了全部 {{total}} 节课。" }
+  }
+}

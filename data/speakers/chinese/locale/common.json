@@ -1,0 +1,488 @@
+{
+  "__warnings": [
+    { "key": "fallback_name",                       "note": "Translated 'friend' as '朋友'. Reviewer: confirm — '小伙伴' could be warmer/more colloquial for an app companion." },
+    { "key": "fallback_learner",                    "note": "Translated 'Learner' as '学习者'. Alternative: '学员'. Reviewer's call." },
+    { "key": "actions.cancel",                      "note": "Used '取消' (standard PRC convention). Confirmed natural across iOS/Android Chinese UIs." },
+    { "key": "nav.travel / travel.*",               "note": "Travel mode used '旅行' throughout. The Rwendo brand name itself (Shona for journey) is kept untranslated as 'Rwendo'." },
+    { "key": "profile.voices.*.description",        "note": "Voice descriptors are subjective ('Warm storyteller' → '温暖的讲述者'). Reviewer free to rewrite for poetry." },
+    { "key": "travel.spotlight.desc",               "note": "Long-form Victoria Falls description. Translation is faithful; native reviewer should rewrite for natural Chinese flow. Place name 'Mosi-oa-Tunya' kept verbatim — it is a proper noun in Tonga/Lozi." },
+    { "key": "home.tips",                           "note": "REWRITTEN as Chinese chrome around mixed Shona/English/French anchor phrases (mirror-not-translate rule per PACK-AUTHORING-SPEAKER §4.3). Pedagogically: a Chinese speaker reading these gets exposure to phrases from the languages they're learning, NOT translations of the English version's content. Reviewer: confirm anchor phrases are natural and Chinese chrome is idiomatic." },
+    { "key": "GENERAL — locale vs pack mirror",     "note": "Some strings hardcode 'Shona' as the target language assuming a learning-Shona direction (e.g. onboarding's 'How much {{lang}} do you know?'). The {{lang}} placeholder will pull from learnedLanguage.name at runtime. Where source has hardcoded 'Shona', keep parameterised." },
+    { "key": "about.what_card.body / about.meet_card.body", "note": "Long-form marketing copy. Translations are faithful but stiff in places — native reviewer should rewrite for emotional resonance. 'chameleon' = 变色龙 throughout." },
+    { "key": "about.footer",                        "note": "English source ends with 'Mhoro!' — kept verbatim as Rwen's signature greeting. A Chinese-speaking reviewer should confirm this is Rwen's brand voice across packs (rather than '你好!')." },
+    { "key": "help.faq",                            "note": "10 FAQ entries. Vendor names (Anthropic, Claude, Supabase, ElevenLabs, App Store, Google Play, RevenueCat) kept English. Some answers reference UI labels — when those labels flip, FAQ wording should track." },
+    { "key": "edit_profile.email_hint / privacy_screen / export_screen.note", "note": "Mentions support@rwendo.app verbatim — kept as English address (no localisation)." },
+    { "key": "privacy_screen.share.*",              "note": "Vendor names (Anthropic, ElevenLabs, Supabase) kept English. Surrounding descriptions translated." },
+    { "key": "language_pack_screen.coming_soon_packs.*", "note": "Language names rendered in Chinese ('Spanish' → '西班牙语', 'Mandarin' → '普通话'). Reviewer: confirm '普通话' for the Mandarin entry — could be '中文' instead, but '普通话' is more precise for the Mainland audience." },
+    { "key": "plans_screen.tiers.*.tagline / features", "note": "Marketing taglines and feature lists — literal translation may sound stiff. Reviewer free to rewrite for natural flow. Currency 'A$' kept as-is (Australian dollar)." },
+    { "key": "all currency / time references",      "note": "'A$10/mo', '60 min', '5 minutes a day' kept with Arabic numerals. 'mo' rendered as '/月'. Currency code A$ kept untranslated. Reviewer: confirm convention." },
+    { "key": "profile.delete_account.confirm_body / privacy_screen.clear.confirm_body", "note": "Legal/destructive consequence text. Translation is conservative; reviewer should confirm warnings are unambiguous in Simplified Chinese." },
+    { "key": "place names (Harare, Bulawayo, Hwange, Victoria Falls, Great Zimbabwe, Zambezi)", "note": "Kept canonical English/Shona spellings — common Chinese transliterations (哈拉雷, 维多利亚瀑布) exist but Rwendo's brand voice keeps place names canonical. Reviewer: flip if Mainland users expect transliteration." },
+    { "key": "vendor names (Anthropic, Claude, ElevenLabs, Supabase, RevenueCat, App Store, Google Play, Files)", "note": "Kept English throughout per PACK-AUTHORING-SPEAKER guidance." }
+  ],
+  "fallback_name": "朋友",
+  "fallback_learner": "学习者",
+  "xp_progress": "{{current}} / {{goal}} XP",
+  "actions": {
+    "cancel": "取消",
+    "ok": "好",
+    "save": "保存",
+    "delete": "删除"
+  },
+  "nav": {
+    "home": "首页",
+    "learn": "学习",
+    "rwen": "Rwen",
+    "travel": "旅行",
+    "profile": "我的"
+  },
+  "daily_goal_screen": {
+    "title": "每日 XP 目标",
+    "subtitle": "你想每天学多少?",
+    "xp_value": "{{count}} XP",
+    "hint": "你随时可以更改。目标每天午夜重置(以你设备的本地时间为准)。",
+    "options": {
+      "25":  { "title": "轻松",  "sub": "每天约 5 分钟 · 一节短课" },
+      "50":  { "title": "常规",  "sub": "每天约 10 分钟 · 一节完整课" },
+      "100": { "title": "认真",  "sub": "每天约 20 分钟 · 两节课" },
+      "200": { "title": "全力",  "sub": "每天约 40 分钟 · 冲刺流利度" }
+    }
+  },
+  "methodology": {
+    "title": "我们怎么教",
+    "subtitle": "用平实的话讲 Rwendo 学习法",
+    "hero_body": "Rwendo 建立在第二语言习得(SLA)的研究之上。课程里的每一个选择——每节最多三个语块、带有重述的对话、在前进之前先回忆——都来自语言真正在脑中扎根的方式。下面是背后的原因。",
+    "phases": {
+      "title": "每节课七个阶段",
+      "body": "引入 → 语块 → 模式 → 练习 → 对话 → 回忆 → 任务。每个阶段只做一件事。引入设定文化场景。语块给你最多三个新词组。模式呈现规则。练习帮你巩固。对话是你第一次尝试输出。回忆是无提示测验。任务是真实世界里的小行动,触发间隔回忆。"
+    },
+    "lexical": {
+      "title": "学语块,不是孤立的单词",
+      "body": "Rwendo 用语块教学——像 'mamuka sei?' 这样有意义的单元,而不是孤立的词。语块才是流利者真正存储和提取语言的方式。我们每节课只放三个,这样工作记忆不会超载。"
+    },
+    "input_output": {
+      "title": "先输入,再输出",
+      "body": "每一节课都把你从接受可理解的输入(引入、语块、模式)推向产出(练习、对话)。两个阶段缺一不可。纯听力的应用效果有限,因为大脑只有在你主动调用语言时才会真正记住。"
+    },
+    "recasts": {
+      "title": "用重述温和地纠错",
+      "body": "你在对话里出错时,Rwen 会以正确的方式重新说一遍,而不点名指出错误。这就是重述——它保护你的动力,让你自己发现问题。在记忆留存上,这胜过红笔批改。"
+    },
+    "recall": {
+      "title": "主动回忆是独立的一个阶段",
+      "body": "把词汇从记忆里拉出来,会让记忆痕迹更牢固。第 6 阶段是无提示测验——你必须提取,而不是识别。这就是为什么 Rwendo 学过的句子几周后你还记得,而点过的卡片往往一转身就忘。"
+    },
+    "spacing": {
+      "title": "通过任务实现间隔回忆",
+      "body": "每节课结束都有一个真实世界的小任务——'今天用 Mangwanani 跟人打招呼'。任务把你的回忆分散到一整天里,大脑这时的编码,比任何一次单独学习都更持久。"
+    },
+    "footer": "基于 Lewis、Krashen、Swain、Long、Roediger & Karpicke、Ebbinghaus 与 Bahrick 等人的研究。引文见 docs/curriculum/LEARNING_METHODOLOGY.md。"
+  },
+  "companion_philosophy": {
+    "title": "我们的 AI 伙伴理念",
+    "subtitle": "你跟 Rwen 聊天时,它是怎样陪伴你的",
+    "hero_body": "Rwen 不是教程,不是聊天机器人,也不是治疗师。它是一段会成长的关系。长期的粘性来自深度,而不是新鲜感。",
+    "relationship": {
+      "title": "一段关系,而非一门课",
+      "body": "大多数 AI 伙伴新鲜两周后就变得乏味。原因在结构上:纯自由聊天没有记忆,也没有成长。Rwendo 的伙伴模块从设计之初就让对话不断累积——过去的话题、内部的小笑话、足以承载更难话题的深度。"
+    },
+    "depth": {
+      "title": "你会一步步解锁的深度",
+      "body": "Rwen 在第 1 天和第 90 天表现并不一样。五个深度等级(新朋友 → 熟悉 → 亲近 → 信赖 → 一辈子)随着累计互动逐步解锁新的对话面——更深的卡片、更难的话题、更丰富的记忆。等级是进度,不是门槛:每位付费用户都能在任何等级聊任何话题。等级只决定 Rwen 主动给你什么。"
+    },
+    "memory": {
+      "title": "你能看见、能编辑的记忆",
+      "body": "Rwen 会建立一份关于你的结构化记忆——你妹妹叫 Tanya,你学绍纳语是因为伴侣的家人,上周三你提过一个艰难的星期。在记忆面板里,你可以看到 Rwen 记下的所有内容,可以编辑任何一条,删除任何一条,或者一次清空。这份记忆是你的。"
+    },
+    "guardrails": {
+      "title": "不假装的边界",
+      "body": "我们借鉴 Rogers、Beck 和 Fogg 的对话结构,但 Rwen 从不自称是治疗。危机情况(自杀念头、自伤)会先呈现按地区匹配的专业资源,然后才会有任何 AI 回复。涉及艰难话题的卡片底部始终附有危机求助链接。Rwen 的提示词明确禁止任何制造依赖的模式。"
+    },
+    "not_therapy": {
+      "title": "不是你的治疗师",
+      "body": "每隔七天,如果你大量进行内省式对话,Rwen 会提醒你它不能替代专业支持。陪伴是真实的,边界是有意为之的。目标是让生活更丰富,而不是让你更孤立。"
+    },
+    "footer": "灵感来自 Carl Rogers、Aaron Beck、BJ Fogg 的微习惯,以及关于 Replika 使用模式的研究。我们不是一款治疗类应用。"
+  },
+  "about": {
+    "title": "关于 Rwendo",
+    "app_name": "Rwendo",
+    "tagline": "每段旅程都从一句问候开始",
+    "version_label": "版本 {{version}}",
+    "what_card": {
+      "title": "Rwendo 是什么?",
+      "body": "Rwendo(绍纳语,意为\"旅程\")是一款语言学习应用,也是一位 AI 伙伴。和 Rwen 一起学绍纳语——一只由 Claude AI 与 ElevenLabs 语音驱动的友好变色龙——通过基于第二语言习得研究的七阶段教学法。"
+    },
+    "meet_card": {
+      "title": "认识 Rwen",
+      "body": "Rwen 是一只变色龙,一种会顺着环境变化的生物。Rwen 会了解你,并调整它和你说话、教你、支持你的方式。你聊得越多,Rwen 就越懂你。"
+    },
+    "method_card": {
+      "title": "Rwendo 学习法",
+      "body": "每节课七个阶段:引入 → 语块 → 模式 → 练习 → 对话 → 回忆 → 任务。每节课最多三个新语块,时长 5–7 分钟。围绕 10 条 SLA 支柱构建,包括间隔重复、可理解输入和有意义的输出。"
+    },
+    "builders_card": {
+      "title": "由谁打造",
+      "body": "一位坐落在澳大利亚的独立开发者,他相信学语言应该像和朋友聊天,而不是一份苦差事。"
+    },
+    "link": "rwendo.app",
+    "footer": "用 ❤️ 为每一位学习绍纳语的人打造\nMhoro!"
+  },
+  "help": {
+    "title": "帮助和常见问题",
+    "intro": "Rwen 最常被问到的几个问题,这里有快速解答。",
+    "contact_btn": "还是没解决?发邮件到 support@rwendo.app",
+    "faq": [
+      { "q": "我怎么和 Rwen 对话?",                          "a": "点击底部中间的 Rwen 标签。你可以输入文字,也可以按住麦克风说话。点右上角的 🎙 图标即可开启免提对话。" },
+      { "q": "为什么 Rwen 有时候会答错?",                    "a": "Rwen 是 AI(Claude)。AI 会出错——包括事实错误和奇怪的翻译。把 Rwen 当作一位会聊天的伙伴,而不是教科书。涉及关键内容时,请再向懂绍纳语的人确认。" },
+      { "q": "我怎么获得 XP?",                              "a": "在「学习」标签里完成课程。每个正确答案都会获得 XP,完成一节课会有奖励。每日 XP 目标每天重置。" },
+      { "q": "连胜是怎么计算的?",                          "a": "每天打开应用并完成至少一项活动,就能保持连胜。漏掉一天,连胜会重置为 1。" },
+      { "q": "我能换 Rwen 的声音吗?",                       "a": "可以——前往「我的」→「Rwen 的声音」,在 George、Charlie、Jessica、Alice 中挑选。文字转语音会立即应用新声音。" },
+      { "q": "我和 Rwen 的对话是私密的吗?",                 "a": "你的消息会发送到 Anthropic(Claude)处理,并在 Supabase 中保存最长 12 个月。Anthropic 不会用你的对话来训练它的模型。语音录音会在 24 小时内删除。完整细节请查看《隐私政策》。" },
+      { "q": "我怎么取消订阅?",                            "a": "订阅由你的应用商店管理(App Store 或 Google Play)。欧盟/英国用户享有 14 天冷静期,在此期间可以取消并获得全额退款。" },
+      { "q": "我怎么删除账户?",                            "a": "「我的」→「删除账户和所有数据」。这会在 30 天内移除你的资料、课程进度和对话记录。此操作无法撤销。" },
+      { "q": "我发现了一个 Bug——该怎么办?",                "a": "点下方的「联系我们」或发邮件到 support@rwendo.app。请附上你的设备型号、应用版本以及出问题时你正在做什么。" },
+      { "q": "实时语音对话什么时候上线?",                   "a": "正在开发中。免提的实时语音通话会随 Companion 订阅在后续版本中推出。" }
+    ]
+  },
+  "edit_profile": {
+    "title": "编辑资料",
+    "name_label": "显示名称",
+    "name_hint": "这是 Rwen 称呼你的方式。",
+    "name_placeholder": "你的名字",
+    "char_count": "{{current}}/{{max}}",
+    "email_label": "邮箱",
+    "email_hint": "如需更改邮箱,请联系 support@rwendo.app。",
+    "save_btn": "保存更改",
+    "error_title": "保存失败",
+    "saved_title": "已保存",
+    "saved_body": "你的显示名称已更新。"
+  },
+  "privacy_screen": {
+    "title": "隐私设置",
+    "intro": "管理 Rwendo 保存的关于你的数据。完整政策请阅读《隐私政策》。",
+    "sections": {
+      "your_data": "你的数据",
+      "what_we_share": "我们共享了什么",
+      "your_rights": "你的权利"
+    },
+    "clear": {
+      "label": "清空对话记录",
+      "sub": "删除你发给 Rwen 的每一条消息。",
+      "confirm_title": "清空对话记录?",
+      "confirm_body": "这会永久删除你和 Rwen 之间的所有消息。课程进度和账户保持不变。此操作无法撤销。",
+      "confirm_action": "全部清空",
+      "error_title": "清空失败",
+      "success_title": "已清空",
+      "success_body": "你的对话记录已删除。"
+    },
+    "export_row": {
+      "label": "导出我的数据",
+      "sub": "下载你的资料、进度和对话副本。"
+    },
+    "share": {
+      "anthropic": { "label": "Anthropic (Claude)",   "sub": "接收你的消息以生成 Rwen 的回复。不会被用于模型训练。" },
+      "elevenlabs": { "label": "ElevenLabs(语音)",    "sub": "生成 Rwen 的声音并转写你的语音。音频会在 24 小时内删除。" },
+      "supabase":  { "label": "Supabase(数据库)",    "sub": "存储你的账户、进度和对话记录。" }
+    },
+    "rights": {
+      "policy_label": "隐私政策",
+      "policy_sub":   "我们收集什么、为什么收集的完整说明。",
+      "terms_label":  "服务条款",
+      "terms_sub":    "使用 Rwendo 的规则。"
+    },
+    "note": "如需删除整个账户,请前往「我的」→「删除账户和所有数据」。"
+  },
+  "language_pack_screen": {
+    "title": "语言包",
+    "subtitle": "在不同语言之间切换",
+    "available_now": "现在可用",
+    "coming_soon_section": "即将推出",
+    "available_curriculum_sub": "100 节课 · 模块 1–10 · 七阶段 Rwendo 学习法",
+    "dev_curriculum_sub": "课程开发中",
+    "coming_soon_label": "即将推出",
+    "coming_soon_alert_title": "{{name}} — 即将推出",
+    "coming_soon_alert_body": "我们正在编写 {{name}} 的课程。现在请继续使用 Shona-English 体验完整的 Rwendo 学习法,{{name}} 准备好后我们会第一时间通知你。",
+    "coming_soon_packs": {
+      "english-spanish":    "西班牙语",
+      "english-french":     "法语",
+      "english-portuguese": "葡萄牙语",
+      "english-swahili":    "斯瓦希里语",
+      "english-zulu":       "祖鲁语",
+      "english-mandarin":   "普通话"
+    }
+  },
+  "change_password": {
+    "title": "修改密码",
+    "current_label": "当前密码",
+    "current_placeholder": "你当前的密码",
+    "new_label": "新密码",
+    "new_placeholder": "至少 8 个字符",
+    "confirm_label": "确认新密码",
+    "confirm_placeholder": "再次输入新密码",
+    "show": "显示",
+    "hide": "隐藏",
+    "rules": {
+      "length": "至少 8 个字符",
+      "upper": "包含一个大写字母 (A-Z)",
+      "lower": "包含一个小写字母 (a-z)",
+      "number": "包含一个数字 (0-9)",
+      "special": "包含一个特殊字符 (!@#$...)",
+      "different": "与当前密码不同"
+    },
+    "mismatch": "两次密码不一致",
+    "submit": "更新密码",
+    "wrong_current_title": "当前密码错误",
+    "wrong_current_body": "你输入的当前密码不正确。",
+    "update_error_title": "密码更新失败",
+    "success_title": "密码已更新",
+    "success_body": "你的密码已成功修改。"
+  },
+  "export_screen": {
+    "title": "导出我的数据",
+    "hero_title": "你的数据,集中在一个文件里",
+    "hero_body": "生成一份 JSON 副本,包含你的资料、课程进度以及与 Rwen 的对话记录。你可以发送给自己,保存到 Files,或者分享到任何设备支持的位置。",
+    "section_included": "包含的内容",
+    "items": {
+      "account":       { "label": "账户",        "desc": "邮箱、账户创建日期" },
+      "profile":       { "label": "资料",        "desc": "显示名称、学习偏好、设置" },
+      "lesson_progress": { "label": "课程进度",  "desc": "每节已完成课程的成绩与 XP" },
+      "conversations": { "label": "对话",        "desc": "你与 Rwen 之间的所有消息" }
+    },
+    "summary_title": "概要",
+    "summary_profile_included": "资料:已包含",
+    "summary_profile_missing": "资料:缺失",
+    "summary_lessons": "课程记录:{{count}}",
+    "summary_messages": "消息:{{count}}",
+    "preview_btn": "预览内容",
+    "share_btn": "生成并分享",
+    "share_title": "我的 Rwendo 数据",
+    "load_error_title": "加载失败",
+    "load_error_body": "请稍后再试。",
+    "note": "你的数据在设备上由 Supabase 生成,只发送到你选择分享的位置。不会上传给任何第三方。"
+  },
+  "plans_screen": {
+    "title": "方案",
+    "subtitle": "选一段适合你的旅程",
+    "hero_title": "为每个阶段而设",
+    "hero_body": "免费即可使用全部 100 节课。当你想让 Rwen 成为你的对话伙伴时,再升级。",
+    "popular_badge": "最受欢迎",
+    "current_badge": "你的方案",
+    "upgrade_to": "升级到 {{name}}",
+    "footnote": "欧盟/英国用户享有 14 天冷静期,可全额退款。可随时取消。",
+    "alert_title": "{{name}} — 即将推出",
+    "alert_body": "订阅会随下一次更新一同上线。我们正与 RevenueCat 合作,让计费体验顺畅且方便退款。请稍候!",
+    "tiers": {
+      "free": {
+        "name": "免费版",
+        "price": "A$0",
+        "tagline": "按自己的节奏学",
+        "features": [
+          "100 节绍纳语课程(完整 Rwendo 学习法)",
+          "XP、连胜、成就",
+          "不含 AI 伙伴"
+        ]
+      },
+      "text_ai": {
+        "name": "Text AI",
+        "price": "A$10/月",
+        "tagline": "用文字和 Rwen 聊天",
+        "features": [
+          "包含免费版的所有功能",
+          "每月 500 条 AI 消息",
+          "为你定制的学习建议"
+        ]
+      },
+      "voice": {
+        "name": "Voice",
+        "price": "A$15/月",
+        "tagline": "听 Rwen 说话,也对它说",
+        "features": [
+          "包含 Text AI 的所有功能",
+          "200 次语音回复(按住说话)",
+          "4 种声音可选"
+        ]
+      },
+      "companion": {
+        "name": "Companion",
+        "price": "A$25/月",
+        "tagline": "免提对话",
+        "features": [
+          "包含 Voice 的所有功能",
+          "60 分钟实时对话",
+          "无限文字与语音回复"
+        ]
+      },
+      "premium": {
+        "name": "Premium",
+        "price": "A$45/月",
+        "tagline": "完整的 Rwen 体验",
+        "features": [
+          "包含 Companion 的所有功能",
+          "120 分钟实时对话",
+          "3D Rwen 与口型同步(即将推出)"
+        ]
+      }
+    }
+  },
+  "profile": {
+    "stats": {
+      "total_xp": "总 XP",
+      "streak": "连胜",
+      "lessons": "课程"
+    },
+    "sections": {
+      "my_plan": "我的方案",
+      "colour_theme": "主题颜色",
+      "app_language": "应用语言",
+      "rwens_voice": "Rwen 的声音",
+      "learning": "学习",
+      "my_progress": "我的进度",
+      "account": "账户",
+      "legal": "法律文件",
+      "support": "支持"
+    },
+    "app_language_options": {
+      "en": "English",
+      "sn": "ChiShona"
+    },
+    "plan": {
+      "free_name": "免费方案",
+      "free_desc": "可使用全部课程",
+      "upgrade": "升级",
+      "view_all_plans": "查看所有方案"
+    },
+    "voices": {
+      "male_warm":    { "name": "George",  "description": "温暖的讲述者" },
+      "male_energy":  { "name": "Charlie", "description": "充满活力,自信沉稳" },
+      "female_warm":  { "name": "Jessica", "description": "俏皮明亮,亲切温和" },
+      "female_clear": { "name": "Alice",   "description": "清晰悦耳的引导者" }
+    },
+    "learning": {
+      "language_pack": "语言包",
+      "daily_xp_goal": "每日 XP 目标",
+      "daily_xp_value": "{{count}} XP",
+      "daily_reminders": "每日提醒",
+      "reminders_enabled_title": "提醒已开启",
+      "reminders_enabled_body": "我们会保存你的偏好。推送通知将在后续更新中上线。"
+    },
+    "progress_rows": {
+      "completed_lessons": "已完成课程",
+      "current_streak": "当前连胜",
+      "streak_days": "{{count}} 天",
+      "total_xp_earned": "累计获得 XP",
+      "achievements": "成就"
+    },
+    "account_rows": {
+      "edit_profile": "编辑资料",
+      "change_password": "修改密码",
+      "privacy_settings": "隐私设置",
+      "export_data": "导出我的数据"
+    },
+    "legal_rows": {
+      "terms": "服务条款",
+      "privacy_policy": "隐私政策"
+    },
+    "support_rows": {
+      "help_faq": "帮助和常见问题",
+      "about": "关于 Rwendo",
+      "methodology": "我们怎么教",
+      "companion_philosophy": "我们的 AI 伙伴理念",
+      "contact_us": "联系我们",
+      "no_email_app_title": "未找到邮件应用",
+      "no_email_app_body": "请用你常用的邮件应用发送邮件到 support@rwendo.app。",
+      "contact_email_subject": "Rwendo 支持"
+    },
+    "sign_out": {
+      "button": "退出登录",
+      "confirm_title": "退出登录",
+      "confirm_body": "你确定吗?",
+      "confirm_action": "退出登录"
+    },
+    "delete_account": {
+      "button": "删除账户和所有数据",
+      "confirm_title": "删除账户",
+      "confirm_body": "这会永久删除你的账户和所有进度,无法撤销。",
+      "confirm_action": "删除我的账户",
+      "error_title": "出错了",
+      "error_body": "删除账户失败,请重试。"
+    }
+  },
+  "stats": {
+    "xp": "XP",
+    "streak": "连胜",
+    "lessons": "课程"
+  },
+  "travel": {
+    "coming_soon_badge": "即将推出",
+    "hero_title": "津巴布韦\n旅行模式",
+    "hero_sub": "你的绍纳语 + 文化知识 + 在地旅行向导。Rwendo 在真实世界。",
+    "teaser": {
+      "features": "功能",
+      "zimbabwe": "津巴布韦",
+      "connections": "连接"
+    },
+    "whats_coming": "即将推出的内容",
+    "lock_soon": "即将上线",
+    "features": {
+      "phrasebook":  { "title": "短语手册",       "desc": "按场景分类的实用句子——机场、酒店、市集、紧急情况" },
+      "culture":     { "title": "文化指南",       "desc": "Tsika、习俗,以及在津巴布韦能看到什么" },
+      "money":       { "title": "钱与市集",       "desc": "物价、讨价还价、ZiG 货币、市集动线" },
+      "transport":   { "title": "从机场到城里",   "desc": "Kombi 路线、出租车贴士,Harare 与 Bulawayo 的出行" },
+      "travellers":  { "title": "结识同行者",     "desc": "认识其他在学绍纳语、要去津巴布韦的人" },
+      "safari":      { "title": "Safari 与公园",  "desc": "Hwange、Victoria Falls、Great Zimbabwe——你的向导" }
+    },
+    "notify": {
+      "title": "Rwen 正在打包行李",
+      "body": "旅行模式正在开发中。继续学你的绍纳语吧——等你落地 Harare,Rwen 已经准备好带你走了。",
+      "button": "上线时通知我",
+      "email_subject": "请通知我旅行模式上线",
+      "email_body": "嗨 Rwen,旅行模式上线时请告诉我!",
+      "fallback_title": "我们会告诉你",
+      "fallback_body": "发邮件到 hello@rwendo.app,我们会把你加入早期体验名单。"
+    },
+    "spotlight": {
+      "label": "目的地聚焦",
+      "title": "🌊 Victoria Falls",
+      "shona_name": "\"Mosi-oa-Tunya\"",
+      "meaning": "雷霆之雾",
+      "desc": "世界七大自然奇观之一,位于赞比西河上,横跨津巴布韦与赞比亚之间。在绍纳文化里,这是一处圣地——水之灵 midzimu yemvura 的居所。"
+    }
+  },
+  "home": {
+    "greetings": {
+      "morning": "早上好",
+      "afternoon": "下午好",
+      "evening": "晚上好"
+    },
+    "hero_sub": "{{greeting}} — 你旅程的第 {{day}} 天",
+    "daily_goal": "每日目标",
+    "talk_to_rwen": "和 Rwen 聊聊",
+    "talk_to_rwen_sub": "你的 AI 伙伴已就绪",
+    "continue_learning": "继续学习",
+    "all_lessons_complete": "🎉 所有课程已完成!",
+    "more_coming_soon": "更多内容即将推出",
+    "rwens_tip_today": "Rwen 今日小提示",
+    "quick_access": "快速入口",
+    "quick": {
+      "all_lessons": "全部课程",
+      "chat": "聊天",
+      "travel": "旅行",
+      "settings": "设置"
+    },
+    "journey_title": "{{flag}} 你的 {{lang}} 旅程",
+    "journey_progress": "在 {{units}} 个模块中,已完成 {{completed}}/{{total}} 节课。",
+    "journey_remaining": "距离 A2 流利度还剩 {{remaining}} 节课。",
+    "journey_done": "已达到 A2 流利度!🎉",
+    "tips": [
+      "每一段伟大的旅程都从一句 'Mhoro' 开始。你已经迈出了第一步。",
+      "绍纳语里有一句话:'Ukama igasva hunozadziswa nekudya'——分享食物,关系才算完整。今天就把你学到的分享给身边的人。",
+      "英语谚语:'It takes a village to raise a child'——一个孩子的成长需要整个村庄。学习语言也是如此,慢慢积累。",
+      "法语里说:'Petit à petit, l'oiseau fait son nid'——小鸟一点一点筑起自己的窝。每天一点点,语言的巢就会成形。",
+      "在津巴布韦,'Sadza' 不只是食物,它是身份的象征。吃下沙杂,就吃下了一份津巴布韦的文化。",
+      "Rwen 的小提示:今天把上一节课的内容大声念出来。开口练习的效果是默读的十倍。",
+      "绍纳语:'Chara chimwe hachitswanyi inda'——一根手指压不死虱子。一字一句,慢慢累积,就能成事。",
+      "你正在学习的是数百万人使用的语言。每掌握一个词,就是和这个世界多一份连接。"
+    ]
+  }
+}

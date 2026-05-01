@@ -40,9 +40,21 @@ function SettingsRow({ label, value, onPress, danger }: {
   );
 }
 
-// DB stores the legacy values 'english' / 'shona'; i18n keys are ISO 'en' / 'sn'.
-const ISO_TO_DB: Record<SupportedLanguage, string> = { en: 'english', sn: 'shona' };
-const LANG_FLAGS: Record<SupportedLanguage, string> = { en: '🇬🇧', sn: '🇿🇼' };
+// DB stores the legacy values 'english' / 'shona' / etc; i18n keys are ISO codes.
+const ISO_TO_DB: Record<SupportedLanguage, string> = {
+  en: 'english',
+  sn: 'shona',
+  fr: 'french',
+  zh: 'chinese',
+  tl: 'tagalog',
+};
+const LANG_FLAGS: Record<SupportedLanguage, string> = {
+  en: '🇬🇧',
+  sn: '🇿🇼',
+  fr: '🇫🇷',
+  zh: '🇨🇳',
+  tl: '🇵🇭',
+};
 
 export default function ProfileScreen() {
   const { t, i18n } = useTranslation('common');
