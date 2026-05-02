@@ -14,30 +14,38 @@
  */
 
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Pressable, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, Pressable, ActivityIndicator, NativeModules } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import Constants, { ExecutionEnvironment } from 'expo-constants';
 import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
 
-// Expo Go can't load @livekit/react-native-webrtc (no native module). Detect
-// the runtime BEFORE attempting the require — if we let VoiceImpl load, the
-// polyfill setup throws asynchronously (via a property getter on the WebRTC
-// native module) and React surfaces it as an uncaught error. Short-circuit
-// to the friendly fallback in Expo Go.
-const IS_EXPO_GO = Constants.executionEnvironment === ExecutionEnvironment.StoreClient;
+// Direct check: does this runtime have WebRTC available? @livekit/react-native-
+// webrtc throws at MODULE LOAD time (not lazy) if NativeModules.WebRTCModule is
+// null. So we check that exact thing before allowing any require() chain that
+// would touch the SDK. Belt-and-braces: we also check Constants.execution-
+// Environment in case some custom build reports WebRTCModule as something
+// truthy-but-broken.
+const HAS_WEBRTC_NATIVE = NativeModules?.WebRTCModule != null;
+const IS_EXPO_GO =
+  Constants.executionEnvironment === ExecutionEnvironment.StoreClient ||
+  Constants.appOwnership === 'expo';
+const VOICE_AVAILABLE = HAS_WEBRTC_NATIVE && !IS_EXPO_GO;
 
 export default function VoiceScreen() {
   const [Impl, setImpl] = useState<React.ComponentType | null>(null);
   const [error, setError] = useState<string | null>(
-    IS_EXPO_GO
-      ? "Expo Go can't load WebRTC. Voice mode needs the dev-client APK build."
+    !VOICE_AVAILABLE
+      ? "This build doesn't have WebRTC. Voice mode needs the dev-client APK from `eas build --profile development --platform android`."
       : null,
   );
 
   useEffect(() => {
-    if (IS_EXPO_GO) return; // Don't even try the require in Expo Go.
+    // Skip the require entirely if WebRTC native module isn't present —
+    // attempting it would throw "WebRTC native module not found" at module
+    // load time before our try/catch can save us.
+    if (!VOICE_AVAILABLE) return;
     try {
       // eslint-disable-next-line @typescript-eslint/no-require-imports
       const mod = require('../../components/companion/VoiceImpl');
