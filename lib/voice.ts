@@ -68,6 +68,14 @@ export async function startRecording(): Promise<void> {
     const { status } = await Audio.requestPermissionsAsync();
     if (status !== 'granted') { console.warn('Microphone permission not granted'); return; }
 
+    // Clean up any orphaned recording before starting a new one. expo-av
+    // throws "Only one Recording object can be prepared at a given time" if
+    // a prior session crashed mid-flow or the user taps the mic rapidly.
+    if (currentRecording) {
+      try { await currentRecording.stopAndUnloadAsync(); } catch {}
+      currentRecording = null;
+    }
+
     await Audio.setAudioModeAsync({ allowsRecordingIOS: true, playsInSilentModeIOS: true });
 
     const { recording } = await Audio.Recording.createAsync(
@@ -76,6 +84,12 @@ export async function startRecording(): Promise<void> {
     currentRecording = recording;
   } catch (e) {
     console.error('startRecording error:', e);
+    // If creation failed, make sure we don't leave a half-prepared recording
+    // around for the next attempt.
+    if (currentRecording) {
+      try { await currentRecording.stopAndUnloadAsync(); } catch {}
+      currentRecording = null;
+    }
   }
 }
 
