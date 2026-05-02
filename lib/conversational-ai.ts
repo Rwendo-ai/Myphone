@@ -8,16 +8,14 @@
  *
  * The actual hook (`useConversation` from @elevenlabs/react) must be used
  * inside a component wrapped by `<ConversationProvider>`. See
- * app/companion/voice.tsx for the consumer.
+ * components/companion/VoiceImpl.tsx for the consumer.
  *
- * IMPORTANT: this module imports '@elevenlabs/react-native' which polyfills
- * the WebRTC globals used by livekit-client. That import has side effects
- * and must run ONCE on app startup (we trigger it from voice.tsx the first
- * time the user opens voice mode).
+ * IMPORTANT: this file does NOT statically import '@elevenlabs/react-native'.
+ * That package's RN entry runs `registerGlobals()` from @livekit/react-native
+ * at module-load time, which fails in Expo Go (no native WebRTC module).
+ * The polyfill import lives at the top of VoiceImpl.tsx and only runs when
+ * VoiceImpl is dynamically loaded by app/companion/voice.tsx via require().
  */
-
-// Side-effectful import: registers WebRTC globals + audio session strategy.
-import '@elevenlabs/react-native';
 
 import type { CompanionPreset } from '../data/companions/presets';
 import type { UserProfile } from './claude';
