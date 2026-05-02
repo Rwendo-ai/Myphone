@@ -14,6 +14,7 @@
  */
 
 import type { CompanionPreset } from '../data/companions/presets';
+import { MISSION_PILLARS } from '../data/companions/presets';
 import type { UserProfile } from './claude';
 import type { SpeakerPack } from '../types/packs';
 
@@ -80,7 +81,10 @@ export function buildCompanionPrompt(input: CompanionPromptInput): string {
     recent_commitments: recentCommitments || '(none yet)',
   };
 
-  let prompt = preset.systemPromptTemplate;
+  // Mission pillars first — they apply to every preset, every tier, every
+  // conversation. The persona template comes after, and the speaker-pack
+  // guardrails close it. Order matters: mission > persona > guardrails.
+  let prompt = `${MISSION_PILLARS}\n\n────────────────────────\n\n${preset.systemPromptTemplate}`;
   for (const [token, value] of Object.entries(tokens)) {
     prompt = prompt.replaceAll(`{{${token}}}`, value);
   }

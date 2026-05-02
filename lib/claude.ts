@@ -261,11 +261,20 @@ export async function sendMessage(
   }
 
   // ── Legacy direct-Anthropic path (pre-Phase M) ──────────────────────────
+  // Trim the conversation history to the last 20 turns. Anything older lives
+  // in the system prompt's memory section (built from companion_summaries
+  // weekly compressions) — keeps per-message input cost bounded.
   const messages: ChatMessage[] = [
     ...history.slice(-20),
     { role: 'user', content: userMessage },
   ];
 
+  // Prompt caching: mark the system prompt as cacheable so subsequent
+  // messages within the 5-minute TTL pay $0.10/M for the cached prefix
+  // (vs $1/M without caching). For a heavy chatter that's the difference
+  // between $20+/mo and $5/mo per user. The system prompt is identical
+  // across messages until memory or weekly summary updates, so it caches
+  // very effectively. See https://docs.anthropic.com/en/docs/prompt-caching
   const response = await fetch(CLAUDE_API_URL, {
     method: 'POST',
     headers: {
@@ -276,7 +285,13 @@ export async function sendMessage(
     body: JSON.stringify({
       model: 'claude-haiku-4-5-20251001',
       max_tokens: 350,
-      system: systemPrompt,
+      system: [
+        {
+          type: 'text',
+          text: systemPrompt,
+          cache_control: { type: 'ephemeral' },
+        },
+      ],
       messages,
     }),
   });

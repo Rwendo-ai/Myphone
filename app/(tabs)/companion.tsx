@@ -250,36 +250,65 @@ export default function CompanionScreen() {
           )}
         </ScrollView>
 
-        {/* Input row */}
-        <View style={styles.inputRow}>
-          <Pressable
-            style={[styles.micBtn, isRecording && styles.micBtnActive]}
-            onPressIn={handleMicPressIn}
-            onPressOut={handleMicPressOut}
-            disabled={convoActive}
-          >
-            <Text style={styles.micBtnText}>{isRecording ? '🔴' : '🎤'}</Text>
-          </Pressable>
+        {/* ChatGPT/Claude-style composer:
+              [+]   text input   [mic]  [send-or-voice]
+            The right-most button shows a send arrow when there's text to
+            send, or a voice-mode launcher when the input is empty. */}
+        <View style={styles.composerRow}>
+          <View style={styles.composer}>
+            <Pressable
+              style={styles.composerLeftBtn}
+              onPress={() => Alert.alert(
+                'More options',
+                'Attach a photo, share a memory, or upload a file. Coming with the next update.',
+                [{ text: 'OK' }],
+              )}
+              hitSlop={8}
+            >
+              <Text style={styles.composerLeftIcon}>＋</Text>
+            </Pressable>
 
-          <TextInput
-            style={styles.input}
-            placeholder={convoActive ? t('input.placeholder_convo_active') : t('input.placeholder_default')}
-            placeholderTextColor={Colors.gray[400]}
-            value={input}
-            onChangeText={setInput}
-            multiline
-            returnKeyType="send"
-            onSubmitEditing={sendText}
-            editable={!loading && !convoActive}
-          />
+            <TextInput
+              style={styles.composerInput}
+              placeholder={convoActive ? t('input.placeholder_convo_active') : t('input.placeholder_default')}
+              placeholderTextColor={Colors.gray[400]}
+              value={input}
+              onChangeText={setInput}
+              multiline
+              returnKeyType="send"
+              onSubmitEditing={sendText}
+              editable={!loading && !convoActive}
+            />
 
-          <Pressable
-            style={[styles.sendBtn, (!input.trim() || loading || convoActive) && styles.sendBtnDisabled]}
-            onPress={sendText}
-            disabled={!input.trim() || loading || convoActive}
-          >
-            <Text style={styles.sendBtnText}>→</Text>
-          </Pressable>
+            <Pressable
+              style={[styles.composerMicBtn, isRecording && styles.composerMicBtnActive]}
+              onPressIn={handleMicPressIn}
+              onPressOut={handleMicPressOut}
+              disabled={convoActive}
+              hitSlop={8}
+            >
+              <Text style={styles.composerMicIcon}>{isRecording ? '🔴' : '🎙'}</Text>
+            </Pressable>
+
+            {input.trim().length > 0 ? (
+              <Pressable
+                style={[styles.composerActionBtn, loading && styles.composerActionBtnDisabled]}
+                onPress={sendText}
+                disabled={!input.trim() || loading || convoActive}
+                hitSlop={8}
+              >
+                <Text style={styles.composerActionIcon}>↑</Text>
+              </Pressable>
+            ) : (
+              <Pressable
+                style={styles.composerActionBtn}
+                onPress={() => router.push('/companion/voice')}
+                hitSlop={8}
+              >
+                <Text style={styles.composerActionIcon}>〰</Text>
+              </Pressable>
+            )}
+          </View>
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
@@ -350,4 +379,77 @@ const styles = StyleSheet.create({
   },
   sendBtnDisabled: { backgroundColor: Colors.gray[200] },
   sendBtnText: { color: Colors.white, fontSize: FontSize.lg, fontWeight: FontWeight.bold },
+
+  // ChatGPT/Claude-style composer
+  composerRow: {
+    backgroundColor: Colors.gray[50],
+    paddingHorizontal: Spacing.md,
+    paddingTop: Spacing.sm,
+    paddingBottom: Spacing.md,
+  },
+  composer: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    backgroundColor: Colors.white,
+    borderRadius: 28,
+    paddingHorizontal: 6,
+    paddingVertical: 6,
+    gap: 4,
+    shadowColor: Colors.black,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.06,
+    shadowRadius: 8,
+    elevation: 2,
+    borderWidth: 1,
+    borderColor: Colors.gray[200],
+  },
+  composerLeftBtn: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  composerLeftIcon: {
+    fontSize: 26,
+    color: Colors.gray[500],
+    fontWeight: FontWeight.regular,
+    lineHeight: 28,
+  },
+  composerInput: {
+    flex: 1,
+    fontSize: FontSize.md,
+    color: Colors.gray[900],
+    maxHeight: 120,
+    minHeight: 40,
+    paddingHorizontal: Spacing.sm,
+    paddingTop: Platform.OS === 'ios' ? 10 : 6,
+    paddingBottom: Platform.OS === 'ios' ? 10 : 6,
+  },
+  composerMicBtn: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  composerMicBtnActive: {
+    backgroundColor: '#FEE2E2',
+  },
+  composerMicIcon: { fontSize: 18 },
+  composerActionBtn: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: Colors.gray[900],
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  composerActionBtnDisabled: { backgroundColor: Colors.gray[300] },
+  composerActionIcon: {
+    color: Colors.white,
+    fontSize: 22,
+    fontWeight: FontWeight.bold,
+    lineHeight: 22,
+  },
 });
