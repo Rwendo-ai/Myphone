@@ -17,21 +17,33 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Pressable, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
+import Constants, { ExecutionEnvironment } from 'expo-constants';
 import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
 
+// Expo Go can't load @livekit/react-native-webrtc (no native module). Detect
+// the runtime BEFORE attempting the require — if we let VoiceImpl load, the
+// polyfill setup throws asynchronously (via a property getter on the WebRTC
+// native module) and React surfaces it as an uncaught error. Short-circuit
+// to the friendly fallback in Expo Go.
+const IS_EXPO_GO = Constants.executionEnvironment === ExecutionEnvironment.StoreClient;
+
 export default function VoiceScreen() {
   const [Impl, setImpl] = useState<React.ComponentType | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(
+    IS_EXPO_GO
+      ? "Expo Go can't load WebRTC. Voice mode needs the dev-client APK build."
+      : null,
+  );
 
   useEffect(() => {
+    if (IS_EXPO_GO) return; // Don't even try the require in Expo Go.
     try {
-      // Dynamic require — at app startup Metro bundles VoiceImpl, but its
-      // native-module imports only execute when require() is called here.
-      // In Expo Go this throws (no @livekit/react-native-webrtc native side);
-      // we catch and show the dev-build-required screen.
       // eslint-disable-next-line @typescript-eslint/no-require-imports
       const mod = require('../../components/companion/VoiceImpl');
+      if (!mod?.default) {
+        throw new Error('VoiceImpl module loaded but exposed no default export.');
+      }
       setImpl(() => mod.default);
     } catch (e) {
       const detail = e instanceof Error ? e.message : String(e);
