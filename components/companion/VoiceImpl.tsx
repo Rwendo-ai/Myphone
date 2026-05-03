@@ -13,6 +13,13 @@
  * `eas build --profile development --platform android` and install the APK.
  */
 
+// Browser-global polyfills MUST run before @elevenlabs/react-native loads.
+// The ElevenLabs/LiveKit stack assumes Event, CloseEvent, AudioContext,
+// document exist as globals — RN doesn't have them. Without these stubs,
+// the audio-track attach crashes with "Property 'document' doesn't exist"
+// and the WebRTC reconnect loop spins until the server kicks the session.
+import './voice-polyfills';
+
 // Side-effectful import: registers WebRTC globals + LiveKit audio session
 // strategy with @elevenlabs/client. This file is dynamically required from
 // app/companion/voice.tsx so the import only runs when voice mode is opened
