@@ -5,13 +5,14 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { SettingsProvider, useSettings, RwenVoiceKey } from '../lib/SettingsContext';
 import { AuthProvider, useAuth } from '../lib/AuthContext';
 import { supabase } from '../lib/supabase';
+import { fetchActiveCompanionPresetId } from '../lib/active-companion';
 import '../lib/i18n';
 import { setAppLanguage } from '../lib/i18n';
 
 // Loads user profile settings (theme, avatar, voice) from Supabase after login
 function ProfileLoader() {
   const { user } = useAuth();
-  const { setThemeId, setAvatarUrl, setRwenVoice } = useSettings();
+  const { setThemeId, setAvatarUrl, setRwenVoice, setActiveCompanionPresetId } = useSettings();
 
   useEffect(() => {
     if (!user) return;
@@ -27,6 +28,10 @@ function ProfileLoader() {
         if (data.rwen_voice_key) setRwenVoice(data.rwen_voice_key as RwenVoiceKey);
         if (data.app_language)  setAppLanguage(data.app_language);
       });
+
+    // Active companion — driven from a separate table for multi-companion
+    // support at higher tiers. Defaults to Rwen if no row.
+    fetchActiveCompanionPresetId(user.id).then(setActiveCompanionPresetId);
   }, [user?.id]);
 
   return null;

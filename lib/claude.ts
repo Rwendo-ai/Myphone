@@ -1,6 +1,9 @@
 import { supabase } from './supabase';
 import { SpeakerPack } from '../types/packs';
 import { english as defaultSpeaker } from '../data/speakers';
+import { resolvePreset } from './active-companion';
+import { buildCompanionPrompt } from './companion-prompts';
+import type { CompanionPreset } from '../data/companions/presets';
 
 const CLAUDE_API_URL = 'https://api.anthropic.com/v1/messages';
 const CLAUDE_KEY = process.env.EXPO_PUBLIC_CLAUDE_KEY ?? '';
@@ -229,6 +232,11 @@ export async function sendMessage(
   history: ChatMessage[],
   speaker: SpeakerPack = defaultSpeaker,
   lessonContext?: string,
+  /** The active companion preset. If omitted, falls back to Rwen. The chat
+   *  screen passes this from useSettings().activeCompanionPresetId so the
+   *  system prompt is built around the user's chosen companion (Maya, Sam,
+   *  Tendai, Aria, etc.) instead of always speaking as Rwen. */
+  activeCompanionPresetId?: string | null,
 ): Promise<string> {
   // Save user message
   await supabase.from('conversations').insert({
@@ -241,10 +249,21 @@ export async function sendMessage(
   // Fetch full profile (cached)
   const profile = await fetchUserProfile(userId);
 
-  // Build personalised system prompt — persona + guardrails come from the speaker pack
-  const systemPrompt = profile
-    ? buildSystemPrompt(profile, lessonContext, speaker)
-    : `${speaker.aiSystemPrompt.persona}\n\n${speaker.aiSystemPrompt.guardrails}`;
+  // The active companion's preset drives the persona. If we're in lesson
+  // context (Phase 8 from a lesson), force Tendai so Rwen-the-language-friend
+  // takes the wheel regardless of who the user picked as their main companion
+  // — that's the right voice for a "help me with this lesson" moment.
+  const presetForChat = lessonContext
+    ? resolvePreset('tendai')
+    : resolvePreset(activeCompanionPresetId ?? null);
+
+  const systemPrompt = buildCompanionPrompt({
+    preset: presetForChat,
+    profile,
+    speaker,
+    fallbackName: profile?.display_name?.trim() || 'friend',
+    lessonContext,
+  });
 
   // ── Edge Function path (Phase M) ────────────────────────────────────────
   if (USE_EDGE_FUNCTION) {

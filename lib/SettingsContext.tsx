@@ -64,6 +64,13 @@ interface Settings {
   setThemeId: (id: string) => void;
   avatarUrl: string | null;
   setAvatarUrl: (url: string | null) => void;
+
+  // ── active companion (chat persona) ──────────────────────────────────────
+  /** Preset ID of the currently active companion. null = use Rwen-as-default. */
+  activeCompanionPresetId: string | null;
+  /** Set the active preset locally. Use after the DB has been updated to reflect
+   *  a switch — e.g. from the Companions management tab. */
+  setActiveCompanionPresetId: (id: string | null) => void;
 }
 
 const defaultLegacyPack = PACKS.find((p) => p.id === DEFAULT_PACK_ID) ?? PACKS[0];
@@ -111,6 +118,9 @@ const SettingsContext = createContext<Settings>({
   setThemeId: () => {},
   avatarUrl: null,
   setAvatarUrl: () => {},
+
+  activeCompanionPresetId: null,
+  setActiveCompanionPresetId: () => {},
 });
 
 export function SettingsProvider({ children }: { children: ReactNode }) {
@@ -131,6 +141,9 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
   const [rwenVoice,  setRwenVoice]  = useState<RwenVoiceKey>('male_warm');
   const [themeId,    setThemeId]    = useState<string>('ocean_blue');
   const [avatarUrl,  setAvatarUrl]  = useState<string | null>(null);
+
+  // active companion (chat persona)
+  const [activeCompanionPresetId, setActiveCompanionPresetId] = useState<string | null>(null);
 
   // ── derive v3 packs from IDs ──────────────────────────────────────────────
   const speaker      = SPEAKERS[speakerId] ?? defaultSpeaker;
@@ -205,6 +218,9 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
       setThemeId,
       avatarUrl,
       setAvatarUrl,
+      // active companion
+      activeCompanionPresetId,
+      setActiveCompanionPresetId,
     }}>
       {children}
     </SettingsContext.Provider>

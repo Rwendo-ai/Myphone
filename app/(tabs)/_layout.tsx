@@ -3,12 +3,27 @@ import { Pressable, View, StyleSheet, Text } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import RwenImage from '../../components/rwen/RwenImage';
 import { Colors } from '../../constants/colors';
+import { useSettings } from '../../lib/SettingsContext';
+import { COMPANION_PRESETS } from '../../data/companions/presets';
 
-function RwenTabButton({ onPress }: { onPress?: () => void }) {
+function CompanionTabButton({ onPress }: { onPress?: () => void }) {
+  const { activeCompanionPresetId } = useSettings();
+  // Default to Rwen if no preset chosen yet (or it's the Rwen preset).
+  const presetId = activeCompanionPresetId ?? 'rwen';
+  const preset = COMPANION_PRESETS[presetId];
+
   return (
     <Pressable onPress={onPress} style={styles.rwenButtonWrapper}>
       <View style={styles.rwenButton}>
-        <RwenImage pose="idle" size={52} />
+        {presetId === 'rwen' || !preset ? (
+          // Rwen has bespoke 3D-rendered art; the others use emoji until
+          // we ship per-companion avatar art (Phase 4).
+          <RwenImage pose="idle" size={52} />
+        ) : (
+          <View style={styles.companionEmojiWrap}>
+            <Text style={styles.companionEmoji}>{preset.emoji}</Text>
+          </View>
+        )}
       </View>
     </Pressable>
   );
@@ -53,7 +68,7 @@ export default function TabLayout() {
           title: t('nav.rwen'),
           tabBarLabel: '',
           tabBarIcon: () => null,
-          tabBarButton: (props) => <RwenTabButton onPress={props.onPress as (() => void) | undefined} />,
+          tabBarButton: (props) => <CompanionTabButton onPress={props.onPress as (() => void) | undefined} />,
         }}
       />
       <Tabs.Screen
@@ -112,5 +127,16 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.4,
     shadowRadius: 12,
     elevation: 10,
+  },
+  companionEmojiWrap: {
+    width: 52,
+    height: 52,
+    borderRadius: 26,
+    backgroundColor: Colors.white,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  companionEmoji: {
+    fontSize: 30,
   },
 });

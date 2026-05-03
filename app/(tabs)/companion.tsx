@@ -30,7 +30,7 @@ export default function CompanionScreen() {
   // Claude system prompt can be primed with it.
   const { lessonContext } = useLocalSearchParams<{ lessonContext?: string }>();
   const { user } = useAuth();
-  const { learnedLanguage, rwenVoice, theme, speaker } = useSettings();
+  const { learnedLanguage, rwenVoice, theme, speaker, activeCompanionPresetId } = useSettings();
   const { username } = useProgress();
 
   const [messages,      setMessages]      = useState<DisplayMessage[]>([]);
@@ -81,7 +81,7 @@ export default function CompanionScreen() {
     setTimeout(() => scrollRef.current?.scrollToEnd({ animated: true }), 100);
 
     try {
-      const reply = await sendMessage(user.id, text.trim(), historyRef.current, speaker, lessonContext);
+      const reply = await sendMessage(user.id, text.trim(), historyRef.current, speaker, lessonContext, activeCompanionPresetId);
 
       historyRef.current = [
         ...historyRef.current,

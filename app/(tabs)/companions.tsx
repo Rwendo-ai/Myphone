@@ -41,7 +41,7 @@ interface CompanionRow {
 
 export default function CompanionsScreen() {
   const { user } = useAuth();
-  const { entitlementContext } = useSettings();
+  const { entitlementContext, setActiveCompanionPresetId } = useSettings();
 
   const [companions, setCompanions] = useState<CompanionRow[]>([]);
   const [loading, setLoading] = useState(true);
@@ -119,6 +119,9 @@ export default function CompanionsScreen() {
           trust_score: 0,
         });
     }
+    // Push to global state so the chat screen + centre tab button + voice
+    // mode all immediately use the new persona without a remount.
+    setActiveCompanionPresetId(preset.id);
     await loadCompanions();
   };
 
