@@ -84,20 +84,59 @@ if (typeof global.MessageEvent === 'undefined') {
   global.MessageEvent = MessageEventPolyfill;
 }
 
-// ─── AudioContext (stub — analyser fails gracefully) ──────────────────────
-// ElevenLabs tries to set up an input volume analyser using AudioContext.
-// In RN there's no Web Audio API, but the SDK already wraps the analyser
-// setup in a try/catch and degrades gracefully. We just need a constructor
-// that throws so the catch fires (it already does, but without this stub
-// the failure happens at property access, not constructor — different
-// error path that doesn't catch).
+// ─── AudioContext (noop stub — won't throw) ───────────────────────────────
+// LiveKit's acquireAudioContext() does NOT wrap construction in try/catch,
+// so a throwing stub cascades to a full connection failure. Instead we
+// provide a noop class that silently does nothing. Audio routing in RN
+// happens through @livekit/react-native-webrtc's native engine, not the
+// Web Audio API, so making AudioContext a noop is functionally correct.
 if (typeof global.AudioContext === 'undefined') {
+  const makeAnalyser = () => ({
+    fftSize: 2048,
+    frequencyBinCount: 1024,
+    minDecibels: -100,
+    maxDecibels: -30,
+    smoothingTimeConstant: 0.8,
+    getByteFrequencyData: () => {},
+    getByteTimeDomainData: () => {},
+    getFloatFrequencyData: () => {},
+    getFloatTimeDomainData: () => {},
+    connect: () => {},
+    disconnect: () => {},
+  });
+  const makeGain = () => ({
+    gain: { value: 1, setValueAtTime: () => {}, linearRampToValueAtTime: () => {} },
+    connect: () => {},
+    disconnect: () => {},
+  });
+  const makeNode = () => ({
+    connect: () => {},
+    disconnect: () => {},
+  });
   class AudioContextStub {
-    constructor() {
-      throw new Error('AudioContext is not supported in React Native — use react-native-webrtc audio routing instead');
-    }
+    state = 'running';
+    sampleRate = 48000;
+    currentTime = 0;
+    destination = makeNode();
+    listener = {};
+    onstatechange = null;
+    constructor(_options?: unknown) {}
+    createAnalyser() { return makeAnalyser(); }
+    createGain() { return makeGain(); }
+    createMediaStreamSource() { return makeNode(); }
+    createMediaStreamDestination() { return { stream: { getAudioTracks: () => [], getVideoTracks: () => [], getTracks: () => [] }, ...makeNode() }; }
+    createBiquadFilter() { return makeNode(); }
+    createOscillator() { return { ...makeNode(), start: () => {}, stop: () => {}, frequency: { value: 440 } }; }
+    createScriptProcessor() { return makeNode(); }
+    resume() { return Promise.resolve(); }
+    suspend() { return Promise.resolve(); }
+    close() { return Promise.resolve(); }
+    addEventListener() {}
+    removeEventListener() {}
+    dispatchEvent() { return true; }
   }
   global.AudioContext = AudioContextStub;
+  global.webkitAudioContext = AudioContextStub;
 }
 
 // ─── document (minimal DOM stub) ──────────────────────────────────────────
@@ -168,9 +207,39 @@ if (typeof global.document === 'undefined') {
   global.document = documentStub;
 }
 
-// ─── window (alias for global, just in case) ──────────────────────────────
+// ─── window (with proper noop event methods) ──────────────────────────────
+// LiveKit calls window.removeEventListener during disconnect cleanup. A bare
+// `global.window = global` left removeEventListener undefined and crashed
+// the cleanup. Provide explicit noop event methods + the document/navigator
+// passthrough so SDK code can keep walking the chain.
 if (typeof global.window === 'undefined') {
-  global.window = global;
+  const windowStub = {
+    addEventListener: () => {},
+    removeEventListener: () => {},
+    dispatchEvent: () => true,
+    document: global.document,
+    navigator: global.navigator,
+    location: { href: '', origin: '', protocol: 'https:', host: '', pathname: '/', search: '', hash: '' },
+    innerWidth: 0,
+    innerHeight: 0,
+    devicePixelRatio: 1,
+    requestAnimationFrame: (cb: (timestamp: number) => void) => setTimeout(() => cb(Date.now()), 16),
+    cancelAnimationFrame: (id: number) => clearTimeout(id),
+    setTimeout: global.setTimeout,
+    clearTimeout: global.clearTimeout,
+    setInterval: global.setInterval,
+    clearInterval: global.clearInterval,
+    AudioContext: global.AudioContext,
+    Event: global.Event,
+    CloseEvent: global.CloseEvent,
+    MessageEvent: global.MessageEvent,
+  };
+  global.window = windowStub;
+}
+
+// ─── self (sometimes used as window alias) ────────────────────────────────
+if (typeof global.self === 'undefined') {
+  global.self = global.window;
 }
 
 // ─── Mark polyfills loaded so we can verify in dev ────────────────────────
