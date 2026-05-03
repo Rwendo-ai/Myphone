@@ -1,0 +1,41 @@
+# EAS Build ignore file. Takes priority over .gitignore for the build context.
+# Anything listed here is NOT uploaded to EAS's cloud builders.
+#
+# Default: .gitignore already excludes node_modules, .env, .env*.local, etc.
+# This file is for explicit safety + excluding stuff that's tracked in git
+# but doesn't need to be in the build context (docs, dev scripts).
+
+# ───── Sensitive — explicit even though .gitignore has them ─────
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p8
+*.p12
+*.jks
+*.mobileprovision
+
+# ───── Local-only files ─────
+.DS_Store
+.expo/
+.metro-health-check*
+
+# ───── Dev-only assets that don't need to be built ─────
+docs/
+scripts/
+*.log
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
+# ───── Editor/IDE clutter ─────
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ───── Git internals (already excluded by EAS but explicit) ─────
+.git/
+.gitignore
+.gitattributes
