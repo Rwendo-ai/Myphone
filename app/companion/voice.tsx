@@ -74,9 +74,14 @@ export default function VoiceScreen() {
   // the latest without forcing re-renders.
   const historyRef = useRef<ChatMessage[]>([]);
   // Track whether the user wants the loop to keep going (set when they tap
-  // start, cleared when they tap stop). The async chain checks this between
+  // start, cleared when they tap End). The async chain checks this between
   // turns to decide whether to listen again.
   const loopActiveRef = useRef(false);
+  // Set to true by handleOrbTap when the user taps the orb during 'listening'
+  // to signal "stop recording, send to Claude". The runTurn loop polls this
+  // and is the ONLY place that calls stopRecordingAndTranscribe — avoids
+  // the double-call race where two callers both try to consume the audio.
+  const userStoppedListeningRef = useRef(false);
 
   // Orb pulse animation — bigger when listening or speaking.
   const orbScale = useRef(new Animated.Value(1)).current;
@@ -130,30 +135,35 @@ export default function VoiceScreen() {
     }
     try {
       // 1. Listen
+      userStoppedListeningRef.current = false;
       setMode('listening');
       await startRecording();
 
-      // 2. Wait for user to tap "stop" (we don't auto-VAD here — keeps the
-      //    UI explicit and avoids the silence-detection hell). The actual
-      //    stop comes from the user pressing the orb again.
-      while (loopActiveRef.current && isCurrentlyRecording()) {
+      // 2. Wait for user to tap orb to signal "I'm done speaking" (or End).
+      //    No auto-VAD here — keeps the UI explicit. The orb tap during
+      //    'listening' sets userStoppedListeningRef = true, which we poll.
+      while (loopActiveRef.current && !userStoppedListeningRef.current) {
         await new Promise((r) => setTimeout(r, 100));
       }
       if (!loopActiveRef.current) {
-        // User stopped without a recording — tidy up.
+        // User hit End. Clean up the in-flight recording.
         try { await stopRecordingAndTranscribe(speaker.isoCode); } catch {}
         setMode('idle');
         return;
       }
 
-      // 3. Transcribe
+      // 3. Transcribe (single call — only the runTurn loop owns this path,
+      //    handleOrbTap only sets the signal flag).
       setMode('thinking');
       const text = await stopRecordingAndTranscribe(speaker.isoCode);
       if (!text || !text.trim()) {
-        // No speech detected. Reset to idle and let user tap again.
+        // No speech detected (silent recording, mic permission issue,
+        // or transcription returned empty). Show a hint and go idle.
+        setError("Didn't catch that. Tap the orb and try again.");
         setMode('idle');
         return;
       }
+      setError(null);
       setTranscript((prev) => [...prev, { id: `u-${Date.now()}`, role: 'user', text }]);
 
       // 4. Claude
@@ -197,12 +207,9 @@ export default function VoiceScreen() {
       loopActiveRef.current = true;
       runTurn();
     } else if (mode === 'listening') {
-      // User finished speaking — let the recording stop so transcribe runs.
-      // The active runTurn loop will pick this up.
-      (async () => {
-        try { await stopRecordingAndTranscribe(speaker.isoCode); } catch {}
-        // Don't reset loopActiveRef; runTurn handles it.
-      })();
+      // Signal the runTurn loop that the user is done. The loop will then
+      // call stopRecordingAndTranscribe ONCE and proceed to Claude.
+      userStoppedListeningRef.current = true;
     } else if (mode === 'speaking') {
       // Interrupt Rwen mid-reply.
       stopSpeaking();
