@@ -1,7 +1,7 @@
 // Playback: expo-audio (modern)
 // Recording: expo-av (still works in SDK 54, migrate when expo-audio recording is stable)
 import { createAudioPlayer } from 'expo-audio';
-import { Audio } from 'expo-av';
+import { Audio, InterruptionModeIOS, InterruptionModeAndroid } from 'expo-av';
 import { RWEN_VOICES, RwenVoiceKey } from './SettingsContext';
 
 const ELEVENLABS_KEY   = process.env.EXPO_PUBLIC_ELEVENLABS_KEY ?? '';
@@ -9,6 +9,44 @@ const ELEVENLABS_MODEL = 'eleven_flash_v2_5';
 
 let audioPlayer: ReturnType<typeof createAudioPlayer> | null = null;
 let currentRecording: Audio.Recording | null = null;
+
+// Recording config that engages the OS-level voice processing pipeline
+// (echo cancellation, noise suppression, auto-gain). On Android this means
+// audio source 7 = VOICE_COMMUNICATION; on iOS it means the audio session
+// is in voice-chat mode. Without this, speakerphone TTS bleeds back into
+// the mic and is transcribed as user input — the loop you saw earlier.
+const VOICE_CHAT_RECORDING: Audio.RecordingOptions = {
+  isMeteringEnabled: true,
+  android: {
+    extension: '.m4a',
+    outputFormat: Audio.AndroidOutputFormat.MPEG_4,
+    audioEncoder: Audio.AndroidAudioEncoder.AAC,
+    sampleRate: 16000,
+    numberOfChannels: 1,
+    bitRate: 64000,
+    // MediaRecorder.AudioSource.VOICE_COMMUNICATION = 7. The expo-av type
+    // doesn't expose this property in its public typing yet, but it's
+    // honoured at runtime and this is the only way to engage Android's
+    // hardware AEC for full-duplex voice without WebRTC. Cast escapes the
+    // TS check.
+    ...({ audioSource: 7 } as Record<string, number>),
+  },
+  ios: {
+    extension: '.m4a',
+    outputFormat: Audio.IOSOutputFormat.MPEG4AAC,
+    audioQuality: Audio.IOSAudioQuality.MEDIUM,
+    sampleRate: 16000,
+    numberOfChannels: 1,
+    bitRate: 64000,
+    linearPCMBitDepth: 16,
+    linearPCMIsBigEndian: false,
+    linearPCMIsFloat: false,
+  },
+  web: {
+    mimeType: 'audio/webm',
+    bitsPerSecond: 64000,
+  },
+};
 
 // ─── TEXT TO SPEECH ───────────────────────────────────────────────────────────
 
@@ -76,11 +114,25 @@ export async function startRecording(): Promise<void> {
       currentRecording = null;
     }
 
-    await Audio.setAudioModeAsync({ allowsRecordingIOS: true, playsInSilentModeIOS: true });
+    // Audio session for full-duplex voice. The key flag is
+    // interruptionModeAndroid: DoNotMix combined with our VOICE_COMMUNICATION
+    // recording source (audioSource: 7), which engages Android's hardware AEC
+    // so TTS playback does not bleed back into the mic. iOS gets the same
+    // via voice-chat mode (set via interruptionModeIOS: DoNotMix +
+    // playsInSilentModeIOS).
+    await Audio.setAudioModeAsync({
+      allowsRecordingIOS: true,
+      playsInSilentModeIOS: true,
+      interruptionModeIOS: InterruptionModeIOS.DoNotMix,
+      interruptionModeAndroid: InterruptionModeAndroid.DoNotMix,
+      shouldDuckAndroid: true,
+      // Speaker is the default; we keep it that way so users don't have to
+      // hold the phone to their ear. The VOICE_COMMUNICATION audio source
+      // makes speakerphone safe for full-duplex.
+      playThroughEarpieceAndroid: false,
+    });
 
-    const { recording } = await Audio.Recording.createAsync(
-      Audio.RecordingOptionsPresets.HIGH_QUALITY
-    );
+    const { recording } = await Audio.Recording.createAsync(VOICE_CHAT_RECORDING);
     currentRecording = recording;
   } catch (e) {
     console.error('startRecording error:', e);
@@ -93,22 +145,49 @@ export async function startRecording(): Promise<void> {
   }
 }
 
-export async function stopRecordingAndTranscribe(): Promise<string | null> {
+/**
+ * Returns metering info from the active recording. Used by the voice mode UI
+ * to drive the orb pulse with actual audio levels. Resolves to null if no
+ * recording is active or metering data isn't available yet.
+ */
+export async function getRecordingMetering(): Promise<number | null> {
+  if (!currentRecording) return null;
+  try {
+    const status = await currentRecording.getStatusAsync();
+    if (status.isRecording && typeof status.metering === 'number') {
+      return status.metering;
+    }
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+export async function stopRecordingAndTranscribe(languageCode: string = 'en'): Promise<string | null> {
   if (!currentRecording) return null;
   try {
     await currentRecording.stopAndUnloadAsync();
     const uri = currentRecording.getURI();
     currentRecording = null;
 
-    // Restore audio mode for playback
-    await Audio.setAudioModeAsync({ allowsRecordingIOS: false, playsInSilentModeIOS: true });
+    // Restore audio mode for playback. Keep DoNotMix so TTS doesn't get
+    // ducked by other apps mid-reply.
+    await Audio.setAudioModeAsync({
+      allowsRecordingIOS: false,
+      playsInSilentModeIOS: true,
+      interruptionModeIOS: InterruptionModeIOS.DoNotMix,
+      interruptionModeAndroid: InterruptionModeAndroid.DoNotMix,
+    });
 
     if (!uri || !ELEVENLABS_KEY) return null;
 
     const formData = new FormData();
     formData.append('file', { uri, type: 'audio/m4a', name: 'recording.m4a' } as any);
     formData.append('model_id', 'scribe_v1');
-    formData.append('language_code', 'en');
+    // ElevenLabs Scribe accepts ISO 639-1 codes; the user's speaker pack
+    // already exposes one (en/sn/fr/zh/tl). Falls back to English for any
+    // non-supported speaker.
+    formData.append('language_code', languageCode);
 
     const response = await fetch('https://api.elevenlabs.io/v1/speech-to-text', {
       method: 'POST',
@@ -122,6 +201,37 @@ export async function stopRecordingAndTranscribe(): Promise<string | null> {
   } catch (e) {
     console.error('transcribe error:', e);
     return null;
+  }
+}
+
+/**
+ * True iff TTS is currently playing. Used by the voice mode UI to hold off
+ * starting the next listen turn until Rwen has finished speaking.
+ */
+export function isCurrentlySpeaking(): boolean {
+  return audioPlayer !== null;
+}
+
+/**
+ * Plays TTS and resolves only after the audio finishes. Lets voice-mode
+ * pacing be straightforward: await speakAndWait() then start listening.
+ */
+export async function speakTextAndWait(text: string, voiceKey: RwenVoiceKey = 'male_warm'): Promise<void> {
+  if (!ELEVENLABS_KEY) return;
+  await speakText(text, voiceKey);
+  // Poll for end. expo-audio doesn't expose a clean "finished" promise,
+  // so we wait until the player is removed (which speakText does on
+  // its own when the user calls stopSpeaking()), or until ~30s safety.
+  const start = Date.now();
+  while (audioPlayer !== null && Date.now() - start < 30000) {
+    await new Promise((r) => setTimeout(r, 100));
+    try {
+      const status = audioPlayer?.currentStatus;
+      if (status && (status as any).didJustFinish) break;
+      if (status && !(status as any).playing && !(status as any).isLoaded) break;
+    } catch {
+      break;
+    }
   }
 }
 

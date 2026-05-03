@@ -1,167 +1,372 @@
 /**
- * Voice mode route — light wrapper that dynamically loads the actual
- * implementation only when this screen is opened.
+ * Voice mode — turn-based.
  *
- * Why dynamic require: the ElevenLabs Conversational AI SDK (and its
- * @livekit/react-native dependency) registers WebRTC globals at module-load
- * time. Those native modules don't exist in Expo Go, so a static import
- * crashes the Metro bundle for the entire app. By deferring the require()
- * to mount-time, the JS bundle compiles fine in Expo Go and the user sees
- * a friendly "needs dev-client" screen if they try to open voice mode there.
+ * After hours of fighting LiveKit/ElevenLabs Conv AI server-protocol issues
+ * in React Native, we abandoned that path. This screen uses the building
+ * blocks we already have working:
  *
- * In the dev-client APK (`eas build --profile development --platform android`)
- * the require succeeds and the full orb UI loads.
+ *   1. expo-av records mic audio with VOICE_COMMUNICATION source (Android)
+ *      / voice-chat audio session (iOS). Both engage hardware AEC so
+ *      speakerphone TTS doesn't bleed into the mic.
+ *   2. ElevenLabs Scribe (lib/voice.stopRecordingAndTranscribe) STTs.
+ *   3. lib/claude.sendMessage hits Claude with the active companion's
+ *      preset system prompt + memory context.
+ *   4. lib/voice.speakText streams ElevenLabs TTS back over the speaker.
+ *   5. Loop: listen → reply → listen.
+ *
+ * Trade-offs vs full-duplex Conv AI:
+ *   - Latency between turns: ~2s vs ~500ms. Acceptable for v1.
+ *   - Can't interrupt Rwen mid-sentence by speaking — user has to tap to
+ *     interrupt. We expose a "stop" button.
+ *   - But it WORKS without server-protocol mismatches, native module gaps,
+ *     polyfill cascades, or LiveKit version hell.
+ *
+ * Lipsync (Phase 4) works the same way: ElevenLabs TTS exposes character-
+ * level timestamps we can drive blendshapes / Live2D mouth poses from,
+ * regardless of whether voice mode is turn-based or full-duplex.
  */
 
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Pressable, ActivityIndicator, NativeModules } from 'react-native';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Pressable,
+  ScrollView,
+  Animated,
+  Easing,
+  ActivityIndicator,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { router } from 'expo-router';
-import Constants, { ExecutionEnvironment } from 'expo-constants';
+import { router, useLocalSearchParams } from 'expo-router';
+import { useAuth } from '../../lib/AuthContext';
+import { useSettings } from '../../lib/SettingsContext';
+import { sendMessage, type ChatMessage } from '../../lib/claude';
+import {
+  startRecording,
+  stopRecordingAndTranscribe,
+  isCurrentlyRecording,
+  speakText,
+  stopSpeaking,
+  isCurrentlySpeaking,
+} from '../../lib/voice';
 import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
 
-// Direct check: does this runtime have WebRTC available? @livekit/react-native-
-// webrtc throws at MODULE LOAD time (not lazy) if NativeModules.WebRTCModule is
-// null. So we check that exact thing before allowing any require() chain that
-// would touch the SDK. Belt-and-braces: we also check Constants.execution-
-// Environment in case some custom build reports WebRTCModule as something
-// truthy-but-broken.
-const HAS_WEBRTC_NATIVE = NativeModules?.WebRTCModule != null;
-const IS_EXPO_GO =
-  Constants.executionEnvironment === ExecutionEnvironment.StoreClient ||
-  Constants.appOwnership === 'expo';
-const VOICE_AVAILABLE = HAS_WEBRTC_NATIVE && !IS_EXPO_GO;
+type Mode = 'idle' | 'listening' | 'thinking' | 'speaking';
 
-export default function VoiceScreen() {
-  const [Impl, setImpl] = useState<React.ComponentType | null>(null);
-  const [error, setError] = useState<string | null>(
-    !VOICE_AVAILABLE
-      ? "This build doesn't have WebRTC. Voice mode needs the dev-client APK from `eas build --profile development --platform android`."
-      : null,
-  );
-
-  useEffect(() => {
-    // Skip the require entirely if WebRTC native module isn't present —
-    // attempting it would throw "WebRTC native module not found" at module
-    // load time before our try/catch can save us.
-    if (!VOICE_AVAILABLE) return;
-    try {
-      // eslint-disable-next-line @typescript-eslint/no-require-imports
-      const mod = require('../../components/companion/VoiceImpl');
-      if (!mod?.default) {
-        throw new Error('VoiceImpl module loaded but exposed no default export.');
-      }
-      setImpl(() => mod.default);
-    } catch (e) {
-      const detail = e instanceof Error ? e.message : String(e);
-      setError(detail);
-    }
-  }, []);
-
-  if (error) {
-    return <DevBuildRequired error={error} />;
-  }
-  if (!Impl) {
-    return (
-      <SafeAreaView style={styles.loadingSafe}>
-        <ActivityIndicator color={Colors.white} size="large" />
-        <Text style={styles.loadingText}>Loading voice mode…</Text>
-      </SafeAreaView>
-    );
-  }
-  return <Impl />;
+interface TranscriptLine {
+  id: string;
+  role: 'user' | 'rwen';
+  text: string;
 }
 
-function DevBuildRequired({ error }: { error: string }) {
+export default function VoiceScreen() {
+  const { lessonContext } = useLocalSearchParams<{ lessonContext?: string }>();
+  const { user } = useAuth();
+  const { speaker, rwenVoice, activeCompanionPresetId } = useSettings();
+
+  const [mode, setMode] = useState<Mode>('idle');
+  const [transcript, setTranscript] = useState<TranscriptLine[]>([]);
+  const [error, setError] = useState<string | null>(null);
+
+  // Conversation history for Claude — kept in a ref so the loop can read
+  // the latest without forcing re-renders.
+  const historyRef = useRef<ChatMessage[]>([]);
+  // Track whether the user wants the loop to keep going (set when they tap
+  // start, cleared when they tap stop). The async chain checks this between
+  // turns to decide whether to listen again.
+  const loopActiveRef = useRef(false);
+
+  // Orb pulse animation — bigger when listening or speaking.
+  const orbScale = useRef(new Animated.Value(1)).current;
+  const orbAnimRef = useRef<Animated.CompositeAnimation | null>(null);
+
+  useEffect(() => {
+    if (mode === 'listening' || mode === 'speaking') startPulse();
+    else stopPulse();
+    return stopPulse;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mode]);
+
+  function startPulse() {
+    if (orbAnimRef.current) return;
+    const anim = Animated.loop(
+      Animated.sequence([
+        Animated.timing(orbScale, {
+          toValue: 1.15,
+          duration: 700,
+          easing: Easing.inOut(Easing.ease),
+          useNativeDriver: true,
+        }),
+        Animated.timing(orbScale, {
+          toValue: 1,
+          duration: 700,
+          easing: Easing.inOut(Easing.ease),
+          useNativeDriver: true,
+        }),
+      ]),
+    );
+    anim.start();
+    orbAnimRef.current = anim;
+  }
+  function stopPulse() {
+    if (orbAnimRef.current) {
+      orbAnimRef.current.stop();
+      orbAnimRef.current = null;
+    }
+    Animated.timing(orbScale, {
+      toValue: 1,
+      duration: 250,
+      useNativeDriver: true,
+    }).start();
+  }
+
+  // Run one listen → think → speak → loop turn.
+  const runTurn = useCallback(async () => {
+    if (!user) {
+      setError('Sign in first.');
+      return;
+    }
+    try {
+      // 1. Listen
+      setMode('listening');
+      await startRecording();
+
+      // 2. Wait for user to tap "stop" (we don't auto-VAD here — keeps the
+      //    UI explicit and avoids the silence-detection hell). The actual
+      //    stop comes from the user pressing the orb again.
+      while (loopActiveRef.current && isCurrentlyRecording()) {
+        await new Promise((r) => setTimeout(r, 100));
+      }
+      if (!loopActiveRef.current) {
+        // User stopped without a recording — tidy up.
+        try { await stopRecordingAndTranscribe(speaker.isoCode); } catch {}
+        setMode('idle');
+        return;
+      }
+
+      // 3. Transcribe
+      setMode('thinking');
+      const text = await stopRecordingAndTranscribe(speaker.isoCode);
+      if (!text || !text.trim()) {
+        // No speech detected. Reset to idle and let user tap again.
+        setMode('idle');
+        return;
+      }
+      setTranscript((prev) => [...prev, { id: `u-${Date.now()}`, role: 'user', text }]);
+
+      // 4. Claude
+      const reply = await sendMessage(
+        user.id,
+        text,
+        historyRef.current,
+        speaker,
+        lessonContext,
+        activeCompanionPresetId,
+      );
+      historyRef.current = [
+        ...historyRef.current,
+        { role: 'user', content: text },
+        { role: 'assistant', content: reply },
+      ];
+      setTranscript((prev) => [...prev, { id: `r-${Date.now()}`, role: 'rwen', text: reply }]);
+
+      // 5. Speak
+      if (loopActiveRef.current) {
+        setMode('speaking');
+        await speakText(reply, rwenVoice);
+        // Wait until TTS finishes (or user hits stop).
+        while (loopActiveRef.current && isCurrentlySpeaking()) {
+          await new Promise((r) => setTimeout(r, 100));
+        }
+      }
+
+      setMode('idle');
+    } catch (e) {
+      console.error('voice turn error:', e);
+      setError(e instanceof Error ? e.message : 'Voice turn failed.');
+      setMode('idle');
+    }
+  }, [user, speaker, lessonContext, activeCompanionPresetId, rwenVoice]);
+
+  const handleOrbTap = () => {
+    if (mode === 'idle') {
+      // Start a turn: kick off listening.
+      setError(null);
+      loopActiveRef.current = true;
+      runTurn();
+    } else if (mode === 'listening') {
+      // User finished speaking — let the recording stop so transcribe runs.
+      // The active runTurn loop will pick this up.
+      (async () => {
+        try { await stopRecordingAndTranscribe(speaker.isoCode); } catch {}
+        // Don't reset loopActiveRef; runTurn handles it.
+      })();
+    } else if (mode === 'speaking') {
+      // Interrupt Rwen mid-reply.
+      stopSpeaking();
+    }
+  };
+
+  const handleStop = () => {
+    loopActiveRef.current = false;
+    stopSpeaking();
+    setMode('idle');
+  };
+
+  const handleClose = () => {
+    handleStop();
+    router.back();
+  };
+
+  const statusLabel =
+    error ? error :
+    mode === 'idle'      ? 'Tap the orb to talk' :
+    mode === 'listening' ? 'Listening… tap orb when done' :
+    mode === 'thinking'  ? 'Thinking…' :
+    /* speaking */         'Speaking… tap orb to interrupt';
+
+  const orbColor =
+    mode === 'listening' ? Colors.success :
+    mode === 'speaking'  ? Colors.xp :
+    mode === 'thinking'  ? Colors.gray[400] :
+                           Colors.secondary;
+
   return (
-    <SafeAreaView style={styles.fallbackSafe} edges={['top', 'bottom']}>
-      <Text style={styles.fallbackEmoji}>🎙️</Text>
-      <Text style={styles.fallbackTitle}>Voice mode needs the dev build</Text>
-      <Text style={styles.fallbackBody}>
-        Rwen's voice mode uses native WebRTC for echo cancellation and natural
-        turn-taking. Expo Go can't load WebRTC, so this only works after you
-        install the dev-client APK from EAS Build.
+    <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
+      <View style={styles.header}>
+        <Pressable onPress={handleClose} style={styles.closeBtn} hitSlop={10}>
+          <Text style={styles.closeText}>×</Text>
+        </Pressable>
+        <Text style={styles.headerTitle}>Voice</Text>
+        <Pressable onPress={handleStop} style={styles.endBtn} hitSlop={10}>
+          <Text style={styles.endBtnText}>End</Text>
+        </Pressable>
+      </View>
+
+      <View style={styles.orbWrap}>
+        <Pressable onPress={handleOrbTap} disabled={mode === 'thinking'}>
+          <Animated.View
+            style={[
+              styles.orb,
+              {
+                transform: [{ scale: orbScale }],
+                backgroundColor: orbColor,
+                opacity: mode === 'thinking' ? 0.6 : 1,
+              },
+            ]}
+          >
+            {mode === 'thinking' && <ActivityIndicator color={Colors.white} size="large" />}
+          </Animated.View>
+        </Pressable>
+        <Text style={styles.statusText}>{statusLabel}</Text>
+      </View>
+
+      <ScrollView
+        style={styles.transcript}
+        contentContainerStyle={styles.transcriptContent}
+        showsVerticalScrollIndicator={false}
+      >
+        {transcript.map((line) => (
+          <View
+            key={line.id}
+            style={[
+              styles.bubble,
+              line.role === 'user' ? styles.bubbleUser : styles.bubbleRwen,
+            ]}
+          >
+            <Text
+              style={[
+                styles.bubbleText,
+                line.role === 'user' && styles.bubbleTextUser,
+              ]}
+            >
+              {line.text}
+            </Text>
+          </View>
+        ))}
+      </ScrollView>
+
+      <Text style={styles.hint}>
+        Tap the orb to start speaking. Tap again when you're done. Tap during
+        a reply to interrupt.
       </Text>
-      <Text style={styles.fallbackHint}>
-        Run{'\n'}
-        <Text style={styles.fallbackCode}>
-          eas build --profile development --platform android
-        </Text>
-        {'\n'}then install the APK on your phone.
-      </Text>
-      <Text style={styles.fallbackError}>Detail: {error}</Text>
-      <Pressable style={styles.fallbackBtn} onPress={() => router.back()}>
-        <Text style={styles.fallbackBtnText}>Back</Text>
-      </Pressable>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  loadingSafe: {
-    flex: 1,
-    backgroundColor: '#0A1628',
+  safe: { flex: 1, backgroundColor: '#0A1628' },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    justifyContent: 'center',
-    gap: Spacing.md,
-  },
-  loadingText: {
-    color: 'rgba(255,255,255,0.6)',
-    fontSize: FontSize.sm,
-  },
-  fallbackSafe: {
-    flex: 1,
-    backgroundColor: '#0A1628',
-    alignItems: 'center',
-    justifyContent: 'center',
     paddingHorizontal: Spacing.lg,
-    gap: Spacing.md,
+    paddingVertical: Spacing.sm,
   },
-  fallbackEmoji: { fontSize: 64, marginBottom: Spacing.md },
-  fallbackTitle: {
-    color: Colors.white,
-    fontSize: FontSize.xl,
-    fontWeight: FontWeight.bold,
-    textAlign: 'center',
-  },
-  fallbackBody: {
-    color: 'rgba(255,255,255,0.75)',
-    fontSize: FontSize.md,
-    textAlign: 'center',
-    lineHeight: 22,
+  closeBtn: { padding: 6 },
+  closeText: { color: Colors.white, fontSize: 32, fontWeight: FontWeight.medium, lineHeight: 32 },
+  headerTitle: { color: Colors.white, fontSize: FontSize.lg, fontWeight: FontWeight.bold },
+  endBtn: {
     paddingHorizontal: Spacing.md,
-  },
-  fallbackHint: {
-    color: 'rgba(255,255,255,0.6)',
-    fontSize: FontSize.sm,
-    textAlign: 'center',
-    marginTop: Spacing.sm,
-  },
-  fallbackCode: {
-    fontFamily: 'monospace',
-    color: Colors.xp,
-    fontSize: FontSize.sm,
-  },
-  fallbackError: {
-    color: 'rgba(255,255,255,0.35)',
-    fontSize: FontSize.xs,
-    textAlign: 'center',
-    paddingHorizontal: Spacing.md,
-    marginTop: Spacing.md,
-  },
-  fallbackBtn: {
-    marginTop: Spacing.lg,
-    paddingHorizontal: Spacing.xl,
-    paddingVertical: Spacing.md,
-    backgroundColor: 'rgba(255,255,255,0.1)',
-    borderRadius: BorderRadius.lg,
+    paddingVertical: 6,
+    borderRadius: BorderRadius.full,
     borderWidth: 1,
     borderColor: 'rgba(255,255,255,0.2)',
   },
-  fallbackBtnText: {
-    color: Colors.white,
+  endBtnText: { color: Colors.white, fontSize: FontSize.sm, fontWeight: FontWeight.medium },
+
+  orbWrap: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: Spacing.xl,
+  },
+  orb: {
+    width: 220,
+    height: 220,
+    borderRadius: 110,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: Colors.secondary,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.6,
+    shadowRadius: 40,
+    elevation: 12,
+  },
+  statusText: {
+    marginTop: Spacing.lg,
+    color: 'rgba(255,255,255,0.85)',
     fontSize: FontSize.md,
     fontWeight: FontWeight.medium,
+    textAlign: 'center',
+    paddingHorizontal: Spacing.lg,
+  },
+
+  transcript: { flex: 1, paddingHorizontal: Spacing.lg },
+  transcriptContent: { paddingVertical: Spacing.md, gap: Spacing.sm },
+  bubble: {
+    maxWidth: '85%',
+    paddingVertical: Spacing.sm,
+    paddingHorizontal: Spacing.md,
+    borderRadius: BorderRadius.lg,
+  },
+  bubbleUser: {
+    alignSelf: 'flex-end',
+    backgroundColor: Colors.secondary,
+  },
+  bubbleRwen: {
+    alignSelf: 'flex-start',
+    backgroundColor: 'rgba(255,255,255,0.1)',
+  },
+  bubbleText: { color: 'rgba(255,255,255,0.95)', fontSize: FontSize.md, lineHeight: 22 },
+  bubbleTextUser: { color: Colors.white },
+
+  hint: {
+    textAlign: 'center',
+    color: 'rgba(255,255,255,0.5)',
+    fontSize: FontSize.xs,
+    paddingHorizontal: Spacing.lg,
+    paddingBottom: Spacing.md,
   },
 });
