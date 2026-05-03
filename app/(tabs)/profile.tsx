@@ -64,7 +64,7 @@ export default function ProfileScreen() {
     : 'en';
   const { user, signOut } = useAuth();
   const { xp, streakDays, username, completedLessons, refresh } = useProgress();
-  const { rwenVoice, setRwenVoice, learnedLanguage, spokenLanguage, theme, setThemeId, avatarUrl, setAvatarUrl, speaker, jurisdiction } = useSettings();
+  const { rwenVoice, setRwenVoice, learnedLanguage, spokenLanguage, theme, setThemeId, avatarUrl, setAvatarUrl, speaker, jurisdiction, voiceEngine, setVoiceEngine } = useSettings();
   const { goal: dailyXpGoal } = useDailyXpGoal();
   const { enabled: remindersOn, setEnabled: setRemindersOn } = useDailyReminders();
   const [uploadingAvatar, setUploadingAvatar] = useState(false);
@@ -265,6 +265,29 @@ export default function ProfileScreen() {
                 );
               })}
             </View>
+
+            {/* Conversation engine — full-duplex (default) vs explicit
+                push-to-talk fallback. We keep the toggle here so users on
+                flaky devices can switch back without us shipping a build. */}
+            <Pressable
+              style={styles.row}
+              onPress={() => setVoiceEngine(voiceEngine === 'conv_ai' ? 'turn_based' : 'conv_ai')}
+            >
+              <View style={{ flex: 1 }}>
+                <Text style={styles.rowLabel}>Live conversation</Text>
+                <Text style={styles.rowSubLabel}>
+                  {voiceEngine === 'conv_ai'
+                    ? 'Just talk — Rwen listens and replies in real time.'
+                    : 'Tap to talk, tap when done. Slower but steadier.'}
+                </Text>
+              </View>
+              <Switch
+                value={voiceEngine === 'conv_ai'}
+                onValueChange={(on) => setVoiceEngine(on ? 'conv_ai' : 'turn_based')}
+                trackColor={{ true: Colors.secondary }}
+                thumbColor={Colors.white}
+              />
+            </Pressable>
           </Section>
 
           {/* Learning preferences */}
@@ -404,6 +427,7 @@ const styles = StyleSheet.create({
 
   row: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: Spacing.md, paddingVertical: Spacing.md, borderBottomWidth: 1, borderBottomColor: Colors.gray[50] },
   rowLabel: { fontSize: FontSize.md, color: Colors.gray[700] },
+  rowSubLabel: { fontSize: FontSize.xs, color: Colors.gray[400], marginTop: 2 },
   rowRight: { flexDirection: 'row', alignItems: 'center', gap: Spacing.xs },
   rowValue: { fontSize: FontSize.sm, color: Colors.gray[400] },
   rowChevron: { fontSize: FontSize.xl, color: Colors.gray[300] },

@@ -71,6 +71,15 @@ interface Settings {
   /** Set the active preset locally. Use after the DB has been updated to reflect
    *  a switch — e.g. from the Companions management tab. */
   setActiveCompanionPresetId: (id: string | null) => void;
+
+  // ── voice mode engine ────────────────────────────────────────────────────
+  /**
+   * `conv_ai` = full-duplex ElevenAgents over WebSocket (default).
+   * `turn_based` = listen → transcribe → reply → speak loop. Fallback when the
+   * WebSocket path fails or for users who prefer the explicit push-to-talk.
+   */
+  voiceEngine: 'conv_ai' | 'turn_based';
+  setVoiceEngine: (e: 'conv_ai' | 'turn_based') => void;
 }
 
 const defaultLegacyPack = PACKS.find((p) => p.id === DEFAULT_PACK_ID) ?? PACKS[0];
@@ -121,6 +130,9 @@ const SettingsContext = createContext<Settings>({
 
   activeCompanionPresetId: null,
   setActiveCompanionPresetId: () => {},
+
+  voiceEngine: 'conv_ai',
+  setVoiceEngine: () => {},
 });
 
 export function SettingsProvider({ children }: { children: ReactNode }) {
@@ -144,6 +156,9 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
 
   // active companion (chat persona)
   const [activeCompanionPresetId, setActiveCompanionPresetId] = useState<string | null>(null);
+
+  // voice mode engine — Conv AI is the new default; turn-based is a fallback.
+  const [voiceEngine, setVoiceEngine] = useState<'conv_ai' | 'turn_based'>('conv_ai');
 
   // ── derive v3 packs from IDs ──────────────────────────────────────────────
   const speaker      = SPEAKERS[speakerId] ?? defaultSpeaker;
@@ -221,6 +236,9 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
       // active companion
       activeCompanionPresetId,
       setActiveCompanionPresetId,
+      // voice engine
+      voiceEngine,
+      setVoiceEngine,
     }}>
       {children}
     </SettingsContext.Provider>

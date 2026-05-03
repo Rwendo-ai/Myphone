@@ -51,15 +51,7 @@
       "expo-font",
       "expo-secure-store",
       "expo-asset",
-      "expo-dev-client",
-      [
-        "@livekit/react-native-expo-plugin",
-        {
-          "android": {
-            "audioType": "communication"
-          }
-        }
-      ]
+      "expo-dev-client"
     ],
     "assetBundlePatterns": [
       "assets/**"
