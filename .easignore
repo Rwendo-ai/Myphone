@@ -21,6 +21,9 @@
 .expo/
 .metro-health-check*
 
+# ───── Dead-asset archive — preserved on disk, not in build ─────
+dead assets/
+
 # ───── Dev-only assets that don't need to be built ─────
 docs/
 scripts/

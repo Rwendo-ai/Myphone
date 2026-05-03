@@ -34,6 +34,10 @@ yarn-error.*
 .env
 .env*.local
 
+# Dead-asset archive — files preserved on disk for review, not bundled
+# into the app and not tracked in git. See dead assets/README.md if any.
+dead assets/
+
 # typescript
 *.tsbuildinfo
 
