@@ -11,6 +11,11 @@ interface AuthState {
   signUp: (email: string, password: string, username: string) => Promise<{ error: string | null }>;
   signIn: (email: string, password: string) => Promise<{ error: string | null }>;
   signOut: () => Promise<void>;
+  /** Verify a 6-digit OTP that Supabase emailed at signup. On success the
+   *  user is signed in via the auth state listener — no further work here. */
+  verifySignupOtp: (email: string, token: string) => Promise<{ error: string | null }>;
+  /** Re-send the signup OTP if the original email got lost / expired. */
+  resendSignupOtp: (email: string) => Promise<{ error: string | null }>;
 }
 
 const AuthContext = createContext<AuthState>({
@@ -19,6 +24,8 @@ const AuthContext = createContext<AuthState>({
   signUp: async () => ({ error: null }),
   signIn: async () => ({ error: null }),
   signOut: async () => {},
+  verifySignupOtp: async () => ({ error: null }),
+  resendSignupOtp: async () => ({ error: null }),
 });
 
 export function AuthProvider({ children }: { children: ReactNode }) {
@@ -71,11 +78,33 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setOnboardingComplete(false);
   };
 
+  const verifySignupOtp = async (email: string, token: string) => {
+    // Supabase 6-digit signup OTP. The `signup` type matches the template
+    // body that contains `{{ .Token }}` (see Supabase Auth → Email Templates
+    // → Confirm signup). Other types ('email_change', 'recovery') use the
+    // same flow with their own templates.
+    const { error } = await supabase.auth.verifyOtp({
+      email,
+      token,
+      type: 'signup',
+    });
+    return { error: error?.message ?? null };
+  };
+
+  const resendSignupOtp = async (email: string) => {
+    const { error } = await supabase.auth.resend({
+      type: 'signup',
+      email,
+    });
+    return { error: error?.message ?? null };
+  };
+
   return (
     <AuthContext.Provider value={{
       session, user, loading,
       onboardingComplete, setOnboardingComplete,
       signUp, signIn, signOut,
+      verifySignupOtp, resendSignupOtp,
     }}>
       {children}
     </AuthContext.Provider>

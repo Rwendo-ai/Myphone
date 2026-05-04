@@ -1,3 +1,23 @@
+/**
+ * Sign-up screen.
+ *
+ * Layout:
+ *   - OAuth bar at top (3 small buttons: Google, Apple, Wallet — Apple +
+ *     Wallet are gated behind OAUTH_READY flags in lib/oauth.ts and stay
+ *     hidden until their dashboards are configured).
+ *   - "OR" divider.
+ *   - Email + password form (the primary path).
+ *   - Three consent checkboxes:
+ *       1. Combined legal — Terms + Privacy + 13+ + AI disclosure (required).
+ *       2. Privacy promise — data not sold/shared (required).
+ *       3. Marketing — opt-in for product emails + promos (optional).
+ *   - Submit button (disabled until both required boxes ticked).
+ *
+ * After signup, Supabase emails a 6-digit OTP. The user navigates to
+ * /verify-code (TODO: build that screen next) where they enter the code
+ * and onboarding kicks off.
+ */
+
 import { View, Text, StyleSheet, TextInput, Pressable, Alert, ActivityIndicator } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -6,6 +26,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../lib/AuthContext';
+import { OAUTH_READY, signInWithGoogle, signInWithApple, signInWithCryptoWallet } from '../../lib/oauth';
 import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
 
@@ -38,13 +59,18 @@ export default function SignUpScreen() {
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
   const [loading, setLoading] = useState(false);
+  const [oauthLoading, setOauthLoading] = useState<null | 'google' | 'apple' | 'crypto'>(null);
   const [showPassword, setShowPassword] = useState(false);
 
-  // Consent checkboxes
-  const [agreeTerms, setAgreeTerms] = useState(false);
-  const [agreePrivacy, setAgreePrivacy] = useState(false);
-  const [confirmAge, setConfirmAge] = useState(false);
-  const [confirmAI, setConfirmAI] = useState(false);
+  // Consent: only two REQUIRED boxes (legal + info protection) and one
+  // OPTIONAL marketing box. We collapsed the previous four-box flow because
+  // bundling Terms + Privacy + Age + AI into one consent line is what every
+  // major consumer app does (Spotify, Discord, Netflix). Strict GDPR
+  // jurisdictions are still satisfied because the box contains the explicit
+  // statements; the linked Terms + Privacy Policy provide the detail.
+  const [agreeLegal, setAgreeLegal] = useState(false);
+  const [agreeInfoProtection, setAgreeInfoProtection] = useState(false);
+  const [agreeMarketing, setAgreeMarketing] = useState(false);
 
   // Password rules
   const hasUpper = /[A-Z]/.test(password);
@@ -54,8 +80,8 @@ export default function SignUpScreen() {
   const hasLength = password.length >= 8;
   const passwordValid = hasUpper && hasLower && hasNumber && hasSpecial && hasLength;
 
-  const allConsentsGiven = agreeTerms && agreePrivacy && confirmAge && confirmAI;
-  const canSubmit = email.trim() && passwordValid && username.trim() && allConsentsGiven;
+  const requiredConsents = agreeLegal && agreeInfoProtection;
+  const canSubmit = email.trim() && passwordValid && username.trim() && requiredConsents;
 
   const handleSignUp = async () => {
     if (!canSubmit) return;
@@ -66,27 +92,65 @@ export default function SignUpScreen() {
       Alert.alert(t('sign_up.fail_title'), error);
       return;
     }
-    // Record consent timestamps
+    // Record consent timestamps. The legal box maps to all four "atomic"
+    // consents on the backend (terms / privacy / age / ai_disclosure) so the
+    // existing record_consents RPC contract keeps working.
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (user) {
         await supabase.rpc('record_consents', {
           p_user_id: user.id,
-          p_terms: agreeTerms,
-          p_privacy: agreePrivacy,
-          p_age: confirmAge,
-          p_ai_disclosure: confirmAI,
+          p_terms: agreeLegal,
+          p_privacy: agreeLegal,
+          p_age: agreeLegal,
+          p_ai_disclosure: agreeLegal,
           p_voice: false,
+          p_info_protection: agreeInfoProtection,
+          p_marketing: agreeMarketing,
         });
       }
     } catch {}
     setLoading(false);
-    Alert.alert(
-      t('sign_up.check_email_title'),
-      t('sign_up.check_email_body', { email: email.trim() }),
-      [{ text: 'OK', onPress: () => router.replace('/sign-in') }]
-    );
+    // Route to the 6-digit OTP screen — Supabase has emailed the code.
+    router.replace({
+      pathname: '/verify-code',
+      params: { email: email.trim() },
+    });
   };
+
+  const handleGoogle = async () => {
+    if (oauthLoading) return;
+    setOauthLoading('google');
+    const { error } = await signInWithGoogle();
+    setOauthLoading(null);
+    if (error) Alert.alert(t('sign_up.oauth.fail_title'), error);
+    // On success the AuthContext listener picks up the session and routes
+    // to onboarding.
+  };
+
+  const handleApple = async () => {
+    if (oauthLoading) return;
+    setOauthLoading('apple');
+    const { error } = await signInWithApple();
+    setOauthLoading(null);
+    if (error) Alert.alert(t('sign_up.oauth.fail_title'), error);
+  };
+
+  const handleCrypto = async () => {
+    if (oauthLoading) return;
+    setOauthLoading('crypto');
+    const { error } = await signInWithCryptoWallet();
+    setOauthLoading(null);
+    if (error) Alert.alert(t('sign_up.oauth.fail_title'), error);
+  };
+
+  // Count enabled OAuth providers so the bar adapts: 1 visible = stretch
+  // wide single button; 2-3 = small square buttons in a row.
+  const enabledOAuthCount =
+    Number(OAUTH_READY.google) +
+    Number(OAUTH_READY.apple) +
+    Number(OAUTH_READY.crypto);
+  const oauthOnlyOne = enabledOAuthCount === 1;
 
   return (
     <LinearGradient colors={[Colors.primary, '#0D2140']} style={styles.container}>
@@ -104,7 +168,70 @@ export default function SignUpScreen() {
         <Text style={styles.title}>{t('sign_up.title')}</Text>
         <Text style={styles.subtitle}>{t('sign_up.subtitle')}</Text>
 
-        {/* Fields */}
+        {/* OAuth bar */}
+        {enabledOAuthCount > 0 && (
+          <View style={[styles.oauthBar, oauthOnlyOne && styles.oauthBarSingle]}>
+            {OAUTH_READY.google && (
+              <Pressable
+                style={[styles.oauthBtn, oauthOnlyOne && styles.oauthBtnWide]}
+                onPress={handleGoogle}
+                disabled={!!oauthLoading}
+              >
+                {oauthLoading === 'google'
+                  ? <ActivityIndicator color={Colors.white} size="small" />
+                  : (
+                    <>
+                      <Text style={styles.oauthIcon}>G</Text>
+                      {oauthOnlyOne && <Text style={styles.oauthLabel}>{t('sign_up.oauth.continue_google')}</Text>}
+                    </>
+                  )}
+              </Pressable>
+            )}
+            {OAUTH_READY.apple && (
+              <Pressable
+                style={[styles.oauthBtn, oauthOnlyOne && styles.oauthBtnWide]}
+                onPress={handleApple}
+                disabled={!!oauthLoading}
+              >
+                {oauthLoading === 'apple'
+                  ? <ActivityIndicator color={Colors.white} size="small" />
+                  : (
+                    <>
+                      <Text style={styles.oauthIcon}>{''}</Text>
+                      {oauthOnlyOne && <Text style={styles.oauthLabel}>{t('sign_up.oauth.continue_apple')}</Text>}
+                    </>
+                  )}
+              </Pressable>
+            )}
+            {OAUTH_READY.crypto && (
+              <Pressable
+                style={[styles.oauthBtn, oauthOnlyOne && styles.oauthBtnWide]}
+                onPress={handleCrypto}
+                disabled={!!oauthLoading}
+              >
+                {oauthLoading === 'crypto'
+                  ? <ActivityIndicator color={Colors.white} size="small" />
+                  : (
+                    <>
+                      <Text style={styles.oauthIcon}>⊞</Text>
+                      {oauthOnlyOne && <Text style={styles.oauthLabel}>{t('sign_up.oauth.continue_crypto')}</Text>}
+                    </>
+                  )}
+              </Pressable>
+            )}
+          </View>
+        )}
+
+        {/* Divider */}
+        {enabledOAuthCount > 0 && (
+          <View style={styles.dividerRow}>
+            <View style={styles.dividerLine} />
+            <Text style={styles.dividerText}>{t('sign_up.or_divider')}</Text>
+            <View style={styles.dividerLine} />
+          </View>
+        )}
+
+        {/* Email form */}
         <View style={styles.form}>
           <View style={styles.field}>
             <Text style={styles.label}>{t('sign_up.username_label')}</Text>
@@ -163,40 +290,29 @@ export default function SignUpScreen() {
           </View>
         </View>
 
-        {/* Consent checkboxes */}
+        {/* Consents — three checkboxes (down from four). Box 1 + 2 required;
+            box 3 is the GDPR/CASL marketing opt-in (unchecked default). */}
         <View style={styles.consents}>
-          <Text style={styles.consentsTitle}>{t('sign_up.consents_title')}</Text>
-
-          <CheckBox checked={agreeTerms} onPress={() => setAgreeTerms(v => !v)}>
+          <CheckBox checked={agreeLegal} onPress={() => setAgreeLegal(v => !v)}>
             <Text style={styles.checkText}>
-              {t('sign_up.consent_terms_pre')}
+              {t('sign_up.consent_legal_pre')}
               <Text style={styles.link} onPress={() => router.push('/(legal)/terms-of-service')}>
-                {t('sign_up.consent_terms_link')}
+                {t('sign_up.consent_legal_terms')}
               </Text>
-              {t('sign_up.consent_terms_post')}
-            </Text>
-          </CheckBox>
-
-          <CheckBox checked={agreePrivacy} onPress={() => setAgreePrivacy(v => !v)}>
-            <Text style={styles.checkText}>
-              {t('sign_up.consent_privacy_pre')}
+              {t('sign_up.consent_legal_and')}
               <Text style={styles.link} onPress={() => router.push('/(legal)/privacy-policy')}>
-                {t('sign_up.consent_privacy_link')}
+                {t('sign_up.consent_legal_privacy')}
               </Text>
-              {t('sign_up.consent_privacy_post')}
+              {t('sign_up.consent_legal_post')}
             </Text>
           </CheckBox>
 
-          <CheckBox checked={confirmAge} onPress={() => setConfirmAge(v => !v)}>
-            <Text style={styles.checkText}>
-              {t('sign_up.consent_age')}
-            </Text>
+          <CheckBox checked={agreeInfoProtection} onPress={() => setAgreeInfoProtection(v => !v)}>
+            <Text style={styles.checkText}>{t('sign_up.consent_info_protection')}</Text>
           </CheckBox>
 
-          <CheckBox checked={confirmAI} onPress={() => setConfirmAI(v => !v)}>
-            <Text style={styles.checkText}>
-              {t('sign_up.consent_ai')}
-            </Text>
+          <CheckBox checked={agreeMarketing} onPress={() => setAgreeMarketing(v => !v)}>
+            <Text style={[styles.checkText, styles.checkTextOptional]}>{t('sign_up.consent_marketing')}</Text>
           </CheckBox>
         </View>
 
@@ -212,7 +328,7 @@ export default function SignUpScreen() {
           }
         </Pressable>
 
-        {!allConsentsGiven && (
+        {!requiredConsents && (
           <Text style={styles.consentHint}>{t('sign_up.consent_hint')}</Text>
         )}
 
@@ -233,6 +349,47 @@ const styles = StyleSheet.create({
   backText: { color: 'rgba(255,255,255,0.6)', fontSize: FontSize.md },
   title: { fontSize: FontSize.xxl, fontWeight: FontWeight.extrabold, color: Colors.white },
   subtitle: { fontSize: FontSize.md, color: 'rgba(255,255,255,0.6)', marginTop: -Spacing.sm },
+
+  // OAuth bar — row of small square buttons. Stretches to a single full-width
+  // button when only one provider is enabled (current state — Google only).
+  oauthBar: {
+    flexDirection: 'row',
+    gap: Spacing.sm,
+    backgroundColor: 'rgba(255,255,255,0.06)',
+    borderRadius: BorderRadius.lg,
+    padding: Spacing.sm,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.12)',
+  },
+  oauthBarSingle: {
+    backgroundColor: 'transparent',
+    borderColor: 'transparent',
+    padding: 0,
+  },
+  oauthBtn: {
+    flex: 1,
+    aspectRatio: 1,
+    backgroundColor: 'rgba(255,255,255,0.18)',
+    borderRadius: BorderRadius.md,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.2)',
+    flexDirection: 'row',
+    gap: Spacing.sm,
+  },
+  oauthBtnWide: {
+    aspectRatio: undefined,
+    paddingVertical: Spacing.md,
+    paddingHorizontal: Spacing.lg,
+  },
+  oauthIcon: { color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold },
+  oauthLabel: { color: Colors.white, fontSize: FontSize.md, fontWeight: FontWeight.semibold },
+
+  dividerRow: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md },
+  dividerLine: { flex: 1, height: 1, backgroundColor: 'rgba(255,255,255,0.15)' },
+  dividerText: { color: 'rgba(255,255,255,0.45)', fontSize: FontSize.xs, fontWeight: FontWeight.semibold, letterSpacing: 1 },
+
   form: { gap: Spacing.md },
   field: { gap: Spacing.xs },
   label: { fontSize: FontSize.sm, fontWeight: FontWeight.semibold, color: 'rgba(255,255,255,0.7)' },
@@ -257,7 +414,6 @@ const styles = StyleSheet.create({
   ruleTextMet: { color: 'rgba(255,255,255,0.8)' },
 
   consents: { gap: Spacing.md },
-  consentsTitle: { fontSize: FontSize.md, fontWeight: FontWeight.bold, color: 'rgba(255,255,255,0.8)' },
   checkRow: { flexDirection: 'row', gap: Spacing.md, alignItems: 'flex-start' },
   checkbox: {
     width: 22, height: 22,
@@ -271,7 +427,8 @@ const styles = StyleSheet.create({
   checkboxChecked: { backgroundColor: Colors.secondary, borderColor: Colors.secondary },
   checkmark: { color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold },
   checkLabel: { flex: 1 },
-  checkText: { fontSize: FontSize.sm, color: 'rgba(255,255,255,0.7)', lineHeight: 20 },
+  checkText: { fontSize: FontSize.sm, color: 'rgba(255,255,255,0.75)', lineHeight: 20 },
+  checkTextOptional: { color: 'rgba(255,255,255,0.55)' },
   link: { color: Colors.secondary, fontWeight: FontWeight.semibold },
 
   primaryBtn: {
