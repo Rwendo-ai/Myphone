@@ -1,29 +1,26 @@
 /**
  * OAuth sign-in helpers — Google now, Apple + Crypto stubs for later.
  *
- * Google uses Supabase's hosted OAuth flow via the implicit
- * `signInWithOAuth({ provider: 'google' })` API. Supabase opens a system
- * browser, redirects to Google, then back to a deep-link Rwendo handles —
- * `rwendo://auth/callback`. No native dep needed; works in Expo Go and dev
- * client equally.
+ * Google uses Supabase's hosted OAuth flow opened in `expo-web-browser`.
+ * The redirect lands at a `rwendo://auth/callback` deep link that triggers
+ * the auth state listener.
  *
- * Apple sign-in (deferred): needs `expo-apple-authentication` (iOS only,
- * native dep → EAS rebuild) plus a configured Services ID + .p8 key
- * uploaded to Supabase Auth Providers. The `signInWithApple` stub returns
- * a "not configured" error until both pieces are in place.
- *
- * Crypto wallet (deferred): needs WalletConnect's RN SDK + a project ID.
- * Not enabled yet.
+ * Native-module guarding: `expo-web-browser` and `expo-auth-session` both
+ * require native code linked into the APK at EAS build time. If the user is
+ * running an older dev APK that pre-dates the install, importing these
+ * modules at top level crashes the entire auth screen with "Cannot find
+ * native module 'ExpoWebBrowser'". To prevent that, we require the deps
+ * lazily inside the sign-in handler — auth screens render cleanly, and
+ * tapping Google in an older APK surfaces a clear actionable error rather
+ * than a crash.
  */
 
-import * as WebBrowser from 'expo-web-browser';
-import * as AuthSession from 'expo-auth-session';
 import { Platform } from 'react-native';
 import { supabase } from './supabase';
 
-// Maybe-required on web; harmless on native. Closes the browser tab cleanly
-// when the auth completes and the deep link returns the user to the app.
-WebBrowser.maybeCompleteAuthSession();
+interface OAuthResult {
+  error: string | null;
+}
 
 /**
  * Whether each provider is wired and ready to surface in the UI. Apple +
@@ -36,20 +33,32 @@ export const OAUTH_READY = {
   crypto: false,
 };
 
-interface OAuthResult {
-  error: string | null;
-}
-
 /**
- * Begin Google sign-in. Opens the system browser for Google's consent
- * screen, then deep-links back into Rwendo with the session attached.
- * Supabase's onAuthStateChange listener (in AuthContext) picks it up —
- * we don't need to do anything here once the redirect completes.
+ * Begin Google sign-in. Lazy-imports the native modules so that an older
+ * dev APK without them surfaces a friendly error rather than crashing on
+ * screen mount.
  */
 export async function signInWithGoogle(): Promise<OAuthResult> {
+  // Lazy-load native deps. Wrapped in a try so a missing module surfaces a
+  // human message, not a JS crash.
+  let WebBrowser: typeof import('expo-web-browser');
+  let AuthSession: typeof import('expo-auth-session');
   try {
-    // Build the deep-link redirect URL. In dev this is `exp://...`, in a
-    // built APK it's `rwendo://auth/callback`.
+    WebBrowser = require('expo-web-browser');
+    AuthSession = require('expo-auth-session');
+  } catch {
+    return {
+      error:
+        'Google sign-in needs the latest dev build. Reinstall the APK from EAS, then try again.',
+    };
+  }
+
+  // Cleans up the auth tab on web and is a no-op on native — safe to call
+  // every time signInWithGoogle is invoked.
+  WebBrowser.maybeCompleteAuthSession();
+
+  try {
+    // In dev this is `exp://...`, in a built APK it's `rwendo://auth/callback`.
     const redirectTo = AuthSession.makeRedirectUri({
       scheme: 'rwendo',
       path: 'auth/callback',
@@ -59,7 +68,7 @@ export async function signInWithGoogle(): Promise<OAuthResult> {
       provider: 'google',
       options: {
         redirectTo,
-        skipBrowserRedirect: true, // we'll open it ourselves with WebBrowser
+        skipBrowserRedirect: true, // we open the browser ourselves
       },
     });
 
@@ -67,17 +76,14 @@ export async function signInWithGoogle(): Promise<OAuthResult> {
       return { error: error?.message ?? 'No OAuth URL returned' };
     }
 
-    // Open the system browser pointed at Google's consent page. Returns
-    // when the user finishes (or cancels) and the deep link fires.
     const result = await WebBrowser.openAuthSessionAsync(data.url, redirectTo);
-
     if (result.type !== 'success') {
       return { error: 'Sign-in cancelled' };
     }
 
-    // Extract the URL fragments (access_token, refresh_token) from the
-    // redirect URL and feed them to Supabase. Web flows handle this
-    // automatically, but in RN we have to parse it ourselves.
+    // Parse the access_token + refresh_token out of the redirect URL and
+    // hand them to Supabase. Web flows handle this automatically; in RN we
+    // do it manually.
     const params = parseHashOrQuery(result.url);
     if (params.access_token && params.refresh_token) {
       const { error: setErr } = await supabase.auth.setSession({
@@ -96,7 +102,6 @@ export async function signInWithGoogle(): Promise<OAuthResult> {
 /**
  * Stub for Apple sign-in. Once the Services ID is configured and
  * `expo-apple-authentication` is installed, this becomes a real call.
- * iOS only — surfaces a clear message on Android.
  */
 export async function signInWithApple(): Promise<OAuthResult> {
   if (Platform.OS !== 'ios') {
@@ -119,9 +124,9 @@ export async function signInWithCryptoWallet(): Promise<OAuthResult> {
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
 function parseHashOrQuery(url: string): Record<string, string> {
-  // Supabase OAuth redirects typically use the URL fragment (#) for tokens
-  // because the access_token shouldn't be sent to a server. Try both just
-  // in case the deep-link normalisation flips the order.
+  // Supabase OAuth redirects typically use the URL fragment (#) for tokens.
+  // Try both fragment and query just in case the deep-link normalisation
+  // flips the order.
   const out: Record<string, string> = {};
   const hashIdx = url.indexOf('#');
   const queryIdx = url.indexOf('?');
