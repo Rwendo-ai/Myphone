@@ -1,6 +1,8 @@
 # Rwendo — Product Design
 
-*Last updated: 2026-04-30. Owner: Ben.*
+*Last updated: 2026-05-04. Owner: Ben.*
+
+> Status snapshots for what's shipped vs in-flight live in `docs/STATUS-YYYY-MM-DD.md`. The most current is [STATUS-2026-05-04.md](STATUS-2026-05-04.md). This doc is the canonical product design and architecture; status docs are the rolling progress log.
 
 This is the canonical design doc for **how Rwendo actually works** as a multi-language, multi-course, multi-jurisdiction, multi-tier product. It covers five entangled topics:
 
@@ -25,6 +27,18 @@ This is the canonical design doc for **how Rwendo actually works** as a multi-la
 - **Speakers at v1**: `english` and `shona` both populated. Adding any future speaker = drop in a single `data/speakers/<id>/` directory.
 - **Jurisdictions at v1**: ship `AU` populated (lawyer-reviewed pre-launch). Others (`GB`, `US`, `EU`, `ZW`) ship as `{ extends: 'AU' }` stubs that the lawyer fills in pre-launch per region.
 - **Currency**: per-jurisdiction. Forex alignment with live FX rates is a v1.x concern — initial pricing is locked per jurisdiction.
+
+### Locked 2026-05-04 (auth + voice + monetisation direction)
+
+- **Auth methods (priority order)**: email + password (primary), Google (secondary), Apple (secondary, iOS only — gated on Apple Developer account), crypto wallet via WalletConnect → XRPL (tertiary, tucked at bottom). Apple/Crypto stay hidden behind `OAUTH_READY` flags until their providers are configured. Facebook explicitly out — privacy concerns + redundancy with Google.
+- **Signup consents**: 3 checkboxes, not 4. (1) Combined legal — Terms + Privacy + 13+ + AI disclosure (required). (2) Privacy promise — data not sold/shared (required). (3) Marketing — opt-in for promo emails (optional, GDPR/CASL/PECR-compliant). The previous 4-box flow is consolidated; Spotify/Discord/Netflix all do this.
+- **Email verification**: 6-digit OTP, not magic link. Custom-branded HTML email (Rwen waving + 6-digit code in big monospace) replaces Supabase default. Code expires 60 min, resend supported.
+- **Two-email strategy**: auth email is transactional and clean (just the code). A separate "welcome email" sent ~5 min later (gated by marketing consent) carries the web-pricing pitch — keeps Apple anti-steering clean by separating auth from marketing.
+- **Voice mode**: hand-rolled WebSocket client to ElevenAgents replaces the broken `@elevenlabs/react-native` + LiveKit SDK. Uses `@speechmatics/expo-two-way-audio` for PCM I/O. Per-session overrides (system prompt, first message, language, voice_id) drive the agent's behaviour from the client at session start. Single-source-of-truth for voice transcripts: same `conversations` table as text chat.
+- **Companion age gating**: feature-level, not app-level. Under-18s use the app, just don't see Aria. Three layers: Companions tab filter, client guard in `handleActivate`, Postgres trigger as defence-in-depth. Adding new gated presets is a one-line change.
+- **KYC philosophy**: tier KYC by feature, not at signup. Free signup = email + DOB. Subscription buy = Stripe-handled card fingerprint. Token cash-out to wallet (when XPRL ships) = full KYC required by AUSTRAC. Romantic content = stronger DOB verification when scope demands.
+- **Monetisation surfaces (planned)**: iOS = RevenueCat + Apple IAP (mandatory for in-app digital goods). Android = RevenueCat + Google Play Billing primary, plus optional "buy on web" link (Google rules permit). Web = Stripe direct (no platform tax). Email-driven web purchase pitch lives in welcome email, NOT in-app (Apple anti-steering). Inflated iOS prices vs cheaper web prices is the standard pattern.
+- **App Store risk mitigation**: web pricing only mentioned in marketing email + on web; never inside the iOS app. XP-rewards landing page (rwendo.app/xp) genuinely hosts XP balance/dashboard with token purchase as one section among others — defensible as commerce, not steering.
 
 ### Locked 2026-04-30 (product)
 
@@ -643,6 +657,91 @@ alter table public.lesson_progress
 ### 6.3 Why "lesson-contextualised AI" beats free chat
 
 The current Companion tab is open-ended — the user can talk about anything. That's fine but it doesn't reinforce *what they just learned*. Phase 8 is bounded: same chunks, same module, real-world scenario. This is closer to TalkPal / Lingvist's AI exercises and is the highest-converting feature in those products (per their public marketing).
+
+---
+
+## 6.5 Voice mode architecture (current)
+
+After multiple sessions fighting `@elevenlabs/react-native` (the official SDK is broken on RN per GitHub issues #515, #605, #641, #676 — confirmed by ElevenLabs support), Rwendo runs full-duplex Conv AI through a hand-rolled WebSocket client.
+
+### Why hand-rolled
+
+- The official `@elevenlabs/react-native` SDK transitively depends on browser-only DOM APIs (`document.createElement`, `AudioContext`) inside `@elevenlabs/client`. The polyfill cascade approach produced unstable behaviour and the SDK's LiveKit version was incompatible with the current ElevenAgents server.
+- ElevenLabs support told us directly that the WebSocket protocol is the supported path until their Q1-2026 RN re-architecture lands.
+- The WebSocket protocol itself is simple: one init message (`conversation_initiation_client_data`) with overrides + dynamic_variables, then alternating `user_audio_chunk` (base64 PCM) → `audio` (base64 PCM) frames with text events interleaved.
+
+### Layers
+
+1. **PCM I/O** — `@speechmatics/expo-two-way-audio`. Fixed 16 kHz / 16-bit / mono, hardware AEC, noise suppression. Matches ElevenLabs's wire format byte-for-byte. New native module → triggers EAS rebuild when the version bumps.
+2. **WebSocket client** — `lib/conv-ai-ws.ts`. Pure-JS, no Buffer dep, stack-safe base64 codec for the 20 ms frames the audio module emits at ~50 Hz.
+3. **Headless hook** — `hooks/useConvAISession.ts`. Loads memory + companion preset + speaker pack, mints session ID, owns the session lifecycle, fires consumer-supplied transcript callbacks, persists every turn through `appendConversationTurn`.
+4. **Two consumers** — inline orb in `app/(tabs)/companion.tsx` (default), full-screen orb at `app/companion/voice-conv.tsx` (legacy/fallback). Both hooks the same hook.
+5. **Engine fallback** — `voiceEngine` setting in SettingsContext switches between `'conv_ai'` and `'turn_based'` (the existing record → STT → Claude → TTS loop). Lets a user with a flaky native audio module recover without us shipping a build.
+
+### Override flow at session start
+
+- `system_prompt` ← full Rwendo identity built from MISSION_PILLARS + active companion preset's template + user profile + speaker pack guardrails + recent conversation recap + companion_facts
+- `first_message` ← localised greeting from `buildCompanionGreeting` (uses speaker pack's time-of-day greeting + companion's tagline)
+- `language` ← `speaker.isoCode` (en/sn/fr/zh/tl)
+- `voice_id` ← user's profile `rwenVoice` selection if any, else active companion's `defaultVoiceId`, else `RWEN_VOICES.male_warm`
+
+The agent in the dashboard is a SHELL — empty system prompt, default Eric voice, Gemini 2.5 LLM. All Rwendo identity flows from the override at session start. Security → Overrides → all four toggles must be ON in the agent dashboard for this to work.
+
+### Single save path
+
+Both text and voice persist via `appendConversationTurn` in `lib/conversation-memory.ts`. Rows land in `public.conversations` keyed by `user_id` + `session_id`. Future modes (avatar/lipsync, lesson Phase 8) just call the same writer.
+
+---
+
+## 6.6 Auth flow + signup consents (current)
+
+### Sign-up screen
+
+- OAuth bar at top (Google active, Apple/Crypto gated by `OAUTH_READY` flags)
+- Email + password + username form
+- 3 consent checkboxes:
+  1. Combined legal — Terms + Privacy + 13+ + AI disclosure (required, with inline links to the per-jurisdiction legal screens)
+  2. Privacy promise — "Rwendo will not sell or share my personal information" (required)
+  3. Marketing — opt-in for promotional emails (optional, unchecked default — required by GDPR/CASL/PECR/AU Spam Act)
+
+### 6-digit OTP verification
+
+- Supabase emails a custom-branded HTML email (Rwen waving on blue gradient + 6-digit code in big monospace)
+- `app/(auth)/verify-code.tsx` accepts the code: auto-focus, paste/autofill (iOS one-time-code hint), auto-submit on 6 digits, resend button
+- AuthContext exposes `verifySignupOtp(email, token)` and `resendSignupOtp(email)`
+
+### Onboarding (after first sign-in)
+
+Unchanged from earlier design — language → gender → age → path → path-specific questions → voice → home.
+
+### Two-email strategy
+
+- **Auth email**: transactional, just the code. Subject line carries the code: `Your Rwendo code: {{ .Token }}`
+- **Welcome email** (planned): sent ~5 min later via Supabase Edge Function + Resend/SendGrid. Includes web-pricing pitch and the rwendo.app/xp link. Marketing-consent gated. Apple anti-steering clean because (a) it's outside the app, (b) the auth email is purely transactional, (c) the link goes to a real product surface (XP dashboard) not just a payment funnel.
+
+### Companion age gating in detail
+
+- `CompanionPreset.ageGate?: number` field on the preset
+- Aria has `ageGate: 18`; all others are open
+- Three layers of enforcement:
+  1. Companions tab filters via `ageGateMet(preset, userDob)` before rendering the cards. Under-18 user simply doesn't see Aria.
+  2. `handleActivate` checks again before writing — handles edge cases like deep-link tampering.
+  3. Postgres trigger `enforce_companion_age_gate` rejects any INSERT or UPDATE setting `companions.preset_id = 'aria'` when the user's DOB shows them under 18. Defends against tampered clients and stolen JWTs.
+
+Adding a new age-gated preset later is a 2-line change (`ageGate: <num>` in `presets.ts`, and a new `WHEN` branch in the trigger CASE).
+
+### KYC philosophy
+
+Tier KYC by what the user is doing, not at signup. Three escalation levels:
+
+| Stage | Verification |
+|---|---|
+| Free signup | Email + age affirmation (DOB at onboarding) |
+| Buy subscription | Card fingerprint via Stripe / RevenueCat (handles light KYC + fraud) |
+| Cash out XPRL tokens to a wallet | Full KYC (ID + selfie + address) — required by AUSTRAC for digital currency exchange operators |
+| Romantic / Aria-tier content for borderline-age users | Enhanced DOB verification (Persona/Sumsub) — only if the legal risk demands it |
+
+KYC at signup kills 20-30% of conversions. KYC at the right moment (e.g., right before a withdrawal) is friction users accept.
 
 ---
 

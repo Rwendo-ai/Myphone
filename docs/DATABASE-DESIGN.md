@@ -98,6 +98,8 @@ The central user record. Everything about who this person is.
 | age_confirmed_at | timestamptz | Legal consent timestamp |
 | ai_disclosed_at | timestamptz | Legal consent timestamp |
 | voice_consent_at | timestamptz | BIPA compliance (only required for US-IL jurisdiction) |
+| **info_protection_acknowledged_at** | timestamptz | NEW 2026-05-04. When user ticked the "data stays private, won't be sold or shared" checkbox at signup. Distinct from terms/privacy ToS consent. Required by signup flow. |
+| **marketing_consent_at** | timestamptz | NEW 2026-05-04. When user opted in to marketing emails. NULL = no consent. Required by GDPR/CASL/PECR/AU Spam Act before sending any marketing email. |
 | created_at | timestamptz | Account creation |
 | updated_at | timestamptz | Last profile update |
 
@@ -238,7 +240,7 @@ One row per completed lesson per user.
 ---
 
 ### 5. conversations
-AI chat history. One row per message.
+AI chat history. One row per message. **Single source of truth for both text and voice mode** since 2026-05-03 — both go through `appendConversationTurn` in [lib/conversation-memory.ts](../lib/conversation-memory.ts).
 
 | Column | Type | Notes |
 |---|---|---|
@@ -247,11 +249,20 @@ AI chat history. One row per message.
 | role | text | 'user' or 'rwen' |
 | content | text | Message text |
 | pack_context | text | Which pack context (ai-companion-text, lesson-m01-l01) |
-| session_id | uuid | Groups messages from same session |
+| session_id | uuid | Groups messages from same voice session — NULL for text turns. UUID minted client-side via `crypto.randomUUID()`. |
 | created_at | timestamptz | Message timestamp |
 
-**RLS:** Users can read/insert own rows. No update/delete by user.
-**Retention:** 12 months rolling — rows older than 12 months are deleted by scheduled job.
+**RLS:**
+- SELECT: `auth.uid() = user_id`
+- INSERT: `auth.uid() = user_id`
+- DELETE: `auth.uid() = user_id` (added 2026-05-04 to support the "Erase saved chat history" button)
+- UPDATE: no policy — rows are append-only
+
+**Loaded for chat display:** [`loadConversationHistory`](../lib/claude.ts) returns the latest 40 rows ordered ASC for rendering. Bug fix 2026-05-04: the previous `order asc + limit 40` was returning the FIRST 40 rows forever and hiding everything new; switched to `order desc + limit 40` then JS-side reverse.
+
+**Loaded for memory recap at voice-session start:** [`loadRecentConversationRecap`](../lib/conversation-memory.ts) returns last 10 turns formatted as "Last time you spoke: [user]: ...\n[rwen]: ...". Injected into the prompt's `{{recentContext}}` slot.
+
+**Retention:** 12 months rolling — rows older than 12 months are deleted by scheduled job (planned).
 
 ---
 
@@ -301,6 +312,98 @@ Mirrors RevenueCat for fast offline tier checks and usage tracking.
 
 **Unique constraint:** (user_id)
 **RLS:** Users can read/update own row.
+
+---
+
+## Recently added (Phase voice + auth, 2026-05)
+
+### Tables added since v3 baseline
+
+These were added incrementally in Phase voice + companion work; full schemas visible in the live DB via `mcp__supabase__list_tables`.
+
+- `companions` — user's owned companion roster. PK `id` (uuid). Columns: `user_id`, `preset_id`, `name`, `relationship_type`, `voice_id`, `avatar_id`, `system_prompt`, `personality_md`, `soul_md`, `trust_score`, `is_active`. Partial unique index on `(user_id) WHERE is_active = true` enforces 0-or-1 active companion per user.
+- `companion_facts` — pgvector-indexed semantic memory. Columns: `user_id`, `companion_id`, `fact_type ∈ {fact, plan, emotion, preference, person}`, `content`, `embedding vector`, `confidence`, `last_reinforced_at`. Empty for now; populated by future extraction pipeline.
+- `companion_summaries` — weekly compressed summaries. Columns: `user_id`, `companion_id`, `week_starting date`, `summary text`. Empty; populated by future scheduled job.
+- `user_dictionary` — saved words from lessons + AI + manual. Drives the in-lesson dictionary popover. Columns include `user_id`, `course_id`, `target_word`, `native_word`, `literal`, `notes`, `source ∈ {lesson, ai, manual}`, `source_lesson_id`.
+- `lesson_notes` — per-lesson user notes. PK `(user_id, course_id, lesson_id)`.
+- `feedback_responses` — survey/rating capture. Columns include `user_id`, `trigger ∈ {first_session, first_lesson, weekly, paywall, manual}`, `rating 1-5`, `responses jsonb`, `speaker_pack_id`, `app_version`.
+
+### RLS policies added 2026-05-04
+
+```sql
+-- Lets the "Erase saved chat history" button actually delete.
+-- Without this, RLS denied DELETE silently and the action was a no-op.
+CREATE POLICY "Users can delete own conversations"
+  ON public.conversations
+  FOR DELETE
+  USING (auth.uid() = user_id);
+```
+
+### Trigger added 2026-05-04 — companion age gating
+
+```sql
+CREATE OR REPLACE FUNCTION public.enforce_companion_age_gate()
+RETURNS trigger LANGUAGE plpgsql AS $$
+DECLARE v_dob date; v_age integer; v_gate integer;
+BEGIN
+  v_gate := CASE NEW.preset_id
+    WHEN 'aria' THEN 18
+    ELSE NULL
+  END;
+  IF v_gate IS NULL THEN RETURN NEW; END IF;
+
+  SELECT date_of_birth INTO v_dob FROM public.profiles WHERE id = NEW.user_id;
+  IF v_dob IS NULL THEN
+    RAISE EXCEPTION 'companion preset % requires age verification (no DOB on file)', NEW.preset_id
+      USING ERRCODE = '42501';
+  END IF;
+  v_age := EXTRACT(YEAR FROM age(v_dob));
+  IF v_age < v_gate THEN
+    RAISE EXCEPTION 'companion preset % requires age %', NEW.preset_id, v_gate
+      USING ERRCODE = '42501';
+  END IF;
+  RETURN NEW;
+END;
+$$;
+
+CREATE TRIGGER companions_age_gate_insert
+  BEFORE INSERT ON public.companions
+  FOR EACH ROW EXECUTE FUNCTION public.enforce_companion_age_gate();
+
+CREATE TRIGGER companions_age_gate_update
+  BEFORE UPDATE OF preset_id ON public.companions
+  FOR EACH ROW EXECUTE FUNCTION public.enforce_companion_age_gate();
+```
+
+This is the server-side defence-in-depth backstop for client-side age filtering in the Companions tab. Even with a tampered client, an under-18 user cannot insert or update a row with `preset_id = 'aria'` (or any future age-gated preset added to the CASE statement).
+
+### RPC extended 2026-05-04
+
+`record_consents` now takes two extra params:
+
+```sql
+record_consents(
+  p_user_id uuid,
+  p_terms boolean DEFAULT false,
+  p_privacy boolean DEFAULT false,
+  p_age boolean DEFAULT false,
+  p_ai_disclosure boolean DEFAULT false,
+  p_voice boolean DEFAULT false,
+  p_info_protection boolean DEFAULT false,  -- NEW
+  p_marketing boolean DEFAULT false          -- NEW
+)
+```
+
+Writes to `info_protection_acknowledged_at` and `marketing_consent_at` if their respective param is true (otherwise leaves the column unchanged — same idempotent pattern as existing fields).
+
+### Migrations applied 2026-05-04
+
+```
+add_delete_policy_conversations
+add_consent_columns
+extend_record_consents
+enforce_companion_age_gate
+```
 
 ---
 
@@ -427,13 +530,18 @@ RevenueCat webhook secrets stored in Supabase Edge Function secrets, not tables.
 
 ## Migration History
 
-| File | When | What |
+| File / migration | When | What |
 |---|---|---|
 | (inline SQL) | Early dev | Created profiles, lesson_progress, add_xp, delete_user, RLS |
 | 002-functions.sql | Early dev | add_xp and delete_user functions |
 | 003-consolidated-schema.sql | 2026-04-30 | Full expansion: packs, user_packs, subscriptions, parental_codes, new profile columns |
 | 004-account-management.sql | 2026-04-30 | EU cooling off, indexes, account controls, country detection |
-| **005-three-pack-architecture.sql** | Phase E.0 (next) | NEW jurisdictions table + new profile columns (speaker_pack_id, active_course_ids, jurisdiction_id) + available_packs.pack_kind + decomposition view for legacy IDs. See §10. |
+| 005-three-pack-architecture.sql | Phase E.0 | jurisdictions table + new profile columns (speaker_pack_id, active_course_ids, jurisdiction_id) + available_packs.pack_kind + decomposition view for legacy IDs. See §10. |
+| (companion phase, multiple) | Phase J onwards | companions, companion_facts (pgvector), companion_summaries, user_dictionary, lesson_notes, feedback_responses |
+| add_delete_policy_conversations | 2026-05-04 | DELETE policy on conversations so the in-app "Erase saved chat history" button works |
+| add_consent_columns | 2026-05-04 | profiles.marketing_consent_at + profiles.info_protection_acknowledged_at |
+| extend_record_consents | 2026-05-04 | record_consents RPC gains p_info_protection + p_marketing params |
+| enforce_companion_age_gate | 2026-05-04 | Trigger blocks under-age activation of age-gated companion presets (Aria 18+) |
 
 ---
 

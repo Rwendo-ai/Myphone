@@ -1,5 +1,7 @@
 # Rwendo — Project Overview
-*Last updated: 2026-04-30*
+*Last updated: 2026-05-04*
+
+> **For the most current status snapshot + handoff for the next session, see [docs/STATUS-2026-05-04.md](docs/STATUS-2026-05-04.md).** This file covers stable architecture and long-term direction; the status doc covers what shipped this week and what's next.
 
 > "The journey of a thousand words begins with one step."
 
@@ -42,21 +44,22 @@ Adding a new language to the system = drop a single `data/speakers/<id>/` direct
 ---
 
 ## Tech Stack
-- **Frontend:** React Native + Expo SDK 54, TypeScript
+- **Frontend:** React Native 0.81.5 + Expo SDK 54, TypeScript, Hermes engine, new architecture
 - **Routing:** expo-router (file-based)
 - **Database/Auth:** Supabase (PostgreSQL + RLS) ✅
-- **AI:** Claude Haiku 4.5 — rich personalised prompt from onboarding profile ✅
-- **Voice TTS:** ElevenLabs ✅ (Rwen speaks responses)
-- **Voice STT:** ElevenLabs ✅ (user speaks, hold mic)
-- **Real-time conversation:** @elevenlabs/react-native + LiveKit ⬜ NEEDS EAS BUILD
-- **ElevenLabs Agent:** agent_3001kqecd7hzf37vdrraz2zq79mw (created, published, Custom LLM configured)
-- **Edge Function:** rwen-conversation (deployed to Supabase, Claude webhook)
+- **OAuth:** Google ✅ (via `expo-auth-session` + Supabase hosted OAuth, no native dep), Apple ⬜ (gated on Apple Dev account), Crypto wallet (XRPL) ⬜ (gated on WalletConnect setup). Facebook explicitly excluded.
+- **AI:** Claude Haiku 4.5 with prompt caching — rich personalised prompt from companion preset + memory + profile ✅
+- **Voice TTS:** ElevenLabs ✅ (Rwen speaks responses, turn-based fallback)
+- **Voice STT:** ElevenLabs Scribe ✅ (turn-based fallback path)
+- **Real-time conversation:** ElevenAgents WebSocket via hand-rolled client ([lib/conv-ai-ws.ts](lib/conv-ai-ws.ts)) + `@speechmatics/expo-two-way-audio` for PCM I/O ✅ — full-duplex live conversation working in Android dev build. Replaced the broken `@elevenlabs/react-native` + LiveKit stack.
+- **ElevenLabs Agent:** `agent_8501kqhw371ff7zatpp9dmj66ea9` (Rwen Shell — public agent, no system prompt server-side, all overrides flow from client at session start)
+- **Edge Function:** `rwen-chat` deployed (Claude webhook). `rwen-tts` and `rwen-stt` exist as code, awaiting deploy + env-flag flip to remove client-side keys.
 - **2D Avatar:** 8 Rwen poses (transparent WebP) ✅
-- **3D Avatar:** rwen_final.glb (20MB, all animations) ⬜ needs EAS build
-- **Payments:** RevenueCat ⬜ not yet implemented
+- **3D Avatar:** rwen_final.glb (20MB, all animations) ⬜ deferred to v1.5
+- **Payments:** RevenueCat ⬜ planned for next session — see [docs/PHASE-H-REVENUECAT.md](docs/PHASE-H-REVENUECAT.md)
 - **Analytics:** PostHog ⬜ not yet
 - **Crash:** Sentry ⬜ not yet
-- **Backend:** Node.js + Fastify ⬜ not yet (API keys still in app .env)
+- **Email:** Supabase Auth (transactional/auth) ✅, Resend or SendGrid ⬜ for marketing/welcome emails (planned)
 
 ---
 
@@ -94,18 +97,29 @@ Same, in Shona.
 ---
 
 ## AI Architecture
-**Current (working):**
-- User types or holds mic → ElevenLabs STT → text
-- Text + conversation history → Supabase rpc get_ai_prompt_data → rich Claude prompt
-- Claude Haiku responds → ElevenLabs TTS → Rwen speaks
-- Full user profile baked into prompt: name, reasons, personal_connection, challenges, ability, companion_type etc.
-- Conversation history saves to Supabase conversations table
 
-**Planned (needs EAS Build):**
-- @elevenlabs/react-native + LiveKit for hands-free real-time conversation
-- Agent connects to rwen-conversation Edge Function via Custom LLM webhook
-- Signed URL via voice-signed-url Edge Function (to be created)
-- Dynamic variables pass user_id → Edge Function fetches profile → builds rich prompt
+### Text chat (working)
+- User types → Claude Haiku 4.5 with companion-aware system prompt + recent conversation recap + memory facts → reply rendered + saved to `conversations` table
+- Single save path: `appendConversationTurn` in [lib/conversation-memory.ts](lib/conversation-memory.ts)
+- Prompt is built per-turn from: MISSION_PILLARS + active companion preset + user profile + speaker pack + recent dialogue (last 10 turns) + companion_facts (top-k)
+
+### Voice mode (full-duplex, working)
+- Hand-rolled WebSocket client to ElevenAgents endpoint ([lib/conv-ai-ws.ts](lib/conv-ai-ws.ts))
+- `@speechmatics/expo-two-way-audio` provides 16 kHz / 16-bit / mono PCM in both directions (matches ElevenLabs byte-for-byte)
+- Init message sends per-session overrides: system prompt (full Rwendo identity), first message (localised greeting), language (speaker.isoCode), voice_id (active companion's preferred voice)
+- Server LLM is Gemini 2.5 (configured in agent dashboard); we override its prompt entirely so it speaks as Rwen/Maya/Tendai/etc. instead of a default chatbot
+- Transcripts stream into the same chat list as text — unified message timeline
+- Voice transcripts persist via the same `appendConversationTurn` writer
+
+### Headless hook
+- [hooks/useConvAISession.ts](hooks/useConvAISession.ts) — used by both inline (`app/(tabs)/companion.tsx`) and full-screen (`app/companion/voice-conv.tsx`) entry points
+- `voiceEngine` setting in SettingsContext picks `'conv_ai'` (default, full-duplex) vs `'turn_based'` (fallback for flaky devices)
+
+### Memory architecture (Phase 2 in progress)
+- `companion_facts` table — pgvector-indexed semantic memory; populated by an extraction pipeline (TBD — Edge Function or scheduled job)
+- `companion_summaries` table — weekly compressed summaries (TBD)
+- `loadRecentConversationRecap` formats recent dialogue as plain-text recap injected into prompt's `{{recentContext}}` slot
+- `loadCompanionFacts` returns top-k facts → prompt's `{{memoryContext}}` slot
 
 ---
 
@@ -123,31 +137,50 @@ RevenueCat handles billing. Not yet implemented.
 ---
 
 ## Database (Supabase — Sydney region)
-7 tables: profiles, available_packs, user_packs, lesson_progress, conversations, parental_codes, subscriptions
+14 tables: profiles, available_packs, user_packs, lesson_progress, conversations, parental_codes, subscriptions, jurisdictions, user_dictionary, lesson_notes, companions, companion_facts, companion_summaries, feedback_responses
 
-Key functions: get_ai_prompt_data, add_xp, delete_user, generate_parental_code, redeem_parental_code, user_has_pack, start_subscription, cancel_subscription (EU 14-day cooling off), increment_usage, record_consents
+Key functions: `get_ai_prompt_data`, `add_xp`, `delete_user`, `generate_parental_code`, `redeem_parental_code`, `user_has_pack`, `start_subscription`, `cancel_subscription` (EU 14-day cooling off), `increment_usage`, `record_consents` (extended 2026-05-04 with marketing + info-protection params), `enforce_companion_age_gate` (trigger).
 
-See: docs/DATABASE-DESIGN.md for full schema.
+Recent migrations (2026-05): `add_delete_policy_conversations`, `add_consent_columns`, `extend_record_consents`, `enforce_companion_age_gate`.
+
+See: [docs/DATABASE-DESIGN.md](docs/DATABASE-DESIGN.md) for full schema.
 
 ---
 
-## Onboarding Flow (fully built)
-1. Language selection (sets app_language)
-2. Gender
-3. Age verification (under 18 → blocked, Family Plan coming soon teaser)
-4. Path choice: Learn / AI Friend / Travel (coming soon)
-5. Path-specific questions (ability, reasons, time, challenges, personal_connection for Learn; companion_type, topics for Companion)
-6. Voice selection (George/Charlie/Jessica/Alice)
-7. Saves full profile to Supabase → onboarding_complete = true → enters app
+## Auth + Onboarding Flow
+
+### Auth (signup → verify → onboarding)
+1. **Welcome** screen — Get Started / I have an account
+2. **Sign-up** ([app/(auth)/sign-up.tsx](app/(auth)/sign-up.tsx))
+   - OAuth bar at top (currently shows "Continue with Google"; Apple + Crypto wallet hidden behind `OAUTH_READY` flags in [lib/oauth.ts](lib/oauth.ts))
+   - Email + password + username form
+   - 3 consent checkboxes: combined legal (required), info-protection promise (required), marketing opt-in (optional, GDPR-compliant)
+3. **6-digit OTP verification** ([app/(auth)/verify-code.tsx](app/(auth)/verify-code.tsx))
+   - Supabase emails a custom-templated email (Rwen waving + 6-digit code)
+   - Auto-fill on iOS, paste support, auto-submit on 6 digits
+   - Resend code button
+4. **Onboarding** (after first sign-in)
+   - Language (sets `app_language` AND `speaker_pack_id` — they sync)
+   - Gender, age (DOB used for COPPA + age-gating Aria)
+   - Path: Learn / AI Friend / Travel
+   - Path-specific questions
+   - Voice selection (curated per speaker pack)
+   - Saves to `profiles` → `onboarding_complete = true` → enters app
+
+### Companion-tab age gating
+- `CompanionPreset.ageGate?: number` — Aria has `ageGate: 18`
+- Three-layer enforcement: client filter (preset card hidden), client guard (`handleActivate` blocks), Postgres trigger `enforce_companion_age_gate` (last line of defence)
+- Under-18s never see Aria's card. List looks shorter, no "locked" badge, no awareness she exists. Clean UX.
 
 ---
 
 ## Legal
-- Privacy Policy: docs/legal/privacy-policy.md ⬜ NEEDS LAWYER REVIEW
-- Terms of Service: docs/legal/terms-of-service.md ⬜ NEEDS LAWYER REVIEW
-- Legal requirements research: docs/LEGAL-REQUIREMENTS.md
-- Onboarding design: docs/curriculum/onboarding-design.md
-- Sign-up has 4 consent checkboxes (Terms, Privacy, Age 18+, AI disclosure)
+- Privacy Policy: [docs/legal/privacy-policy.md](docs/legal/privacy-policy.md) ⬜ NEEDS LAWYER REVIEW
+- Terms of Service: [docs/legal/terms-of-service.md](docs/legal/terms-of-service.md) ⬜ NEEDS LAWYER REVIEW
+- Legal requirements research: [docs/LEGAL-REQUIREMENTS.md](docs/LEGAL-REQUIREMENTS.md)
+- Onboarding design: [docs/curriculum/onboarding-design.md](docs/curriculum/onboarding-design.md)
+- **Sign-up consents (3 boxes — down from 4)**: combined legal (Terms + Privacy + Age + AI disclosure, required), info-protection promise (required), marketing opt-in (optional). Recorded via `record_consents` RPC with timestamps in `profiles`.
+- **GDPR/CASL/PECR/Spam Act compliance**: marketing emails only sent to users who explicitly opted in (`marketing_consent_at IS NOT NULL`). Marketing emails must include unsubscribe link + sender identity (not yet wired — needs Resend + Edge Function).
 - Voice consent needed before first mic use (BIPA compliance) ⬜
 
 ---
@@ -278,39 +311,54 @@ See: docs/DATABASE-DESIGN.md for full schema.
 ```
 app/(tabs)/index.tsx          — Home Dashboard
 app/(tabs)/learn.tsx          — Lessons
-app/(tabs)/companion.tsx      — Rwen AI chat (push-to-talk + text)
+app/(tabs)/companion.tsx      — Chat + inline voice orb
+app/(tabs)/companions.tsx     — Companion picker (preset cards, age-gated)
 app/(tabs)/travel.tsx         — Travel (coming soon)
-app/(tabs)/profile.tsx        — Settings hub
-app/(auth)/onboarding.tsx     — Full onboarding flow (all paths)
-app/(auth)/sign-up.tsx        — Registration + consent checkboxes
+app/(tabs)/profile.tsx        — Settings hub (voice engine toggle, erase chat history, etc.)
 app/(auth)/welcome.tsx        — Welcome screen with Rwen waving
-app/(legal)/privacy-policy.tsx — In-app Privacy Policy
-app/(legal)/terms-of-service.tsx — In-app Terms of Service
+app/(auth)/sign-up.tsx        — Registration: OAuth bar + email + 3 consents
+app/(auth)/sign-in.tsx        — Sign in: OAuth bar + email
+app/(auth)/verify-code.tsx    — 6-digit OTP verification post-signup
+app/(auth)/onboarding.tsx     — Full onboarding flow (language, age, path, voice)
+app/(legal)/privacy-policy.tsx, terms-of-service.tsx — Per-jurisdiction legal screens
+app/companion/voice-conv.tsx  — Legacy full-screen voice route (uses useConvAISession hook)
+app/companion/voice-turn.tsx  — Turn-based fallback (no Conv AI deps)
+app/companion/voice.tsx       — Dispatcher (picks engine via voiceEngine setting)
 app/lesson/[id].tsx           — 7-phase lesson engine
 app/unit/[id].tsx             — Unit screen (lesson list)
 
-lib/claude.ts                 — Claude API + rich prompt builder
-lib/voice.ts                  — ElevenLabs TTS + STT
-lib/supabase.ts               — Supabase client
-lib/AuthContext.tsx            — Auth + onboarding_complete
-lib/SettingsContext.tsx        — Pack, theme, avatar, voice (loads from Supabase on login)
-lib/progress.ts               — XP/lesson Supabase functions
-lib/storage.ts                — Avatar upload to Supabase Storage
-hooks/useProgress.ts          — Progress hook
+lib/claude.ts                  — Claude API + companion-aware prompt builder + prompt caching
+lib/voice.ts                   — ElevenLabs TTS + STT (turn-based path)
+lib/conv-ai-ws.ts              — Hand-rolled WebSocket client to ElevenAgents
+lib/conversation-memory.ts     — Single save path: appendConversationTurn, loadRecentConversationRecap, loadCompanionFacts
+lib/companion-prompts.ts       — buildCompanionPrompt + buildCompanionGreeting
+lib/active-companion.ts        — fetchActiveCompanionPresetId, resolvePreset, ageGateMet
+lib/oauth.ts                   — Google sign-in (+ Apple/Crypto stubs gated by OAUTH_READY)
+lib/supabase.ts                — Supabase client
+lib/AuthContext.tsx            — Auth: signUp, signIn, verifySignupOtp, resendSignupOtp, signOut
+lib/SettingsContext.tsx        — Speaker pack, theme, avatar, voice, voice engine, active companion
+lib/i18n.ts                    — i18next setup with 5 locales
+lib/entitlements.ts            — Tier gates (free/text/voice/companion/premium)
+lib/progress.ts                — XP/lesson Supabase functions
+lib/storage.ts                 — Avatar upload
+hooks/useConvAISession.ts      — Headless voice session hook (used by inline + full-screen)
+hooks/useProgress.ts           — Progress hook
 
-data/curriculum/shona-english/   100 lesson files. Phase E.0 moves to data/courses/language-shona/english/curriculum/
-data/lessons.ts               — Unit/lesson registry (thin Lesson type for unit lists)
-data/packs.ts                 — Legacy pair registry. Phase E.0 deprecates in favour of the three-pack composition.
-data/languages/               — english.ts, shona.ts. Phase E.0 moves to data/speakers/{english,shona}/index.ts
-locales/{en,sn}/              — UI translation JSON. Phase E.0 moves to data/speakers/<id>/locale/
-constants/themes.ts           — 6 colour themes
+data/companions/presets.ts     — 7 companion presets + MISSION_PILLARS + ageGate
+data/speakers/{english,shona,french,chinese,tagalog}/  — 5 speaker packs with locale + voices + AI prompt + greetings
+data/courses/                  — Course packs per language
+data/jurisdictions/            — Per-region legal/currency/age/crisis configs
 
-supabase/functions/rwen-conversation/ — Claude webhook Edge Function
-docs/legal/                   — Privacy Policy + Terms (need lawyer)
-docs/DATABASE-DESIGN.md       — Full DB schema
-docs/DOCS-INDEX.md            — All documentation index
-docs/LEGAL-REQUIREMENTS.md    — Legal research
-docs/curriculum/onboarding-design.md — Full onboarding design
+supabase/functions/rwen-chat/  — Claude webhook Edge Function (deployed)
+supabase/functions/rwen-tts/, rwen-stt/  — Code exists, awaiting deploy
+docs/STATUS-2026-05-04.md      — Most current snapshot + handoff
+docs/PRODUCT-DESIGN.md         — Detailed product design
+docs/DATABASE-DESIGN.md        — Full DB schema
+docs/AI-COMPANION-PLAN.md      — Companion architecture + memory plan
+docs/PHASE-H-REVENUECAT.md     — Payment integration plan
+docs/legal/                    — Privacy Policy + Terms (need lawyer)
+docs/curriculum/               — Lesson template + module specs
+docs/stack/                    — Per-vendor architecture notes (ElevenLabs, Supabase, RevenueCat, etc.)
 ```
 
 ---
@@ -318,6 +366,12 @@ docs/curriculum/onboarding-design.md — Full onboarding design
 ## Supabase Project
 - URL: https://jkjznverqjaokmtvbpqv.supabase.co
 - Region: Sydney (ap-southeast-2)
-- Tables: profiles, available_packs, user_packs, lesson_progress, conversations, parental_codes, subscriptions
-- Storage: avatars bucket (public)
-- Edge Functions: rwen-conversation (deployed, --no-verify-jwt)
+- **Tables (14)**: profiles, available_packs, user_packs, lesson_progress, conversations, parental_codes, subscriptions, jurisdictions, user_dictionary, lesson_notes, companions, companion_facts, companion_summaries, feedback_responses
+- **Storage**:
+  - `avatars` bucket (public) — user profile pictures
+  - `rwendo-email-signup-asset` bucket (public) — auth/welcome email images (Rwen waving etc.)
+  - `course-content` bucket — lesson JSONs (uploaded but not yet read by app)
+- **Edge Functions**: `rwen-chat` deployed; `rwen-tts` + `rwen-stt` written, awaiting deploy
+- **Auth providers**: Email + password ✅, Google OAuth ✅, Apple/Crypto wallet ⬜ (planned)
+- **Auth email template**: Custom branded HTML for signup confirmation, with Rwen waving + 6-digit OTP
+- **RPC**: `record_consents` (extended for marketing + info-protection consents), `get_ai_prompt_data`, `add_xp`, etc.
