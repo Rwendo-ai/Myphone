@@ -82,7 +82,7 @@ export interface SpeakerAiSystemPrompt {
 // CoursePack — what the user is doing
 // ─────────────────────────────────────────────────────────────────────────────
 
-export type CourseType = 'language' | 'ai-companion' | 'travel';
+export type CourseType = 'language' | 'ai-companion' | 'travel' | 'self-development';
 
 export interface CoursePackMeta {
   id: CoursePackId;
