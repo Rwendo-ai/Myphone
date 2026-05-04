@@ -1,0 +1,400 @@
+m01-l01.ts | Mangwanani — Good Morning
+    mangwanani | Mangwanani | Good morning
+    mamuka_sei | Mamuka sei? | How did you wake? (respectful)
+    ndamuka | Ndamuka, kana mamukawo | I woke well, if you also woke well
+m01-l02.ts | Wamuka Sei? — Greeting a Friend
+    wamuka_sei | Wamuka sei? | How did you wake? (informal)
+    ndamuka_wamukawo | Ndamuka, kana wamukawo | I woke well, if you also woke well
+    hesi | Hesi | Hey / Hi (casual)
+m01-l03.ts | Maswera Sei? — Afternoon Greetings
+    maswera_sei | Maswera sei? | How did you spend the day? (respectful)
+    ndaswera_maswerawo | Ndaswera, kana maswerawo | I spent well, if you also spent well
+    masikati | Masikati | Good afternoon
+m01-l04.ts | Manheru — Good Evening
+    manheru | Manheru | Good evening
+    manheru_akanaka | Manheru akanaka | Good evening (warm, welcoming)
+    hona | Hona | Look / See / Here
+m01-l05.ts | Makadii — The Universal Greeting
+    makadii | Makadii? | How are you? (universal, any time)
+    ndiripo_makadiiwo | Ndiripo, makadiiwo? | I am well, and how are you?
+    wakadii | Wakadii? | How are you? (informal, one person)
+m01-l06.ts | Zita Rako Ndiani? — What's Your Name?
+    zita_rako_ndiani | Zita rako ndiani? | What is your name?
+    zita_rangu_ndi | Zita rangu ndi... | My name is...
+    wakanaka_kukuziva | Wakanaka kukuziva | Nice to meet you
+m01-l07.ts | Wabva Kupi? — Where Are You From?
+    wabva_kupi | Wabva kupi? | Where are you from?
+    ndabva_ku | Ndabva ku... | I am from...
+    ndinogara_ku | Ndinogara ku... | I live in...
+m01-l08.ts | Makadii Mese — Greeting a Group
+    makadii_mese | Makadii mese? | How are all of you?
+    tiripo | Tiripo | We are all well
+    tisangane | Tisangane | Let us meet / Greetings (to a group)
+m01-l09.ts | Sara Zvakanaka — Goodbye
+    sara_zvakanaka | Sara zvakanaka | Stay well (said by the person leaving)
+    famba_zvakanaka | Famba zvakanaka | Go well (said by the person staying)
+    tichaonana | Tichaonana | We will see each other again
+m01-l10.ts | The Greeting Conversation — Putting It Together
+    review_makadii | Makadii? | How are you? (universal safety net)
+    review_zita | Zita rako ndiani? | What is your name?
+    review_famba | Famba zvakanaka | Go well (said by the one staying)
+m02-l01.ts | Ndapota — Please
+    ndapota | Ndapota | Please
+    ndibatsire | Ndibatsire, ndapota | Please help me
+    zvinoenderana | Zvinoenderana | You're welcome / It's fine
+m02-l02.ts | Ndatenda — Thank You
+    ndatenda | Ndatenda | Thank you
+    ndatenda_zvikuru | Ndatenda zvikuru | Thank you very much
+    wakanaka | Wakanaka | You are kind / You are good
+m02-l03.ts | Ruregerero — Sorry
+    ruregerero | Ruregerero | Sorry / Forgive me
+    ndinokumbira_ruregerero | Ndinokumbira ruregerero | I ask your forgiveness
+    haitei | Haitei | No problem / It's fine
+m02-l04.ts | Handizivi — I Don't Know
+    handizivi | Handizivi | I don't know
+    ndinoziva | Ndinoziva | I know
+    ndinofunga | Ndinofunga | I think / I believe
+m02-l05.ts | Taura Zvishoma — Speak Slowly
+    taura_zvishoma | Taura zvishoma, ndapota | Please speak slowly
+    dzokorora | Dzokorora, ndapota | Please repeat that
+    handanzwisisi | Handanzwisisi | I don't understand
+m02-l06.ts | Ndinoda Rubatsiro — I Need Help
+    ndinoda_rubatsiro | Ndinoda rubatsiro | I need help
+    ndinogona | Ndinogona | I can / I am able
+    handigoni | Handigoni | I can't / I am not able
+m02-l07.ts | Zvii muShona? — How Do You Say?
+    zvii_mushona | Zvii muShona? | How do you say it in Shona? / What is it in Shona?
+    zvinorevaiko | Zvinoreva chii? | What does it mean?
+    ndinoda_kudzidza | Ndinoda kudzidza ChiShona | I want to learn Shona
+m02-l08.ts | Ndanzwisisa — I Understand
+    ndanzwisisa | Ndanzwisisa | I understand
+    handanzwisisi | Handanzwisisi | I don't understand
+    ndanzwa | Ndanzwa | I heard / I get it
+m02-l09.ts | Ndinoda — I Want / I Need
+    ndinoda | Ndinoda... | I want / I need...
+    ndinoda_chete | ...chete | only / just that
+    handidi | Handidi | I don't want
+m02-l10.ts | Survival Conversation — Putting It Together
+    ndinoda_kuenda | Ndinoda kuenda ku... | I want / need to go to...
+    nzira_ipi | Nzira ipi? | Which way? / Which road?
+    ndatenda_rubatsiro | Ndatenda rubatsiro rwako | Thank you for your help
+m03-l01.ts | Ndiri — I Am
+    ndiri | Ndiri... | I am...
+    ndiri_mudzidzisi | Ndiri mudzidzisi | I am a teacher
+    ndiri_murwi | Ndiri murwi weshoko | I am a student / learner
+m03-l02.ts | Ndinoshanda — I Work
+    ndinoshanda | Ndinoshanda | I work
+    ndinoshanda_mu | Ndinoshanda mu... | I work in / at...
+    handishande | Handishande iye zvino | I don't work right now / I'm not working
+m03-l03.ts | Makore — Age
+    makore_mangani | Une makore mangani? | How old are you?
+    ndine_makore | Ndine makore... | I am ... years old
+    ndakazvarwa | Ndakazvarwa mu... | I was born in...
+m03-l04.ts | Ndine Mhuri — I Have a Family
+    ndine_mhuri | Ndine mhuri | I have a family
+    ndine_vana | Ndine vana... | I have ... children
+    ndiriye_mumwe_chete | Ndiriye mumwe chete | I am an only child
+m03-l05.ts | Vanhu Vangu — My People
+    vanhu_vangu | Vanhu vangu | My people
+    shamwari_yangu | Shamwari yangu | My friend
+    musha_wangu | Musha wangu | My home / My village
+m03-l06.ts | Tinogara — Where We Live
+    tinogara | Tinogara ku... | We live in...
+    kumusha | Kumusha | Back home / In the village
+    kumusha_kwangu | Kumusha kwangu ndi... | My home area is...
+m03-l07.ts | Ndinoda Kudzidza — I Want to Learn
+    ndinoda_kudzidza | Ndinoda kudzidza ChiShona | I want to learn Shona
+    ndirikudzidza | Ndirikudzidza | I am learning (right now)
+    ndinoda_kutaura | Ndinoda kutaura ChiShona | I want to speak Shona
+m03-l08.ts | Ndinofara — I Am Happy
+    ndinofara | Ndinofara | I am happy / I am glad
+    ndinofara_kukuziva | Ndinofara kukuziva | I am happy to know you / Nice to meet you
+    zvakanakisisa | Zvakanakisisa | Excellent / Very good / Wonderful
+m03-l09.ts | Ndinofarira — What I Enjoy
+    ndinofarira | Ndinofarira... | I enjoy / I am fond of...
+    ndinotenga | Ndinotenga | I shop / I buy things
+    ndinoda_mimhanzi | Ndinoda mimhanzi | I love music
+m03-l10.ts | My Story in Shona — A Full Introduction
+    zita_rangu_ndi | Zita rangu ndi... | My name is...
+    nokuti | Nokuti... | Because...
+    ndinoda_kuva_shamwari | Ndinoda kuva shamwari yako | I want to be your friend
+m04-l01.ts | Munhu / Vanhu — Person & People
+    munhu | Munhu | A person / Someone
+    vanhu | Vanhu | People
+    mukomana | Mukomana / Musikana | Boy / Girl
+m04-l02.ts | Chinhu / Zvinhu — Thing & Things
+    chinhu | Chinhu | A thing / An object
+    zvinhu | Zvinhu | Things / Objects
+    chikoro | Chikoro | School
+m04-l03.ts | Muti / Miti — Trees & Medicine
+    muti | Muti | Tree / Medicine
+    miti | Miti | Trees / Medicines
+    muriwo | Muriwo | Vegetables / Relish
+m04-l04.ts | Zai / Mazai — The Ri/Ma Class
+    zai_mazai | Zai / Mazai | Egg / Eggs
+    banga_mabanga | Banga / Mabanga | Knife / Knives
+    dombo_matombo | Dombo / Matombo | Stone / Stones
+m04-l05.ts | Subject Concord — Verbs Agree with Nouns
+    munhu_anoenda | Munhu anoenda | The person goes
+    chinhu_chinoita | Chinhu chinoita | The thing works / happens
+    muti_unomera | Muti unomera | The tree grows
+m04-l06.ts | Possession — Whose Is It?
+    wangu_rangu | -wangu / -rangu / -yangu | My (changes with noun class)
+    imba_yangu | Imba yangu | My house
+    buku_rangu | Buku rangu | My book
+m04-l07.ts | Adjectives — Good, Big, Beautiful
+    munhu_akanaka | Munhu akanaka | A good person
+    chinhu_chakanaka | Chinhu chakanaka | A good thing
+    muti_wakanaka | Muti wakanaka | A good tree
+m04-l08.ts | Past & Future — When Things Happen
+    ndaenda | Ndaenda | I went / I have gone
+    ndichaenda | Ndichaenda | I will go
+    ndiri_kuenda | Ndiri kuenda | I am going (right now)
+m04-l09.ts | Asking Questions in Shona
+    chii | Chii? | What?
+    ndiani | Ndiani? | Who?
+    rinhi | Rinhi? | When?
+m04-l10.ts | Grammar in Context — The Full Picture
+    ndinoda_kuziva | Ndinoda kuziva | I want to know
+    zvinobuda | Zvinobuda zvakanaka | It turns out well / It works out
+    ndazvifunza | Ndazvifunza | I taught myself / I learned it
+m05-l01.ts | Baba — Father & Paternal Family
+    baba | Baba | Father
+    babamukuru | Babamukuru | Father's older brother (uncle)
+    babamunini | Babamunini | Father's younger brother (uncle)
+m05-l02.ts | Amai — Mother & Maternal Family
+    amai | Amai | Mother / (respectful address for older women)
+    tete | Tete | Father's sister (paternal aunt)
+    ambuya | Ambuya | Grandmother / (respectful address for elderly women)
+m05-l03.ts | Mukoma / Munin'ina — Brothers & Sisters
+    mukoma | Mukoma | Older sibling (used by a younger sibling)
+    munin_ina | Munin'ina | Younger sibling
+    hanzvadzi | Hanzvadzi | Cross-gender sibling (brother's sister / sister's brother)
+m05-l04.ts | Sekuru & Ambuya — Grandparents
+    sekuru | Sekuru | Grandfather / Respectful address for elderly men
+    muzukuru | Muzukuru | Grandchild / Nephew / Niece
+    dzinza | Dzinza | Clan / Lineage
+m05-l05.ts | Extended Family — The Wider Circle
+    vatete | Vatete | Father's sisters (paternal aunts, plural)
+    muzhengwa | Muzhengwa / Cousin | Cousin (child of parent's sibling)
+    mhuri_yose | Mhuri yose | The whole family / All of the family
+m05-l06.ts | Mudzimu — Ancestors & Lineage
+    mudzimu | Mudzimu / Vadzimu | Ancestral spirit / Ancestral spirits
+    chiziviso | Chiziviso / Mutupo | Totem / Clan symbol
+    ramangwana | Ramangwana rinobva kumashure | The future comes from the past
+m05-l07.ts | Murume & Mukadzi — Husband & Wife
+    murume | Murume | Husband / Man
+    mukadzi | Mukadzi | Wife / Woman
+    rudo | Rudo | Love
+m05-l08.ts | Vana — Children & Babies
+    mwana | Mwana | Child / Baby
+    vana | Vana | Children
+    mwana_wechikadzi | Mwana wechikadzi / wechibhemu | Daughter / Son
+m05-l09.ts | Talking About My Family
+    ndine_mhuri_huru | Ndine mhuri huru | I have a big family
+    tinogara_pamwe | Tinogara pamwe chete | We live together
+    ndinoda_mhuri_yangu | Ndinoda mhuri yangu | I love my family
+m05-l10.ts | Rwen's Family — Full Conversation
+    ndinokugamuchira | Ndinokugamuchira | I welcome you
+    mhuri_inokugamuchira | Mhuri inokugamuchira | The family welcomes you
+    vanofarira_kukuziva | Vanofarira kukuziva | They are happy to know you
+m06-l01.ts | Nhamba 1–5 — Numbers One to Five
+    chimwe_piri_tatu | Chimwe / Piri / Tatu | One / Two / Three
+    china_shanu | China / Shanu | Four / Five
+    mangani | Mangani? | How many?
+m06-l02.ts | Nhamba 6–10 — Numbers Six to Ten
+    tanhatu_nomwe_sere | Tanhatu / Nomwe / Sere | Six / Seven / Eight
+    pfumbamwe_gumi | Pfumbamwe / Gumi | Nine / Ten
+    gumi_nerimwe | Gumi nerimwe | Eleven
+m06-l03.ts | Nguva — What's the Time?
+    nguva_ngani | Nguva ngani? | What time is it?
+    iri_yega | Iri yega / Iri mbiri | It's one o'clock / It's two o'clock
+    manheru_masikati | Manheru / Masikati | Evening (pm) / Afternoon
+m06-l04.ts | Days of the Week — Mazuva Evhiki
+    svondo_muvhuro | Svondo / Muvhuro | Sunday / Monday
+    chipiri_chitatu | Chipiri / Chitatu | Tuesday / Wednesday
+    chishanu_mugovera | Chishanu / Mugovera | Friday / Saturday
+m06-l05.ts | Months & Seasons — Mwedzi & Nguva
+    ndira_kukadzi_kurume | Ndira / Kukadzi / Kurume | January / February / March
+    chikumi_chikunguru | Chikumi / Chikunguru | June / July
+    gumiguru_zvita | Gumiguru / Zvita | October / December
+m06-l06.ts | Mari — Money
+    mari | Mari | Money
+    dora | Dora / Madora | Dollar / Dollars
+    ndine_mari | Ndine mari / Handina mari | I have money / I have no money
+m06-l07.ts | Mutengo — Price & Shopping
+    mutengo_uri_ngani | Mutengo uri ngani? | What is the price? / How much does it cost?
+    inodura | Inodura / Ichipa | It is expensive / It is cheap
+    deredza_mutengo | Deredza mutengo | Reduce the price / Lower the price
+m06-l08.ts | Makumi — Tens & Larger Numbers
+    makumi_maviri | Makumi maviri | Twenty
+    makumi_matatu | Makumi matatu | Thirty
+    zana | Zana | One hundred
+m06-l09.ts | Appointments & Scheduling
+    ndichasvika | Ndichasvika na... | I will arrive at...
+    tinosangana | Tinosangana riini? | When do we meet?
+    ndakamirira | Ndakamirira / Ndirikumirira | I waited / I am waiting
+m06-l10.ts | At the Market — Full Conversation
+    ndichatora | Ndichatora | I'll take it / I'll buy it
+    ndatenda_mutengesi | Ndatenda, Mutengesi | Thank you, Vendor
+    zvakanaka_kutenga | Zvakanaka kutenga | Good to buy / Good shopping
+m07-l01.ts | Sadza — The National Dish
+    sadza | Sadza | Sadza (maize meal staple)
+    muriwo | Muriwo | Vegetables / Relish
+    nyama | Nyama | Meat
+m07-l02.ts | Zvokudya — Food Vocabulary
+    zvokudya | Zvokudya | Food (general)
+    dovi | Dovi | Peanut butter / Groundnut sauce
+    chingwa | Chingwa | Bread
+m07-l03.ts | Mvura & Zvokunwa — Water & Drinks
+    mvura | Mvura | Water
+    tii | Tii | Tea
+    ndine_nyota | Ndine nyota | I am thirsty
+m07-l04.ts | Ndine Nzara — Hunger & Appetite
+    ndine_nzara | Ndine nzara | I am hungry
+    ndaguta | Ndaguta | I am full / I have eaten enough
+    wambodya | Wambodya here? | Have you eaten? (caring question)
+m07-l05.ts | Ordering at a Restaurant
+    ndinopa | Ndinopa... | Please bring me... / I would like...
+    menyu | Menyu | Menu
+    chakaipa_nhasi | Chii chakaipa nhasi? | What is today's special?
+m07-l06.ts | Zvakanakisisa! — Expressing Taste
+    zvakanakisisa | Zvakanakisisa | Excellent / Delicious / Very good
+    zvinonaka | Zvinonaka | It tastes good / It is delicious
+    makagadzira_zvakanaka | Makagadzira zvakanaka | You cooked it well
+m07-l07.ts | Welcoming a Guest — The Host's Role
+    tauya_garai | Tauya / Garai | Come in / Sit down
+    tora_nedivi | Tora, nedivi | Please help yourself / Have some
+    mauya_zvakanaka | Mauya zvakanaka | Welcome / You have arrived well
+m07-l08.ts | Kudya Pamwe — Eating Together
+    taudzai | Taudzai / Taudzai pamwe | Let's eat / Let's eat together
+    kudya_pamwe | Kudya pamwe | Eating together
+    tikudzane | Tikudzane | Let us honour each other
+m07-l09.ts | Morning Meal Conversation
+    ndadya | Ndadya | I have eaten
+    mangwanani_ekudya | Zvokudya zvemangwanani | Breakfast
+    mandakudya_nei | Mandakudya nei? | What did you eat? (caring question)
+m07-l10.ts | Rwen's Family Dinner — Full Conversation
+    vakagadzirira | Vakagadzirira zvose | They prepared everything
+    ndinoonga | Ndinoonga | I am grateful
+    usiku_wakanaka | Usiku wakanaka | Good night
+m08-l01.ts | Kuenda — To Go
+    ndinoenda | Ndinoenda | I go (habitually)
+    ndaenda | Ndaenda | I went / I have gone
+    ndichaenda | Ndichaenda | I will go
+m08-l02.ts | Kuuya — To Come
+    ndinouya | Ndinouya | I come / I am coming
+    ndauya | Ndauya | I have come / I arrived
+    uya_kuno | Uya kuno | Come here
+m08-l03.ts | Kudya — To Eat
+    ndinodya | Ndinodya | I eat (habitually)
+    ndiri_kudya | Ndiri kudya | I am eating (right now)
+    ndadya | Ndadya | I ate / I have eaten
+m08-l04.ts | Kunwa — To Drink
+    ndinowa | Ndinowa | I drink (habitually)
+    ndiri_kunwa | Ndiri kunwa | I am drinking (now)
+    ndanwa | Ndanwa | I drank / I have drunk
+m08-l05.ts | Kurara — To Sleep
+    ndinorara | Ndinorara | I sleep (habitually)
+    ndarara | Ndarara | I slept / I have slept
+    rara_zvakanaka | Rara zvakanaka | Sleep well
+m08-l06.ts | Kutaura — To Speak
+    ndinotaura | Ndinotaura | I speak (habitually)
+    ndinotaura_chishona | Ndinotaura ChiShona | I speak Shona
+    taura_zvishoma | Taura zvishoma | Speak slowly / Speak a little
+m08-l07.ts | Kuona — To See
+    ndinoona | Ndinoona | I see / I understand
+    ndaona | Ndaona | I saw / I have seen
+    ona | Ona! | Look! / See this!
+m08-l08.ts | Kuterera — To Listen
+    ndinoterera | Ndinoterera | I listen (habitually)
+    ndiri_kuterera | Ndiri kuterera | I am listening (right now)
+    tererai | Tererai | Listen (formal/plural command)
+m08-l09.ts | Kudzidza — To Learn
+    ndinodzidzа | Ndinodzidzа | I learn (habitually)
+    ndirikudzidza | Ndirikudzidzа | I am learning (right now)
+    ndadzidzа | Ndadzidzа | I learned / I have learned
+m08-l10.ts | A Day in Shona — Full Daily Routine
+    zuva_rangu | Zuva rangu rinoita sei? | What is my day like?
+    zuva_nezuva | Zuva nezuva | Every day / Day by day
+    ndakafara_nhasi | Ndakafara nhasi | I was happy today
+m09-l01.ts | Nzira — The Way & Road
+    nzira_ipi | Nzira ipi? | Which way? / Which road?
+    ndeapi_nzira | Ndeapi nzira ye...? | Which is the way to...?
+    nzira_yakanaka | Nzira yakanaka | A good road / The right way
+m09-l02.ts | Mberi & Shure — Forward & Back
+    mberi | Mberi | Forward / Ahead / Future
+    shure | Shure | Behind / Back / Past
+    enda_mberi | Enda mberi | Go forward / Continue ahead
+m09-l03.ts | Kurudyi & Kuruboshwe — Right & Left
+    kurudyi | Kurudyi | Right (direction)
+    kuruboshwe | Kuruboshwe | Left (direction)
+    dzokorora_kurudyi | Dzokorora kurudyi | Turn right
+m09-l04.ts | Pedyo & Kure — Near & Far
+    pedyo | Pedyo | Near / Close
+    kure | Kure | Far / Distant
+    pedyo_nenhino | Pedyo nenhino | Very nearby / Right here
+m09-l05.ts | Kombi — Taking Public Transport
+    kombi | Kombi | Minibus taxi / Kombi
+    mira_pano | Mira pano! | Stop here!
+    ndinoda_kuburuka | Ndinoda kuburuka pano | I want to get off here
+m09-l06.ts | At the Airport — Nhandare Yendege
+    ndege | Ndege | Aeroplane / Bird
+    nhandare_yendege | Nhandare yendege | Airport
+    ndirikuenda_kuZimbabwe | Ndirikuenda kuZimbabwe | I am going to Zimbabwe
+m09-l07.ts | At the Hotel — Imba yokurara
+    imba_yokurara | Imba yokurara | Hotel / Guesthouse
+    ndinoda_rumuri | Ndinoda rumuri | I need a room
+    kusvika_rinhi | Munosvika rinhi? | When do you arrive? / When are you checking in?
+m09-l08.ts | Emergency Phrases
+    batsira | Batsira! | Help!
+    ndine_dambudziko | Ndine dambudziko | I have a problem
+    daidzai_chiremba | Daidzai chiremba! | Call a doctor!
+m09-l09.ts | Sightseeing — Zimbabwe's Wonders
+    ndinoda_kuona | Ndinoda kuona... | I want to see...
+    nzvimbo_yakanaka | Nzvimbo yakanaka | A beautiful place
+    dzimba_dzamabwe | Dzimba dzamabwe | Great Zimbabwe (houses of stone)
+m09-l10.ts | Navigating Harare — Full Conversation
+    ndirikusvika_harare | Ndirikusvika Harare | I am arriving in Harare
+    chiteshi_chekombi | Chiteshi chekombi | Kombi station / Bus stop
+    wasvika | Wasvika! | You have arrived!
+m10-l01.ts | Ndinofara — Happiness & Joy
+    ndinofara_zvikuru | Ndinofara zvikuru | I am very happy
+    mufaro | Mufaro | Happiness / Joy
+    ndinofara_kukuona | Ndinofara kukuona | I am happy to see you
+m10-l02.ts | Ndakasuwa — Sadness & Difficulty
+    ndakasuwa | Ndakasuwa | I am sad / I feel sorrowful
+    zvinosuwa | Zvinosuwa | It is sad / It is difficult / I am sorry to hear that
+    usatye | Usatye / Usasuwa | Don't be afraid / Don't be sad
+m10-l03.ts | Ndakatya — Fear & Courage
+    ndakatya | Ndakatya | I am afraid / I was scared
+    usatya | Usatya! | Don't be afraid! / Be brave!
+    kushinga | Kushinga | Courage / To be strong/brave
+m10-l04.ts | Ndinorwara — Illness & Wellness
+    ndinorwara | Ndinorwara | I am sick / I am unwell
+    ndiripo_zvisiri_nani | Ndiripo zvisiri nani | I am not well / I am not okay
+    ndinova_musoro | Ndinova musoro | I have a headache
+m10-l05.ts | Body Parts — Zvikamu Zvomuviri
+    musoro_maziso | Musoro / Maziso | Head / Eyes
+    moyo_nzeve | Moyo / Nzeve | Heart / Ear
+    maoko_makumbo | Maoko / Makumbo | Hands / Legs
+m10-l06.ts | At the Doctor — Kuchipitari
+    ndinoirwa | Ndinoirwa | I am in pain / It hurts
+    kwangu | ...kwangu | Mine / My (for places)
+    ndinorwara_ne | Ndinorwara ne... | I am sick with... / I have...
+m10-l07.ts | Talking About the Past — Nguva Yadarika
+    kare | Kare | Long ago / In the old days / Once
+    paivapo | Paivapo... | Once upon a time / There was...
+    ndakanga | Ndakanga... | I was / I used to be...
+m10-l08.ts | Hope & The Future — Tariro
+    tariro | Tariro | Hope
+    ndinotarisira | Ndinotarisira... | I hope for / I expect...
+    ramangwana | Ramangwana | The future / Tomorrow
+m10-l09.ts | Nhetembo — Shona Proverbs
+    chara_chimwe | Chara chimwe hachitswanyi inda | One finger cannot kill a louse — unity is needed
+    ukama_igasva | Ukama igasva hunozadziswa nekudya | Relationship is incomplete — completed by sharing food
+    kushanda_ndiko | Kushanda ndiwo mutsvairo unokudzwa | Hard work is the broom that is honoured
+m10-l10.ts | Your Shona Story — A2 Complete
+    ndasvika | Ndasvika | I have arrived
+    ndinoenda_mberi | Ndinoenda mberi | I keep going forward
+    rwendo_ruchiripo | Rwendo ruchiripo | The journey continues

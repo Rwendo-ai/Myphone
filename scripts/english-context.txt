@@ -1,0 +1,300 @@
+=== m01-l01.ts === Hello — Mhoro
+HOOK: Mhoro! MuChiNgezi, kana uchionana nemumwe, unotanga ne'Hello'. Inyanzvi yekutanga kushandiswa.
+CULT: Vanhu vanotaura ChiNgezi havasi vechiBritish chete — varimo munyika dzakawanda. 'Hello' inoshanda muchero nyika.
+=== m01-l02.ts === Hi & Bye — Casual greetings
+HOOK: Mhoro! Nhasi tinodzidza mashoko emushamwari — 'Hi' ne 'Bye'. Aya ndiwo anoshandiswa pakati peshamwari kwete nevakuru.
+CULT: Pa ChiShona, 'Hesi' inonzwika senge yakanyatsoderera kuvakuru. Mu ChiNgezi, 'Hi' inoshanda kunyange nevasingakuzivi — asi haisi yebasa kana yetsika dzakakwirira.
+=== m01-l03.ts === Good morning — Mangwanani
+HOOK: Mangwanani! MuChiNgezi, kubvunza kuti mumwe arara sei kunoratidza tsika — sezvazvakaita pa ChiShona pataswera tichiti 'Marara sei?'.
+CULT: MuChiShona, 'Marara sei?' inyaya yetsika — vanhu vanonyatsobvunzana kuti varare sei. MuChiNgezi, 'Did you sleep well?' haishandiswi nguva dzose — vanhu vakawanda vanopindira chete kuti 'Good morning'.
+=== m01-l04.ts === Good afternoon — Masikati
+HOOK: Masikati! Kana zuva rasvika pakati, kwaziso inochinja kubva pa 'Good morning' kuenda 'Good afternoon'. Sezvinoita 'Mangwanani' / 'Masikati' — asi zvinochinja na 12pm chaipo.
+CULT: MuChiShona, 'Maswera sei?' inoshandiswa zuva rose kana wasangana nemumwe pakati pezuva. MuChiNgezi, vanhu vanowanzobvunza 'How's your day?' — yakapfava, ingori kutaurirana hudikani.
+=== m01-l05.ts === Good evening — Manheru
+HOOK: Manheru! Kana zuva ranyura, kwaziso inochinjazve kuenda pa 'Good evening'. Iyi inonyanya kushandiswa kubva 5pm kusvika usiku — pakati pe Masikati ne kurara.
+CULT: MuChiShona, kana wadzoka kumba uchibva kubasa, vanhu vanobvunza 'Maswera sei?' kana 'Maswera here?' — kuda kuziva zvazvanga zvichiitika zuva rose. MuChiNgezi 'How was your day?' inonyatsoshanda — yakanyatsoreva 'Maswera sei zuva razvanga zvakaipa kana zvakanaka?'.
+=== m01-l06.ts === What's your name? — Zita rako ndiani?
+HOOK: Mhoro! Kuti uzive mumwe munhu, unotanga nezita. MuChiNgezi unobvunza 'What's your name?' — uye unopindura ne 'My name is...'. Kana wapindurana, unowedzera 'Nice to meet you'.
+CULT: MuChiShona, kupa zita renyu kumunhu wausingazivi pasina chibvumirano kanozotaridza ushamwari. MuChiNgezi, kupa zita pakutanga kwehurukuro itsika yakajairika — kunyange pavanhu vasingazikani.
+=== m01-l07.ts === Where are you from? — Wabva kupi?
+HOOK: Mhoro! MuChiNgezi pakubvunza nzvimbo, unoshandisa 'from' (kubva ku-) kana 'in' (mu-/ku-). 'Where are you from?' inobvunza paunobva. 'I live in...' inoreva paunogara izvozvi.
+CULT: MuChiShona pakati pa 'kubva ku-' (paunobva) ne 'kugara mu-' (paunogara) zvakajairika kuzvinzwisisa. MuChiNgezi 'from' inotaridza pakaberekerwa kana kakurira, 'in' inotaridza pavanogara izvozvi — saka unogona kuva 'from Harare' asi 'living in London'.
+=== m01-l08.ts === Polite "How are you?" forms
+HOOK: Mhoro! MuChiNgezi pane kwaziso dzakapfava (casual) ne dzine tsika dzakakwirira (formal). Pamabasa, mubvunzo, kana paunenge uchitaura nemukuru — unoshandisa 'How do you do?' kwete 'How are you?'.
+CULT: MuChiShona, 'Makadii zvakanaka here?' inoita seye yetsika. MuChiNgezi, 'How do you do?' yashata kuva yekare-kare zvishoma — asi ichiri kushanda mumabasa, mainterview, kana paunosangana mukuru wamabasa kekutanga.
+=== m01-l09.ts === Goodbye — Sara/Famba zvakanaka
+HOOK: Mhoro! Kuparadzana muChiNgezi kune mashoko akawanda. 'Goodbye' yetsika. 'See you tomorrow' kana munenge muchasangana zuva rinotevera. 'Take care' kuratidza kuti une hanya nemumwe.
+CULT: MuChiShona pakuparadzana, kuti 'Famba zvakanaka' kunoreva 'famba pasina dambudziko'. MuChiNgezi 'Take care' yakaenzana — inoreva 'zvichengete'. Inoshandiswa zvakanyanya nepakati peshamwari, hama, nevanhu vaunoda — kwete pa formal yakakwirira.
+=== m01-l10.ts === The Greeting Conversation
+HOOK: Mhoro! Nhasi tinoongorora zvose zvatadzidza muModule 1. Kubvira pa 'Hello' kusvika 'Goodbye' — hurukuro yakakwana yekutanga muChiNgezi.
+CULT: MuChiShona, hurukuro yekutanga inoda nguva — mubvunzo nemubvunzo, mhinduro nemhinduro. MuChiNgezi vamwe vanofarira kufambisa hurukuro nekuda kwenguva, asi tsika dzekubvunza zita uye kwawakabva zvinoramba zvichikoshazve.
+=== m02-l01.ts === Please — Ndapota
+HOOK: Mhoro! Module 2 inotanga ne'survival phrases' — mashoko anokubatsira kana wakurasika kana usinganzwisise. Kutanga: 'Please', 'Excuse me', uye 'Sorry'.
+CULT: MuChiShona, 'Ndapota' inorema — inenge ichikumbira chaizvo. MuChiNgezi, 'Please' inoshandiswa kazhinji uye yakareruka — kunyange uchikumbira hafu yetii. Usatya kuishandisa — kuisiya kunoita uite serudzi rwemupopoti.
+=== m02-l02.ts === Thank you — Ndatenda
+HOOK: Mhoro! Nhasi tinodzidza kutenda muChiNgezi. 'Thank you' inenge 'ndatenda' — asi mhinduro yayo ('You're welcome') haina chirevo chimwe chete muChiShona.
+CULT: MuChiShona kazhinji unotenda nokunyemwerera kana 'maita basa' chete. MuChiNgezi vanhu vanotaura 'Thank you' kakawanda — pakukumbira coffee, pakuvhura suo, kunyange paku-pass mbiya yemumvuri. Pindura ne 'You're welcome' kana 'No problem'.
+=== m02-l03.ts === Can you help me? — Mungandibatsire here?
+HOOK: Mhoro! Kana wakurasika kana usingazivi zvekuita, unoda kukumbira rubatsiro. MuChiNgezi shoko 'can' rinokuvhurira nzira yekukumbira.
+CULT: MuChiShona tinokumbira rubatsiro nehutsika hwakanyatsoderera ('Mungandibatsire here?' inotaridza kuremekedza). MuChiNgezi shoko 'Can you...?' rinoita basa irori — kunyange kubvunza mukuru, hazvinetsi. Ipfupi uye yakareruka.
+=== m02-l04.ts === Do you speak English? — Munotaura ChiNgezi here?
+HOOK: Mhoro! Usati watanga hurukuro nemumwe waunenge usingazivi, zvakanaka kubvunza kuti vanotaura ChiNgezi here. Mubvunzo uyu unotanga ne 'Do'.
+CULT: MuChiShona tinobvunza nemashoko anoperera ne 'here?' ('Munotaura ChiNgezi here?'). MuChiNgezi pakubvunza pamusoro pemashandisiro echinhu, mubvunzo unotanga ne 'Do' — 'Do you speak English?'. Hazvina hutsika kubvunza chete 'You speak English?' — chinokwirira asi chinoshanda muhurukuro yepfupi.
+=== m02-l05.ts === I don't understand — Handinzwisise
+HOOK: Mhoro! Pose paunenge usina kunzwisisa, taura izvozvo. MuChiNgezi: 'I don't understand'. Iri ishoko rinokumirira pose paunononotswa nemashoko.
+CULT: MuChiShona kuti tipinde negation tinoshandisa 'handi-' ('handinzwisise'). MuChiNgezi tinoshandisa 'don't' (=do + not) — 'I don't understand'. Usanyara kutaura izvi — vanhu vanotaura ChiNgezi vanofarira kunzwa kuti munhu anonzwisisa here, kuitira kuti vagadzirise mutauro wavo.
+=== m02-l06.ts === Yes & No — Hongu uye Aiwa
+HOOK: Mhoro! Mashoko maviri akareruka asi anokosha: 'Yes' uye 'No'. Wedzera 'Maybe' kana usingaonesi.
+CULT: MuChiShona, 'Hongu' inoreva 'yes' asi inogona kunzwika senge 'I'm listening' chete. MuChiNgezi 'Yes' inopinda — inopindira chimwe chiitiko ('Yes, I want it'). Kana usina kunyatsoona, taura 'Maybe' kwete 'Yes' chete kuti uitire vamwe — kunorambisa kunzwisisana.
+=== m02-l07.ts === Where is...? — ...iri kupi?
+HOOK: Mhoro! Kuti utsvage chinhu kana nzvimbo, bvunza ne 'Where is...?'. Mubvunzo uyu unokupa nzira yekutsvaga toilet, nzvimbo yekubudira, kana keki yawakatenga.
+CULT: MuChiShona tinobvunza 'Toilet iri kupi?' — chinhu chinotanga, locative ('kupi') inoperera. MuChiNgezi mutsara unotanga ne 'Where' uchitevera ne 'is' nezita rechinhu: 'Where is the toilet?'. Cherechedza kuti chinhu chinoda 'the' pamberi.
+=== m02-l08.ts === How much? — Marii?
+HOOK: Mhoro! Pamarket kana pamatengeso, unoda kubvunza mutengo. MuChiNgezi: 'How much?'. Wedzera 'It's expensive' kana 'It's cheap' kuti pinda mukutengetana.
+CULT: MuChiShona kutengetana ('bargaining') chinhu chakajairika — kunyanya pamamarket. MuChiNgezi inoshanda zvakafanana, asi mutengetesi anenge achidzoreredza zvinyoro nyoro. 'It's expensive' — kunyemwerera — kunoita seunoda kuderedzwa, kwete kuwedzerwa.
+=== m02-l09.ts === Emergency phrases — Mhoro mhinduro
+HOOK: Mhoro! Tinotarisira kuti hauzombozvishandisi mashoko aya — asi unofanira kuaziva. Kana kune njodzi, mashoko anofanira kubuda nokukurumidza.
+CULT: MuChiShona tinodaidzira 'Ndibatsireiwo!' — locative inotaridza kupinda kwetsika. MuChiNgezi 'Help!' chete inoshanda — pfupi, yakasimba, inonzwika kure. Kana ndizvo zvauri kuda, taura zvakanaka uye nokukurumidza. Hapana hutsika hwekudzivirira kana paine njodzi.
+=== m02-l10.ts === Survival in conversation
+HOOK: Mhoro! Wapedza Module 2 — wakurudzira mashoko ekupona muChiNgezi. Nhasi tinosanganisa zvose: 'Excuse me', 'Please', 'I don't understand', 'Where is...?', 'Thank you'. Mutsetse mumwe — chinangwa chimwe: kupedza chinetso muChiNgezi.
+CULT: MuChiShona kupinda nemumwe usingazivi kunoda nguva yekutanga — kukwaziswa, kubvunzana zvinhu. MuChiNgezi unotenda kuti munhu anenge achikurumidza — taura zvakajeka, kumbira rubatsiro pakarepo, uye tenda. Hutsika hwakareba husingashande pano — hutsika hupfupi hunoyamura.
+=== m03-l01.ts === I am... — Ndini...
+HOOK: Mhoro! Nhasi tinodzidza kuzvitaridza muChiNgezi. Shoko guru nderekuti 'I am' — kana 'I'm' kana wapfupisa. Iri ndiyo nzira yekutaura zita rako, basa rako, nekwauri kubva.
+CULT: MuChiShona, 'Ndini mudzidzisi' inotaura zvose pamwe — verb 'is/am' inenge yakavanzika mukati. MuChiNgezi, unofanira kunyatsotaura 'I am' (kana 'I'm') kuti mutsara uite. Usakanganwa shoko 'am' — handisi shoko rinokwidzwa.
+=== m03-l02.ts === How old are you? — Une makore mangani?
+HOOK: MuChiShona unobvunza 'Une makore mangani?' — pachena. MuChiNgezi, kunyange iri mubvunzo wakajairika, vamwe vanhu havafariri kubvunzwa makore avo. Asi paforomu, kuvharadhi, kana kumusangano wechiremba — unofanira kuziva kupindura.
+CULT: MuChiNgezi, 'I'm 25' inoshanda chete — usawedzera 'years old' nguva dzose. Vanhu vakuru kazhinji vanopindura ne 'I'm in my forties' (ndiri pakati pemakore makumi mana) kuti vasanyatsotaura nhamba chaiyo. Itsika yakanaka — kwete kuhwanda.
+=== m03-l03.ts === What do you do? — Unoita basa rei?
+HOOK: MuChiNgezi, mubvunzo 'What do you do?' unoreva 'Unoita basa rei?' — kwete 'unoita zvii panguva ino?'. Mhinduro inotanga ne 'I'm a teacher' (basa) kana 'I work in IT' (sangano).
+CULT: MuChiShona, 'mudzidzisi' haana mukadzi/murume wakatarwa — shoko rimwe rinoshandiswa kune vose. MuChiNgezi zvakafanana ('teacher' = murume kana mukadzi) — asi unofanira kuwedzera 'a' pamberi: 'I'm a teacher', kwete 'I'm teacher'. Iyi 'a' inonzi article — chinhu chidiki asi chinokosha.
+=== m03-l04.ts === Married? Children? — Wakaroora? Une vana?
+HOOK: MuChiShona, kubvunza vatsva kana vakaroora kana vane vana itsika yakajairika — kuratidza kuda. MuChiNgezi, mibvunzo iyi inotaurwa zvishoma — asi pavanhu vakuru, kuhama, kana kushamwari, inoshanda. Tiri kudzidza kupindura nemazvo.
+CULT: MuChiNgezi 'married' inoreva murume kana mukadzi — handizvitaridzi. 'I have two children' inoshanda kuvarume kana vakadzi vose. Asi uchenjere — vamwe vanoonderera mubvunzo 'Are you married?' sechinhu chisina kunatsa. KuZimbabwe, panemudhara mukuru, mubvunzo unenge wakanaka.
+=== m03-l05.ts === Hobbies — Zvinokufadza
+HOOK: Zvinokufadza — bhuku, mimhanzi, kutamba? MuChiNgezi unotaura ne 'I like ...' kana 'I enjoy ...'. Asi pane chinhu chinokosha — pamashure pe 'I like' kana 'I enjoy', tinowedzera '-ing' kushoko reita (verb).
+CULT: MuChiShona unoti 'Ndinoda kuverenga' — 'kuverenga' yakasununguka. MuChiNgezi unoti 'I like reading' — kwete 'I like to read' chete (zvose zviri zviviri zvinoshanda asi 'reading' inonzwika nyore mu small talk). Kuwedzera '-ing' kunoita kuti shoko rive sezita — 'reading' = 'kuverenga'.
+=== m03-l06.ts === Languages I speak — Mitauro yandinotaura
+HOOK: MuZimbabwe vakawanda vanotaura mitauro miviri kana mitatu — Shona, Ndebele, English. Nhasi tinodzidza kuratidza unyanzvi hwako muChiNgezi: 'I speak Shona', 'A little English', 'And some others'.
+CULT: MuChiNgezi mazita emitauro anonyorwa neletter huru — English, Shona, Ndebele, French. Hazvifananidze ne ChiShona pa kunyora. Uyezve, paunopa rondedzero, kuti 'a little English' kunoreva 'ndinoshanda — asi ndiri kudzidza' — handisi kushora ChiNgezi chako, asi kuratidza tsika.
+=== m03-l07.ts === Where I live — Kwandinogara
+HOOK: Nhasi tinodzidza kutaura kwauri kugara nekwawakakurira. MuChiNgezi tinoshandisa 'I live in ...' nhasi, 'I grew up in ...' kare. Uye 'for ten years' kuratidza nguva — 'kwemakore gumi'.
+CULT: MuChiNgezi 'I live in Harare' inoshanda — usaisa 'at' (handisi 'I live at Harare'). 'In' inoshandiswa kunyika nemaguta makuru. 'Grew up' inoreva 'kukurira' — kunyange iwe wakanga uri mudiki, ikozvino zvapfuura. Iyi grammar inonzi past simple.
+=== m03-l08.ts === Describing yourself — Kuzvitaridza
+HOOK: Iwe wakaita sei? Une ushamwari? Wakanyarara? MuChiNgezi tinoshandisa 'I'm friendly', 'I'm shy sometimes', 'I love learning'. Mashoko aya — adjectives — anokubatsira kuzvitaridza pasina kunyepa.
+CULT: MuChiShona, kuzvirumbidza pamberi pevamwe kunoonekwa kunge kuzvikudza. MuChiNgezi — kunyanya pa job interview kana professional setting — kuti 'I'm friendly' / 'I'm hardworking' inotarisirwa, kwete kunzwirwa zvakaipa. Itsika dzakasiyana — ramba uchitaura zvakanaka pamusoro pako.
+=== m03-l09.ts === Asking about them — Kubvunza nezvavo
+HOOK: Hurukuro yakanaka inoda kupindurana — kwete iwe chete uchitaura. Nhasi tinodzidza kudzosera mibvunzo: 'Tell me about yourself', 'What's your story?', 'Where did you grow up?'. Iyi inoita kuti munhu mutsva anzwe kuti unokwanisa kudaira.
+CULT: MuChiShona, kubvunza nezvevatsva itsika yakanaka — inoratidza kuti unoda kuziva munhu. MuChiNgezi zvakafanana, asi mibvunzo inoda kuva yakaderera ('Tell me about yourself' inoshanda muma professional setting). 'What's your story?' inoshanda zvikuru pakati peshamwari — ratidza kunyaradza kunoita.
+=== m03-l10.ts === Full introduction conversation
+HOOK: Nhasi tinosanganisa zvose zvatadzidza muModule 3. Hurukuro yakakwana yekutanga — zita, basa, mhuri, zvinokufadza, mitauro, kwauri kugara, uye kudzosera mibvunzo. Iyi ndiyo nguva yekushandisa zvose zvauri kudzidza pamwe.
+CULT: MuChiNgezi, hurukuro yekutanga inotenderera kuita 2-3 minutes — kwete pfupi pfupi, kwete refu zvikuru. Tarisa kuti unopindurana — kwete iwe chete uchitaura. Iyi ndiyo tsika ye English-language professional ne social meetings.
+=== m04-l01.ts === A vs An — A book / An apple
+HOOK: MuChiNgezi, pamberi pemashoko mazhinji unofanira kuisa 'a' kana 'an'. ChiShona hachina izvi — asi ChiNgezi chinozvida.
+CULT: ChiShona haina mashoko anodaidzwa kuti 'articles' (a/an/the). Tinongoti 'bhuku' — kwete 'a bhuku'. Asi muChiNgezi, kana uchitaura nezvechinhu chimwe chete chausina kunyatsotsanangura, unofanira kuisa 'a' kana 'an' pamberi pacho. Wadii uchifunga kuti 'a/an' inonzwika seprefix yeChiNgezi — yakangofanana neava ma- prefix muChiShona.
+=== m04-l02.ts === The — When to use it
+HOOK: 'The' inoreva chinhu chinozivikanwa — chausiri kuvhura nyaya, asi chausiri kutaura nezvacho zvakajeka. ChiShona hachina shoko rinoenzanira chaizvo 'the'.
+CULT: ChiShona inotsanangura kuzivikanwa kweshoko nemamiriro echirevo — kana wati 'bhuku' uye munhu anoziva bhuku ripi raunoreva, hapana chaunowedzera. Asi muChiNgezi, kana muri vaviri muchitaura nezvebhuku rakatarwa, unofanira kuti 'THE book'. 'A book' = chero bhuku. 'The book' = bhuku iro tinoziva tose.
+=== m04-l03.ts === No article — Plural & abstract
+HOOK: Pane nguva dzausingadi 'a/an/the' zvachose. Kana uchitaura nezvinhu zvizhinji muchimumbo, kana zvinhu zvisinganzwiki (love, time, music), siya 'a/an/the'.
+CULT: ChiShona hachina kana 'article' chero ipi — saka chinhu chimwe chinotinakira ndechekuti muChiNgezi pane dzimwe nguva chausingaisi 'the' kana 'a' zvachose. 'Rudo' = 'Love' (kwete 'the love'). 'Vana' kana uchitaura nezvevana vose vepasi rose = 'Children' (kwete 'the children'). Tarisa kuti pane mamiriro echirevo aunofanira kunyararira chete.
+=== m04-l04.ts === Plurals — adding -s
+HOOK: MuChiNgezi, kuwedzera 'plural' (zvinhu zvizhinji) zvinongoita zvichi-wedzera '-s' chete. Cat → cats. Day → days. Pakati pemashoko mazhinji ndizvozvo chete.
+CULT: ChiShona inopinduka pakati peshoko (mu- → va-, ru- → ma-, etc.). MuChiNgezi, basa ririri nyore zvikuru — wedzera '-s' kuguma kweshoko. Kunyangwe ChiShona iri grammatically richer panyaya yeplurals, ChiNgezi inopa simba rekuita zvinhu nyore.
+=== m04-l05.ts === Irregular plurals — children, men
+HOOK: Mashoko mamwe haatevedzeri mutemo we '-s'. Anoshandura zvachose: child → children. Man → men. Foot → feet. Anofanira kungonangwa.
+CULT: ChiShona zvakare ine mashoko anokupinduka zvakasiyana — saka unotoziva pfungwa iyi yekuti grammar inogonawo kuita zvinhu zvinoshamisa. MuChiNgezi, idzi 'irregular plurals' dzinongoda kungo memorise. Hapana mhinduro yakajeka — vana vanofanira kuziva kuti 'child' inoita 'children', kwete 'childs'.
+=== m04-l06.ts === This & That — These & Those
+HOOK: 'This' nechiri pedyo. 'That' nechiri kure. Pamhuri yedzo: 'These' (zvinhu zvizhinji zviri pedyo) ne 'Those' (zvinhu zvizhinji zviri kure).
+CULT: ChiShona ine 'iri', 'iyo', 'apa', 'apo' — saka pfungwa yedutsiku/kuretsika unotoziva. MuChiNgezi, kunhanga musiyano: this/these (pedyo) vs that/those (kure). Iyi inhanho yakanaka kufunga sezvazvinoita ChiShona — asi cherechedza kuti this/these inotevera nyaya yenhamba (singular vs plural) zvakare.
+=== m04-l07.ts === Some & Any — countables
+HOOK: 'Some' uye 'Any' — anorema kushandisa, asi mumiriro yakanaka. 'Some' munaka muchirevo chinotaurwa zvakanaka. 'Any' munaka muchirevo chekuramba kana chemibvunzo.
+CULT: ChiShona inoshandisa 'mamwe', 'chero', kana hapana shoko zvachose — chinongoenderana nemamiriro echirevo. MuChiNgezi pane mutemo unotevedzwa: 'some' nezviratidzo zvitsva (positive statements + offers), 'any' nemibvunzo nekuramba. Mutemo mutsva — asi unotevedzeka.
+=== m04-l08.ts === Much vs Many
+HOOK: 'Much' nezvinhu zvisingaverengeki — mvura, mari, nguva. 'Many' nezvinhu zvinoverengeka — vana, mabhuku, mahour. Mutemo mutsvuku.
+CULT: ChiShona inoshandisa 'zvakawanda' kana 'kuwanda' kunyangwe chinhu chichiverengeka here kana kwete. MuChiNgezi, mashoko mawiri akasiyana — much (uncountable) ne many (countable). Funga nezvazvo seyi: kana ungaverenga zvichienda 1, 2, 3 — many. Kana usingakwanise — much.
+=== m04-l09.ts === Mixed practice — articles in flow
+HOOK: Iye zvino tine articles dzese — a, an, the, no article. Inhamo huru kuzvi-shandisa pakuverenga, asi unozvigovera kana wakatomboita basa nadzo.
+CULT: ChiShona haina articles — saka kana uchitanga kutaura ChiNgezi, brain yako inozodzimisa kana kushandisa article ipi. Zvinhu zvinotsanangurwa: kana 'a/an/the' zvichirasika — chirevo chinokwanisa kunzwika asi chinotanga kuita 'unnatural'. Kana wakwanisa kuita zvakanaka — chiNgezi chako chinopfuura A2 level.
+=== m04-l10.ts === Articles in real talk — Conversation capstone
+HOOK: Wapfuura Module 4. Iye zvino unoziva 'a/an/the', plurals (-s, irregular), 'this/that/these/those', 'some/any', 'much/many'. Chinangwa chenhasi: kuzvi-shandisa zvose pa hurukuro yose.
+CULT: ChiNgezi chinozvigadzira kuburikidza nearticles. Kana wakwanisa kuita zvakanaka pa-mufambo wehurukuro pasina kufunga, watopfuura zvikurutu chinangwa che A2 — wave kunzwa muvene wezvirevo izvi. ChiShona hachina, asi waona musiyano. Kuziva musiyano — ndokuziva kufunga muma languages mawiri.
+=== m05-l01.ts === Mother & Father — Amai naBaba
+HOOK: Mhoro! Module 5 inotaura nezvemhuri. Tinotanga nevabereki — 'Mother' naAmai, 'Father' naBaba. Kushanda neChiNgezi pamhuri kunoda kuti uchengete pfungwa imwe: ChiNgezi chakapfava pamashoko emhuri kupfuura ChiShona.
+CULT: MuChiShona, 'Amai' naBaba' vane uremu — vanowanzo daidzwa muvhumbamiri (vamai vangu) kuratidza tsika. MuChiNgezi, hapana mutongo wakadaro — 'My mother' naMy father' inozvinzwika. Asi rangarira: kuti unzwike une tsika, woisa tone ye respect mukutaura, kwete mumashoko ega.
+=== m05-l02.ts === Brothers & Sisters — Mukoma naHanzvadzi
+HOOK: Iye zvino, hama dzepamhuri — vana vamai. MuChiShona, tinosiyanisa: mukoma (mukuru), munin'ina (mudiki). Hanzvadzi inoreva munhu wezvimwe zvechinhambwe — asi muChiNgezi, kunongova 'brother' na 'sister' chete, pasina kupesana kweukuru.
+CULT: ChiShona chine udzamu pano — mukoma (older brother to a man / older sister to a woman) na munin'ina (younger of same gender). Hanzvadzi inoreva munhu wechirume kana usiri wechirume. MuChiNgezi, mashoko ese aya anodzikira kuva 'brother' kana 'sister' chete. Kana uchida kuratidza ukuru, unoshandisa 'older brother' kana 'younger sister'. Une pfungwa yakapfuma — yatsanangura nemashoko awarwa.
+=== m05-l03.ts === Sons & Daughters — Vana
+HOOK: Vana — chinhu chakakosha mumhuri. MuChiNgezi: 'son' (mukomana), 'daughter' (musikana), 'children' (vana). Yeuka kubva muModule 4: 'children' ndiyo irregular plural — kwete 'childs'.
+CULT: MuChiShona, 'mwana' inonyanya kushanda — 'mwana mukomana' (boy child) kana 'mwana musikana' (girl child). MuChiNgezi, 'son' na 'daughter' anomira ega — hapana kuda 'boy son'. Asiwo, kana usinga zive gender, 'child' / 'children' inoshanda — yakareruka uye haina ungochenu.
+=== m05-l04.ts === Grandparents — Mbuya naSekuru
+HOOK: Mbuya nasekuru — vakuru vepamhuri vane uchenjeri. MuChiNgezi: 'grandmother' na 'grandfather'. Yeuka — 'grand-' inoreva 'mukuru kupfuura' (kubva chiFrench: grand = big). Hapana kufamba kwakareba mukati meChiNgezi.
+CULT: MuChiShona, mbuya nasekuru vane chinzvimbo chikuru — vanopa nyaya, kudzidzisa tsika, uye kufunga zvinopfuura miganhu yeruzivo. MuChiNgezi 'grandmother' na 'grandfather' havanetsvige uremu hwakadaro mu shoko ega — uremu hunouya muma stories aunoraira nezvavo. ChiShona chinotaura uchenjeri musefa; ChiNgezi chinochifambisa nemashoko anodaidzwa.
+=== m05-l05.ts === Aunts & Uncles — Tete na Sekuru
+HOOK: Pano ndipo paunoona musiyano mukuru pakati peChiShona neChiNgezi. ChiShona chinopa zita rakasiyana kune wose wose — tete (vehanzvadzi yababa), maiguru/mainini (vehanzvadzi yamai), babamukuru/babamunini (vehanzvadzi yababa), sekuru (vehanzvadzi yamai). ChiNgezi chinozvitumira zvose mu shoko rimwe: 'aunt' kana 'uncle'.
+CULT: Zvako zvechiShona zvinopfuma kupfuura ChiNgezi pano. Pakubatanidza tete (paternal aunt — anokupa zita kana pamuchato) ne mainini (junior maternal aunt — kunge mai vako veshure), iwe wakatozvinzwa kuti vane chinzvimbo chakasiyana muupenyu hwako. Zvino kana muchitaurirana ne munhu weChiNgezi, hauna mukana wekuratidza musiyano uyo nemashoko ega — unotofanira kutsanangura: 'my aunt — actually my father's sister' kana 'my mother's younger sister'. ChiNgezi chinokupa nzvimbo yekutsanangura, kwete shoko remhinduro.
+=== m05-l06.ts === In-laws — A polite topic
+HOOK: Vamwene navatezvara — vanhu vepamuchato. MuChiNgezi: 'mother-in-law', 'father-in-law'. Cherechedza '-in-law' inopiwa pakati pe hyphens — zvinoreva 'kuburikidza nemutemo wemuchato'.
+CULT: MuChiShona, kutaura nezve vamwene navatezvara kunoita zvakachenjera — pane mitemo (e.g. mukadzi haatauri zita ravatezvara). MuChiNgezi, hapana mitemo yakaoma kudaro asi tsika ye kuremekedza inogara — varikuita basa rimwe chete neChiShona, asi nemashoko mashoma. 'In-law' ye English yakareruka pamuromo asi haisi shoko 'cold' — inogonawo kushanda zvine rudo. Murume kana mukadzi: 'husband' / 'wife' — zvirevo zvakareruka, asi zvine uremu mu mufambo wedu.
+=== m05-l07.ts === Friends as family — Shamwari
+HOOK: Shamwari dzepedyo dzinogona kuva sehama. MuChiNgezi: 'best friend', 'close friends', 'like family'. Ano ndoo magic words ekutaura nezve vanhu vauchenjeri kunge mhuri kunyange vasiriiyo.
+CULT: MuChiShona, 'shamwari yepamoyo' inotaura runako rweshamwari iyo — anokuziva, anokuda, kunge hama. MuChiNgezi, 'best friend' inoshanda asi 'like family' (sehama) ndiyo idiom ye chido. Kana uchida kupa shamwari uremu hwakareba muChiNgezi, 'They're like family to me' inotakura zvauri kuda kutaura. Pfungwa imwe chete neChiShona — mashoko akasiyana.
+=== m05-l08.ts === Family verbs — Visit, call, miss
+HOOK: Mhuri inoda zviito — shanya, fonera, suwa. MuChiNgezi: 'visit', 'call', 'miss'. Aya mashoko maviri ekutanga akareruka. 'Miss' yakaoma zvishoma — inoshanda zvakasiyana ne ChiShona.
+CULT: MuChiShona, 'kushanya' kuhama kunoita kuti munhu apindwe nemwoyo — chinhu chinodikanwa, kwete chinhu chemupengo. MuChiNgezi, 'visit' yakareruka — 'I visited my grandmother' inoshanda. 'Call' inoshanda zvakareruka. 'Miss' inopa pfungwa yakasiyana — 'I miss my mother' (ndinosuwa amai vangu) inoita kuti iwe ndiwe wakanyura, kwete amai. ChiShona ndizvo chimwe chete — 'ndakasuwa' munhu mukati maguta.
+=== m05-l09.ts === Telling family stories — Nyaya dzepamhuri
+HOOK: ChiShona chiri shoko renyaya — kare-kare ne 'mbuya vaisi...' ne 'anogara achiti...'. MuChiNgezi: 'A long time ago...', 'My grandmother used to...', 'He always says...'. Nyaya dzakaita basa rimwe chete.
+CULT: MuChiShona, kutaura nyaya yepamhuri inhanho ye uchenjeri — yakareva tsika, mafungiro, ne kuita zvakanaka. MuChiNgezi, 'used to' (vaisitaura) inotakura tsika yakapfuura — chinhu chaiitwa kazhinji asi chisingaitwi nhasi. Iyi pattern haina kunaka muChiShona — tine 'aisi' / 'vaisi'. Kufunga 'used to' kunoita kuti uone musiyano — chiripo ChiShona chinotaura, asi chinoshanda zvakasiyana.
+=== m05-l10.ts === A family conversation — Capstone
+HOOK: Wapfuura Module 5! Iye zvino unoziva amai/baba, mukoma/munin'ina, vana, mbuya/sekuru, tete/sekuru, vamwene/vatezvara, shamwari, ne zviito zvepamhuri (visit, call, miss). Chinangwa chenhasi: zvose mu hurukuro imwe yakareba.
+CULT: Mhuri yedu yeChiShona ine udzamu hwakapfuma kupfuura ChiNgezi — zita rega rega rinotaura chinzvimbo, ukuru, kana side. Mu Module ino, hauna kurasikirwa nezvauri — wakatengesa pfungwa dzeChiShona kuita Chinaye chinozotaurika muChiNgezi. Kana waita chirevo cha 'my aunt — my father's sister', uri kuratidzwa kuti unoziva 'tete' inoreva chii. Kuziva mariro miri ndiwo udzamu hwemurume.
+=== m06-l01.ts === Numbers 1-10 — One to Ten
+HOOK: Mhoro! Module 6 inotanga nemaNumbers — chinhu chinoshandiswa zuva rega rega. Tinotanga ne1-10 muChiNgezi: One, Two, Three... kusvika Ten.
+CULT: MuChiShona, manhamba ane mafomu maviri — ekuverenga (poshi, piri, tatu) uye anobatana ne noun classes ('vana vatatu' = three children). MuChiNgezi zvakareruka — manhamba haashanduki: 'three children', 'three dollars', 'three days' — three icho chete. Hapana mutoro wenoun class — chinhu chimwe chete unodzidza.
+=== m06-l02.ts === Numbers 11-100 — Eleven to One Hundred
+HOOK: Mhoro! Iye zvino tinokwidza — 11-100. ChiNgezi chine pattern yakareruka kana wagona kupinda nayo: 'twenty, thirty, forty...' uye ukabatanidza nhamba pakati 'twenty-five, forty-seven'.
+CULT: MuChiShona unoti 'makumi maviri nemashanu' (literally: tens-two-and-five) = 25. MuChiNgezi unobata pakati pe-tens ne-units chete ne-hyphen: 'twenty-five'. Pattern yakareruka — wakatobata 1-9, iye zvino unowedzera 'twenty', 'thirty', 'forty' kuti ukwanise kusvika 100. Cherechedza: 'eleven, twelve, thirteen' anosiyana zvishoma — chete dzidza idzi.
+=== m06-l03.ts === Hundreds, Thousands, Millions
+HOOK: Mhoro! Nhamba huru: 'one thousand, ten thousand, one million'. Idzi dzinoshandiswa pamutengo wemota, mari, kana nyaya dzehupfumi.
+CULT: MuChiShona, 'chiuru' = thousand, 'miriyoni' = million (loanword). MuChiNgezi: 'thousand', 'million', 'billion'. Sirizvo: muChiShona unoti 'zviuru zviviri' (two thousand) — chiuru chinotenderwa class. MuChiNgezi 'thousand' haisi plural pa-formula yakajairika: 'two thousand dollars', kwete 'two thousands dollars'. Iyi tsika inotaurirwawo muFrench ne'mille' — yakajairika muma languages.
+=== m06-l04.ts === What time? — Inguva yakadii?
+HOOK: Mhoro! 'What time is it?' — mubvunzo unoshandiswa zuva rega rega. Mhinduro yakareruka: 'It's seven o'clock'. Tichapinda mu-hours nhasi.
+CULT: MuChiShona unoti 'nguva inomwe' (literally: 'time of seven') = seven o'clock. MuChiNgezi unoshandisa 'It's' + nhamba + 'o'clock'. 'O'clock' ishoko rinopfupisa 'of the clock' — mhuka itsika yapasi yapfuura asi tinoshandisa zvichingoita. Imwe tsika yakajairika muZimbabwe: tinoshandisa 24-hour kana 12-hour pakati pevanhu — asi muma USA neUK 12-hour ne A.M./P.M. ndiyo yakajairika.
+=== m06-l05.ts === Half past, quarter to — Mininitsi
+HOOK: Mhoro! Iye zvino tinopinda mu-minutes. 'Half past two', 'quarter to nine', 'five past six' — izvi ndizvo zvinotaurwa nguva isiri pa-awa chete.
+CULT: MuChiShona unoti 'nguva mbiri nehafu' (two and a half) = 2:30. MuChiNgezi unoti 'half past two' (literally: 'half after two') — chinhu chimwe chete asi nzira yakasiyana. 'Quarter' (kota) i-15 minutes. 'Quarter past' = 15 minutes after; 'quarter to' = 15 minutes before. Cherechedza: muUS unozonzwa 'five thirty', 'eight forty-five' nyore zvikuru kupfuura 'half past five' yeUK.
+=== m06-l06.ts === Days of the week — Mazuva evhiki
+HOOK: Mhoro! Mazuva evhiki: Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday. Anotanga ne Monday muChiNgezi — kwete neSunday sezvinoita ma-USA mamwe.
+CULT: MuChiShona, mazuva eveki anobva muanglicization (Muvhuro = Monday, Chipiri = 'second day' Tuesday). MuChiNgezi anobva mu-pagan gods (Wednesday = Woden's day, Thursday = Thor's day) — asi vanhu vanonyanya kuzvifunga zvinhu izvi. Kuzimbabwe, Sunday inonyanya kuva yechechi/zororo, Saturday inova yemamarket nemafamily — zvakafanana ne UK/USA. Cherechedza: muChiNgezi mazuva anonyorwa neBig letter nguva dzese: 'Monday' (kwete 'monday').
+=== m06-l07.ts === Months & Seasons — Mwedzi neMwaka
+HOOK: Mhoro! Mwedzi: January, February, March... December. Mwaka muChiNgezi i ina: spring, summer, autumn, winter. Asi muZimbabwe — mwaka wedu i'rainy season' uye 'dry season'!
+CULT: MuChiShona mwedzi anonzi 'Ndira' (January), 'Kukadzi' (February). MuChiNgezi anobva muRoman calendar — 'January' kubva ku Janus (god yedoors), 'July' kubva ku Julius Caesar. Tsika huru: muNyika dzakapinda Equator (Zimbabwe), summer ndiyo 'rainy season' (Nov-March), winter i 'dry season' (May-Aug). Asi muUSA neUK, mwaka unotanga zvakasiyana — 'summer = June-August'. Pakutaura ne shamwari yeChiNgezi yekunze, tsanangura: 'In Zimbabwe, our summer is December.'
+=== m06-l08.ts === Money — How much is it?
+HOOK: Mhoro! Mari muChiNgezi — 'How much?', 'It costs $20', 'It's expensive'. Idzi ndidzo dzaunoshandisa pa-craft market kana pa-shopping.
+CULT: Zimbabwe yashandisa USD kwenguva yakareba — sa-Shona speaker, 'dollar' uye 'cent' wakatozvinzwa. Wakatonzwa ' US dollars', 'rand', 'pula' — fanai ne shamwari yauri kutengetana naye. MuChiShona unoti 'idhura' (it's expensive); muChiNgezi 'It's expensive' kana 'It's pricey' (informal). Pa-bargaining culture: 'Can you do cheaper?' kana 'I'll give you fifteen' — izvi zvinoshanda mu-craft market chaiyo, asi musasambabwa muma supermarket.
+=== m06-l09.ts === Numbers in shopping — Discount, Total
+HOOK: Mhoro! Pa-shopping unoda mashoko: 'Two for ten dollars', 'discount', 'total'. Idzi dzinokupa simba pakuverenga zvakatengwa nemutengo wakaderera.
+CULT: MuChiShona, pakushopa unoshandisa: 'kuderedzwa' (discount), 'zvose pamwe chete' (total). MuChiNgezi: 'discount' kana 'sale', 'total' kana 'altogether'. Tsika yedu ye-bargaining inoenderana neyema USA neUK haitsoteri zvachose — muma supermarket havatengetani; muma craft market vanotengetana. Pa-receipt: 'subtotal' (mari pasati pawedzerwa tax), 'tax' (mutero), 'total' (mari yatinopfekedzwa).
+=== m06-l10.ts === Money & time conversation — Capstone
+HOOK: Wapfuura Module 6! Iye zvino unoziva manhamba 1-million, nguva (hours, half past, quarter to), mazuva, mwedzi, mari (how much, discount, total). Chinangwa chenhasi: kuzvi-shandisa zvose pa hurukuro imwe yose.
+CULT: Hurukuro yenhamba ndiyo iri pakati peChiNgezi chedu zuva rega rega. KuZimbabwe — pa-kombi, pa-supermarket, pa-WhatsApp ne shamwari yokunze — manhamba, nguva, nemari ndizvo zvinotaurwa zvakawanda. Kana wabata izvi zvose pamwe chete pasina kufunga, watopfuura A2 — wave kunzwa muvene wezvirevo izvi. Tsika yokuFunga ndeyokuti — ChiShona ne ChiNgezi zvinopinga manhamba zvakasiyana, asi mafungiro ari mumwe chete.
+=== m07-l01.ts === Hungry & Thirsty — Nzara nenyota
+HOOK: Mhoro! Module 7 inotaura nezvechikafu — kudya, kuhamba, kugamuchira vaeni. Tinotanga nezvinhu zviviri zvinochinja zuva: nzara nenyota.
+CULT: MuChiShona, kana wati 'ndine nzara' kumusha, kudya kunouya pakarepo — kugovera chikafu itsika. MuChiNgezi, basa rakasiyana — unotaura nzara yako asi haunyatsotarisira mumwe kuti akupe chikafu pakarepo. Hutsika hunoda kuti utsanangure zvine ruremekedzo: 'I'm a bit hungry' kana 'I could eat' — kwete kungoti 'Hungry!' chete.
+=== m07-l02.ts === Common foods — Zvikafu zvinozivikanwa
+HOOK: Mhoro! Nhasi tinodzidza mazita echikafu chinozivikanwa muChiNgezi: chingwa, mupunga, nyama. Mashoko echikafu ndiwo aunoshanduisa kazhinji kana uchitaura nezvazvichaitika.
+CULT: Kumusha kweZimbabwe, sadza ndicho chikafu chikuru. MuhotteliyeHarare neyaCape Town, menyu inenge yaakawanda yakanyorwa muChiNgezi — chingwa, mupunga, nyama, vegetables. Ziva mazita awa kuti uorder pasina kuvhiringika. Cherechedza: muChiNgezi 'meat' inotaura nyama yose — beef, chicken, pork — kwete chimwe chete chete.
+=== m07-l03.ts === At a restaurant — Murestaurant
+HOOK: Mhoro! Nhasi tinopinda murestaurant — tafura yevaviri, menyu, bhiro. Aya mashoko anokubatsira kupinda zvakanaka kubvira pakubva kupinda kusvika pakubhadhara.
+CULT: Kumusha, kana wapinda nemumwe kunoteketwa, mukoti aigogovera chikafu — pasina menyu, pasina bhiro yakanyorwa. Kurestaurant yeChiNgezi (London, Cape Town, Joburg) zvakasiyana — unoshandisa menyu, unobhadhara pakupedza, uye 'tipping' (kuwedzera mari kumukoti) inenge ichitarisirwa zvichienderana nenyika. Pa-UK, 12.5% inowanzowedzerwa pa-bhiro chaiyo; pa-USA, 18-20% inotarisirwa.
+=== m07-l04.ts === Ordering food — Kuita order
+HOOK: Mhoro! Wapinda murestaurant, wagara, watora menyu. Iko zvino unoorder. MuChiNgezi, mashoko ekuorder ane hutsika — 'I'd like...' kwete 'I want...'. Wedzera kuna izvo zvaunopindira: 'without onions'.
+CULT: Kumusha, kana ukapihwa chikafu, hauwanzo bvunzi 'pasina hanyanisi' — chinopihwa nemupati ndicho. MuChiNgezi yerestaurant, kuchinjira chikafu (modifications) zvinotarisirwa — vamwe vanhu havadyi nyama, vamwe vanopihwa allergies. 'I'd like the chicken, but without onions, please' yakanaka muUK/USA — yakajeka, ine hutsika. Kumusha izvi zvinogona kunzwika sehutsika husina kunaka — uku, zvinotarisirwa.
+=== m07-l05.ts === I like / I don't like food — Zvandinoda nezvandisingadi
+HOOK: Mhoro! Nhasi tinotaura nezvechikafu chaunoda nechausingadi. 'I love it', 'I don't like ___', 'It's delicious'. Iyi inguva yekuratidza shamwari yako yeChiNgezi kuti chii chinokuita kuti ufare pakudya.
+CULT: Pa-dinner party muUK kana muUSA, vagari vanowanzo bvunzwa nezvechikafu chaunoda — uye unotarisirwa kuratidza zvaunoda nezvausingadi pamuromo. Kumusha, kana mukati mukati paine mhuri, chikafu chinopihwa nemupati uye haunyatso siyani — kana ukasiya, chinooneka kunge usina kufara. Pano, kutsanangura 'I love sadza' kana 'I don't really eat pork' zvakanaka — chinhu chero chiri chero. Tsanangura zvauri muhukama — pakareruka, pasina kunyengera.
+=== m07-l06.ts === Cooking verbs — Mavhabhu ekubika
+HOOK: Mhoro! Nhasi tinodzidza mavhabhu ekubika: cook (bika), chop (cheka), boil (vira). Aya mavhabhu unowashandisa kana uchitsanangurira kuti chikafu chinogadzirwa sei — chikuru kuti utaure nezvesadza kana nemoja.
+CULT: Kumusha, kubika sadza basa rinozivikanwa nemunhu wose — hauwanzo tsanangurirwa. MuUK/USA, vakawanda havazivi kuti sadza chinogadzirwa sei — saka kana ukatsanangura kushamwari yako, anouya nemibvunzo. Mavhabhu ekubika muChiNgezi akapfava — 'cook' inoita everything, asi pakatsanangurwa zvakajeka unotaura 'chop the onions, boil the water, then cook the maize meal slowly'.
+=== m07-l07.ts === Tea, coffee, drinks — Tii, kofi, zvinwiwa
+HOOK: Mhoro! Nhasi tinotaura nezvetii nekofi nemvura — order yauchaita zuva nezuva muChiNgezi. Tii nemukaka, kofi yakasviba, girazi remvura. Mashoko mashoma — basa rakawanda.
+CULT: Pa-UK, tii itsika hombe — 'a cup of tea' inoita rwiyo rwetekano. Vanhu vanowanzo bvunza 'How do you take it?' (mukaka? shuga? mangani?). Pindura zvakajeka: 'White, no sugar' kana 'Just a splash of milk, two sugars'. Pa-USA, kofi yakapfava — vanhu vanowanzo order 'large coffee, milk and sugar' kana 'black coffee'. Kumusha, tii inonyatsodyiwa nemukaka neshuga — saka pa-UK uchanzwa kunge kumba.
+=== m07-l08.ts === Sharing Shona food in English — Kutsanangura sadza nemufushwa
+HOOK: Mhoro! Chidzidzo chinokosha. Vanhu vekuUK kana USA havazivi sadza, mufushwa, kana mukaranga. Iwe ndiwe unozvitsanangurira — mazita echiShona ane simba, asi unoda magwaro mashoma echiNgezi kuti vavanzwisise.
+CULT: Cherechedza: usashandura mazita echiShona kuita 'maize meal porridge' kana 'African polenta' chete. Tanga nezita rechiShona — 'sadza' — wozotsanangura. Iyi inguva yekuratidza chikafu chedu sezviri — kwete kuchichinja kuti chinzwike sechikafu cheEurope. Vanofunga 'kimchi', 'sushi', 'paella' havadururi mazita avo — neisuwo. Sadza isadza. Tsanangura zvinoshandiswa, kunaka, uye nemamiriro acho.
+=== m07-l09.ts === Hosting in English — Kugamuchira muvarume veChiNgezi
+HOOK: Mhoro! Nhasi tinotaura nezvekugamuchira muvarume. Mauya, garai pasi, batai zvamuri kuda. Chidzidzo ichi chinopinda mukati mehutsika hwedu — asi nemashoko echiNgezi.
+CULT: Hutsika hwekugamuchira hwakawanda muChiShona — uchinge wapinda nemumwe kumba, kudya kunouya, vana vanonyararidzwa, hapana munhu anoenda asina kudya. Hutsika hwakavakirwa pakuti 'mukuwasha anodya kutanga' — kupa unotanga, ndiyo identity. MuChiNgezi (UK/USA), kugamuchira kunoita zvakasiyana — vagari vanowanzo bvunzwa 'help yourself' (zvitorere wega). Kunzwika sehutsika husina kunaka kana wakakurira muZim, asi pa-UK, ndiyo hutsika yakanaka — vanofunga kuti munhu anozviziva zvaanoda. Iwe une advantage — utsika hwako hwekugamuchira hwakasimba; chinodiwa mashoko echiNgezi chete.
+=== m07-l10.ts === A meal conversation — Hurukuro yekudya
+HOOK: Mhoro! Wapedza Module 7. Nhasi tinosanganisa zvose: kupinda murestaurant, kuorder, kutaura zvaunoda, kutsanangura sadza, kupedza nehutsika. Hurukuro imwe — chero zvakawanda — kupedza basa.
+CULT: Mukati medhinari yeChiNgezi, hutsika hwakavakirwa pamashoko mashoma asi akanaka: 'please', 'thank you', 'I'd like', 'help yourself'. MuShona, kudya kunenge kwakapfuma muhutsika hwekugovera; muChiNgezi, kudya kunenge kwakapfuma muhutsika yekutarisira mumwe asina kupa pressure. Mitsetse yose miviri inomira chete — yakareruka yose miviri kana waiziva.
+=== m08-l01.ts === "To be" & "to have" — I am / I have
+HOOK: MuChiNgezi 'be' ne 'have' ndizvo zvakavakira mutauro wose. 'I am happy', 'I have a friend' — pasina vaviri ava, hapana chinozonzwika. MuShona, 'ndinofara' rinopfupika nokuti 'ndi-' rinotomira pa-'I'. MuChiNgezi unofanira kuisa 'I' uye 'am' zvose.
+CULT: MuShona, prefix yekuti 'ndi-' inomira pa-'I am' yose. Saka 'ndinofara' = 'I am happy' — shoko rimwe chete. MuChiNgezi tinofanira kuisa zvinhu zviviri zvakapatsanurwa: subject ('I') + verb ('am'). Hazvirevi kuti ChiNgezi yakaomera — zvinongoreva kuti pakutanga, unofanira kunyatsorangarira kuisa 'I' pamberi pe-'am' uye 'have'.
+=== m08-l02.ts === "To do" & "to make" — I do / I make
+HOOK: MuChiNgezi 'do' ne 'make' zvinotaridzika zvakafanana asi hazvifanani. 'Do' ndeyebasa rauri kuita kare (homework, dishes, work). 'Make' ndeyekugadzira chinhu chitsva (tea, food, mistakes). MuShona 'kuita' rimwe chete rinokwirira zvose — muChiNgezi pane musiyano.
+CULT: MuShona 'kuita' rinoshanda paunoita basa kana paunogadzira chinhu — rimwe chete. MuChiNgezi 'do' inoreva 'kuzadzisa basa rakatorongwa' (do homework, do dishes), uye 'make' inoreva 'kugadzira chitsva chausina kunge unacho' (make tea, make a sandwich, make a plan). Kana wakaita mistake — unoshandisa 'make' (make a mistake) — nokuti waakagadzira nemaune.
+=== m08-l03.ts === "To go" & "to come" — I go / I come
+HOOK: MuChiNgezi 'go' ne 'come' zvinoreva kufamba — asi nzira hadzifanani. 'GO' = kuenda kunze kwepauri ('I go to work'). 'COME' = kuuya kwauri kana kwemutauri ('Come here'). MuShona 'kuenda' uye 'kuuya' zvakafanana — asi muChiNgezi unofanira kuziva kuti munhu ari pakati apo.
+CULT: MuShona, 'enda' uye 'huya' zvinotsanangura kufamba kubva pakaita kuenda. MuChiNgezi zvakafanana: 'go' kuenda kure newe, 'come' kuuya pedyo newe. Asi pane chinhu chinokosha — paunopa invitation, unotaura 'come' (Come to my house = Huya kumba kwangu) kwete 'go' nokuti unenge uchitaura kubva pa-perspective yako.
+=== m08-l04.ts === "To want" & "to need" — I want / I need
+HOOK: MuChiNgezi 'I want' inonyatsoreva 'ndinoda', asi pamafoyi e-customer service kana parestaurant, 'I want' inogona kunzwika seyakaomarara. Vanhu vanoshandisa 'I'd like' (= 'ndingade') — yakareruka, ine hutsika. 'I need' inoreva 'ndinotambudzika nazvo' — yakasimba.
+CULT: MuShona 'ndinoda' inoshanda kose — pa-tafura pamba, kuvashandi, kushamwari. MuChiNgezi yeUK kana yeUSA, 'I want' inonzwika seyakaomarara — sechirevo cheaa-aaa nokunge munhu mukuru ari kushevedza shandisi. Mhinduro: shandisa 'I'd like' (I would like) chero pawanenge uchitaura kuvashandi — yakareruka, yakanaka. 'I need' chete pakanaka kana zvinhu zvinokosha (I need water — ndine nyota).
+=== m08-l05.ts === Daily routine — Morning
+HOOK: Mangwanani! MuChiNgezi paunotsanangura zuva rako, nguva inotanga: 'at 6', 'at 7'. Wozonditsva unowedzera basa: 'I wake up', 'I take a shower', 'I eat breakfast'. Mashoko mashoma — asi tsika dzinochengetwa.
+CULT: MuShona unotaura 'ndinomuka na6' — apo 'na6' inotokwanira pakutsanangura nguva. MuChiNgezi unoda 'at' pamberi penguva: 'I wake up AT 6'. 'At' inoita kunge 'pa-' yeShona — asi yakajairika kupa preposition. Cherechedza zvakare 'wake UP' uye 'get UP' — verbs idzi dzine particle 'up' inova chikamu chichirevo.
+=== m08-l06.ts === Work & school — My day
+HOOK: Pamberi pevamwe, basa rako rinokuvakira hutsika. MuChiNgezi paunoenda kubasa, unoshandisa 'I go to work', 'I study English', 'I have a meeting'. Mashoko mashoma — asi anoratidza kuti uri kuita basa rakakwana.
+CULT: MuShona, 'kunoenda kubasa' inotokwana — ChiNgezi inoda 'I go TO work'. Cherechedza kuti pa-'work' iwe haushandise 'a' kana 'the' — 'I go to work' kwete 'I go to the work'. Yakafanana ne 'school' (I go to school) ne 'church' (I go to church). Mashoko aya akabatanidzwa nezvinoitwapo — saka pasina article. Asi 'meeting' yakajairika — 'I have A meeting' kana 'a' yose.
+=== m08-l07.ts === Evening routine — Coming home
+HOOK: Manheru ihwo nguva yekuzorora. MuChiNgezi unotaura 'I come home' (kwete 'go home' kana watouya), 'I cook dinner', 'I watch TV'. Mashoko aya anokunyaradza — manheru kumba.
+CULT: Cherechedza chinhu chinokosha: 'I come home' inoreva kuuya kumba kwauri kupera zuva — pa-perspective yauri uri kumba ino. Asi kana usati wasvika, unoti 'I'm going home'. Saka 'come' kana wakatosvika kana iri yauri kupedzisira; 'go' kana usati wasvika. Manheru muShona ihuhwo hwekugara nemhuri — muChiNgezi yeUK, hutsika hwakapfuura kuvhura TV uye kuita zvako.
+=== m08-l08.ts === Past tense — Yesterday I...
+HOOK: Nezuro — yesterday. MuChiNgezi pakutaura zvakaitika kare, unowedzera '-ed' kumagumo eshoko (walked, talked, watched). Asi mamwe mashoko ane forms dzakasiyana zvakanyanya: 'go' inopinda 'WENT', 'see' inopinda 'SAW', 'eat' inopinda 'ATE'. Idzi dzinonzi 'irregular verbs' — dzinodikanwa kudzidzwa nemusoro.
+CULT: MuShona, past tense yakapfuura inoda chete prefix '-aka-' kana '-aka-': 'ndakaenda' = I went, 'ndakaona' = I saw. Yakareruka — prefix imwe inogadzirisa zvose. MuChiNgezi unoda kushandura shoko rebasa rose — 'go' → 'went' (yakasiyana zvachose). Saka pakutanga, dzidza zvirevo zvitatu zvinokosha: WENT (ndakaenda), SAW (ndakaona), HAD (ndakanga ndine). Dzimwe 5-10 dzinotevera nokunge wave kushandisa.
+=== m08-l09.ts === Future tense — Tomorrow I will...
+HOOK: Mangwana — tomorrow. MuChiNgezi pakutaura zvichaitika, unoshandisa 'will' kana 'going to'. 'I will go' = 'Ndichaenda', 'I'm going to call' = 'Ndichada kufona'. Zvose zvinoshanda — asi pane musiyano muduku wenguva.
+CULT: MuShona future inotokwana ne-prefix 'cha-': ndichaenda, tichaona, achaita. Prefix imwe inogadzirisa zvose. MuChiNgezi unoda 'will' (auxiliary verb) pamberi pe-base verb: 'I WILL go', 'I WILL see', 'I WILL do'. 'Going to' inotaura zvauri kuronga zvirinani — 'I'm going to call her' = unoronga kuita izvozvo. 'Will' inogona kunge yakangouya pakukurumidza — 'I'll get it' (foni inorira, iwe wati 'I'll get it' = ndichaitora). Zvose zvinokumbira plan kupita kana hapana plan.
+=== m08-l10.ts === A day-in-life conversation — My day in English
+HOOK: Wakwanisa! Wapedza Module 8. Nhasi tinoisa zvose pamwe chete: 'I am', 'I have', 'I do', 'I make', 'I go', 'I come', 'I want', 'I need', past tense ('went, saw, had'), future ('will, going to'). Zuva rimwe — kubva kumangwanani kusvika manheru — muChiNgezi.
+CULT: Mhuri yose yeverbs idzi ichakushanda chero kupi muvhu reChiNgezi — London, New York, Cape Town, Lagos, Sydney. ChiShona inopa cohesion ne-prefix dzakareruka; ChiNgezi inopa flexibility ne-mashoko mazhinji. Zvose zvinoshanda — kungoita kuti uzvirovedze. Uchitaura day-in-life muChiNgezi nhasi unenge wakwanisa kutaura nezvechero zuva rauchazadza kumberi.
+=== m09-l01.ts === Where is...? — ...iri kupi?
+HOOK: Mhoro! Wati wasvika muLondon, kana muNew York, kana paaeropoti — chinhu chekutanga chekudikanwa kubvunza ndi 'Where is...?'. Mubvunzo uyu unokupa kibhokisi rekugadzirisa kurasika.
+CULT: MuZimbabwe, kana wakarasika muHarare, unobvunza mumwe munhu zvakanaka — vanofamba newe. MuLondon kana NYC, vanhu vanofamba nekukurumidza, asi havasi vasiri vanhu — bvunza nehutsika: tanga ne 'Excuse me', uchitevera ne 'Where is the ___?'. Cherechedza: paunenge usingazive, vagari vacho vanozvifarira kubatsirwa kuratidza kuti vanoziva guta ravo.
+=== m09-l02.ts === Left, Right, Straight — Kuruboshwe, Kurudyi, Zvakananga
+HOOK: Wabvunza nzvimbo — zvino unoda kunzwa mhinduro. 'Turn left', 'Go straight', 'It's on the right' — aya ndiwo mashoko echiNgezi anokupa nzira.
+CULT: MuZimbabwe, vagari vanopa nzira nekuratidza kuoko: 'Pinda papi, dzoka apa, paona shop yacho.' MuLondon kana muUS, vanhu vanopa nzira nemashoko mashoma chete: 'Turn left at the lights.' Garai uchiterera mashoko aya emakumi mashanu — anodzokorora pose paunobvunza nzira.
+=== m09-l03.ts === How far? — Iri kure here?
+HOOK: Mhoro! Wati wabvunza nzvimbo — zvino unoda kuziva: 'Iri kure here? Nditore tekisi here, kana ndingofamba?' MuChiNgezi, unobvunza ne 'How far?'.
+CULT: MuZimbabwe, vanhu vanotaura kuti chinhu 'chiri kure' kana chichikuda hafu yeawa kufamba; muLondon, '5 minutes' inonzwika seyekure! Cherechedza: kana munhu achiti 'just around the corner' — chinoreva kuti chiri pedzo kwazvo, kunyange uri kushandisa minute imwechete kufamba.
+=== m09-l04.ts === Bus, Taxi, Train — Bhazi, Tekisi, Chitima
+HOOK: Mhoro! Pamabasa edu eZimbabwe, tinotora kombi. KuLondon, vanotora 'the bus', 'the tube', 'an Uber'. Maitiro akafanana — mashoko akasiyana. Iri ndiyo lesson yekuwedzera kuti uziva mashoko aya pasina kunetseka.
+CULT: Cherechedza muUK kana muUS: 'taxi' inoreva motokari yepedyo (yandinotsvaga pa-app); 'bus' inoreva motokari hombe yenzira yakatemwa; 'train' chitima — chinofamba pa-railway. KuLondon, 'the tube' = chitima chiri pasi peuto guta. Hapana 'kombi' kuLondon — kana uchityotsanangurira UK friend, taura kuti 'kombi is like a small minibus that picks up and drops off whenever you wave at it'.
+=== m09-l05.ts === Buying a ticket — Kutenga tikiti
+HOOK: Mhoro! Wakanga uri pa-station — chitima chinosvika maminitsi makumi maviri. Unoda kutenga tikiti. MuChiNgezi, mashoko ari nyore: 'One ticket to ___, please. Round trip. How much?'.
+CULT: MuZimbabwe, kombi unobhadhara mukati. MuUK, MuUS, kana muSouth Africa, train tikiti unotenga pamberi pekupinda — pa-machine kana paticket counter. Cherechedza mashoko: 'one-way' = kuenda chete, 'return' (UK) kana 'round trip' (US) = kuenda nekudzoka. Mashoko aya akakosha pa-station kuti urege kutenga tikiti yakaipa.
+=== m09-l06.ts === At the airport — Panhandare
+HOOK: Mhoro! Panhandare — pano ndipo paunoda ChiNgezi chakanyanya. 'Boarding pass', 'departure gate', 'customs' — mashoko aya anokushandurira pa-Heathrow, pa-JFK, pa-OR Tambo. Pasina iwo, hauwane ndege yako.
+CULT: Panhandare yeChiNgezi, mashoko mazhinji haatauriwi neShona — anouya seakajairwa: 'gate', 'check-in', 'security', 'customs'. Cherechedza: pa-Heathrow nepamwe panhandare yeUK, vamwe vanotaura nehupfumi (kunge vagari vanga vasingakushandike), asi havasi vasiri vanhu — bvunza mubvunzo wakajeka, vanotipa mhinduro.
+=== m09-l07.ts === Hotel & Accommodation — Hotera
+HOOK: Mhoro! Wati wasvika — hotera. Mashoko ari nyore: 'I have a reservation', 'My room key', 'I'd like to check out'. Mibvunzo iyi inoshandiswa pose: muHarare, muLondon, muNew York.
+CULT: Pa-hotera yeChiNgezi, vagari vacho vanowedzera 'sir' kana 'ma'am' kuratidza tsika — chinhu chinotorwa seyakanyanyokosha kana wakambobata mubasa rakadaro. Cherechedza: kana paine dambudziko mukamuri (mvura, AC, noise), itaura zvine hutsika asi zvakajeka — 'There's a problem with the ___' — havasi vakuomeshera, vanoda kugadzirisa.
+=== m09-l08.ts === Lost & Travel emergencies — Ndarasika
+HOOK: Mhoro! Pamwe nguva, zvinhu zvinopinda mukutya. Wapotsa bhazi rako; wakanga wakaisa bhegi rako pa-train wakarikanganwa; wakarasika muguta usina mari yedata. Mashoko aya — 'I'm lost', 'I missed my bus', 'I lost my bag' — anokuponesa.
+CULT: MuZimbabwe, vagari vatinosangana navo vanonzwira tsitsi pakazara — vanomira navo. MuLondon kana muNYC, anhu vanomira pamabasa — asi kana wati pamberi 'Excuse me, I need help — I'm lost' chete chete, vanozotanga kunzwira tsitsi. Wedzera 'please' — chinokupa simba pakubvunza pasina kuratidza weakness.
+=== m09-l09.ts === Asking for help while travelling — Kukumbira rubatsiro
+HOOK: Mhoro! Wakasvika muguta idzva. Unoda chii chekutarisa, kuwana, kuita pakati pemaawa mashoma. Mashoko ari nyore: 'Could you help me?', 'I don't know this area', 'Could you write it down?'. Iwo ndiwo zvinokupa kibhokisi rekuwana zviripo.
+CULT: MuChiNgezi, mubvunzo wakanaka unotanga ne 'Could' kana 'Would' — havasi 'Can you' (yakareruka) kana 'Help me!' (yakaomarara). 'Could you help me?' = 'Mungandibatsire here?' — yakanyanya hutsika. Pakukumbira mumwe kunyora pasi (pakuti wadzokere kunzvimbo), 'Could you write it down?' inoshanda chete chete pa-concierge, pa-tour guide, pa-cabbie.
+=== m09-l10.ts === A travel conversation — Hurukuro yerwendo
+HOOK: Mhoro! Wapedza Module 9. Nhasi tinosanganisa zvose: kubvunza nzvimbo, kupiwa nzira, kubvunza distance, kutora transport, kutenga tikiti, kupinda muhotera, kukumbira rubatsiro. Hurukuro imwe — kubva kupanhandare kusvika kuhotera, muChiNgezi.
+CULT: Pa-rwendo rwekutanga muUK kana muUS, ChiNgezi chinodikanwa pakazara. Kunyange wapedza Module 9, mashoko aya akareruka — anodzokorora pose paunenge wakanyora ticket. Cherechedza: 'please', 'thank you', 'excuse me', 'could you' — aya ndiwo mawa anoita kuti hurukuro yose ifambe zvakanaka. MuLondon kana muManhattan, vagari vanozviona se basis yose yehutsika hwerwendo.
+=== m10-l01.ts === Happy & Sad — Kufara nekusuwa
+HOOK: MuChiShona, manzwiro acho anowanzopfekedzwa muviri: 'ndine moyo unorwadza' (ndine moyo unorwadza), 'mwoyo wangu wakapfava'. MuChiNgezi, vanhu vanowanzotaurа ne adjective yakajeka: 'I'm happy', 'I'm sad'. Hapana kunyepedzera — chinangwa kukuonesa kuti uri sei.
+CULT: Kunenge kunzwika kusina hutsika kuChiShona kutaura 'I'm sad' kunaani — sezvinonzi tinotamba nemoyo. Asi muChiNgezi izvi zvinokurudzirwa, kunyanya kuvanachiremba vepfungwa (therapists), kushamwari yepedyo, kana mukati mefamily. 'It made me feel...' inopa nzira yetauro kushandura nyaya — chinhu chakaitika, ndakanzwa sei. Iyi pattern haipo zvakanyatsoda muChiShona — uchaona musiyano paunoirumura.
+=== m10-l02.ts === Anger & Frustration — Kutsamwa nekufinhwa
+HOOK: MuChiNgezi, kutsamwa kunotaurwa zvakajeka: 'I'm angry', 'I'm frustrated'. Asi pa basa kana panyika dzeUK/USA/SA, kunyange uchitsamwa, hutsika hwakaomarara — 'I'm a bit frustrated about ___' inotambirika kupfuura 'I'm angry' yega. 'Calm down' chinhu chinotaurirwa — chenjera, kana ukati 'calm down' kune mumwe akatsamwa, anogona kuwedzera kutsamwa.
+CULT: MuChiShona, kutsamwa kunowanzo bvuma 'mwoyo wangu wakatsva' kana 'ndakatsamwa zvikuru' — somatic+direct. MuChiNgezi pa basa, mhutu ndeyekuderedza ('a bit frustrated') uye kutsanangura chikonzero ('about the deadline change'), kwete kungoti 'I'm angry'. Chinangwa: kutaura kushushikana pasina kupisira hurukuro.
+=== m10-l03.ts === Fear & Worry — Kutya nekunetseka
+HOOK: Kutya kwakapfukura mumvura — 'ndatya' inotaurwa pasina nyadzi muChiShona. MuChiNgezi: 'I'm scared' kana 'I'm afraid' — yakaererekana zvakaringana. 'I'm worried about ___' inonge yakapfukura mumakore — kunetseka kunoenderera. Shamwari yepedyo inogamuchira mhinduro yepachokwadi — 'don't worry' (usanetseke) chombo chinodzikamisa.
+CULT: MuChiShona, kutaura kutya kana kunetseka kushamwari yapedyo chinhu chinoshanda — kunokurudzira 'kuturura'. MuChiNgezi izvi zvakafanana, asi structure inosiyana: 'I'm worried about ___' (kunetseka — kuenderera), 'I'm scared of ___' (kutya — chiitiko chinotyisa). 'Don't worry' inonzwika kushoma — wedzera 'we'll figure it out together' kuti zvinzwike kuvepo, kwete kuiderera manzwiro emumwe.
+=== m10-l04.ts === Being Sick — Kurwara
+HOOK: MuChiShona, unoti 'Ndine bambo musoro' (ndine + body part) — exact same structure ne ChiNgezi 'I have a headache'. Iyi i bridge yakanaka chose! 'I have' inotanga zvirevo zvakawanda zvehutano: 'I have a fever' (ndine fivha), 'I have a cough' (ndine kwicha), 'I have stomach pain' (ndine kurwadza kwedumbu).
+CULT: Pa GP weChiNgezi (UK NHS, US doctor, SA private GP), nguva yawakawana ipfupi — minute mishanu kana gumi. Tanga ne chiri kukushaisha (kwete nyaya yose): 'I don't feel well. I have a headache that won't go away.' Kujeka kunoshanda kupfuura kupfava. 'Won't go away' (haisi kuda kupera) inotaura kuti chinhu chiri kuenderera — chinhu chinodikana ne chiremba.
+=== m10-l05.ts === Body Parts — Mitezo yemuviri
+HOOK: Mitezo yemuviri inotaurwa zvakawanda — pa chiremba, pa physiotherapist, pa shamwari yakuvara. 'Head' (musoro), 'stomach' (dumbu), 'arm' (ruoko) — mashoma asi anosvika kure. Bridge: ChiShona ne ChiNgezi vose vanoshandisa 'My + body part hurts' / 'Ruoko rwangu rwakuvara' — structure yakafanana.
+CULT: Pa physiotherapist abroad, hauchadi kufamba neshoko mukati memuviri — unongoratidza nemuno wako uchidaidza zita. 'It hurts here' inoenderana ne kunongedza. Asi kuti ushandise mashoko anokunda kunongedza, dzidza mazita mazhinji. Iyi lesson inopa zvitatu zvinoshanda mazuva ose; ukashandisa zvose, makumi maviri akakomberedza muviri achauya zvichibva pamushini wakatevera.
+=== m10-l06.ts === At the Doctor — Pa chiremba
+HOOK: Lesson yapfuura wakatanga — nhasi tinopedza. Pa follow-up appointment, chiremba achabvunza: 'How long?', 'How bad?', 'What helps?'. Mhinduro: 'It hurts here', 'For three days', 'Take this medicine'. Mashoko mazhinji okushandisa, asi structure inoreruka — duration + intensity + treatment.
+CULT: MuChiShona, pakubvunzwa nezvenguva yekurwara, unenge unotaura 'Kwave nemazuva matatu' — pasina 'for'. MuChiNgezi 'for' inodikanwa: 'for three days', 'for a week'. Cherechedza: 'It's been three days' = 'Kwave nemazuva matatu' — pattern yakafanana, mashoko akasiyana. Nokunzwa zvirinani kunaiwa structure yakaringana — chiremba achanzwisisa zvakanaka.
+=== m10-l07.ts === Telling past stories — Kutaura nyaya yapakare
+HOOK: Nyaya inotanga ne 'When I was a child...' kana 'When I was young...'. Iyi inotaura kuti uri kuendesa muteereri kunguva yakapfuura. Wedzera chinhu chinosvora — 'I'll never forget...' (handifi ndakanganwa) — nemhinduro yemoyo: 'It was amazing' (zvanga zvichikatyamadza). Nyaya pfupi yamemo, structure yakareruka.
+CULT: MuChiShona, kutaura nyaya yapakare i basa rinodikanwa pamhuri — vana vanodzidza nayo, vakuru vanorangarira. MuChiNgezi pakati pe English-speakers, nyaya pfupi yepamwoyo (3 zvirevo) ndiyo inoshanda — pasina kuda kuwedzera mavakirwo. 'When I was a child' (chinguva), chiitiko (chiri kuita), uye reflection (manzwiro mushure). Pattern iyi inozonzwika muModule 10 capstone.
+=== m10-l08.ts === Hope & Future — Tariro nemberi
+HOOK: MuChiShona unoti 'Ndinotarisira', 'Rimwe zuva ndicha...', 'Ndinorota'. MuChiNgezi: 'I hope to...', 'One day I'll...', 'I dream of...'. Mashoko maviri akawanda asi pattern imwe — kusvika kuneramangwana ne tariro. Pa job interview, mibvunzo yekutarisa mberi: 'Where do you see yourself in 5 years?' — mhinduro inoda mashoko aya.
+CULT: MuChiShona, kutaura nezvetariro hwakapfukura mwoyo — 'Ndinorota' (kurota) chinhu chinodikana. Job interview pa English-speaking company inotsiura zvakapfava — mhinduro yekuti 'I hope to learn and grow' inenge yakareruka, asi mhinduro yakajeka 'I see myself leading a small team in 5 years' inonzwika senehukuru hwa kuita. ChiNgezi che job interview chinoda 'specific + ambitious + humble' — pamukati metariro yose ye ChiShona.
+=== m10-l09.ts === Sharing Shona proverbs in English — Tsumo muChiNgezi
+HOOK: Tsumo dzedu — vamwe vanodzitora sechinhu chemumusha chete. Asi tsumo dzeChiShona dzine simba pakati penyika dzose. Nhasi tinodzidza kupa tsumo nhatu muChiNgezi: zita rechiShona, kuturikira, uye chinangwa. Iyi inhanho yekutamba — kuratidza hutsika hwedu kunyange muChiNgezi.
+CULT: Pakuturikira tsumo, hauchadi kushandura mashoko chete — unodzidzisa zvinoreva. Pattern yakaringana: (1) Taura tsumo muChiShona, (2) Pa literal translation, (3) Tsanangura chinangwa. Mhuri yenyika dzakasiyana inoda tsumo — Chinese chéngyǔ, French dictons, English idioms. Asi paunopa tsumo yeShona kuvaposhi vanotaura ChiNgezi, unoenderera ne hutsika hwekudzidzisa hwemusha — uye unotungamira hutsika hweZimbabwe pakati pe nyika dzakareba.
+=== m10-l10.ts === Your English Story — A2 Complete
+HOOK: Iyi i lesson yekupedzisira. 100 lessons. 10 modules. Kubva pa 'Hello' kusvika pa proverbs, kubva pa 'My name is...' kusvika pa job interview. Nhasi haudzidzi — unotaura. Nyaya yako yose ye English-learning journey, muChiNgezi. Ratidza kuti wave ani.
+CULT: Kupedza curriculum kunoreva kuti hauchina kungodzidza mashoko chete — wakapinda muhupenyu. Wakaziva kukwazisa, kupinda kuchiremba, kuita order paLondon, kuva mwoyo pakati peEnglish-speakers, uye iye zvino — kutaura nyaya yako yose. Iyi i Rwendo journey: kubva pa Mhoro kusvika pa 'Where I'm from we say...'. Wakwanisa — wakavhura mukova, wakawana ChiNgezi pasina kurasa ChiShona.

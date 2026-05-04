@@ -1,0 +1,400 @@
+m01-l01.ts | Hello — Mhoro
+    hello | Hello | Mhoro
+    how_are_you | How are you? | Makadii?
+    im_fine_thanks | I'm fine, thanks. | Ndiri zvakanaka, ndatenda.
+m01-l02.ts | Hi & Bye — Casual greetings
+    hi | Hi | Hesi
+    bye | Bye | Sara zvakanaka
+    see_you_later | See you later | Tichaonana
+m01-l03.ts | Good morning — Mangwanani
+    good_morning | Good morning | Mangwanani
+    did_you_sleep_well | Did you sleep well? | Marara sei?
+    i_slept_well | I slept well | Ndakarara zvakanaka
+m01-l04.ts | Good afternoon — Masikati
+    good_afternoon | Good afternoon | Masikati
+    hows_your_day | How's your day? | Maswera sei?
+    going_well | Going well | Zviri kufamba
+m01-l05.ts | Good evening — Manheru
+    good_evening | Good evening | Manheru
+    how_was_your_day | How was your day? | Maswera sei?
+    it_was_good | It was good | Zvanga zvakanaka
+m01-l06.ts | What's your name? — Zita rako ndiani?
+    whats_your_name | What's your name? | Zita rako ndiani?
+    my_name_is | My name is ... | Zita rangu ndi...
+    nice_to_meet_you | Nice to meet you | Ndafara kukuziva
+m01-l07.ts | Where are you from? — Wabva kupi?
+    where_are_you_from | Where are you from? | Wabva kupi?
+    im_from | I'm from ... | Ndinobva ku...
+    i_live_in | I live in ... | Ndinogara ku...
+m01-l08.ts | Polite "How are you?" forms
+    how_do_you_do | How do you do? | Makadii zvakanaka here?
+    pleased_to_meet_you | Pleased to meet you | Ndafara kukuziva
+    i_hope_youre_well | I hope you're well | Ndinotarisira muri zvakanaka
+m01-l09.ts | Goodbye — Sara/Famba zvakanaka
+    goodbye | Goodbye | Sara zvakanaka
+    see_you_tomorrow | See you tomorrow | Tichaonana mangwana
+    take_care | Take care | Chenjerai
+m01-l10.ts | The Greeting Conversation
+    review_hello_intro | Hello, my name is ... | Mhoro, zita rangu ndi...
+    review_where_from | I'm from Zimbabwe | Ndinobva kuZimbabwe
+    review_goodbye_full | Goodbye, take care | Sara zvakanaka, chenjerai
+m02-l01.ts | Please — Ndapota
+    please | Please | Ndapota
+    excuse_me | Excuse me | Pamusoroi
+    sorry | Sorry | Ndine urombo
+m02-l02.ts | Thank you — Ndatenda
+    thank_you | Thank you | Ndatenda
+    youre_welcome | You're welcome | Hapana mhosva
+    thanks_a_lot | Thanks a lot | Ndatenda chaizvo
+m02-l03.ts | Can you help me? — Mungandibatsire here?
+    can_you_help_me | Can you help me? | Mungandibatsire here?
+    i_need_help | I need help | Ndinoda rubatsiro
+    im_lost | I'm lost | Ndarasika
+m02-l04.ts | Do you speak English? — Munotaura ChiNgezi here?
+    do_you_speak_english | Do you speak English? | Munotaura ChiNgezi here?
+    a_little | A little | Zvishoma
+    slowly_please | Slowly, please | Zvinyoro nyoro, ndapota
+m02-l05.ts | I don't understand — Handinzwisise
+    i_dont_understand | I don't understand | Handinzwisise
+    repeat_please | Repeat, please | Dzokorora, ndapota
+    what_did_you_say | What did you say? | Wati chii?
+m02-l06.ts | Yes & No — Hongu uye Aiwa
+    yes | Yes | Hongu
+    no | No | Aiwa
+    maybe | Maybe | Pamwe
+m02-l07.ts | Where is...? — ...iri kupi?
+    where_is_the_bathroom | Where is the bathroom? | Toilet iri kupi?
+    where_is_the_exit | Where is the exit? | Pekubudira ndepapi?
+    over_there | Over there | Apo
+m02-l08.ts | How much? — Marii?
+    how_much | How much? | Marii?
+    its_expensive | It's expensive | Idhura
+    its_cheap | It's cheap | Hairipi mari
+m02-l09.ts | Emergency phrases — Mhoro mhinduro
+    help | Help! | Ndibatsireiwo!
+    call_the_police | Call the police | Daidza mapurisa
+    i_need_a_doctor | I need a doctor | Ndinoda chiremba
+m02-l10.ts | Survival in conversation
+    review_excuse_help | Excuse me, can you help me? | Pamusoroi, mungandibatsire here?
+    review_dont_understand | I don't understand. Slowly, please. | Handinzwisise. Zvinyoro nyoro, ndapota.
+    review_thank_you_lots | Thank you so much for your help. | Ndatenda chaizvo nerubatsiro rwenyu.
+m03-l01.ts | I am... — Ndini...
+    i_am | I am | Ndini
+    im_a_student | I'm a student | Ndini mudzidzi
+    im_from_zimbabwe | I'm from Zimbabwe | Ndinobva kuZimbabwe
+m03-l02.ts | How old are you? — Une makore mangani?
+    how_old_are_you | How old are you? | Une makore mangani?
+    im_x_years_old | I'm X years old | Ndine makore X
+    twenty_five | Twenty-five | Makumi maviri nemashanu
+m03-l03.ts | What do you do? — Unoita basa rei?
+    what_do_you_do | What do you do? | Unoita basa rei?
+    im_a_teacher | I'm a teacher | Ndini mudzidzisi
+    i_work_in_it | I work in IT | Ndinoshanda muIT
+m03-l04.ts | Married? Children? — Wakaroora? Une vana?
+    are_you_married | Are you married? | Wakaroora here?
+    i_have_two_children | I have two children | Ndine vana vaviri
+    im_single | I'm single | Handisati ndaroora
+m03-l05.ts | Hobbies — Zvinokufadza
+    i_like | I like ... | Ndinoda...
+    i_enjoy | I enjoy ... | Ndinofarira...
+    in_my_free_time | In my free time | Munguva yangu yekuzorora
+m03-l06.ts | Languages I speak — Mitauro yandinotaura
+    i_speak_shona | I speak Shona | Ndinotaura ChiShona
+    a_little_english | A little English | ChiNgezi zvishoma
+    and_some_others | And some others | Nemimwe
+m03-l07.ts | Where I live — Kwandinogara
+    i_live_in_harare | I live in Harare | Ndinogara muHarare
+    i_grew_up_in | I grew up in ... | Ndakakurira ku...
+    for_ten_years | For ten years | Kwemakore gumi
+m03-l08.ts | Describing yourself — Kuzvitaridza
+    im_friendly | I'm friendly | Ndine ushamwari
+    im_shy_sometimes | I'm shy sometimes | Ndinonyara dzimwe nguva
+    i_love_learning | I love learning | Ndinoda kudzidza
+m03-l09.ts | Asking about them — Kubvunza nezvavo
+    tell_me_about_yourself | Tell me about yourself | Ndiudze nezvako
+    whats_your_story | What's your story? | Nyaya yako ndeye?
+    where_did_you_grow_up | Where did you grow up? | Wakakurira kupi?
+m03-l10.ts | Full introduction conversation
+    pleasure_to_meet_you | Pleasure to meet you | Ndafara kukuziva
+    and_yourself | And yourself? | Newewo?
+    lets_keep_in_touch | Let's keep in touch | Ngatirambei tichitaurirana
+m04-l01.ts | A vs An — A book / An apple
+    a_book | A book | Bhuku
+    an_apple | An apple | Apuro
+    a_house | A house | Imba
+m04-l02.ts | The — When to use it
+    the_book | The book | Bhuku iro (ratinoziva)
+    the_zimbabwe_team | The Zimbabwe team | Timu yeZimbabwe
+    the_morning | The morning | Mangwanani (chinhu chimwe chete chega)
+m04-l03.ts | No article — Plural & abstract
+    books | Books | Mabhuku (ese ese)
+    love | Love | Rudo
+    children | Children | Vana (vese vese)
+m04-l04.ts | Plurals — adding -s
+    cats | Cat → Cats | Katsi → Katsi (-zhinji)
+    days | Day → Days | Zuva → Mazuva
+    friends | Friend → Friends | Shamwari → Shamwari (-zhinji)
+m04-l05.ts | Irregular plurals — children, men
+    children | Child → Children | Mwana → Vana
+    men | Man → Men | Murume → Varume
+    people | Person → People | Munhu → Vanhu
+m04-l06.ts | This & That — These & Those
+    this_book | This book | Bhuku iri (riri pedyo)
+    that_house | That house | Imba iyo (iri kure)
+    these_children | These children | Vana ava (vari pedyo)
+m04-l07.ts | Some & Any — countables
+    some_water | Some water | Mvura (mamwe)
+    any_questions | Any questions? | Mibvunzo here? (chero ipi)
+    some_friends | Some friends | Shamwari (dzimwe)
+m04-l08.ts | Much vs Many
+    much_water | Much water | Mvura yakawanda
+    many_friends | Many friends | Shamwari dzakawanda
+    how_much_how_many | How much? / How many? | Zvakawanda sei?
+m04-l09.ts | Mixed practice — articles in flow
+    a_the_combo | I read a book. The book was good. | Ndakaverenga bhuku. Bhuku iro rakanga rakanaka.
+    no_the_combo | Children love music. The children at this school sing. | Vana vanoda mumhanzi. Vana vechikoro chino vanoimba.
+    mixed_flow | I have a dog. The dog likes water. | Ndine imbwa. Imbwa yangu inoda mvura.
+m04-l10.ts | Articles in real talk — Conversation capstone
+    morning_flow | I woke up. I had a cup of coffee and an apple. | Ndakamuka. Ndaita kapu yekofi neapuro.
+    work_flow | I went to work. The meeting took three hours. I have many emails. | Ndaenda kubasa. Musangano watora maawa matatu. Ndine mae-mail mazhinji.
+    evening_flow | I came home. These children are mine. I love my family. | Ndauya kumba. Vana ava ndevangu. Ndinoda mhuri yangu.
+m05-l01.ts | Mother & Father — Amai naBaba
+    mother | Mother | Amai
+    father | Father | Baba
+    my_parents | My parents | Vabereki vangu
+m05-l02.ts | Brothers & Sisters — Mukoma naHanzvadzi
+    brother | Brother | Mukoma / Munin'ina
+    sister | Sister | Hanzvadzi (kana hanzvadzikomana)
+    two_siblings | I have two siblings. | Ndine vana vamai vaviri.
+m05-l03.ts | Sons & Daughters — Vana
+    son | Son | Mwana mukomana
+    daughter | Daughter | Mwana musikana
+    children | Children | Vana
+m05-l04.ts | Grandparents — Mbuya naSekuru
+    grandmother | Grandmother | Mbuya
+    grandfather | Grandfather | Sekuru
+    grandchild | Grandchild | Muzukuru
+m05-l05.ts | Aunts & Uncles — Tete na Sekuru
+    aunt | Aunt | Tete (kana mainini/maiguru)
+    uncle | Uncle | Sekuru (kana babamukuru/babamunini)
+    cousin | Cousin | Hama (mwana watete kana wesekuru)
+m05-l06.ts | In-laws — A polite topic
+    mother_in_law | Mother-in-law | Vamwene
+    father_in_law | Father-in-law | Vatezvara
+    spouse | My husband / My wife | Murume wangu / Mukadzi wangu
+m05-l07.ts | Friends as family — Shamwari
+    best_friend | Best friend | Shamwari yepamoyo
+    close_friends | Close friends | Shamwari dzepedyo
+    like_family | Like family | Sehama
+m05-l08.ts | Family verbs — Visit, call, miss
+    visit | Visit | Shanya
+    call | Call | Fonera
+    miss | Miss (someone) | Suwa
+m05-l09.ts | Telling family stories — Nyaya dzepamhuri
+    long_time_ago | A long time ago | Kare-kare
+    used_to | My grandmother used to... | Mbuya vaisi...
+    always_says | He always says... | Anogara achiti...
+m05-l10.ts | A family conversation — Capstone
+    family_intro | I have a big family. My parents and my two siblings live in Harare. | Ndine mhuri yakakura. Vabereki vangu nevana vamai vangu vaviri vanogara muHarare.
+    extended_family | My grandmother lives in the village, and my aunt — my father's sister — lives in Mutare. | Mbuya vangu vanogara kumusha, uye tete vangu — hanzvadzi yababa — vanogara muMutare.
+    family_actions | I visit them every month, I call my mother every day, and I miss my brother who lives abroad. | Ndinovashanya mwedzi mumwe nemumwe, ndinofonera amai vangu zuva rega rega, uye ndinosuwa mukoma wangu anogara kunze kwenyika.
+m06-l01.ts | Numbers 1-10 — One to Ten
+    one_five | One, two, three, four, five | Imwe, mbiri, nhatu, ina, shanu
+    six_ten | Six, seven, eight, nine, ten | Nhanhatu, nomwe, sere, pfumbamwe, gumi
+    how_many | How many? | Zvingani?
+m06-l02.ts | Numbers 11-100 — Eleven to One Hundred
+    eleven_nineteen | Eleven, twelve, thirteen, fourteen, fifteen | 11, 12, 13, 14, 15
+    tens | Twenty, thirty, forty, fifty, sixty, seventy, eighty, ninety | 20, 30, 40, 50, 60, 70, 80, 90
+    one_hundred | One hundred | Zana
+m06-l03.ts | Hundreds, Thousands, Millions
+    one_thousand | One thousand | Chiuru
+    ten_thousand | Ten thousand | Zviuru gumi
+    one_million | One million | Miriyoni
+m06-l04.ts | What time? — Inguva yakadii?
+    what_time | What time is it? | Inguva yakadii?
+    seven_oclock | It's seven o'clock | Nguva inomwe
+    am_pm | A.M. / P.M. | Mangwanani / Masikati kana manheru
+m06-l05.ts | Half past, quarter to — Mininitsi
+    half_past | Half past two | Nguva mbiri nehafu
+    quarter_to | Quarter to nine | Mininitsi gumi nemashanu pamberi pemapfumbamwe
+    five_past | Five past six | Mininitsi mashanu kupfuura nguva nhanhatu
+m06-l06.ts | Days of the week — Mazuva evhiki
+    weekdays | Monday, Tuesday, Wednesday, Thursday, Friday | Muvhuro, Chipiri, Chitatu, China, Chishanu
+    weekend | Saturday, Sunday | Mugovera, Svondo
+    today_tomorrow | Today, tomorrow, yesterday | Nhasi, mangwana, nezuro
+m06-l07.ts | Months & Seasons — Mwedzi neMwaka
+    first_months | January, February, March, April | Ndira, Kukadzi, Kurume, Kubvumbi
+    rainy_season | Rainy season | Mwaka wemvura
+    summer_winter | Summer / Winter | Zhizha / Chando
+m06-l08.ts | Money — How much is it?
+    how_much_cost | How much does it cost? | Marii?
+    it_costs | It costs twenty dollars | Inopiwa madhora makumi maviri
+    expensive_cheap | It's expensive / It's cheap | Idhura / Hairipi mari
+m06-l09.ts | Numbers in shopping — Discount, Total
+    two_for_ten | Two for ten dollars | Zviviri pamadhora gumi
+    discount | Discount | Dhisikaunti
+    total | Total / altogether | Zvose pamwe chete
+m06-l10.ts | Money & time conversation — Capstone
+    price_time | It costs twenty dollars and the shop closes at six P.M. | Inopiwa madhora makumi maviri uye chitoro chinovharwa nguva nhanhatu manheru.
+    when_meet | Let's meet on Friday at half past seven. | Tisangane Chishanu nguva nomwe nehafu.
+    total_with_discount | The total is fifty dollars with a ten percent discount. | Zvose pamwe chete imadhora makumi mashanu nedhisikaunti rezana ramumwemumwe (10%).
+m07-l01.ts | Hungry & Thirsty — Nzara nenyota
+    im_hungry | I'm hungry | Ndine nzara
+    im_thirsty | I'm thirsty | Ndine nyota
+    i_want_water | I want water | Ndinoda mvura
+m07-l02.ts | Common foods — Zvikafu zvinozivikanwa
+    bread | Bread | Chingwa
+    rice | Rice | Mupunga
+    meat | Meat | Nyama
+m07-l03.ts | At a restaurant — Murestaurant
+    table_for_two | A table for two | Tafura yevaviri
+    menu_please | The menu, please | Menyu, ndapota
+    the_bill | The bill, please | Bhiro, ndapota
+m07-l04.ts | Ordering food — Kuita order
+    id_like | I'd like... | Ndingade...
+    could_i_have | Could I have... | Ndingawana...
+    without_onions | Without onions | Pasina hanyanisi
+m07-l05.ts | I like / I don't like food — Zvandinoda nezvandisingadi
+    i_love_it | I love it | Ndinoda chaizvo
+    i_dont_like | I don't like it | Handifariri
+    its_delicious | It's delicious | Inoteyera
+m07-l06.ts | Cooking verbs — Mavhabhu ekubika
+    cook | Cook | Bika
+    chop | Chop | Cheka
+    boil | Boil | Vira
+m07-l07.ts | Tea, coffee, drinks — Tii, kofi, zvinwiwa
+    tea_with_milk | Tea with milk | Tii nemukaka
+    black_coffee | Black coffee | Kofi yakasviba
+    glass_of_water | A glass of water | Girazi remvura
+m07-l08.ts | Sharing Shona food in English — Kutsanangura sadza nemufushwa
+    sadza | Sadza — Zimbabwe's staple food | Sadza
+    mufushwa | Mufushwa — sun-dried vegetables | Mufushwa
+    mukaranga | Mukaranga — pumpkin leaves with peanut butter | Mukaranga
+m07-l09.ts | Hosting in English — Kugamuchira muvarume veChiNgezi
+    welcome | Welcome | Mauya
+    sit_down | Please, sit down | Garai pasi
+    help_yourself | Help yourself | Bata zvauri kuda
+m07-l10.ts | A meal conversation — Hurukuro yekudya
+    review_table_menu | A table for two, please. Could we have the menu? | Tafura yevaviri, ndapota. Tingapihwe menyu here?
+    review_id_like_modify | I'd like the chicken, without onions, please. | Ndingade huku, pasina hanyanisi, ndapota.
+    review_delicious_bill | It was delicious. Could we have the bill, please? | Yainoteyera. Tingapihwe bhiro here, ndapota?
+m08-l01.ts | "To be" & "to have" — I am / I have
+    i_am_happy | I am happy. | Ndinofara.
+    you_have_a_friend | You have a friend. | Une shamwari.
+    they_are_tired | They are tired. | Vakaneta.
+m08-l02.ts | "To do" & "to make" — I do / I make
+    i_do_my_homework | I do my homework. | Ndinoita basa rangu rechikoro.
+    she_makes_tea | She makes tea. | Anogadzira tii.
+    dont_worry | Don't worry. | Usanetseke.
+m08-l03.ts | "To go" & "to come" — I go / I come
+    i_go_to_work | I go to work. | Ndinoenda kubasa.
+    come_here | Come here. | Huya pano.
+    were_coming | We're coming. | Tiri kuuya.
+m08-l04.ts | "To want" & "to need" — I want / I need
+    i_want_coffee | I want coffee. | Ndinoda kofi.
+    i_need_a_break | I need a break. | Ndinoda kuzorora.
+    id_like_tea | I'd like tea, please. | Ndingade tii, ndapota.
+m08-l05.ts | Daily routine — Morning
+    i_wake_up_at_6 | I wake up at 6. | Ndinomuka na6.
+    i_take_a_shower | I take a shower. | Ndinogeza.
+    i_eat_breakfast | I eat breakfast. | Ndinodya kudya kwemangwanani.
+m08-l06.ts | Work & school — My day
+    i_go_to_work | I go to work. | Ndinoenda kubasa.
+    i_study_english | I study English. | Ndinodzidza ChiNgezi.
+    i_have_a_meeting | I have a meeting. | Ndine musangano.
+m08-l07.ts | Evening routine — Coming home
+    i_come_home | I come home at 6. | Ndinodzoka kumba na6.
+    i_cook_dinner | I cook dinner. | Ndinobika kudya kwemanheru.
+    i_watch_tv | I watch TV. | Ndinotarisa TV.
+m08-l08.ts | Past tense — Yesterday I...
+    yesterday_i_went | Yesterday I went to the market. | Nezuro ndakaenda kumusika.
+    i_saw_a_friend | I saw a friend. | Ndakaona shamwari.
+    it_was_great | It was great. | Zvanga zvakanaka.
+m08-l09.ts | Future tense — Tomorrow I will...
+    tomorrow_i_will | Tomorrow I will call you. | Mangwana ndichakufonera.
+    im_going_to | I'm going to study tonight. | Ndichada kudzidza husiku huno.
+    see_you_tomorrow | See you tomorrow! | Tichaonana mangwana!
+m08-l10.ts | A day-in-life conversation — My day in English
+    review_morning_routine | I wake up at 6, take a shower, and have breakfast. | Ndinomuka na6, ndinogeza, ndichidya kudya kwemangwanani.
+    review_workday | I go to work, have meetings, and make plans. | Ndinoenda kubasa, ndine misangano, uye ndinogadzira mahurongwa.
+    review_past_future | Yesterday I went home early; tomorrow I will work late. | Nezuro ndakadzoka kumba kare; mangwana ndichashanda kusvika manheru.
+m09-l01.ts | Where is...? — ...iri kupi?
+    where_is_the_bank | Where is the bank? | Bhangi riri kupi?
+    excuse_me_toilets | Excuse me, the toilets? | Tichikumbira, dzimba dzemadzimai?
+    over_there | Over there | Apo
+m09-l02.ts | Left, Right, Straight — Kuruboshwe, Kurudyi, Zvakananga
+    turn_left | Turn left | Tendeukira kuruboshwe
+    go_straight | Go straight | Enda zvakananga
+    its_on_the_right | It's on the right | Iri kurudyi
+m09-l03.ts | How far? — Iri kure here?
+    how_far | How far? | Iri kure here?
+    five_minutes_walk | Five minutes' walk | Zvinotora maminitsi mashanu kufamba
+    around_the_corner | Just around the corner | Pakona apa
+m09-l04.ts | Bus, Taxi, Train — Bhazi, Tekisi, Chitima
+    the_bus | The bus | Bhazi
+    taxi | A taxi | Tekisi
+    the_train | The train | Chitima
+m09-l05.ts | Buying a ticket — Kutenga tikiti
+    one_ticket_to_harare | One ticket to Johannesburg, please. | Tikiti rimwe rekuenda kuJohannesburg, ndapota.
+    round_trip | A return, please. | Yekuenda nekudzoka, ndapota.
+    how_much | How much is it? | Marii?
+m09-l06.ts | At the airport — Panhandare
+    boarding_pass | Boarding pass | Tikiti rekupinda
+    departure_gate | Departure gate | Pekubudira
+    customs | Customs | Customs
+m09-l07.ts | Hotel & Accommodation — Hotera
+    reservation | I have a reservation. | Ndine bhuking.
+    room_key | My room key | Kiyi yekamuri yangu
+    check_out | I'd like to check out. | Ndingade kubuda.
+m09-l08.ts | Lost & Travel emergencies — Ndarasika
+    im_lost | I'm lost. | Ndarasika.
+    i_missed_my_bus | I missed my bus. | Ndapotsa bhazi rangu.
+    i_lost_my_bag | I lost my bag. | Ndarasa bhegi rangu.
+m09-l09.ts | Asking for help while travelling — Kukumbira rubatsiro
+    could_you_help_me | Could you help me? | Mungandibatsire here?
+    i_dont_know_area | I don't know this area. | Handizivi nzvimbo iyi.
+    could_you_write_it_down | Could you write it down? | Mungandinyorere here?
+m09-l10.ts | A travel conversation — Hurukuro yerwendo
+    review_arrived_directions | Excuse me, I just arrived. Where is the Underground? | Tichikumbira, ndichangosvika. Underground iri kupi?
+    review_ticket_distance | One ticket to King's Cross, please. How far is it? | Tikiti rimwe rekuenda kuKing's Cross, ndapota. Iri kure here?
+    review_hotel_help | I have a reservation. Could you write down the WiFi password? | Ndine bhuking. Mungandinyorere password yeWiFi here?
+m10-l01.ts | Happy & Sad — Kufara nekusuwa
+    im_happy | I'm happy | Ndinofara
+    im_sad | I'm sad | Ndakasuwa
+    made_me_feel | It made me feel... | Zvakaita kuti ndinzwe...
+m10-l02.ts | Anger & Frustration — Kutsamwa nekufinhwa
+    im_angry | I'm angry | Ndakatsamwa
+    im_frustrated | I'm frustrated | Ndafinhwa
+    calm_down | Calm down | Dzikama
+m10-l03.ts | Fear & Worry — Kutya nekunetseka
+    im_scared | I'm scared | Ndatya
+    worried_about | I'm worried about... | Ndine hanya ne...
+    dont_worry | Don't worry | Usanetseke
+m10-l04.ts | Being Sick — Kurwara
+    dont_feel_well | I don't feel well | Handisi kunzwa zvakanaka
+    have_headache | I have a headache | Ndine bambo musoro
+    need_a_doctor | I need a doctor | Ndinoda chiremba
+m10-l05.ts | Body Parts — Mitezo yemuviri
+    head | Head | Musoro
+    stomach | Stomach | Dumbu
+    arm | Arm | Ruoko
+m10-l06.ts | At the Doctor — Pa chiremba
+    hurts_here | It hurts here | Inorwadza pano
+    for_three_days | For three days | Kwemazuva matatu
+    take_medicine | Take this medicine | Tora mushonga uyu
+m10-l07.ts | Telling past stories — Kutaura nyaya yapakare
+    when_i_was_a_child | When I was a child | Pandanga ndichiri mwana
+    never_forget | I'll never forget... | Handifi ndakanganwa...
+    was_amazing | It was amazing | Zvanga zvichikatyamadza
+m10-l08.ts | Hope & Future — Tariro nemberi
+    hope_to | I hope to... | Ndinotarisira...
+    one_day_ill | One day I'll... | Rimwe zuva ndicha...
+    dream_of | I dream of... | Ndinorota...
+m10-l09.ts | Sharing Shona proverbs in English — Tsumo muChiNgezi
+    chara_chimwe | Chara chimwe hachitswanyi inda — One finger can't crush a louse | Chara chimwe hachitswanyi inda — One finger can't crush a louse
+    mwana_washe | Mwana washe muranda kumwe — A chief's child is a servant elsewhere | Mwana washe muranda kumwe — A chief's child is a servant elsewhere
+    rume_rimwe | Rume rimwe harikombi churu — One man cannot surround an anthill | Rume rimwe harikombi churu — One man cannot surround an anthill
+m10-l10.ts | Your English Story — A2 Complete
+    i_started_learning | I started learning English | Ndakatanga kudzidza ChiNgezi
+    now_i_can | Now I can... | Iye zvino ndinokwanisa...
+    journey_continues | The journey continues | Rwendo ruchiripo

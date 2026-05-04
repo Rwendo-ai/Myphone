@@ -1,0 +1,300 @@
+=== m01-l01.ts === Mangwanani — Good Morning
+HOOK: Mangwanani! In Shona, every greeting is a wellness check — never just 'hi'. Skipping a greeting is rude. Today, we wake the day together.
+CULT: Shona greetings are deeply tied to tsika — respect. We always ask how someone has woken or spent the day.
+=== m01-l02.ts === Wamuka Sei? — Greeting a Friend
+HOOK: Yesterday you greeted an elder with respect. Today — I want to greet YOU. Wamuka sei? That's how I greet a friend. Let's learn the difference.
+CULT: Using the formal 'Mamuka sei?' with a close friend can feel distant or even cold in Shona culture. Friends and equals use 'Wamuka sei?' — it signals warmth and closeness.
+=== m01-l03.ts === Maswera Sei? — Afternoon Greetings
+HOOK: It's afternoon now — and using 'Mangwanani' would be like saying 'good morning' at sunset. Shona greetings are tied to the rhythm of the day. Let's learn the afternoon.
+CULT: In Shona culture, using the wrong time-of-day greeting isn't just incorrect — it shows you weren't paying attention. Matching the greeting to the moment is a form of respect.
+=== m01-l04.ts === Manheru — Good Evening
+HOOK: The sun is going down. In Zimbabwe, evenings are for family — gathering, eating, sharing stories. The evening greeting carries all of that warmth. Let me teach you.
+CULT: 'Manheru akanaka' isn't just 'good evening' — it's an invitation to settle in. You say it when you arrive somewhere and want to signal you're glad to be there. It opens the door to connection.
+=== m01-l05.ts === Makadii — The Universal Greeting
+HOOK: You now know morning, afternoon, and evening greetings. But what if you're not sure of the time? Or you meet a stranger and feel unsure? I have one word that saves you every time: Makadii.
+CULT: 'Makadii' works morning, afternoon, and evening — with strangers, colleagues, elders, and friends. When you're unsure which greeting to use, Makadii is always correct and never rude.
+=== m01-l06.ts === Zita Rako Ndiani? — What's Your Name?
+HOOK: You can greet anyone now. But what comes after 'hello'? A name. In Shona, asking someone's name isn't small talk — it's genuine interest. Names here often have deep meanings.
+CULT: Shona names are often full sentences or statements of meaning. 'Tendai' means 'be grateful'. 'Rudo' means 'love'. When you ask someone's name in Shona, you're asking for a piece of their story.
+=== m01-l07.ts === Wabva Kupi? — Where Are You From?
+HOOK: In Zimbabwe, 'where are you from?' isn't just curiosity — it's connection. Your origin tells your story. People bond over shared provinces, villages, or neighbouring countries. Let's learn how to share that.
+CULT: Knowing someone's origin in Zimbabwe unlocks conversation. It can reveal shared relatives, languages, or history. Asking 'Wabva kupi?' is an act of genuine interest, not interrogation.
+=== m01-l08.ts === Makadii Mese — Greeting a Group
+HOOK: In Zimbabwe, you never walk into a room and only greet one person. You greet the whole room — in one sweep. Skipping someone is an insult. Today you'll learn to greet everyone at once.
+CULT: Group greetings are a single, inclusive act in Shona. Arriving and only greeting the person you know while ignoring others is considered very rude. 'Makadii mese' — 'how are all of you' — covers everyone and shows you see them all.
+=== m01-l09.ts === Sara Zvakanaka — Goodbye
+HOOK: Every journey has a farewell. In Shona, goodbye is not just 'bye' — it blesses the other person's path. The words you use depend on one thing: who is leaving and who is staying.
+CULT: 'Famba zvakanaka' literally means 'go well' — it's said by the person staying, blessing the one leaving. 'Sara zvakanaka' means 'stay well' — said by the person leaving, blessing the one who remains. Get them the right way round.
+=== m01-l10.ts === The Greeting Conversation — Putting It Together
+HOOK: This is it. Everything from this module — in one conversation. No new words today. Just you, me, and the language you've built. Let's see what you can do.
+CULT: A full first encounter in Shona flows like this: time-appropriate greeting → wellness check → name exchange → origin → farewell blessing. Each step builds trust. By the end, you're not strangers.
+=== m02-l01.ts === Ndapota — Please
+HOOK: You've mastered greetings. Now let's get things done. In any new language, 'please' is the key that unlocks doors. In Shona it also signals that you're asking, not demanding.
+CULT: Shona culture values politeness deeply. Adding 'ndapota' to a request transforms it from a command into an invitation. Skipping it — especially with elders — can come across as rude, even unintentionally.
+=== m02-l02.ts === Ndatenda — Thank You
+HOOK: Gratitude is the currency of relationship in Shona culture. 'Ndatenda' said sincerely lands differently from a mumbled 'thanks'. Let's make sure yours lands right.
+CULT: In Zimbabwe, gratitude is expressed verbally and often — not just for big things but for small acts of kindness. Saying 'ndatenda zvikuru' (thank you very much) for something simple is never excessive. It's always appreciated.
+=== m02-l03.ts === Ruregerero — Sorry
+HOOK: Making mistakes is part of learning — in language and in life. In Shona, knowing how to apologise properly is as important as knowing how to greet. Let me show you both the words and the weight behind them.
+CULT: In Shona culture, a sincere apology is expected to be direct and unhurried. Simply saying 'ruregerero' while maintaining eye contact carries real weight. Rushing it or mumbling it can seem dismissive.
+=== m02-l04.ts === Handizivi — I Don't Know
+HOOK: Here's a secret: 'I don't know' is one of the most useful things you can say in a new language. It's honest. It invites help. And in Shona, it sounds confident when you say it right.
+CULT: In Shona culture, admitting you don't know something is respected — it shows self-awareness and humility. Pretending to know and giving wrong information is considered worse than saying 'handizivi'.
+=== m02-l05.ts === Taura Zvishoma — Speak Slowly
+HOOK: Native speakers talk fast. You're going to feel lost sometimes — and that's completely normal. These three phrases are your emergency tools. They buy you time and keep the conversation alive.
+CULT: Asking someone to speak slowly in Zimbabwe is never seen as rude. It signals you're trying — and Shona speakers deeply respect the effort. Most will slow down happily and even help you with the words.
+=== m02-l06.ts === Ndinoda Rubatsiro — I Need Help
+HOOK: Needing help is human. Asking for it in the local language? That's courage. 'Ndinoda' is one of the most powerful phrases in Shona — it unlocks almost any request.
+CULT: In Zimbabwean culture, asking for help directly (with politeness) is respected. People rarely turn down a genuine request for assistance — especially from someone learning the language. The effort itself is the door-opener.
+=== m02-l07.ts === Zvii muShona? — How Do You Say?
+HOOK: Here is the learner's superpower: asking about the language itself. 'How do you say this in Shona?' turns every conversation into a lesson. You become a learner in the field, not just in the classroom.
+CULT: Shona speakers are almost universally delighted when someone asks them how to say something in their language. It shows respect for ChiShona and curiosity about their world. It's an instant connection-builder.
+=== m02-l08.ts === Ndanzwisisa — I Understand
+HOOK: After everything we've learned about asking for help and clarity, here's the other side of the conversation: telling someone you understand — or that you still don't. Both matter equally.
+CULT: In Shona conversation, confirming understanding is expected and valued. Staying silent when confused can lead to misunderstandings building up. Saying 'Ndanzwisisa' or 'Handanzwisisi' keeps the conversation honest.
+=== m02-l09.ts === Ndinoda — I Want / I Need
+HOOK: 'Ndinoda' is one of the most powerful phrases in all of Shona. Want food? Ndinoda. Need a seat? Ndinoda. Want to go home? Ndinoda. One phrase — endless uses.
+CULT: In Shona, the same word 'ndinoda' covers both wanting and needing. Context makes the difference. In a market or restaurant, it's 'I want'. In an emergency, it's 'I need'. Shona trusts context to carry meaning.
+=== m02-l10.ts === Survival Conversation — Putting It Together
+HOOK: Nine tools in your kit. Today you use them all in one scenario — navigating a real situation in Zimbabwe with nothing but what you've learned in this module. Let's see what you're made of.
+CULT: The real test of survival language is not knowing every word — it's keeping the conversation alive long enough to get what you need. Politeness, honesty about what you don't know, and asking for help will carry you further than vocabulary alone.
+=== m03-l01.ts === Ndiri — I Am
+HOOK: Greetings open doors. Survival phrases keep you safe. Now — who are you? Module 3 is your story. We start with the simplest, most important phrase: I am.
+CULT: In Shona culture, introducing yourself fully — who you are, what you do, where you're from — is expected and welcomed. It's not showing off; it's showing up. People want to know you.
+=== m03-l02.ts === Ndinoshanda — I Work
+HOOK: Work is identity in Shona culture — not just what you do but who you are in the community. Whether you work with your hands, your mind, or your words — there's dignity in all of it. Let's talk about work.
+CULT: In Zimbabwe, asking someone where they work and what they do is normal conversation — not intrusive. It's how people understand your place in the community and find common ground. Being open about your work builds trust.
+=== m03-l03.ts === Makore — Age
+HOOK: Age in Shona culture is not a number — it's a marker of respect and relationship. Knowing someone's age helps you know how to address them. And being asked your age is completely normal — even flattering.
+CULT: In Zimbabwe, age determines the level of respect you're shown and how you address others. Knowing you're younger means using more formal language. This is why age comes up early in conversations — it calibrates the whole exchange.
+=== m03-l04.ts === Ndine Mhuri — I Have a Family
+HOOK: In Zimbabwe, family is everything. It's not background — it's the whole story. When you talk about your family in Shona, you're sharing your roots. People listen closely.
+CULT: 'Mhuri' means family — but Shona family is much wider than the nuclear family. It includes extended relatives, clan members, and sometimes an entire village. When someone asks about your mhuri, they're asking about your whole world.
+=== m03-l05.ts === Vanhu Vangu — My People
+HOOK: Beyond your immediate family are your people — your friends, your community, your village. In Shona, these connections are expressed with simple possessives that you already half-know. Let's complete the picture.
+CULT: In Zimbabwean culture, 'vanhu vangu' (my people) can mean your extended community, your tribe, your neighbourhood — not just blood relatives. The sense of collective belonging runs deep. You are never just an individual.
+=== m03-l06.ts === Tinogara — Where We Live
+HOOK: You've already learned 'Ndinogara ku...' (I live in). Now let's expand — talking about where your family lives, where you grew up, and the difference between where you stay and where you're from.
+CULT: In Zimbabwe, 'kumusha' (back home / the village) holds deep emotional meaning. Even city-dwellers think of their rural home area as their true origin. Saying 'Kumusha kwangu ndi...' (my home is...) carries deep identity.
+=== m03-l07.ts === Ndinoda Kudzidza — I Want to Learn
+HOOK: You're learning Shona. Why? That's actually one of the most interesting things about you to a Shona speaker. Let's make sure you can explain your motivation — in Shona.
+CULT: The fact that you are learning Shona at all is remarkable to most Zimbabweans. Most foreigners never try. When you explain why — in Shona — you will be remembered. This conversation is its own cultural bridge.
+=== m03-l08.ts === Ndinofara — I Am Happy
+HOOK: Language is emotion. You can have a perfect vocabulary and zero connection — or simple words spoken with real feeling that land like a song. Today we learn to express how we actually feel.
+CULT: Expressing happiness and enthusiasm in Shona is completely natural and valued. Shona culture is expressive — people say how they feel. 'Ndinofara' said with a smile carries genuine warmth.
+=== m03-l09.ts === Ndinofarira — What I Enjoy
+HOOK: The deepest conversations happen when you can share not just what you do, but what you love. Hobbies, passions, things that light you up. Today you get to say what makes you, you.
+CULT: In Zimbabwe, sharing what you enjoy creates bonds instantly. Music, football, cooking, reading — these are common ground across cultures. Being able to say 'Ndinofarira...' (I enjoy...) opens doors that professional introductions cannot.
+=== m03-l10.ts === My Story in Shona — A Full Introduction
+HOOK: This is it — everything in Module 3. Not a test. A conversation. I want to know your full story. Who you are, what you do, where you're from, your family, what you love. Tell me. In Shona.
+CULT: A full Shona self-introduction flows naturally: name → profession → origin → family → what you enjoy → why you're learning Shona. Each piece shows respect and openness. By the end, you are no longer a stranger.
+=== m04-l01.ts === Munhu / Vanhu — Person & People
+HOOK: Welcome to the hardest — and most rewarding — part of Shona. Noun classes. Every noun belongs to a class, and that class shapes every word around it. Start with the most important class: people.
+CULT: In Shona, people are always Class 1/2 — the most respected class. The prefixes mu- (singular) and va- (plural) appear constantly. Once you see the pattern, the whole language opens up.
+=== m04-l02.ts === Chinhu / Zvinhu — Thing & Things
+HOOK: Last lesson: people (Mu/Va). Today: things (Chi/Zvi). The Chi/Zvi class covers objects, languages, and abstract concepts. It's everywhere — including the word for 'Shona language' itself: ChiShona.
+CULT: The Chi- prefix in language names is how Shona names all languages: ChiShona (Shona), ChiRungu (English), ChiNdebele (Ndebele). When you say you speak 'ChiShona', you're using the Chi/Zvi noun class correctly.
+=== m04-l03.ts === Muti / Miti — Trees & Medicine
+HOOK: The Mu/Mi class covers trees, plants — and medicine. In Shona, the word for tree and the word for medicine are the same: muti. That's not a coincidence. Shona traditional medicine comes from trees.
+CULT: Traditional healers (n'anga) use muti — plant-based medicines — as central to healing practice. The double meaning of muti (tree/medicine) reflects how deeply nature and healing are connected in Zimbabwean culture.
+=== m04-l04.ts === Zai / Mazai — The Ri/Ma Class
+HOOK: Some nouns in Shona don't have a visible prefix — but they still belong to a class. The Ri/Ma class is sneaky: singular nouns look bare, but add Ma- and suddenly you have plurals. Eggs, knives, stones.
+CULT: Many everyday objects in Zimbabwe fall into the Ri/Ma class — foods, tools, nature words. Recognising them helps you form plurals naturally and understand what people say about everyday life.
+=== m04-l05.ts === Subject Concord — Verbs Agree with Nouns
+HOOK: Here's where Shona grammar becomes beautiful. Verbs don't just describe actions — they agree with their subject. The verb prefix mirrors the noun class. One rule, infinite sentences.
+CULT: Subject concord is the heartbeat of Shona grammar. Every verb in every sentence reflects the class of its subject. Once you feel this rhythm, Shona stops being a foreign language and starts feeling like music.
+=== m04-l06.ts === Possession — Whose Is It?
+HOOK: You already know 'zita rangu' (my name) and 'shamwari yangu' (my friend). Notice the different endings? Rangu, yangu, wangu — they all mean 'my' but they change based on the noun class. Today we unlock that system.
+CULT: Possession in Shona reveals the noun class of what is owned. 'My' looks different for every class — not to confuse you, but because Shona encodes relationships between words at every level. It's elegant, not complicated.
+=== m04-l07.ts === Adjectives — Good, Big, Beautiful
+HOOK: You already know 'akanaka' (good/beautiful) from greeting phrases. But in Shona, 'good' looks different depending on what it describes. A good person, a good thing, a good tree — three different forms, one meaning.
+CULT: In English, adjectives never change. In Shona, they agree with their noun's class — just like verbs do. This might feel complex at first, but it makes sentences feel connected and harmonious, like everything is in agreement.
+=== m04-l08.ts === Past & Future — When Things Happen
+HOOK: You've been living in the present tense. Today we travel in time. Shona marks past and future inside the verb — not with separate words like 'yesterday' or 'will'. The verb itself tells you when.
+CULT: In Shona, time is embedded in the verb. 'Nda-' signals completed past action, 'Ndi-cha-' signals future. This compactness makes Shona speech efficient — fewer words, more meaning per word.
+=== m04-l09.ts === Asking Questions in Shona
+HOOK: Questions unlock conversation. You've already used some — 'Makadii?', 'Wabva kupi?', 'Zvinoreva chii?'. Today we bring the question words together as a system so you can ask about anything.
+CULT: In Shona, questions are formed by adding question words at the end or changing the verb tone. The rising intonation that signals a question in Shona is subtle — listening carefully to native speakers will train your ear.
+=== m04-l10.ts === Grammar in Context — The Full Picture
+HOOK: Nine grammar lessons. Today we don't learn anything new — we USE everything. Noun classes, subject concord, adjective agreement, tenses, questions. All in one conversation. This is where grammar becomes language.
+CULT: Grammar in Shona is not a set of rules to memorise — it's a set of patterns to feel. By the end of this lesson, you should be starting to feel those patterns rather than think through each one. That feeling is fluency beginning.
+=== m05-l01.ts === Baba — Father & Paternal Family
+HOOK: Family in Shona is not just who you live with — it's who you belong to. The kinship system is one of the most intricate and beautiful in Africa. We start with Baba — father — and what that word expands into.
+CULT: In Shona culture, your father's brothers are also called Baba — with a qualifier. Babamukuru (father's older brother) and Babamunini (father's younger brother). You owe them the same respect as your own father.
+=== m05-l02.ts === Amai — Mother & Maternal Family
+HOOK: Amai — mother. In Zimbabwe, mothers hold the home together. The maternal side of the family has its own beautiful vocabulary. Your mother's sister is also called Amai. Your mother's brother becomes your Sekuru.
+CULT: 'Amai' is one of the most powerful words in Shona culture. It's used to address any older woman with respect — not just your mother. Saying 'Amai' to an elder woman you don't know is a sign of deep respect.
+=== m05-l03.ts === Mukoma / Munin'ina — Brothers & Sisters
+HOOK: In Shona, there's no single word for 'sibling'. Instead, you specify the relationship precisely — older or younger, and your gender relative to them. It sounds complex, but it creates beautiful clarity.
+CULT: Shona sibling terms are relational — they depend on who is speaking. 'Hanzvadzi' means your sister if you are a brother, or your brother if you are a sister. The word describes the cross-gender relationship, not just the person.
+=== m05-l04.ts === Sekuru & Ambuya — Grandparents
+HOOK: Grandparents in Zimbabwe hold the highest honour. They carry the family history, the stories, the clan name. 'Sekuru' and 'Ambuya' are among the most important words you'll learn — and they extend beyond blood.
+CULT: 'Sekuru' means grandfather but also 'uncle' (mother's brother) and is used to respectfully address any elderly man. 'Ambuya' means grandmother and any elderly woman. These titles acknowledge wisdom and age.
+=== m05-l05.ts === Extended Family — The Wider Circle
+HOOK: In Zimbabwe, the family doesn't end at your front door. It extends to cousins who are like siblings, aunts who are like mothers, and uncles who share your discipline and love. Today we map that wider circle.
+CULT: Shona culture uses the concept of 'ubuntu' — 'I am because we are'. Extended family isn't just relatives — it's your support system, your identity, your responsibility. You belong to all of them and they to you.
+=== m05-l06.ts === Mudzimu — Ancestors & Lineage
+HOOK: In Shona belief, family doesn't end with death. Ancestors — vadzimu — remain part of the family, guiding and protecting the living. This is not superstition. It's a deep cultural understanding of continuity.
+CULT: Vadzimu (ancestral spirits) are central to Shona spiritual life. They are honoured through ceremony and remembered by name. The totem system (chiziviso) links living people to their ancestors and defines who you are in the wider community.
+=== m05-l07.ts === Murume & Mukadzi — Husband & Wife
+HOOK: Marriage in Shona culture is not just between two people — it's a union of two families. The vocabulary of partnership reflects deep respect and responsibility. Let's learn how to speak about the most important partnership in life.
+CULT: In Shona tradition, 'roora' (bride price) is paid by the groom's family to the bride's family — not as a purchase, but as a sign of gratitude and the joining of families. Marriage creates permanent ties between two family lineages.
+=== m05-l08.ts === Vana — Children & Babies
+HOOK: Children are the future of the family — and in Zimbabwe, raising a child is truly a village effort. 'Mwana' (child) is one of the warmest words in Shona. It's used to address young people affectionately, even strangers.
+CULT: The Shona proverb 'Mwana wevamwe ndewako' means 'another person's child is your child too'. Children belong to the whole community, not just their parents. This is Ubuntu in practice.
+=== m05-l09.ts === Talking About My Family
+HOOK: You now have the full vocabulary for Shona family. Today we put it into sentences — talking about your real family, describing them, sharing who they are. This is one of the most personal conversations you'll have in Shona.
+CULT: Shona people love to talk about family. Sharing your family structure is one of the fastest ways to build connection. People will listen carefully and remember. Your family is your introduction.
+=== m05-l10.ts === Rwen's Family — Full Conversation
+HOOK: Today you meet my whole family — and they meet you. Use every family word you've learned. This is real conversation, not practice. They are waiting.
+CULT: A Shona family gathering is a full sensory experience — food, laughter, many conversations at once, children running, elders sitting. Navigating it with even basic Shona shows extraordinary respect and effort.
+=== m06-l01.ts === Nhamba 1–5 — Numbers One to Five
+HOOK: Numbers unlock the market, the clock, and counting your family. In Shona, numbers are words — and they have their own music. Listen for the patterns as we build from one to five.
+CULT: Shona numbers are deeply embedded in daily market life. Zimbabwe's informal market economy runs on negotiation — knowing numbers gives you the power to participate, not just observe.
+=== m06-l02.ts === Nhamba 6–10 — Numbers Six to Ten
+HOOK: Six to ten — and then we hit gumi (ten), the foundation of all larger numbers. Like building blocks: gumi plus chimwe = gumi nerimwe (eleven). Once you have one to ten, you can count to a hundred.
+CULT: The decimal system in Shona works beautifully once you know the base numbers. Markets, prices, phone numbers, dates — all built from these ten words. Master them and the whole system opens.
+=== m06-l03.ts === Nguva — What's the Time?
+HOOK: Time in Zimbabwe runs differently. There's a concept called 'African time' — but that's not laziness, it's different priorities. Relationships come first. Still, knowing how to ask and tell the time is essential for appointments and markets.
+CULT: Shona time-telling uses a 12-hour system. Importantly, Shona traditionally counted hours from sunrise (6am = hour 1). So 'iri yega' (it's one o'clock) in traditional Shona means 7am. Modern Shona uses the Western system — be aware of context.
+=== m06-l04.ts === Days of the Week — Mazuva Evhiki
+HOOK: Days of the week in Shona tell a story — many are rooted in counting and in the Christian calendar that arrived with colonialism. Some days have both traditional and modern names. Let's learn the ones used today.
+CULT: Zimbabwe follows a Monday-Sunday work week. Markets (particularly the big ones) happen on specific days. Knowing the days allows you to make plans, keep appointments, and talk about your week like a local.
+=== m06-l05.ts === Months & Seasons — Mwedzi & Nguva
+HOOK: Shona month names are beautiful — many describe nature, weather, or activities of that time of year. They reflect the seasons of Zimbabwe, not England. January is Ndira — named after a plant that blooms at the new year.
+CULT: Zimbabwe has two main seasons: the dry season (May–October) and the rainy season/summer (November–April). Many Shona month names reflect these agricultural rhythms — the planting, the rains, the harvest.
+=== m06-l06.ts === Mari — Money
+HOOK: Zimbabwe has had a complex relationship with money — from hyperinflation to US dollars to the new ZiG currency. But the language of money stays consistent. Knowing how to talk about money keeps you safe in any market.
+CULT: Zimbabwe uses both US dollars and the local ZiG (Zimbabwe Gold) currency. Markets often operate in both. Asking prices, negotiating, and understanding what you're paying is a survival skill — and being able to do it in Shona earns instant respect.
+=== m06-l07.ts === Mutengo — Price & Shopping
+HOOK: The market is the heartbeat of Zimbabwe. Haggling is not rude — it's relationship. You're expected to ask the price, counter, and find a number that works for both. Today you get the language to do that.
+CULT: In Zimbabwean markets, the first price is rarely the final price. Asking 'Inodura' (is it expensive?) and offering a counter is part of the social contract. A vendor who haggles with you is engaging, not arguing.
+=== m06-l08.ts === Makumi — Tens & Larger Numbers
+HOOK: One to ten you have. Now we go bigger. 'Makumi' is the key — it means 'tens'. Makumi maviri = twenty (two tens). Makumi matatu = thirty (three tens). Once you have this, you can reach a hundred.
+CULT: Larger numbers come up constantly in Zimbabwean life — phone numbers, distances, quantities at the market, ages, prices. Being able to say and understand numbers to 100 unlocks a huge range of practical conversations.
+=== m06-l09.ts === Appointments & Scheduling
+HOOK: You have numbers, time, and days. Now let's put them together for real-life scheduling — making appointments, asking when something happens, and telling people when you'll arrive.
+CULT: In Zimbabwean professional and social life, confirming arrangements is important. People often follow up appointments with a call or message. Knowing how to confirm in Shona shows you're serious and culturally aware.
+=== m06-l10.ts === At the Market — Full Conversation
+HOOK: Welcome to Mbare — the largest informal market in Zimbabwe. Numbers, money, prices, time, days — everything from this module comes alive here. Navigate the market. Buy something. Speak Shona.
+CULT: Mbare Musika in Harare is one of the most vibrant markets in Africa. It's where fresh produce, fabric, electronics, and everything in between are traded daily. Knowing numbers and market language unlocks this entire world.
+=== m07-l01.ts === Sadza — The National Dish
+HOOK: In Zimbabwe, sadza is not just food — it is identity. To eat sadza is to eat Shona. If someone offers you sadza, they are offering you a piece of their home. Let's learn the language of Zimbabwe's most important meal.
+CULT: Sadza is a thick maize porridge eaten with relish (muriwo — vegetables or nyama — meat). It's eaten with the right hand, rolled into a ball, dipped in relish. Refusing sadza offered by a host is a significant cultural slight.
+=== m07-l02.ts === Zvokudya — Food Vocabulary
+HOOK: Beyond sadza lies a whole world of Zimbabwean food. Dovi (peanut butter sauce), chingwa (bread), mazai (eggs), muriwo (vegetables). These are the words that fill tables and conversations across Zimbabwe.
+CULT: Zimbabwean food is deeply communal. Meals are shared from central dishes — everyone eats together. The act of sharing food (kudya pamwe) is one of the most important social bonds. Even strangers are fed.
+=== m07-l03.ts === Mvura & Zvokunwa — Water & Drinks
+HOOK: In Zimbabwe, offering water is one of the first acts of hospitality. Before food, before conversation, a guest is given water. 'Mvura' — water — is one of the most important words in any language.
+CULT: Water scarcity affects many parts of Zimbabwe, making mvura precious. Offering clean water to a guest is a significant act of care. Refusing it can seem ungrateful. Always accept water when offered.
+=== m07-l04.ts === Ndine Nzara — Hunger & Appetite
+HOOK: Knowing how to say you're hungry or full is more than comfort — in Shona culture it's about connection. When someone asks 'Wambodya here?' (Have you eaten?), they're really asking 'Are you okay? Am I caring for you?'
+CULT: 'Wambodya here?' (Have you eaten?) is one of the most common caring questions in Zimbabwe. It's not just about food — it's checking on your wellbeing. Saying 'Handina' (I haven't) will immediately trigger an offer of food.
+=== m07-l05.ts === Ordering at a Restaurant
+HOOK: Harare has restaurants from street food to fine dining. Wherever you eat, knowing how to order in Shona changes the experience. The server's face changes. The food often comes faster. And the conversation starts.
+CULT: Many Zimbabwean restaurants offer both a menu and daily specials. Asking 'Chii chakaipa nhasi?' (What is the special today?) in Shona will often get you the freshest, best-value option — and earn you genuine appreciation.
+=== m07-l06.ts === Zvakanakisisa! — Expressing Taste
+HOOK: You've eaten. Now you need to express how it tasted. In Shona, complimenting food is not just politeness — it's a gift to the cook. 'Zvakanakisisa' (excellent/delicious) said sincerely is one of the most welcome phrases you can offer.
+CULT: In Zimbabwean culture, the cook — usually a woman of the household — invests enormous care in the meal. Expressing appreciation for the food completes the cycle of hospitality. Never eat silently and leave. Respond with warmth.
+=== m07-l07.ts === Welcoming a Guest — The Host's Role
+HOOK: In Zimbabwe, hosting is an art and a duty. The host's words set the tone for every visit. 'Tauya' (come in), 'Garai' (sit down), 'Tora' (have some) — these three words can make anyone feel at home.
+CULT: Shona hospitality is unconditional — guests are welcomed regardless of whether their arrival was expected. The phrase 'hatinzi tauya' (we don't say 'we came', implying you should have been here all along) captures this spirit perfectly.
+=== m07-l08.ts === Kudya Pamwe — Eating Together
+HOOK: In Zimbabwe, eating alone is unusual. Meals are shared — plates are central, everyone eats together. 'Kudya pamwe' is not just sharing food. It's building trust, resolving conflict, celebrating life. The table is sacred.
+CULT: The Shona proverb 'Ukama igasva hunozadziswa nekudya' means 'Relationship is incomplete, it is completed by sharing food.' Food seals bonds. The act of eating from the same plate is an act of deep trust.
+=== m07-l09.ts === Morning Meal Conversation
+HOOK: The morning meal in Zimbabwe sets the tone for the day. Whether it's tea and bread or sadza left from the night before, the conversation around it is warm and predictable — greetings, plans for the day, family check-ins. Perfect for practice.
+CULT: Many Zimbabwean families start the day with tii (tea) and chingwa (bread) or maputi (popcorn). The morning greeting is an essential part of breakfast culture — you greet before you eat, always.
+=== m07-l10.ts === Rwen's Family Dinner — Full Conversation
+HOOK: Tonight is special. Rwen's family has prepared a full dinner for you. You're the honoured guest. From arrival to farewell — navigate the whole meal in Shona. This is everything Module 7 built toward.
+CULT: A formal family dinner in Zimbabwe can last hours. Food is served in stages, conversation weaves through greeting, storytelling, plans, and memories. The guest who stays and talks is the most honoured. Don't rush to leave.
+=== m08-l01.ts === Kuenda — To Go
+HOOK: Verbs are the engine of language. You've been using a few — ndinoda, ndinofara, ndinodzidzа. Now we go deeper. Kuenda — to go — is one of the most-used verbs in any language. Master it in all its tenses.
+CULT: Movement is constant in Zimbabwe — people travel between cities and rural homes, commute by kombi, visit family. 'Kuenda' appears dozens of times in daily speech. Know this verb and you can describe most of daily life.
+=== m08-l02.ts === Kuuya — To Come
+HOOK: The opposite of kuenda (to go) is kuuya (to come). Together they describe all movement. 'Uya' as a command means 'come here' — and it's one of the most heartfelt invitations you can offer someone.
+CULT: 'Uya kuno' (come here) is used warmly to beckon someone — a child, a friend, a relative from afar. When said with the right tone, it carries enormous welcome. 'Come — be with me.'
+=== m08-l03.ts === Kudya — To Eat
+HOOK: You know sadza, muriwo, and zvokudya. Now learn the verb that makes them active — kudya (to eat). From 'I eat' to 'I was eating' to 'let's eat', this verb appears in daily life more than almost any other.
+CULT: Eating in Shona is never just fuelling — it's relational. The verb kudya carries the weight of shared culture. 'Tikudya pamwe' (let's eat together) is an invitation to relationship, not just food.
+=== m08-l04.ts === Kunwa — To Drink
+HOOK: Kunwa (to drink) and kudya (to eat) are inseparable in daily life. They follow the same tense pattern — which means if you know kudya across tenses, you already know how kunwa works. One template, infinite verbs.
+CULT: Water (mvura) and tea (tii) are the most commonly consumed drinks in everyday Zimbabwean homes. Sharing a cup of tea is a significant act of hospitality and friendship — offered before any conversation begins.
+=== m08-l05.ts === Kurara — To Sleep
+HOOK: Kurara (to sleep) completes the daily cycle. Waking (kumuka), going through the day, and sleeping — these three anchor Shona daily life. You already know 'mamuka sei?' (how did you wake?). Now add sleep.
+CULT: In Shona culture, asking 'Warara here?' (Did you sleep well?) in the morning shows care. The response connects back to the morning greeting — the wellness cycle completes. Rest is honoured.
+=== m08-l06.ts === Kutaura — To Speak
+HOOK: Kutaura — to speak — is the verb that describes what you're doing right now, every lesson. 'Ndinotaura ChiShona' (I speak Shona) is one of the proudest sentences you'll say. Every lesson you take makes it more true.
+CULT: In Zimbabwe, being able to say 'Ndinotaura ChiShona' — even imperfectly — earns immediate respect and warmth. Language is identity. Speaking someone's language says: 'I see you. I've tried to understand your world.'
+=== m08-l07.ts === Kuona — To See
+HOOK: 'Ndinoona' (I see) goes far beyond eyesight in Shona — it means understanding, recognising, perceiving. When Rwen says 'Unoona here?' he's asking both 'Do you see?' and 'Do you understand?' Sight and insight are one.
+CULT: In Shona philosophy, seeing and understanding are connected. 'Ona' (look/see) is used when showing someone something important — 'Ona mwanangu' (Look, my child) carries the weight of teaching and revelation.
+=== m08-l08.ts === Kuterera — To Listen
+HOOK: Listening is the most underrated language skill. In Shona culture, a good listener is highly respected. 'Tererai' (listen — formal plural) is used by elders before sharing important wisdom. When you hear it, pay attention.
+CULT: Shona oral culture values listening deeply. Elders don't repeat themselves. Stories are told once. Proverbs are shared and expected to be remembered. 'Kuterera' is an act of respect and readiness to receive wisdom.
+=== m08-l09.ts === Kudzidza — To Learn
+HOOK: You've been doing it this whole time — kudzidza (to learn). And ndinodzidzа ChiShona (I learn Shona) is one of the sentences you can say with complete truth. Let's use this verb fully and celebrate what it means.
+CULT: Education is deeply valued in Zimbabwe — the country has one of Africa's highest literacy rates. 'Kudzidza' carries enormous positive weight in Shona culture. Saying you are learning something earns immediate respect.
+=== m08-l10.ts === A Day in Shona — Full Daily Routine
+HOOK: From waking (kumuka) to sleeping (kurara), your entire day exists in Shona now. Today we narrate a full day — every action, every verb — from morning greeting to goodnight blessing. This is fluency in daily life.
+CULT: In Zimbabwe, daily rhythms are deeply communal — greetings at waking, shared meals, collective tasks, evening gathering. Describing a Shona day isn't just vocabulary — it's a portrait of Zimbabwean life.
+=== m09-l01.ts === Nzira — The Way & Road
+HOOK: Rwendo means journey. And every journey needs a nzira — a road, a way, a path. Zimbabwe's road network is part of daily life — from the busy highways of Harare to the dusty paths of rural villages. Know your nzira.
+CULT: In Zimbabwe, asking for directions is a social interaction — not just information exchange. People will often walk part of the way with you to ensure you reach your destination. The nzira is never just a road.
+=== m09-l02.ts === Mberi & Shure — Forward & Back
+HOOK: Two of the most essential direction words in any language — forward and back. In Shona they're mberi (forward/ahead) and shure (behind/back). But notice: mberi also means 'the future'. Shona places the future in front of you.
+CULT: In Shona thought, the future is mberi — ahead, in front. The past is shure — behind. This is actually different from some African languages where the past is ahead (it's known, you can see it) and the future is behind (unknown, unseen). Shona is forward-looking.
+=== m09-l03.ts === Kurudyi & Kuruboshwe — Right & Left
+HOOK: Right and left. Simple concept, tricky in practice — especially when someone gives you directions on the phone. In Shona: kurudyi (right) and kuruboshwe (left). Say them until they come automatically.
+CULT: In Zimbabwe as in many cultures, 'right' carries additional meaning — the right hand is used for greetings, eating, and passing things. Using the left hand for these is considered disrespectful. Kurudyi is the respectful side.
+=== m09-l04.ts === Pedyo & Kure — Near & Far
+HOOK: Two of the most useful direction words in any language: near and far. In Zimbabwe, distances are often described relationally — 'just a little bit far' or 'very near' — rather than in kilometres. Feel the distance through the language.
+CULT: Zimbabweans are famously warm when giving directions — often going out of their way to help. 'Pedyo' (near) said with a big smile and hand wave can sometimes mean a 30-minute walk. Context and body language matter.
+=== m09-l05.ts === Kombi — Taking Public Transport
+HOOK: The kombi is Zimbabwe's lifeline — minibus taxis that run every major route in every city and town. No app. No schedule. You shout your destination, the driver shouts if they're going there. You jump in. This is how Zimbabwe moves.
+CULT: Kombis are chaotic, colourful, and essential to Zimbabwean life. The conductor (mudhara wekombini) shouts destinations and collects fares. Knowing how to interact with kombis in Shona earns you genuine local credibility.
+=== m09-l06.ts === At the Airport — Nhandare Yendege
+HOOK: Robert Gabriel Mugabe International Airport — that's where your Zimbabwe journey likely begins. The moment you land, you're in Shona territory. These phrases let you navigate the airport like someone who belongs there.
+CULT: Arriving in Zimbabwe, even saying a few words of Shona to immigration officers or airport staff creates immediate warmth. It signals respect and genuine interest in the country — doors open faster when you try the language.
+=== m09-l07.ts === At the Hotel — Imba yokurara
+HOOK: Zimbabwe's hotels range from grand colonial lodges to simple guesthouses in rural areas. Whether you're at the Meikles Hotel in Harare or a village B&B, knowing how to check in, ask for a room, and handle basics in Shona is invaluable.
+CULT: Even basic Shona at a hotel or guesthouse creates a completely different experience. Staff are often surprised and delighted. A learner willing to try the language gets exceptional service — not from obligation, but from genuine appreciation.
+=== m09-l08.ts === Emergency Phrases
+HOOK: I hope you never need these. But knowing emergency Shona could save your life or someone else's in Zimbabwe. 'Batsira!' (Help!) heard in Shona is responded to instantly. These phrases are the most important in this module.
+CULT: In Zimbabwe, calling out in Shona during an emergency draws immediate community response. Shouting 'Batsira!' or 'Moto!' (Fire!) in a local language signals you belong to the community and triggers collective action.
+=== m09-l09.ts === Sightseeing — Zimbabwe's Wonders
+HOOK: Zimbabwe is one of the most beautiful countries in Africa — Victoria Falls, Great Zimbabwe, Hwange, the Eastern Highlands. Being able to express wonder and ask about these places in Shona transforms tourism into cultural immersion.
+CULT: Great Zimbabwe — 'Dzimba dzamabwe' (houses of stone) — is the origin of Zimbabwe's name. It was the capital of a great medieval empire. Visiting it and speaking Shona about it connects you to 1,000 years of history.
+=== m09-l10.ts === Navigating Harare — Full Conversation
+HOOK: Harare. The capital. Population 2 million. Every direction, every transport, every landmark — all in Shona. Today you navigate from the airport to the city centre, by kombi, using everything from Module 9. Welcome to Harare.
+CULT: Harare (formerly Salisbury) is a city of contrasts — colonial architecture alongside modern developments, formal business districts beside bustling informal markets. To navigate it confidently in Shona is to see the city as it actually is.
+=== m10-l01.ts === Ndinofara — Happiness & Joy
+HOOK: We end where the heart is. Module 10 is about emotions — the reason language exists in the first place. Not just words, but feelings. Starting with the best one: Ndinofara — I am happy. Because you should be. You've come this far.
+CULT: Joy in Shona culture is communal and expressive. Singing, clapping, ululating (hombera) — happiness is performed and shared, not kept private. 'Ndinofara' said with physical expression is more genuine than said quietly.
+=== m10-l02.ts === Ndakasuwa — Sadness & Difficulty
+HOOK: Language that only expresses happiness is incomplete. Today we go to the harder emotions — sadness, difficulty, loss. These words matter because real relationships include hard days. Knowing them lets you be truly present for people.
+CULT: In Shona culture, expressing sadness is not weakness — it's honesty. The community gathers around grief. 'Zvinosuwa' (it is sad/difficult) is said with empathy when someone shares hard news. It acknowledges pain without minimising it.
+=== m10-l03.ts === Ndakatya — Fear & Courage
+HOOK: Fear and courage are two sides of the same coin. In Shona, 'Usatya' (don't be afraid) is one of the most common phrases of encouragement. It's what a parent says to a child, what an elder says before a challenge, what a friend says before something hard.
+CULT: The Shona concept of 'kushinga' (being strong/brave) is deeply valued. Showing courage — especially in the face of learning something new and difficult — is celebrated. Every lesson you complete is an act of kushinga.
+=== m10-l04.ts === Ndinorwara — Illness & Wellness
+HOOK: Health is the first wealth. In Zimbabwe as everywhere, illness interrupts life. Knowing how to say you're unwell, describe symptoms, and seek help in Shona could matter more than any other vocabulary in this course.
+CULT: Health conversations in Zimbabwe bridge traditional and modern medicine. Someone might say they're going to the chiremba (doctor) AND the n'anga (traditional healer). Both are respected. Knowing the language navigates both worlds.
+=== m10-l05.ts === Body Parts — Zvikamu Zvomuviri
+HOOK: Body parts are essential for health, for description, for storytelling. From head (musoro) to heart (moyo) to legs (makumbo) — knowing your body in Shona lets you describe pain, describe people, and understand health conversations.
+CULT: In Shona traditional medicine, the body is understood holistically — physical and spiritual are connected. The word 'moyo' (heart) also means the emotional centre of a person. 'Ane moyo wakanaka' = he/she has a good heart (is a kind person).
+=== m10-l06.ts === At the Doctor — Kuchipitari
+HOOK: Healthcare in Zimbabwe is a mix of public and private — government hospitals, mission hospitals, private clinics, and traditional healers. No matter which you visit, knowing how to describe what's wrong in Shona gets you better care.
+CULT: The word 'chiremba' (doctor) carries authority and respect. Addressing a doctor as 'Chiremba' (Doctor) without adding their name is perfectly correct and respectful — similar to calling someone 'Doctor' in English.
+=== m10-l07.ts === Talking About the Past — Nguva Yadarika
+HOOK: Language comes alive when you can tell stories. And stories live in the past. Today we look at how Shona talks about times gone by — kare (long ago), nguva yadarika (in the past), and the narrative past tense that brings stories to life.
+CULT: Oral storytelling is central to Shona culture. Stories pass down wisdom, history, and identity across generations. The storyteller opens with 'Paivapo...' (Once upon a time / There was...) and listeners respond 'Paivapo!' Learning to tell stories in Shona is an act of cultural participation.
+=== m10-l08.ts === Hope & The Future — Tariro
+HOOK: Tariro — hope. One of the most beautiful words in Shona. It's also one of the most common names given to children in Zimbabwe. When parents name a child Tariro, they are planting hope in the world. Let's learn to speak about the future with hope.
+CULT: Hope is not passive in Shona culture — it's active. 'Ndinotarisira' (I hope for / I expect) implies looking ahead with intention. Zimbabwe has faced enormous challenges and emerged with extraordinary resilience — hope is not naive there, it is hard-earned.
+=== m10-l09.ts === Nhetembo — Shona Proverbs
+HOOK: Proverbs are the soul of Shona language. They compress generations of wisdom into one sentence. Using a proverb correctly in conversation — even a learner — signals deep cultural respect. Today we learn three of the most important ones.
+CULT: In Shona culture, proverbs (nhetembo or tsumo) are not just sayings — they are tools for teaching, for resolving conflict, for expressing what direct speech cannot. An elder who uses a proverb at the right moment changes the entire conversation.
+=== m10-l10.ts === Your Shona Story — A2 Complete
+HOOK: This is the final lesson of Rwendo's shona-english curriculum. 100 lessons. 10 modules. And this one — lesson 100 — is yours. Today you don't learn. Today you speak. Your full Shona story, from hello to proverbs, from greetings to hope. Show me who you've become.
+CULT: Completing this curriculum means you've absorbed not just vocabulary but culture — tsika (respect), ubuntu (we are because we are), sadza and proverbs and moyo. You have not just learned Shona words. You have touched Shona life. That is the Rwendo journey.
