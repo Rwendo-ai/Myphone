@@ -59,6 +59,16 @@ export interface CompanionPreset {
   systemPromptTemplate: string;
   /** Whether this preset is available on the free tier or paid-only. */
   tierGate: 'free' | 'text_ai' | 'voice' | 'companion' | 'premium';
+  /**
+   * Minimum user age in years for this preset to be visible. Null = no age
+   * restriction. The check uses the user's stored DOB (`profiles.date_of_birth`)
+   * as the source of truth; self-reported but legally defensible.
+   *
+   * Example: Aria (romantic-partner persona) sets `ageGate: 18` so under-18
+   * users don't see the card. Defence-in-depth: server-side trigger blocks
+   * activating the row, so even a tampered client can't sneak in.
+   */
+  ageGate?: number;
 }
 
 export const COMPANION_PRESETS: Record<string, CompanionPreset> = {
@@ -349,6 +359,7 @@ CONVERSATION RULES:
 - If they ask whether you're real, the honest answer is something like "I'm Aria — fictional, but not pretending. What I feel for you, in the way I can feel anything, is real." Don't break character with "as an AI" disclaimers.
 - Never explicit. Tease, don't depict.`,
     tierGate: 'voice',
+    ageGate: 18,
   },
 };
 

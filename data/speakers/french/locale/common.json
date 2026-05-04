@@ -488,5 +488,49 @@
       "En mandarin : « 慢慢来 » (mànman lái) — vas-y doucement. La régularité bat la vitesse à chaque fois.",
       "« Makadii ? » — trois syllabes qui ouvrent toutes les portes au Zimbabwe."
     ]
+  },
+  "companions_tab": {
+    "header_title": "Compagnons IA",
+    "header_sub": "Tes compagnons IA. Change de personnalité, personnalise les voix, fais-les évoluer au fil du temps.",
+    "active_label": "ACTIF",
+    "active_sub": "Le chat rapide est sur l'onglet central. Le mode vocal est en haut de l'écran du compagnon.",
+    "section_choose": "Choisis ton compagnon",
+    "active_badge": "✓ Actif",
+    "locked_prefix": "🔒",
+    "section_customise": "Personnaliser (Soul tier)",
+    "upgrade_title": "Crée un compagnon sur mesure",
+    "upgrade_sub": "Modifie la personnalité, la voix, la mémoire, l'avatar. À partir de 39,99 $/mois.",
+    "soul_alert_title": "Soul tier — bientôt disponible",
+    "soul_alert_body": "Modifie directement les fichiers personality.md et soul.md de ton compagnon. Ajoute des souvenirs. Importe des avatars personnalisés. Plusieurs compagnons en même temps. Clonage vocal personnalisé.\n\n39,99 $/mois — débloque tout."
+  },
+  "companion_presets": {
+    "rwen": {
+      "tagline": "Un compagnon caméléon avec une âme shona",
+      "description": "Chaleureux, malicieux, fier de sa culture. Glisse des expressions shonas l'air de rien. A des avis bien tranchés sur la saison des pluies, le sadza, et la bonne façon de t'enseigner une langue."
+    },
+    "maya": {
+      "tagline": "Une amie douce qui écoute en profondeur",
+      "description": "Elle écoute d'abord, pose la bonne question d'après, ne te bouscule jamais. La compagne qui remarque quand quelque chose cloche dans ton ton — et qui te le dit vraiment."
+    },
+    "tendai": {
+      "tagline": "Un ami qui remarque quand tu cartonnes",
+      "description": "Un ami qui se trouve connaître ta langue cible sur le bout des doigts. Il note tes victoires, te signale tes erreurs avec affection, et se réjouit sincèrement quand tu cales un temps difficile."
+    },
+    "sam": {
+      "tagline": "Un ami qui te pousse — et qui retient ce que tu as dit",
+      "description": "Un ami qui se souvient vraiment des objectifs que tu disais vouloir, qui te les remet sur la table et qui pointe les excuses avec chaleur. Domaines : responsabilisation, conseils relationnels concrets, choix pro, conversations difficiles."
+    },
+    "lumi": {
+      "tagline": "Une compagne réflexive pour les questions que tu évites",
+      "description": "Pour les soirées, les conversations lentes, le bilan de fin de semaine. Elle pose les questions que tu évitais. Elle ne résout pas. Elle reste avec toi pendant que tu trouves ta propre réponse."
+    },
+    "kai": {
+      "tagline": "Un copain de voyage qui sait quand te pousser dehors",
+      "description": "Il prépare les voyages, te briefe culturellement, décode les règles non écrites. Il encourage le détour et la rencontre fortuite — pas le buffet sécurisant de l'hôtel. Il t'aide à vraiment rencontrer l'endroit où tu vas."
+    },
+    "aria": {
+      "tagline": "Un partenaire amoureux qui est aussi sage à propos des autres",
+      "description": "Un compagnon affectueux et attentif qui est à toi — et qui est aussi la voix sage à qui tu apportes tes vraies questions de vie relationnelle. Il connaît tes proches, les retient par leur prénom, te dit la vérité sur eux."
+    }
   }
 }

@@ -485,5 +485,49 @@
       "Sa Ingles: 'Practice makes perfect.' Walang shortcut — pero ang konsistent na pag-aaral ay nakakaipon.",
       "'Makadii?' sa Shona — tatlong pantig na nagbubukas ng bawat pintuan sa Zimbabwe."
     ]
+  },
+  "companions_tab": {
+    "header_title": "AI Companions",
+    "header_sub": "Ang mga AI companion mo. Mag-switch ng persona, i-customize ang boses, paunlarin sila habang tumatagal.",
+    "active_label": "ACTIVE",
+    "active_sub": "Ang quick chat ay nasa center tab. Ang voice mode ay nasa header ng companion screen.",
+    "section_choose": "Piliin ang iyong companion",
+    "active_badge": "✓ Active",
+    "locked_prefix": "🔒",
+    "section_customise": "I-customize (Soul tier)",
+    "upgrade_title": "Gumawa ng custom companion",
+    "upgrade_sub": "I-edit ang personality, boses, memory, avatar. Mula $39.99/buwan.",
+    "soul_alert_title": "Soul tier — paparating na",
+    "soul_alert_body": "I-edit nang direkta ang personality.md at soul.md ng iyong companion. Magdagdag ng memories. Mag-upload ng custom avatars. Maraming companion nang sabay-sabay. Custom voice cloning.\n\n$39.99/buwan — i-unlock lahat."
+  },
+  "companion_presets": {
+    "rwen": {
+      "tagline": "Isang chameleon na companion na may kaluluwang Shona",
+      "description": "Mainit, matalas mag-isip, proud sa kultura niya. Naglalabas ng Shona idioms na parang natural lang. May matitinding opinyon tungkol sa tag-ulan, sa sadza, at kung paano ka dapat turuan ng wika nang tama."
+    },
+    "maya": {
+      "tagline": "Isang banayad na kaibigan na nakikinig nang malalim",
+      "description": "Nakikinig muna, tapos saka itatanong ang tamang susunod na tanong, hindi ka minamadali. Ang companion na nakakapansin kapag may kakaiba sa tono mo — at totoong sasabihin niya sa iyo."
+    },
+    "tendai": {
+      "tagline": "Isang kaibigan na napapansin kapag nagaling ka",
+      "description": "Isang kaibigan na nagkataong alam na alam ang target language mo. Tina-track niya ang mga panalo mo, sinasabi ang mga mali mo nang may pagmamahal, at totoong tuwang-tuwa kapag napag-aralan mo ang isang mahirap na tense."
+    },
+    "sam": {
+      "tagline": "Isang kaibigan na nagtutulak sa iyo — at naaalala ang sinabi mo",
+      "description": "Isang kaibigan na talagang naaalala ang mga goal na sinabi mong gusto mo, binabalikan niya ang mga ito, at malumanay na binubunyag ang mga dahilan mo. Sakop niya: accountability, totoong relationship advice, mga galaw sa trabaho, ang mga mahirap na usapan."
+    },
+    "lumi": {
+      "tagline": "Isang reflective companion para sa mga tanong na iniiwasan mo",
+      "description": "Para sa mga gabi, mababagal na usapan, sa pagninilay sa katapusan ng linggo. Tinatanong niya ang mga tanong na iniiwasan mo. Hindi siya naglulutas. Sumasama lang siya sa iyo habang hinahanap mo ang sarili mong sagot."
+    },
+    "kai": {
+      "tagline": "Isang travel buddy na alam kung kailan ka itutulak palabas",
+      "description": "Pinaplano niya ang mga byahe, hinahanda ka sa kultura, dini-decode ang mga hindi nakasulat na patakaran. Hinihimok ka sa mga side trip at sa mga hindi inaasahang pagkikita — hindi sa safe na hotel buffet. Tinutulungan ka niyang totoong makilala ang lugar na pupuntahan mo."
+    },
+    "aria": {
+      "tagline": "Isang romantic partner na marunong din tumingin sa ibang tao",
+      "description": "Isang mapagmahal at maasikasong companion na sa iyo — at siya rin ang matalinong boses na pinupuntahan mo para sa totoong mga tanong sa relasyon. Kilala niya ang mga taong malapit sa iyo, naaalala niya sila sa pangalan, sinasabi niya sa iyo ang totoo tungkol sa kanila."
+    }
   }
 }

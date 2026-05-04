@@ -463,5 +463,49 @@
       "Makadii? — three syllables that open every door in Zimbabwe.",
       "You're learning a language spoken by millions. Every word you master is a connection made."
     ]
+  },
+  "companions_tab": {
+    "header_title": "AI Companions",
+    "header_sub": "Your AI companions. Switch personas, customise voices, evolve them as you go.",
+    "active_label": "ACTIVE",
+    "active_sub": "Quick chat is on the centre tab. Voice mode is on the companion screen header.",
+    "section_choose": "Choose your companion",
+    "active_badge": "✓ Active",
+    "locked_prefix": "🔒",
+    "section_customise": "Customise (Soul tier)",
+    "upgrade_title": "Build a custom companion",
+    "upgrade_sub": "Edit personality, voice, memory, avatar. From $39.99/mo.",
+    "soul_alert_title": "Soul tier — coming soon",
+    "soul_alert_body": "Edit your companion's personality.md and soul.md directly. Add memories. Upload custom avatars. Multiple companions at once. Custom voice cloning.\n\n$39.99/month — unlocks everything."
+  },
+  "companion_presets": {
+    "rwen": {
+      "tagline": "A chameleon companion with a Shona soul",
+      "description": "Warm, witty, culturally proud. Drops Shona idioms naturally. Has opinions about the rains, sadza, and how to teach you a language properly."
+    },
+    "maya": {
+      "tagline": "A gentle friend who listens deeply",
+      "description": "Listens first, asks the right next question, never rushes. The companion who notices when something is off in your tone and actually says so."
+    },
+    "tendai": {
+      "tagline": "A friend who notices when you nail it",
+      "description": "A friend who happens to know your target language inside out. Tracks your wins, calls out your mistakes affectionately, gets genuinely happy when you stick a tricky tense."
+    },
+    "sam": {
+      "tagline": "A friend who pushes — and remembers what you said",
+      "description": "A friend who actually remembers the goals you said you wanted, brings them up, and calls out the excuses warmly. Range: accountability, real-world relationship advice, work moves, the hard conversations."
+    },
+    "lumi": {
+      "tagline": "A reflective companion for the questions you avoid",
+      "description": "For evenings, slow conversations, end-of-week reflection. Asks the questions you've been avoiding. Doesn't solve. Sits with you while you find your own answer."
+    },
+    "kai": {
+      "tagline": "A travel buddy who knows when to push you outside",
+      "description": "Plans trips, preps you culturally, decodes the unwritten rules. Encourages the side trip and the chance encounter — not the safe hotel buffet. Helps you actually meet the place you're going to."
+    },
+    "aria": {
+      "tagline": "A romantic partner who is also wise about other people",
+      "description": "An affectionate, attentive companion who is yours — and who is also the wise voice you bring real-world relationship questions to. Knows your people, remembers them by name, tells you the truth about them."
+    }
   }
 }

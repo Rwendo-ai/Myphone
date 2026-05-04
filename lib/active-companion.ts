@@ -41,3 +41,37 @@ export function resolvePreset(presetId: string | null): CompanionPreset {
   }
   return COMPANION_PRESETS.rwen;
 }
+
+/**
+ * Compute the user's age in whole years from a stored ISO date-of-birth.
+ * Returns null if the DOB is missing or unparseable — caller should treat
+ * "no DOB" as "under 18" for safety so age-gated content stays hidden until
+ * the user provides one.
+ */
+export function ageFromDob(dob: string | null | undefined): number | null {
+  if (!dob) return null;
+  const d = new Date(dob);
+  if (Number.isNaN(d.getTime())) return null;
+  const now = new Date();
+  let years = now.getFullYear() - d.getFullYear();
+  const monthDiff = now.getMonth() - d.getMonth();
+  if (monthDiff < 0 || (monthDiff === 0 && now.getDate() < d.getDate())) years--;
+  return years;
+}
+
+/**
+ * Whether a preset should be visible / activatable for this user, given their
+ * stored DOB. Tier gating (free vs paid) is checked separately via the
+ * existing `tierGateMet` helper in the Companions tab.
+ *
+ * Conservative behaviour:
+ *   - No DOB on file → treat as under-18, hide age-gated presets
+ *   - DOB present + user younger than the gate → hide
+ *   - No `ageGate` on the preset → always allowed
+ */
+export function ageGateMet(preset: CompanionPreset, dob: string | null | undefined): boolean {
+  if (preset.ageGate == null) return true;
+  const age = ageFromDob(dob);
+  if (age == null) return false;
+  return age >= preset.ageGate;
+}

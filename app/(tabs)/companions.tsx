@@ -11,6 +11,7 @@
  */
 
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   View,
   Text,
@@ -23,10 +24,11 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router, useFocusEffect } from 'expo-router';
 import { useAuth } from '../../lib/AuthContext';
-import { useSettings } from '../../lib/SettingsContext';
+import { useSettings, RWEN_VOICES, type RwenVoiceKey } from '../../lib/SettingsContext';
 import { supabase } from '../../lib/supabase';
 import { canUseAiFeature, type SubscriptionTier } from '../../lib/entitlements';
 import { PRESET_LIST, type CompanionPreset } from '../../data/companions/presets';
+import { ageGateMet } from '../../lib/active-companion';
 import ProfilePicButton from '../../components/ProfilePicButton';
 import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
@@ -40,10 +42,12 @@ interface CompanionRow {
 }
 
 export default function CompanionsScreen() {
+  const { t } = useTranslation('common');
   const { user } = useAuth();
-  const { entitlementContext, setActiveCompanionPresetId } = useSettings();
+  const { entitlementContext, setActiveCompanionPresetId, setRwenVoice } = useSettings();
 
   const [companions, setCompanions] = useState<CompanionRow[]>([]);
+  const [userDob, setUserDob] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   const tierGateMet = (gate: CompanionPreset['tierGate']): boolean => {
@@ -57,16 +61,26 @@ export default function CompanionsScreen() {
   const loadCompanions = React.useCallback(async () => {
     if (!user) return;
     setLoading(true);
-    const { data, error } = await supabase
-      .from('companions')
-      .select('id, preset_id, name, voice_id, is_active')
-      .eq('user_id', user.id);
+    // Pull companions and the user's DOB in parallel — DOB drives age-gating
+    // for presets like Aria (18+).
+    const [{ data, error }, profileResult] = await Promise.all([
+      supabase
+        .from('companions')
+        .select('id, preset_id, name, voice_id, is_active')
+        .eq('user_id', user.id),
+      supabase
+        .from('profiles')
+        .select('date_of_birth')
+        .eq('id', user.id)
+        .maybeSingle(),
+    ]);
     if (error) {
       console.error('companions list error:', error);
       setLoading(false);
       return;
     }
     setCompanions((data ?? []) as CompanionRow[]);
+    setUserDob(profileResult.data?.date_of_birth ?? null);
     setLoading(false);
   }, [user]);
 
@@ -78,6 +92,16 @@ export default function CompanionsScreen() {
 
   const handleActivate = async (preset: CompanionPreset) => {
     if (!user) return;
+    // Age gate first — even paying users under 18 can't activate Aria. Server
+    // trigger enforces this too as a defence-in-depth backstop.
+    if (!ageGateMet(preset, userDob)) {
+      Alert.alert(
+        `${preset.name} is for ages ${preset.ageGate}+`,
+        `${preset.name} won't appear in your companion list until you've confirmed you're old enough. If your date of birth is wrong, update it in Profile.`,
+        [{ text: 'OK' }],
+      );
+      return;
+    }
     if (!tierGateMet(preset.tierGate)) {
       Alert.alert(
         `${preset.name} is in a paid tier`,
@@ -122,6 +146,18 @@ export default function CompanionsScreen() {
     // Push to global state so the chat screen + centre tab button + voice
     // mode all immediately use the new persona without a remount.
     setActiveCompanionPresetId(preset.id);
+
+    // Sync the user's spoken-voice setting to the companion's signature voice
+    // so text-mode TTS speaks as Maya / Tendai / Aria etc., not as whatever
+    // voice was last selected. We do a reverse lookup against RWEN_VOICES
+    // because rwenVoice is keyed by slot ('male_warm', 'female_warm', …) not
+    // by raw ElevenLabs voice id. Voice mode can't yet honour this on the
+    // Creator plan — agent voice is server-side and overrides are gated.
+    const matchedKey = (Object.keys(RWEN_VOICES) as RwenVoiceKey[]).find(
+      (key) => RWEN_VOICES[key].id === preset.defaultVoiceId,
+    );
+    if (matchedKey) setRwenVoice(matchedKey);
+
     await loadCompanions();
   };
 
@@ -132,10 +168,8 @@ export default function CompanionsScreen() {
       </View>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
-          <Text style={styles.headerTitle}>AI Companions</Text>
-          <Text style={styles.headerSub}>
-            Your AI companions. Switch personas, customise voices, evolve them as you go.
-          </Text>
+          <Text style={styles.headerTitle}>{t('companions_tab.header_title')}</Text>
+          <Text style={styles.headerSub}>{t('companions_tab.header_sub')}</Text>
         </View>
 
         {loading && (
@@ -148,17 +182,19 @@ export default function CompanionsScreen() {
           <>
             {activeRow && (
               <View style={styles.activeBanner}>
-                <Text style={styles.activeLabel}>ACTIVE</Text>
+                <Text style={styles.activeLabel}>{t('companions_tab.active_label')}</Text>
                 <Text style={styles.activeName}>{activeRow.name}</Text>
-                <Text style={styles.activeSub}>
-                  Quick chat is on the centre tab. Voice mode is on the companion screen header.
-                </Text>
+                <Text style={styles.activeSub}>{t('companions_tab.active_sub')}</Text>
               </View>
             )}
 
-            <Text style={styles.sectionTitle}>Choose your companion</Text>
+            <Text style={styles.sectionTitle}>{t('companions_tab.section_choose')}</Text>
             <View style={styles.presetList}>
-              {PRESET_LIST.map((preset) => {
+              {/* Age-gate filter: presets with `ageGate` (e.g. Aria=18) are
+                  hidden entirely for users below the threshold. The under-age
+                  user simply sees a smaller list — no "locked" badge, no
+                  message, no awareness the gated preset exists. */}
+              {PRESET_LIST.filter((preset) => ageGateMet(preset, userDob)).map((preset) => {
                 const isActive = activeRow?.preset_id === preset.id;
                 const locked = !tierGateMet(preset.tierGate);
                 return (
@@ -175,34 +211,43 @@ export default function CompanionsScreen() {
                     <View style={{ flex: 1 }}>
                       <View style={styles.presetTitleRow}>
                         <Text style={styles.presetName}>{preset.name}</Text>
-                        {isActive && <Text style={styles.presetActiveBadge}>✓ Active</Text>}
-                        {locked && <Text style={styles.presetLockedBadge}>🔒 {preset.tierGate}</Text>}
+                        {isActive && <Text style={styles.presetActiveBadge}>{t('companions_tab.active_badge')}</Text>}
+                        {locked && <Text style={styles.presetLockedBadge}>{t('companions_tab.locked_prefix')} {preset.tierGate}</Text>}
                       </View>
-                      <Text style={styles.presetTagline}>{preset.tagline}</Text>
-                      <Text style={styles.presetDesc}>{preset.description}</Text>
+                      {/* Tagline + description come from i18n so they render
+                          in the user's chosen language. The preset.tagline /
+                          preset.description fields in data/companions/presets
+                          are the English source-of-truth — i18n keys mirror
+                          them under companion_presets.<id>.tagline. If a
+                          translation key is missing, i18next falls back to
+                          the English value automatically. */}
+                      <Text style={styles.presetTagline}>
+                        {t(`companion_presets.${preset.id}.tagline`, { defaultValue: preset.tagline })}
+                      </Text>
+                      <Text style={styles.presetDesc}>
+                        {t(`companion_presets.${preset.id}.description`, { defaultValue: preset.description })}
+                      </Text>
                     </View>
                   </Pressable>
                 );
               })}
             </View>
 
-            <Text style={styles.sectionTitle}>Customise (Soul tier)</Text>
+            <Text style={styles.sectionTitle}>{t('companions_tab.section_customise')}</Text>
             <Pressable
               style={styles.upgradeCard}
               onPress={() =>
                 Alert.alert(
-                  'Soul tier — coming soon',
-                  'Edit your companion\'s personality.md and soul.md directly. Add memories. Upload custom avatars. Multiple companions at once. Custom voice cloning.\n\n$39.99/month — unlocks everything.',
+                  t('companions_tab.soul_alert_title'),
+                  t('companions_tab.soul_alert_body'),
                   [{ text: 'OK' }],
                 )
               }
             >
               <Text style={styles.upgradeIcon}>✨</Text>
               <View style={{ flex: 1 }}>
-                <Text style={styles.upgradeTitle}>Build a custom companion</Text>
-                <Text style={styles.upgradeSub}>
-                  Edit personality, voice, memory, avatar. From $39.99/mo.
-                </Text>
+                <Text style={styles.upgradeTitle}>{t('companions_tab.upgrade_title')}</Text>
+                <Text style={styles.upgradeSub}>{t('companions_tab.upgrade_sub')}</Text>
               </View>
               <Text style={styles.upgradeChevron}>›</Text>
             </Pressable>

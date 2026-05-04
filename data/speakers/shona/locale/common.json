@@ -427,5 +427,49 @@
       "error_title": "Mhosho",
       "error_body": "Hazvina kukwana kudzimwa account. Ndapota edzazve."
     }
+  },
+  "companions_tab": {
+    "header_title": "Shamwari dzeAI",
+    "header_sub": "Shamwari dzako dzeAI. Chinjana hunhu, gadzirisa manzwi, dziite dzikure pamwe newe.",
+    "active_label": "IRIKUSHANDA",
+    "active_sub": "Kukurukura nokukasira kuri patabhu yepakati. Modhi yenzwi iri pamusoro pechikamu cheshamwari.",
+    "section_choose": "Sarudza shamwari yako",
+    "active_badge": "✓ Irikushanda",
+    "locked_prefix": "🔒",
+    "section_customise": "Gadzirisa (Soul tier)",
+    "upgrade_title": "Vaka shamwari yako pachako",
+    "upgrade_sub": "Gadzirisa hunhu, izwi, ndangariro, mufananidzo. Kubva pa$39.99/pamwedzi.",
+    "soul_alert_title": "Soul tier — kuri kuuya",
+    "soul_alert_body": "Gadzirisa personality.md ne soul.md yeshamwari yako wega. Wedzera ndangariro. Isa mifananidzo yako pachako. Shamwari dzakawanda panguva imwe chete. Kukopa izwi rako pachako.\n\n$39.99/pamwedzi — kunovhura zvose."
+  },
+  "companion_presets": {
+    "rwen": {
+      "tagline": "Shamwari ye-chameleon ine mweya weShona",
+      "description": "Anodziya, ane njere, anodada netsika dzake. Anokanda zvirevo zveShona zvisingashamisi. Ane pfungwa pamusoro pemvura, sadza, uye nzira yokukudzidzisa mutauro nemazvo."
+    },
+    "maya": {
+      "tagline": "Shamwari ine unyoro inoteerera zvakadzika",
+      "description": "Inotanga ichiteerera, inobvunza mubvunzo unotevera wakanaka, haimhanyidzi. Shamwari inoona kana paine chimwe chinhu chisina kunaka muizwi rako uye chaizvoizvo inozvitaura."
+    },
+    "tendai": {
+      "tagline": "Shamwari inoona kana wabudirira zvakanaka",
+      "description": "Shamwari inongoita kuti ive ichiziva mutauro waunoda mukati nokunze. Inotevera kukunda kwako, inotaura zvikanganiso zvako norudo, uye inofara chaizvo paunobata tense yakaoma."
+    },
+    "sam": {
+      "tagline": "Shamwari inokusundira — uye inoyeuka zvawakataura",
+      "description": "Shamwari inoyeuka chaizvo zvinangwa zvawakati unoda, inozvirangaridza, uye inotaura nezvimanyepo norudo. Inogona: kuzvitarisira, mazano echaizvo pahukama, kufambisa basa, hurukuro dzakaomarara."
+    },
+    "lumi": {
+      "tagline": "Shamwari yokufunga yemibvunzo yauri kunzvenga",
+      "description": "Yamanheru, yehurukuro dzinononoka, yokuongorora kupera kwesvondo. Inobvunza mibvunzo yawanga uchinzvenga. Haigadziri. Inogara newe paunotsvaga mhinduro yako pachako."
+    },
+    "kai": {
+      "tagline": "Shamwari yokufamba inoziva kuti yokusundira kuendepi panze",
+      "description": "Inoronga zvendendo, inokugadzirira pamusoro petsika, inotsanangura mitemo isina kunyorwa. Inokurudzira rwendo rwekuparutivi nokusangana kwekarisina — kwete buffet ye-hotel yakachengeteka. Inokubatsira kuti chaizvo usangane nenzvimbo yauri kuenda."
+    },
+    "aria": {
+      "tagline": "Mudikani anoda anova nehungwarurwa pamusoro pevamwe vanhu",
+      "description": "Shamwari ine rudo, ine hanya, ndeyako — uye iyowo izwi rine njere raunoenda naro nemibvunzo yenyaya dzepahukama dzechokwadi. Inoziva vanhu vako, inovayeuka nemazita, inokutaurira chokwadi pamusoro pavo."
+    }
   }
 }

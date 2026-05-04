@@ -6,27 +6,33 @@ import { SettingsProvider, useSettings, RwenVoiceKey } from '../lib/SettingsCont
 import { AuthProvider, useAuth } from '../lib/AuthContext';
 import { supabase } from '../lib/supabase';
 import { fetchActiveCompanionPresetId } from '../lib/active-companion';
+import type { SpeakerPackId } from '../types/packs';
 import '../lib/i18n';
 import { setAppLanguage } from '../lib/i18n';
 
-// Loads user profile settings (theme, avatar, voice) from Supabase after login
+// Loads user profile settings (theme, avatar, voice, speaker pack) from
+// Supabase after login. The speaker_pack_id load is critical — it drives
+// the AI persona language, voice options, greetings, and the ElevenLabs
+// session language code. Without it the user reverts to English on every
+// fresh launch.
 function ProfileLoader() {
   const { user } = useAuth();
-  const { setThemeId, setAvatarUrl, setRwenVoice, setActiveCompanionPresetId } = useSettings();
+  const { setThemeId, setAvatarUrl, setRwenVoice, setActiveCompanionPresetId, setSpeakerPack } = useSettings();
 
   useEffect(() => {
     if (!user) return;
     supabase
       .from('profiles')
-      .select('theme_id, avatar_url, rwen_voice_key, app_language')
+      .select('theme_id, avatar_url, rwen_voice_key, app_language, speaker_pack_id')
       .eq('id', user.id)
       .single()
       .then(({ data }) => {
         if (!data) return;
-        if (data.theme_id)      setThemeId(data.theme_id);
-        if (data.avatar_url)    setAvatarUrl(data.avatar_url);
-        if (data.rwen_voice_key) setRwenVoice(data.rwen_voice_key as RwenVoiceKey);
-        if (data.app_language)  setAppLanguage(data.app_language);
+        if (data.theme_id)        setThemeId(data.theme_id);
+        if (data.avatar_url)      setAvatarUrl(data.avatar_url);
+        if (data.rwen_voice_key)  setRwenVoice(data.rwen_voice_key as RwenVoiceKey);
+        if (data.app_language)    setAppLanguage(data.app_language);
+        if (data.speaker_pack_id) setSpeakerPack(data.speaker_pack_id as SpeakerPackId);
       });
 
     // Active companion — driven from a separate table for multi-companion
