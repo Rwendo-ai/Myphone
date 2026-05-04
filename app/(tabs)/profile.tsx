@@ -132,8 +132,26 @@ export default function ProfileScreen() {
           text: t('profile.delete_account.confirm_action'),
           style: 'destructive',
           onPress: async () => {
-            try { if (user) await deleteAccount(user.id); }
-            catch { Alert.alert(t('profile.delete_account.error_title'), t('profile.delete_account.error_body')); }
+            if (!user) return;
+            try {
+              // 1. Run the delete_user RPC (drops the auth.users row, which
+              //    cascade-deletes profiles + lesson_progress + conversations
+              //    + companions + every other user-keyed row).
+              await deleteAccount(user.id);
+              // 2. Sign out — the session is now stale (the auth.users row
+              //    is gone) so the JWT will fail next refresh anyway, but
+              //    explicit signOut clears AsyncStorage immediately.
+              await signOut();
+              // 3. Force the navigator back to the welcome screen so the
+              //    user gets a clean state instead of a half-loaded chrome
+              //    rendering with a now-invalid session.
+              router.replace('/welcome');
+            } catch (e) {
+              Alert.alert(
+                t('profile.delete_account.error_title'),
+                t('profile.delete_account.error_body'),
+              );
+            }
           },
         },
       ]

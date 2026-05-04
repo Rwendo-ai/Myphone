@@ -4,9 +4,11 @@ import GB from './GB';
 import US from './US';
 import EU from './EU';
 import ZW from './ZW';
+import PH from './PH';
+import FR from './FR';
 
 export const JURISDICTIONS: Record<JurisdictionPackId, JurisdictionPack> = {
-  AU, GB, US, EU, ZW,
+  AU, GB, US, EU, ZW, PH, FR,
 };
 
 export const JURISDICTION_IDS = Object.keys(JURISDICTIONS) as JurisdictionPackId[];
@@ -26,8 +28,10 @@ export function getJurisdiction(idOrCountry: string | null | undefined): Jurisdi
   if (upper === 'US') return US;
   if (upper === 'AU') return AU;
   if (upper === 'ZW') return ZW;
+  if (upper === 'PH') return PH;
+  if (upper === 'FR') return FR;
   if (EU_COUNTRY_CODES.has(upper)) return EU;
   return AU;
 }
 
-export { AU, GB, US, EU, ZW };
+export { AU, GB, US, EU, ZW, PH, FR };

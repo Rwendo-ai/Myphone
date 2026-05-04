@@ -17,13 +17,13 @@ import { setAppLanguage } from '../lib/i18n';
 // fresh launch.
 function ProfileLoader() {
   const { user } = useAuth();
-  const { setThemeId, setAvatarUrl, setRwenVoice, setActiveCompanionPresetId, setSpeakerPack } = useSettings();
+  const { setThemeId, setAvatarUrl, setRwenVoice, setActiveCompanionPresetId, setSpeakerPack, setActiveCourseId, setOwnedCourseIds, setStarterCourseId } = useSettings();
 
   useEffect(() => {
     if (!user) return;
     supabase
       .from('profiles')
-      .select('theme_id, avatar_url, rwen_voice_key, app_language, speaker_pack_id')
+      .select('theme_id, avatar_url, rwen_voice_key, app_language, speaker_pack_id, active_course_ids')
       .eq('id', user.id)
       .single()
       .then(({ data }) => {
@@ -33,6 +33,23 @@ function ProfileLoader() {
         if (data.rwen_voice_key)  setRwenVoice(data.rwen_voice_key as RwenVoiceKey);
         if (data.app_language)    setAppLanguage(data.app_language);
         if (data.speaker_pack_id) setSpeakerPack(data.speaker_pack_id as SpeakerPackId);
+
+        // active_course_ids is stored prefixed ('course:language-shona'); the
+        // runtime expects the bare course id ('language-shona'). Strip the
+        // prefix when hydrating, then push to all three slots
+        // (active/owned/starter) so Learn tab + entitlement helpers all see
+        // the right pick. Without this the user's onboarding choice
+        // evaporates on every fresh launch.
+        const prefixedIds: string[] = data.active_course_ids ?? [];
+        const runtimeIds = prefixedIds.map((p) => p.replace(/^course:/, ''));
+        if (runtimeIds.length > 0) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          setActiveCourseId(runtimeIds[0] as any);
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          setOwnedCourseIds(runtimeIds as any);
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          setStarterCourseId(runtimeIds[0] as any);
+        }
       });
 
     // Active companion — driven from a separate table for multi-companion

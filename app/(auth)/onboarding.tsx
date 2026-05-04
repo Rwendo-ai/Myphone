@@ -1,21 +1,23 @@
 import { View, Text, StyleSheet, Pressable, ScrollView, TextInput, ActivityIndicator } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import RwenImage from '../../components/rwen/RwenImage';
 import { useAuth } from '../../lib/AuthContext';
 import { useSettings, RWEN_VOICES, RwenVoiceKey } from '../../lib/SettingsContext';
 import { supabase } from '../../lib/supabase';
 import { JURISDICTION_IDS, getJurisdiction } from '../../data/jurisdictions';
+import { COURSES } from '../../data/courses';
 import { JurisdictionPackId } from '../../types/packs';
+import { setAppLanguage as setI18nLanguage, type SupportedLanguage } from '../../lib/i18n';
 import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
 
 type AppPath = 'learn' | 'companion' | 'travel';
-type Step = 'language'|'jurisdiction'|'gender'|'age'|'age_blocked'|'path'|'learn_ability'|'learn_reasons'|'learn_time'|'learn_challenge'|'learn_connection'|'companion_type'|'companion_topics'|'travel_destination'|'travel_when'|'travel_purpose'|'voice'|'complete';
+type Step = 'language'|'jurisdiction'|'gender'|'age'|'age_blocked'|'path'|'learn_target'|'learn_ability'|'learn_reasons'|'learn_time'|'learn_challenge'|'learn_connection'|'companion_type'|'companion_topics'|'travel_destination'|'travel_when'|'travel_purpose'|'voice'|'complete';
 
-const LEARN_STEPS: Step[]     = ['language','jurisdiction','gender','age','path','learn_ability','learn_reasons','learn_time','learn_challenge','learn_connection','voice','complete'];
+const LEARN_STEPS: Step[]     = ['language','jurisdiction','gender','age','path','learn_target','learn_ability','learn_reasons','learn_time','learn_challenge','learn_connection','voice','complete'];
 const COMPANION_STEPS: Step[] = ['language','jurisdiction','gender','age','path','companion_type','companion_topics','voice','complete'];
 const TRAVEL_STEPS: Step[]    = ['language','jurisdiction','gender','age','path','travel_destination','travel_when','travel_purpose','voice','complete'];
 const BASE_STEPS: Step[]      = ['language','jurisdiction','gender','age','path'];
@@ -26,18 +28,38 @@ const JURISDICTION_FLAGS: Record<JurisdictionPackId, string> = {
   US: '🇺🇸',
   EU: '🇪🇺',
   ZW: '🇿🇼',
+  PH: '🇵🇭',
+  FR: '🇫🇷',
 };
 
-// Option IDs + emoji metadata. Human-readable labels live in locales/<lang>/auth.json.
-const LANGUAGE_IDS = ['english', 'shona'] as const;
-const LANGUAGE_FLAGS: Record<string, string> = { english: '🇬🇧', shona: '🇿🇼' };
+// Speaker pack options the user can pick at signup. This drives both the
+// app's UI translation language AND the AI persona language. Five packs
+// shipped at v1; adding a sixth = drop a `data/speakers/<id>/` folder and
+// add the id + flag here.
+const LANGUAGE_IDS = ['english', 'shona', 'french', 'chinese', 'tagalog'] as const;
+const LANGUAGE_FLAGS: Record<string, string> = {
+  english: '🇬🇧',
+  shona:   '🇿🇼',
+  french:  '🇫🇷',
+  chinese: '🇨🇳',
+  tagalog: '🇵🇭',
+};
+// Map speaker-pack id → ISO 639-1 i18n key so we can flip the rest of
+// onboarding into the chosen language as soon as the user picks it.
+const LANGUAGE_TO_ISO: Record<string, string> = {
+  english: 'en', shona: 'sn', french: 'fr', chinese: 'zh', tagalog: 'tl',
+};
 
 const GENDER_IDS = ['male', 'female', 'nonbinary', 'prefer_not_to_say'] as const;
 const GENDER_EMOJIS: Record<string, string> = { male: '👨', female: '👩', nonbinary: '🧑', prefer_not_to_say: '🤐' };
 
 const APP_PATH_IDS: AppPath[] = ['learn', 'companion', 'travel'];
 const APP_PATH_EMOJIS: Record<AppPath, string> = { learn: '📚', companion: '🦎', travel: '✈️' };
-const APP_PATH_AVAILABLE: Record<AppPath, boolean> = { learn: true, companion: true, travel: false };
+// Travel is opened (per user 2026-05-04). The destination/purpose questions
+// run, but the actual Travel tab still shows a coming-soon placeholder
+// until v1.x ships destination guides. Picking Travel just primes their
+// profile.primary_path so when content lands, the right cards surface.
+const APP_PATH_AVAILABLE: Record<AppPath, boolean> = { learn: true, companion: true, travel: true };
 
 const ABILITY_IDS = ['beginner', 'basics', 'conversational', 'intermediate'] as const;
 const LEARN_REASON_IDS = ['family', 'travel', 'culture', 'work', 'study', 'fun', 'heritage'] as const;
@@ -105,12 +127,23 @@ function Nav({ onBack, onNext, nextLabel, disabled }: {
   );
 }
 
+/** Back-only Nav for steps where forward progression happens via card tap
+ *  (language, jurisdiction, path) — they have no Continue button to render. */
+function BackOnly({ onBack }: { onBack: () => void }) {
+  const { t } = useTranslation('auth');
+  return (
+    <View style={styles.nav}>
+      <Pressable style={styles.navBack} onPress={onBack}><Text style={styles.navBackText}>{t('back')}</Text></Pressable>
+    </View>
+  );
+}
+
 // ── Main ──────────────────────────────────────────────────────────────────────
 
 export default function OnboardingScreen() {
   const { t } = useTranslation('auth');
   const { user, setOnboardingComplete } = useAuth();
-  const { setActivePack, setRwenVoice, setJurisdictionId, setSpeakerPack, setOwnedCourseIds, setStarterCourseId } = useSettings();
+  const { setActivePack, setRwenVoice, setJurisdictionId, setSpeakerPack, setOwnedCourseIds, setStarterCourseId, setActiveCourseId } = useSettings();
 
   const [step, setStep]     = useState<Step>('language');
   const [saving, setSaving] = useState(false);
@@ -121,8 +154,17 @@ export default function OnboardingScreen() {
   const [birthDay,        setBirthDay]        = useState('');
   const [birthMonth,      setBirthMonth]      = useState('');
   const [birthYear,       setBirthYear]       = useState('');
+  // DOB input refs — auto-advance focus DD → MM → YYYY as the user types
+  // so they don't have to tap each field. Standard mobile UX for split DOB.
+  const dayRef   = useRef<TextInput>(null);
+  const monthRef = useRef<TextInput>(null);
+  const yearRef  = useRef<TextInput>(null);
   const [ageError,        setAgeError]        = useState('');
   const [path,            setPath]            = useState<AppPath | null>(null);
+  // Course id the user picked to learn — set on the new learn_target step.
+  // Empty until they pick. completeOnboarding writes this into
+  // active_course_ids and starter_course_id.
+  const [targetCourseId,  setTargetCourseId]  = useState<string>('');
   const [ability,         setAbility]         = useState('');
   const [reasons,         setReasons]         = useState<string[]>([]);
   const [timeCommit,      setTimeCommit]      = useState('');
@@ -175,22 +217,31 @@ export default function OnboardingScreen() {
     if (!user) return;
     setSaving(true);
     try {
+      // Resolve which course pack the user actually wants to learn. If they
+      // came through the learn path they picked one explicitly on the
+      // learn_target step. If they skipped or chose companion/travel/skip,
+      // fall back to the legacy auto-pick (en→shona, sn→english) so they
+      // still get a sensible default they can change in Profile later.
+      const fallbackRuntimeCourseId = appLanguage === 'shona' ? 'language-english' : 'language-shona';
+      const runtimeCourseId = targetCourseId || fallbackRuntimeCourseId;
       const packId = appLanguage === 'shona' ? 'english-shona' : 'shona-english';
-      // Runtime course ID (bare). available_packs.id uses the prefixed
-      // 'course:language-english' form per migration 005; runtime + DB layers
-      // use different conventions on purpose (FKs need prefixes, JS doesn't).
-      const runtimeCourseId = appLanguage === 'shona' ? 'language-english' : 'language-shona';
       setActivePack({ id: packId, spokenLanguageId: appLanguage, learnedLanguageId: appLanguage === 'shona' ? 'english' : 'shona', isPremium: false });
       setSpeakerPack(appLanguage);
       setOwnedCourseIds([runtimeCourseId]);
       setStarterCourseId(runtimeCourseId);
+      // CRITICAL: also set the active course. Without this, activeCourseId
+      // stays at the SettingsContext default ('language-shona') and the Learn
+      // tab falls back to ownedInCategory[0] — which "works" by accident
+      // when the user picked the default but breaks for any other choice.
+      setActiveCourseId(runtimeCourseId);
       setJurisdictionId(jurisdictionId);
       setRwenVoice(voiceKey);
 
       const age = getAge() ?? 0;
       const ageRange = age < 18 ? '13-17' : age < 25 ? '18-24' : age < 35 ? '25-34' : age < 45 ? '35-44' : '45+';
 
-      const courseId = appLanguage === 'shona' ? 'course:language-english' : 'course:language-shona';
+      // Prefixed form for the available_packs catalogue (FK uses 'course:' prefix).
+      const courseId = `course:${runtimeCourseId}`;
       const minAge = getJurisdiction(jurisdictionId).minAge;
 
       await supabase.from('profiles').update({
@@ -228,7 +279,7 @@ export default function OnboardingScreen() {
       console.error('Onboarding save error:', e);
       setSaving(false);
     }
-  }, [user, appLanguage, jurisdictionId, gender, birthYear, birthMonth, birthDay, path, ability, reasons, timeCommit, challenge, connection, companionType, compTopics, voiceKey]);
+  }, [user, appLanguage, jurisdictionId, gender, birthYear, birthMonth, birthDay, path, targetCourseId, ability, reasons, timeCommit, challenge, connection, companionType, compTopics, voiceKey]);
 
   // The language being learned, derived from the speaker selection.
   // English speaker → learning Shona. Shona speaker → learning English.
@@ -256,7 +307,17 @@ export default function OnboardingScreen() {
           <View style={styles.block}>
             <ProgressHeader current={1} total={total} title={t('onboarding.step_language.title')} sub={t('onboarding.step_language.sub')} />
             {LANGUAGE_IDS.map(id => <Card key={id} emoji={LANGUAGE_FLAGS[id]} label={t(`onboarding.languages.${id}.name`)} desc={t(`onboarding.languages.${id}.nativeName`)}
-              selected={appLanguage === id} onPress={() => { setAppLanguage(id); goNext(); }} />)}
+              selected={appLanguage === id}
+              onPress={() => {
+                // Save the speaker-pack id locally (writes to profiles in
+                // completeOnboarding) AND immediately flip the i18n locale
+                // so every subsequent onboarding step renders in the user's
+                // chosen language.
+                setAppLanguage(id);
+                const iso = LANGUAGE_TO_ISO[id] as SupportedLanguage | undefined;
+                if (iso) setI18nLanguage(iso);
+                goNext();
+              }} />)}
           </View>
         )}
 
@@ -265,6 +326,7 @@ export default function OnboardingScreen() {
             <ProgressHeader current={stepIndex} total={total} title={t('onboarding.step_jurisdiction.title')} sub={t('onboarding.step_jurisdiction.sub')} />
             {JURISDICTION_IDS.map(id => <Card key={id} emoji={JURISDICTION_FLAGS[id]} label={t(`onboarding.jurisdictions.${id}`)}
               selected={jurisdictionId === id} onPress={() => { setJurisdictionIdState(id); goNext(); }} />)}
+            <BackOnly onBack={goBack} />
           </View>
         )}
 
@@ -280,17 +342,70 @@ export default function OnboardingScreen() {
           <View style={styles.block}>
             <ProgressHeader current={stepIndex} total={total} title={t('onboarding.step_age.title')} sub={t('onboarding.step_age.sub', { minAge: getJurisdiction(jurisdictionId).minAge })} />
             <View style={styles.dateRow}>
-              {[
-                { v: birthDay,   s: setBirthDay,   p: t('onboarding.date.day_placeholder'),   l: t('onboarding.date.day'),   m: 2 },
-                { v: birthMonth, s: setBirthMonth, p: t('onboarding.date.month_placeholder'), l: t('onboarding.date.month'), m: 2 },
-                { v: birthYear,  s: setBirthYear,  p: t('onboarding.date.year_placeholder'),  l: t('onboarding.date.year'),  m: 4, flex: 2 },
-              ].map((f, i) => (
-                <View key={i} style={[styles.dateField, f.flex ? { flex: f.flex } : {}]}>
-                  <Text style={styles.dateLabel}>{f.l}</Text>
-                  <TextInput style={styles.dateInput} placeholder={f.p} placeholderTextColor="rgba(255,255,255,0.3)"
-                    value={f.v} onChangeText={f.s} keyboardType="numeric" maxLength={f.m} />
-                </View>
-              ))}
+              {/* Day */}
+              <View style={styles.dateField}>
+                <Text style={styles.dateLabel}>{t('onboarding.date.day')}</Text>
+                <TextInput
+                  ref={dayRef}
+                  style={styles.dateInput}
+                  placeholder={t('onboarding.date.day_placeholder')}
+                  placeholderTextColor="rgba(255,255,255,0.3)"
+                  value={birthDay}
+                  // Strip non-digits + auto-jump to month once 2 chars are typed
+                  // (matches iOS DOB-keyboard behaviour). The single-digit case
+                  // (e.g. day 7) still works — user types '7' then taps month.
+                  onChangeText={(v) => {
+                    const digits = v.replace(/[^0-9]/g, '').slice(0, 2);
+                    setBirthDay(digits);
+                    if (digits.length === 2) monthRef.current?.focus();
+                  }}
+                  keyboardType="number-pad"
+                  maxLength={2}
+                  returnKeyType="next"
+                  onSubmitEditing={() => monthRef.current?.focus()}
+                />
+              </View>
+              {/* Month */}
+              <View style={styles.dateField}>
+                <Text style={styles.dateLabel}>{t('onboarding.date.month')}</Text>
+                <TextInput
+                  ref={monthRef}
+                  style={styles.dateInput}
+                  placeholder={t('onboarding.date.month_placeholder')}
+                  placeholderTextColor="rgba(255,255,255,0.3)"
+                  value={birthMonth}
+                  onChangeText={(v) => {
+                    const digits = v.replace(/[^0-9]/g, '').slice(0, 2);
+                    setBirthMonth(digits);
+                    if (digits.length === 2) yearRef.current?.focus();
+                  }}
+                  keyboardType="number-pad"
+                  maxLength={2}
+                  returnKeyType="next"
+                  onSubmitEditing={() => yearRef.current?.focus()}
+                />
+              </View>
+              {/* Year */}
+              <View style={[styles.dateField, { flex: 2 }]}>
+                <Text style={styles.dateLabel}>{t('onboarding.date.year')}</Text>
+                <TextInput
+                  ref={yearRef}
+                  style={styles.dateInput}
+                  placeholder={t('onboarding.date.year_placeholder')}
+                  placeholderTextColor="rgba(255,255,255,0.3)"
+                  value={birthYear}
+                  onChangeText={(v) => {
+                    const digits = v.replace(/[^0-9]/g, '').slice(0, 4);
+                    setBirthYear(digits);
+                  }}
+                  keyboardType="number-pad"
+                  maxLength={4}
+                  returnKeyType="done"
+                  onSubmitEditing={() => {
+                    if (birthDay && birthMonth && birthYear.length === 4) handleAgeNext();
+                  }}
+                />
+              </View>
             </View>
             {ageError ? <Text style={styles.error}>{ageError}</Text> : null}
             <Text style={styles.ageNote}>{t('onboarding.date.note')}</Text>
@@ -328,8 +443,50 @@ export default function OnboardingScreen() {
             {APP_PATH_IDS.map(id => (
               <Card key={id} emoji={APP_PATH_EMOJIS[id]} label={t(`onboarding.paths.${id}.title`)} desc={t(`onboarding.paths.${id}.desc`)}
                 selected={path === id} disabled={!APP_PATH_AVAILABLE[id]}
-                onPress={() => { if (!APP_PATH_AVAILABLE[id]) return; setPath(id); goNext(id === 'learn' ? 'learn_ability' : id === 'companion' ? 'companion_type' : 'travel_destination'); }} />
+                onPress={() => { if (!APP_PATH_AVAILABLE[id]) return; setPath(id); goNext(id === 'learn' ? 'learn_target' : id === 'companion' ? 'companion_type' : 'travel_destination'); }} />
             ))}
+
+            {/* Skip — bypasses path-specific questions + voice step. The
+                profile saves with primary_path null and default voice;
+                user lands directly on home. They can pick a path or change
+                voice from Profile any time. */}
+            <Pressable style={styles.skipBtn} onPress={completeOnboarding} disabled={saving}>
+              <Text style={styles.skipText}>{t('onboarding.paths.skip')}</Text>
+            </Pressable>
+            <BackOnly onBack={goBack} />
+          </View>
+        )}
+
+        {/* What do you want to learn? — only shows for path === 'learn'. The
+            course list is filtered by speaker pack. Skip is intentionally NOT
+            here — the only Skip in onboarding lives on the path step (per
+            user spec 2026-05-04). */}
+        {step === 'learn_target' && (
+          <View style={styles.block}>
+            <ProgressHeader current={stepIndex} total={total}
+              title={t('onboarding.step_learn_target.title')}
+              sub={t('onboarding.step_learn_target.sub')} />
+            {Object.values(COURSES)
+              .filter(c =>
+                c.meta.type === 'language' &&
+                (c.meta.availableForSpeakers ?? []).includes(appLanguage)
+              )
+              .map(c => (
+                <Card
+                  key={c.meta.id}
+                  emoji={c.meta.emoji}
+                  label={c.meta.displayName}
+                  desc={c.meta.isComingSoon
+                    ? t('onboarding.step_learn_target.coming_soon')
+                    : t('onboarding.step_learn_target.available')}
+                  selected={targetCourseId === c.meta.id}
+                  onPress={() => { setTargetCourseId(c.meta.id); goNext(); }}
+                />
+              ))}
+            {/* Back returns to path selection so the user can pick AI
+                Friend or Travel instead. No Skip here — the only Skip
+                in onboarding lives on the path step. */}
+            <Nav onBack={goBack} onNext={() => goNext()} disabled={!targetCourseId} />
           </View>
         )}
 
@@ -474,6 +631,8 @@ const styles = StyleSheet.create({
   scroll: { flex: 1 },
   scrollContent: { paddingHorizontal: Spacing.lg, paddingBottom: Spacing.xxl, gap: Spacing.lg },
   block: { gap: Spacing.md },
+  skipBtn: { alignItems: 'center', paddingVertical: Spacing.md, marginTop: Spacing.sm },
+  skipText: { color: 'rgba(255,255,255,0.55)', fontSize: FontSize.sm, fontWeight: FontWeight.medium, textDecorationLine: 'underline' },
 
   stepHeader: { gap: Spacing.sm, marginBottom: Spacing.xs },
   progressBg: { height: 4, backgroundColor: 'rgba(255,255,255,0.15)', borderRadius: BorderRadius.full },
