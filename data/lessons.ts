@@ -258,6 +258,79 @@ export function getUnitsForPack(packId: string): Unit[] {
   return UNITS.filter((u) => u.packId === packId);
 }
 
+// ─────────────────────────────────────────────
+// Cross-course Unit synthesis
+// ─────────────────────────────────────────────
+// The 10-module structure is shared across every language course (the
+// curriculum was authored deliberately so a French speaker learning
+// Mandarin and an English speaker learning Shona both progress through
+// the same emotional/skill arc). Below: titles + descriptions + emojis
+// keyed by module number 1–10. Used by getUnitsForCourse() to build a
+// Unit[] for any language course on the fly from its lessons array.
+
+interface ModuleMeta {
+  title: string;
+  description: string;
+  emoji: string;
+}
+
+const MODULE_META: Record<number, ModuleMeta> = {
+  1:  { title: 'Greetings & Respect',          description: 'Open every door — morning to evening, elders to friends',                  emoji: '👋' },
+  2:  { title: 'Survival Phrases',             description: 'Buy time, ask for help, and navigate real situations',                     emoji: '🧭' },
+  3:  { title: 'Self & Identity',              description: 'Talk about who you are, where you\'re from, and why you\'re here',         emoji: '🪞' },
+  4:  { title: 'Noun Classes & Grammar',       description: 'The first real grammar layer — how the language carves up the world',      emoji: '🧩' },
+  5:  { title: 'Family & Kinship',             description: 'Talk about the people in your life — parents, siblings, partners',         emoji: '👨‍👩‍👧' },
+  6:  { title: 'Numbers, Time & Money',        description: 'Count, tell time, handle money',                                            emoji: '🔢' },
+  7:  { title: 'Food, Drink & Hosting',        description: 'Order, host, share — the language of the table',                            emoji: '🍲' },
+  8:  { title: 'Action Verbs & Daily Life',    description: 'Conjugate the everyday verbs that show up in every sentence',               emoji: '⚡' },
+  9:  { title: 'Directions & Travel',          description: 'Get around — directions, transport, asking the way',                        emoji: '🗺️' },
+  10: { title: 'Emotions, Health & Stories',   description: 'Express how you feel, talk health, share stories — the deepest layer',     emoji: '❤️‍🩹' },
+};
+
+interface MinimalLesson {
+  id: string;
+  module: number;
+  lesson: number;
+  title: string;
+  xpReward: number;
+}
+
+/**
+ * Build a Unit[] from any course's lesson registry. Used by the Learn tab
+ * for the courses that don't have hand-authored UNITS metadata in this
+ * file (every language course except shona-english / english-shona).
+ *
+ * Lesson IDs in the synthesised units use the lesson's own `id` field,
+ * not the legacy `m01-l01-bonjour` shape — the lesson screen looks up by
+ * id via `getCourseLesson()` which works on either form.
+ */
+export function getUnitsForCourse(courseId: string, lessons: MinimalLesson[]): Unit[] {
+  const byModule = new Map<number, MinimalLesson[]>();
+  for (const l of lessons) {
+    if (!byModule.has(l.module)) byModule.set(l.module, []);
+    byModule.get(l.module)!.push(l);
+  }
+  return [...byModule.keys()].sort((a, b) => a - b).map((moduleNum) => {
+    const meta = MODULE_META[moduleNum] ?? { title: `Module ${moduleNum}`, description: '', emoji: '📚' };
+    const moduleLessons = byModule.get(moduleNum)!.slice().sort((a, b) => a.lesson - b.lesson);
+    const unitId = `${courseId}::m${String(moduleNum).padStart(2, '0')}`;
+    return {
+      id: unitId,
+      packId: courseId,
+      title: meta.title,
+      description: meta.description,
+      emoji: meta.emoji,
+      lessons: moduleLessons.map((l) => ({
+        id: l.id,
+        unitId,
+        title: l.title,
+        xpReward: l.xpReward,
+        vocabulary: [],
+      })),
+    };
+  });
+}
+
 export function getUnit(id: string): Unit | undefined {
   return UNITS.find((u) => u.id === id);
 }

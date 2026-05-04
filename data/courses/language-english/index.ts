@@ -14,7 +14,9 @@ const meta: CoursePackMeta = {
   type: 'language',
   displayName: 'Learn English',
   targetLanguageId: 'english',
-  availableForSpeakers: ['shona'],
+  // Every speaker EXCEPT english natives. Per-speaker variants fall back
+  // to the shona variant at load time (the only variant currently authored).
+  availableForSpeakers: ['shona', 'french', 'chinese', 'tagalog'],
   revenuecatProductId: null,
   isActive: true,                      // 1 lesson available — proves the architecture
   isComingSoon: true,                  // user-facing badge until Phase K ships full curriculum
@@ -36,13 +38,12 @@ const pack: CoursePack = {
   },
 };
 
-export function getLessonSync(speakerId: string, lessonId: string): LessonData | undefined {
-  if (speakerId === 'shona') {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const lessons = require('./shona/curriculum').default as Record<string, LessonData>;
-    return lessons[lessonId];
-  }
-  return undefined;
+/** Falls back to the shona variant (the only variant authored at v1) for
+ *  any speaker — full per-speaker variants land in Phase K. */
+export function getLessonSync(_speakerId: string, lessonId: string): LessonData | undefined {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const lessons = require('./shona/curriculum').default as Record<string, LessonData>;
+  return lessons[lessonId];
 }
 
 export default pack;

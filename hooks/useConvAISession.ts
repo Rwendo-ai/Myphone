@@ -177,6 +177,18 @@ export function useConvAISession(handlers: ConvAIHandlers = {}): ConvAIControls 
     const userPickedVoiceId = voiceFromPack?.id ?? RWEN_VOICES[rwenVoice]?.id;
     const resolvedVoiceId = userPickedVoiceId ?? preset.defaultVoiceId ?? RWEN_VOICES.male_warm.id;
 
+    // Conv AI session-language fallback. ElevenLabs's `language` override
+    // only accepts a small set of ISO 639-1 codes. Shona (sn) and Tagalog
+    // (tl) aren't natively supported and either error out or get silently
+    // dropped — the agent then refuses to start. We fall back to English
+    // for those cases. The system prompt still tells the AI to respond in
+    // the user's language, so Rwen replies in Shona/Tagalog text — the
+    // voice just reads it with English pronunciation rules. Imperfect but
+    // working, vs. no conversation at all. Move to native voices when we
+    // commission custom voice clones for those packs.
+    const ELEVENLABS_SUPPORTED = new Set(['en', 'fr', 'zh', 'es', 'de', 'it', 'pt', 'pl', 'hi', 'ar', 'ja', 'ko', 'nl', 'tr', 'sv', 'id', 'da', 'fi', 'no', 'cs', 'ro', 'ru', 'sk', 'ms']);
+    const sessionLanguage = ELEVENLABS_SUPPORTED.has(speaker.isoCode) ? speaker.isoCode : 'en';
+
     const session = new ConvAISession(
       {
         agentId: ELEVENLABS_AGENT_ID,
@@ -186,7 +198,7 @@ export function useConvAISession(handlers: ConvAIHandlers = {}): ConvAIControls 
         overrides: {
           systemPrompt,
           firstMessage,
-          language: speaker.isoCode,
+          language: sessionLanguage,
           // Voice follows the user's picked voice in Profile → Rwen's Voice,
           // which itself auto-syncs when they pick a companion. So picking
           // Maya gives Jessica, then manually picking Ms. Walker gives Ms.

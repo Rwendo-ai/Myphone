@@ -6,7 +6,10 @@ const meta: CoursePackMeta = {
   type: 'language',
   displayName: 'Learn Shona',
   targetLanguageId: 'shona',
-  availableForSpeakers: ['english'],   // 'shona' speaker variant ships in Phase K
+  // Every speaker EXCEPT the target language's own native speakers — you
+  // can't "learn" your own native language. Speaker-specific variants fall
+  // back to the english variant at lesson-load time (see getLessonSync).
+  availableForSpeakers: ['english', 'french', 'chinese', 'tagalog'],
   revenuecatProductId: null,           // wired in Phase H
   isActive: true,
   isComingSoon: false,
@@ -30,15 +33,15 @@ const pack: CoursePack = {
   },
 };
 
-/** Synchronous lesson lookup for code paths that need a specific lesson now (e.g. lesson screen).
- *  This bypasses the lazy loader for the bundled v1 case. */
-export function getLessonSync(speakerId: string, lessonId: string): LessonData | undefined {
-  if (speakerId === 'english') {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const lessons = require('./english/curriculum').default as Record<string, LessonData>;
-    return lessons[lessonId];
-  }
-  return undefined;
+/** Synchronous lesson lookup. Falls back to the english variant for any
+ *  speaker that doesn't have a per-speaker variant authored yet — this lets
+ *  french / chinese / tagalog speakers learn Shona using the english-source
+ *  content while their UI chrome renders in their own speaker pack. Phase K
+ *  will author proper per-speaker variants. */
+export function getLessonSync(_speakerId: string, lessonId: string): LessonData | undefined {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const lessons = require('./english/curriculum').default as Record<string, LessonData>;
+  return lessons[lessonId];
 }
 
 export default pack;

@@ -3,7 +3,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { router, useFocusEffect } from 'expo-router';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { getUnitsForPack } from '../../data/lessons';
+import { getUnitsForPack, getUnitsForCourse } from '../../data/lessons';
+import { getCourse } from '../../data/courses';
 import { useSettings } from '../../lib/SettingsContext';
 import { useProgress } from '../../hooks/useProgress';
 import { useDailyXpGoal } from '../../lib/preferences';
@@ -37,6 +38,27 @@ function courseIdToLegacyPackId(courseId: CoursePackId): string | null {
   if (courseId === 'language-shona')   return 'shona-english';
   if (courseId === 'language-english') return 'english-shona';
   return null;
+}
+
+/**
+ * Synchronously load the bundled curriculum for a course. Each course has
+ * a single authored variant in v1 (english speakers learning X, or shona
+ * speakers learning English). Non-native-speaker users fall back to that
+ * authored variant — see Phase K for proper per-speaker authoring.
+ */
+function tryRequireCurriculum(courseId: CoursePackId): Record<string, { id: string; module: number; lesson: number; title: string; xpReward: number }> | undefined {
+  try {
+    /* eslint-disable @typescript-eslint/no-var-requires */
+    if (courseId === 'language-shona')   return require('../../data/courses/language-shona/english/curriculum').default;
+    if (courseId === 'language-english') return require('../../data/courses/language-english/shona/curriculum').default;
+    if (courseId === 'language-french')  return require('../../data/courses/language-french/english/curriculum').default;
+    if (courseId === 'language-chinese') return require('../../data/courses/language-chinese/english/curriculum').default;
+    if (courseId === 'language-tagalog') return require('../../data/courses/language-tagalog/english/curriculum').default;
+    /* eslint-enable @typescript-eslint/no-var-requires */
+  } catch {
+    return undefined;
+  }
+  return undefined;
 }
 
 export default function LearnScreen() {
@@ -99,9 +121,30 @@ export default function LearnScreen() {
 
   const units = useMemo(() => {
     if (!courseToShow) return [];
+    // 1) Hand-authored UNITS metadata for legacy packs (shona-english,
+    //    english-shona). Richest data — module titles, vocabulary hints,
+    //    XP — written by hand in data/lessons.ts.
     const legacy = courseIdToLegacyPackId(courseToShow.meta.id);
-    return legacy ? getUnitsForPack(legacy) : [];
-  }, [courseToShow]);
+    if (legacy) {
+      const handAuthored = getUnitsForPack(legacy);
+      if (handAuthored.length > 0) return handAuthored;
+    }
+    // 2) Synthesised units for the other 3 language courses (french /
+    //    chinese / tagalog) — derived at runtime from the course's
+    //    bundled curriculum + the shared MODULE_META map.
+    const course = getCourse(courseToShow.meta.id);
+    const variant = course?.variants[spokenLanguage.id as string]
+                  ?? course?.variants.english
+                  ?? course?.variants.shona;
+    const lessonsRecord: Record<string, { id: string; module: number; lesson: number; title: string; xpReward: number }> | undefined =
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      tryRequireCurriculum(courseToShow.meta.id);
+    if (lessonsRecord) {
+      return getUnitsForCourse(courseToShow.meta.id, Object.values(lessonsRecord));
+    }
+    return [];
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [courseToShow, spokenLanguage.id]);
 
   const greeting = spokenLanguage.ui.greeting;
   const headerTitle = `${learnedLanguage.flag}  ${learnedLanguage.name}`;

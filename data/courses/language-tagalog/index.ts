@@ -6,7 +6,8 @@ const meta: CoursePackMeta = {
   type: 'language',
   displayName: 'Learn Tagalog',
   targetLanguageId: 'tagalog',
-  availableForSpeakers: ['english'],
+  // Every speaker EXCEPT tagalog natives.
+  availableForSpeakers: ['english', 'shona', 'french', 'chinese'],
   revenuecatProductId: null,
   isActive: true,
   isComingSoon: true,
@@ -30,15 +31,12 @@ const pack: CoursePack = {
   },
 };
 
-/** Synchronous lesson lookup for code paths that need a specific lesson now (e.g. lesson screen).
- *  This bypasses the lazy loader for the bundled v1 case. */
-export function getLessonSync(speakerId: string, lessonId: string): LessonData | undefined {
-  if (speakerId === 'english') {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const lessons = require('./english/curriculum').default as Record<string, LessonData>;
-    return lessons[lessonId];
-  }
-  return undefined;
+/** Synchronous lesson lookup. Falls back to the english variant for any
+ *  speaker without a per-speaker variant authored yet — see Phase K. */
+export function getLessonSync(_speakerId: string, lessonId: string): LessonData | undefined {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const lessons = require('./english/curriculum').default as Record<string, LessonData>;
+  return lessons[lessonId];
 }
 
 export default pack;
