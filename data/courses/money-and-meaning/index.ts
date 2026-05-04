@@ -25,7 +25,7 @@ const meta: CoursePackMeta = {
   // Authored in English; runtime translation by Claude per the speaker
   // pack the user is currently using. Fresh per-speaker authoring is a
   // future workstream.
-  availableForSpeakers: ['english'],
+  availableForSpeakers: ['english', 'shona', 'french', 'chinese', 'tagalog'],
   revenuecatProductId: null,
   isActive: true,
   isComingSoon: false,

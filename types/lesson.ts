@@ -129,4 +129,17 @@ export interface LessonData {
   /** Optional Phase 8 (per-lesson AI conversation). Lessons without this
    *  fall back to an auto-generated context based on chunks + title. */
   phase8?: Phase8Config;
+  /**
+   * If true, the lesson screen renders the active jurisdiction's
+   * `crisisResources` block at the end. Set on lessons that touch
+   * suicidal ideation, self-harm, severe grief, domestic violence, or
+   * acute distress. Three Build Yourself agents (Grief, Parenting, Aging
+   * Parent) independently flagged this — relying on the model to mention
+   * resources in prose is unreliable; a structural flag is.
+   *
+   * The runtime reads `jurisdiction.crisisResources` (already on
+   * JurisdictionPack) and renders region-specific lines in the user's
+   * spoken language.
+   */
+  crisisHandoff?: boolean;
 }

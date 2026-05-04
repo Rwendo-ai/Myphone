@@ -24,7 +24,7 @@ const meta: CoursePackMeta = {
   // Self-development tracks have no target language.
   targetLanguageId: undefined,
   // Authored in English; speaker-specific variants are runtime-translated.
-  availableForSpeakers: ['english'],
+  availableForSpeakers: ['english', 'shona', 'french', 'chinese', 'tagalog'],
   revenuecatProductId: null,           // wired in Phase H
   isActive: true,
   isComingSoon: false,

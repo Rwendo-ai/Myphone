@@ -17,7 +17,7 @@ const meta: CoursePackMeta = {
   type: 'self-development',
   displayName: 'Sleep, Repaired',
   targetLanguageId: undefined,
-  availableForSpeakers: ['english'],
+  availableForSpeakers: ['english', 'shona', 'french', 'chinese', 'tagalog'],
   revenuecatProductId: null,
   isActive: true,
   isComingSoon: false,

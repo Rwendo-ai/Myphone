@@ -7,7 +7,7 @@ const meta: CoursePackMeta = {
   displayName: "When You've Lost Confidence",
   // self-development packs do not target a language
   targetLanguageId: undefined,
-  availableForSpeakers: ['english'],
+  availableForSpeakers: ['english', 'shona', 'french', 'chinese', 'tagalog'],
   revenuecatProductId: null,           // wired in Phase H
   isActive: true,
   isComingSoon: false,

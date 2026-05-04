@@ -16,7 +16,7 @@ const meta: CoursePackMeta = {
   type: 'self-development',
   displayName: 'Hard Conversations at Work',
   targetLanguageId: undefined,
-  availableForSpeakers: ['english'],
+  availableForSpeakers: ['english', 'shona', 'french', 'chinese', 'tagalog'],
   revenuecatProductId: null,
   isActive: true,
   isComingSoon: false,

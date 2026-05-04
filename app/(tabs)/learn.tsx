@@ -20,15 +20,16 @@ import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
 
 // The Learn tab is the "course hub". It surfaces only educational courses
-// (Languages, AI courses, Know Yourself). The AI Companion and Travel are
-// not courses — they live on their own tabs.
-type CourseCategory = 'languages' | 'ai-courses' | 'know-yourself';
+// — Languages and Build Yourself (self-development). The AI Companion and
+// Travel are not courses — they live on their own tabs.
+type CourseCategory = 'languages' | 'build-yourself';
 
-// v1 only ships language courses; AI courses and Know Yourself are placeholders
-// until their first course is authored. When a non-language educational course
-// pack is added, give it a meta.type that this map turns into the right category.
+// Map a course pack to its Learn-tab category. The discriminator lives on
+// the pack itself (course.meta.type) so adding a new category = new type
+// + new entry here.
 function categoryForCourse(course: CoursePack): CourseCategory | null {
-  if (course.meta.type === 'language') return 'languages';
+  if (course.meta.type === 'language')         return 'languages';
+  if (course.meta.type === 'self-development') return 'build-yourself';
   return null;
 }
 
@@ -151,15 +152,13 @@ export default function LearnScreen() {
   const dailyXpProgress = Math.min((xp % dailyXpGoal) / dailyXpGoal, 1);
 
   const categories: Array<{ key: CourseCategory; emoji: string; label: string }> = [
-    { key: 'languages',     emoji: '🌍', label: t('tab.categories.languages') },
-    { key: 'ai-courses',    emoji: '🤖', label: t('tab.categories.ai_courses') },
-    { key: 'know-yourself', emoji: '🌱', label: t('tab.categories.know_yourself') },
+    { key: 'languages',      emoji: '🌍', label: t('tab.categories.languages') },
+    { key: 'build-yourself', emoji: '🌱', label: t('tab.categories.build_yourself', { defaultValue: 'Build Yourself' }) },
   ];
 
   const buyLabelKey: Record<CourseCategory, string> = {
-    'languages':     'tab.buy.language_course',
-    'ai-courses':    'tab.buy.ai_course',
-    'know-yourself': 'tab.buy.know_yourself_course',
+    'languages':      'tab.buy.language_course',
+    'build-yourself': 'tab.buy.build_yourself_course',
   };
 
   const handleSelectCourse = (course: CoursePack) => {
@@ -281,17 +280,17 @@ export default function LearnScreen() {
         {coursesInCategory.length === 0 ? (
           <View style={styles.comingSoon}>
             <Text style={styles.comingSoonEmoji}>
-              {selectedCategory === 'ai-courses' ? '🤖' : '🌱'}
+              {selectedCategory === 'build-yourself' ? '🌱' : '🌍'}
             </Text>
             <Text style={styles.comingSoonTitle}>
-              {t(selectedCategory === 'ai-courses'
-                ? 'tab.empty_category.ai_courses_title'
-                : 'tab.empty_category.know_yourself_title')}
+              {selectedCategory === 'build-yourself'
+                ? t('tab.empty_category.build_yourself_title', { defaultValue: 'Build Yourself courses coming online' })
+                : t('tab.empty_category.languages_title', { defaultValue: 'No language courses for your speaker pack yet' })}
             </Text>
             <Text style={styles.comingSoonSub}>
-              {t(selectedCategory === 'ai-courses'
-                ? 'tab.empty_category.ai_courses_body'
-                : 'tab.empty_category.know_yourself_body')}
+              {selectedCategory === 'build-yourself'
+                ? t('tab.empty_category.build_yourself_body', { defaultValue: 'Knowing Yourself, Hard Conversations, Sleep, Money, Grief — eight self-development courses authored. Surfacing here as the runtime catches up.' })
+                : t('tab.empty_category.languages_body', { defaultValue: 'Pick a different speaker pack in Profile to see courses.' })}
             </Text>
           </View>
         ) : ownedInCategory.length === 0 ? (

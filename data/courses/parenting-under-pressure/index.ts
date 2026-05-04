@@ -19,7 +19,7 @@ const meta: CoursePackMeta = {
   targetLanguageId: undefined,
   // English source-of-truth; runtime translation by Claude per the
   // Knowing Yourself pattern.
-  availableForSpeakers: ['english'],
+  availableForSpeakers: ['english', 'shona', 'french', 'chinese', 'tagalog'],
   revenuecatProductId: null,
   isActive: true,
   isComingSoon: false,
