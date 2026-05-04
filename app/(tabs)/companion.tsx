@@ -1,7 +1,7 @@
-import { View, Text, StyleSheet, TextInput, Pressable, ScrollView, KeyboardAvoidingView, Platform, ActivityIndicator, Alert } from 'react-native';
+import { View, Text, StyleSheet, TextInput, Pressable, ScrollView, KeyboardAvoidingView, Platform, ActivityIndicator, Alert, Animated, Easing } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useState, useRef, useEffect, useCallback } from 'react';
-import { useLocalSearchParams, router } from 'expo-router';
+import { useLocalSearchParams } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import RwenImage from '../../components/rwen/RwenImage';
 import ProfilePicButton from '../../components/ProfilePicButton';
@@ -10,6 +10,7 @@ import { useSettings } from '../../lib/SettingsContext';
 import { useProgress } from '../../hooks/useProgress';
 import { sendMessage, loadConversationHistory, ChatMessage } from '../../lib/claude';
 import { speakText, stopSpeaking, startRecording, stopRecordingAndTranscribe, isCurrentlyRecording } from '../../lib/voice';
+import { useConvAISession } from '../../hooks/useConvAISession';
 import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
 
@@ -47,6 +48,54 @@ export default function CompanionScreen() {
   const historyRef   = useRef<ChatMessage[]>([]);
   const autoLoopRef  = useRef(false); // controls the auto-convo loop
   const silenceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // ─── Live voice (ElevenAgents Conv AI) ────────────────────────────────────
+  // The hook handles native audio + WebSocket + persistence (single save path
+  // through lib/conversation-memory.ts). We feed transcripts directly into
+  // the same `messages` list as text chat so the user sees one timeline.
+  const liveVoice = useConvAISession({
+    onUserTranscript: (text) => {
+      const msg: DisplayMessage = { id: `lv-u-${Date.now()}-${Math.random()}`, role: 'user', text };
+      setMessages((prev) => [...prev, msg]);
+      historyRef.current = [...historyRef.current, { role: 'user', content: text }];
+      setTimeout(() => scrollRef.current?.scrollToEnd({ animated: true }), 80);
+    },
+    onAgentResponse: (text) => {
+      const msg: DisplayMessage = { id: `lv-r-${Date.now()}-${Math.random()}`, role: 'rwen', text };
+      setMessages((prev) => [...prev, msg]);
+      historyRef.current = [...historyRef.current, { role: 'assistant', content: text }];
+      setTimeout(() => scrollRef.current?.scrollToEnd({ animated: true }), 80);
+    },
+  });
+
+  // Small inline orb pulse — only animates while voice is active.
+  const inlineOrbScale = useRef(new Animated.Value(1)).current;
+  const inlineOrbAnimRef = useRef<Animated.CompositeAnimation | null>(null);
+  useEffect(() => {
+    if (liveVoice.state === 'active') {
+      if (inlineOrbAnimRef.current) return;
+      const anim = Animated.loop(
+        Animated.sequence([
+          Animated.timing(inlineOrbScale, { toValue: 1.18, duration: 700, easing: Easing.inOut(Easing.ease), useNativeDriver: true }),
+          Animated.timing(inlineOrbScale, { toValue: 1,    duration: 700, easing: Easing.inOut(Easing.ease), useNativeDriver: true }),
+        ]),
+      );
+      anim.start();
+      inlineOrbAnimRef.current = anim;
+    } else {
+      inlineOrbAnimRef.current?.stop();
+      inlineOrbAnimRef.current = null;
+      Animated.timing(inlineOrbScale, { toValue: 1, duration: 200, useNativeDriver: true }).start();
+    }
+  }, [liveVoice.state, inlineOrbScale]);
+
+  const liveVoiceActive = liveVoice.state !== 'idle';
+
+  // Tapping the voice button toggles the inline session — no screen push.
+  const toggleLiveVoice = useCallback(() => {
+    if (liveVoiceActive) liveVoice.stop();
+    else liveVoice.start();
+  }, [liveVoiceActive, liveVoice]);
 
   // Load conversation history
   useEffect(() => {
@@ -210,14 +259,34 @@ export default function CompanionScreen() {
           </Text>
         </View>
 
-        {/* Voice mode → ElevenLabs Conversational AI via WebRTC (LiveKit).
-           Requires the dev-client build (Expo Go won't load WebRTC). When the
-           preview-build APK is installed, this opens the orb-mode voice screen. */}
+        {/* Clear-the-current-window button — wipes only the on-screen messages.
+            Saved history (DB) and the next session's memory are untouched. The
+            "delete saved history" action lives in profile under Account. */}
         <Pressable
-          style={styles.convoBtn}
-          onPress={() => router.push('/companion/voice')}
+          style={styles.headerClearBtn}
+          onPress={() => {
+            Alert.alert(
+              'Clear this view?',
+              'This only hides the messages on screen — your saved history is untouched. Pull up the chat next time and the agent will still remember what you talked about. Use Profile → Clear conversation history to actually erase from memory.',
+              [
+                { text: 'Cancel', style: 'cancel' },
+                {
+                  text: 'Clear view',
+                  onPress: () => {
+                    setMessages([{
+                      id: `cleared-${Date.now()}`,
+                      role: 'rwen',
+                      text: t('messages.welcome', { name: username || tCommon('fallback_name') }),
+                    }]);
+                    historyRef.current = [];
+                  },
+                },
+              ],
+            );
+          }}
+          hitSlop={6}
         >
-          <Text style={styles.convoBtnText}>🎙</Text>
+          <Text style={styles.headerClearIcon}>⌫</Text>
         </Pressable>
 
         <ProfilePicButton variant="light" />
@@ -250,66 +319,128 @@ export default function CompanionScreen() {
           )}
         </ScrollView>
 
-        {/* ChatGPT/Claude-style composer:
-              [+]   text input   [mic]  [send-or-voice]
-            The right-most button shows a send arrow when there's text to
-            send, or a voice-mode launcher when the input is empty. */}
-        <View style={styles.composerRow}>
-          <View style={styles.composer}>
-            <Pressable
-              style={styles.composerLeftBtn}
-              onPress={() => Alert.alert(
-                'More options',
-                'Attach a photo, share a memory, or upload a file. Coming with the next update.',
-                [{ text: 'OK' }],
-              )}
-              hitSlop={8}
-            >
-              <Text style={styles.composerLeftIcon}>＋</Text>
-            </Pressable>
-
-            <TextInput
-              style={styles.composerInput}
-              placeholder={convoActive ? t('input.placeholder_convo_active') : t('input.placeholder_default')}
-              placeholderTextColor={Colors.gray[400]}
-              value={input}
-              onChangeText={setInput}
-              multiline
-              returnKeyType="send"
-              onSubmitEditing={sendText}
-              editable={!loading && !convoActive}
-            />
-
-            <Pressable
-              style={[styles.composerMicBtn, isRecording && styles.composerMicBtnActive]}
-              onPressIn={handleMicPressIn}
-              onPressOut={handleMicPressOut}
-              disabled={convoActive}
-              hitSlop={8}
-            >
-              <Text style={styles.composerMicIcon}>{isRecording ? '🔴' : '🎙'}</Text>
-            </Pressable>
-
-            {input.trim().length > 0 ? (
+        {/* When live voice is active, the composer is replaced by an inline
+            orb panel — tap orb to interrupt, tap × in the header to end. The
+            voice transcripts already stream into `messages` via the hook
+            handlers above, so the user sees one unified timeline. */}
+        {liveVoiceActive ? (
+          <View style={styles.composerRow}>
+            <View style={styles.liveVoicePanel}>
+              {/* Orb — left side. Tap while agent is speaking to interrupt. */}
               <Pressable
-                style={[styles.composerActionBtn, loading && styles.composerActionBtnDisabled]}
-                onPress={sendText}
-                disabled={!input.trim() || loading || convoActive}
-                hitSlop={8}
+                onPress={() => liveVoice.agentSpeaking && liveVoice.interrupt()}
+                hitSlop={10}
               >
-                <Text style={styles.composerActionIcon}>↑</Text>
+                <Animated.View
+                  style={[
+                    styles.liveVoiceOrb,
+                    {
+                      transform: [{ scale: inlineOrbScale }],
+                      backgroundColor:
+                        liveVoice.state === 'connecting' ? Colors.gray[400] :
+                        liveVoice.state === 'closing'    ? Colors.gray[400] :
+                        liveVoice.agentSpeaking          ? Colors.xp :
+                                                            Colors.success,
+                      opacity: liveVoice.state === 'connecting' || liveVoice.state === 'closing' ? 0.7 : 1,
+                    },
+                  ]}
+                >
+                  {(liveVoice.state === 'connecting' || liveVoice.state === 'closing') && (
+                    <ActivityIndicator color={Colors.white} size="small" />
+                  )}
+                </Animated.View>
               </Pressable>
-            ) : (
+
+              {/* Status — middle. Two short lines. */}
+              <View style={styles.liveVoiceText}>
+                <Text style={styles.liveVoiceTitle}>
+                  {liveVoice.error                 ? 'Voice error' :
+                   liveVoice.state === 'connecting' ? 'Connecting…' :
+                   liveVoice.state === 'closing'    ? 'Ending…' :
+                   liveVoice.agentSpeaking          ? 'Speaking' :
+                                                      'Listening'}
+                </Text>
+                <Text style={styles.liveVoiceSub}>
+                  {liveVoice.error
+                    ? liveVoice.error
+                    : liveVoice.agentSpeaking
+                      ? 'Tap orb to interrupt'
+                      : 'Just talk — your words appear in chat'}
+                </Text>
+              </View>
+
+              {/* Hang-up — right side. Ends the session. */}
               <Pressable
-                style={styles.composerActionBtn}
-                onPress={() => router.push('/companion/voice')}
-                hitSlop={8}
+                onPress={liveVoice.stop}
+                style={styles.liveVoiceHangup}
+                hitSlop={10}
               >
-                <Text style={styles.composerActionIcon}>〰</Text>
+                <Text style={styles.liveVoiceHangupIcon}>✕</Text>
               </Pressable>
-            )}
+            </View>
           </View>
-        </View>
+        ) : (
+          /* Default composer:
+                [+]   text input   [mic]  [send-or-voice]
+              The right-most button shows a send arrow when there's text to
+              send, or a voice-mode launcher when the input is empty. */
+          <View style={styles.composerRow}>
+            <View style={styles.composer}>
+              <Pressable
+                style={styles.composerLeftBtn}
+                onPress={() => Alert.alert(
+                  'More options',
+                  'Attach a photo, share a memory, or upload a file. Coming with the next update.',
+                  [{ text: 'OK' }],
+                )}
+                hitSlop={8}
+              >
+                <Text style={styles.composerLeftIcon}>＋</Text>
+              </Pressable>
+
+              <TextInput
+                style={styles.composerInput}
+                placeholder={convoActive ? t('input.placeholder_convo_active') : t('input.placeholder_default')}
+                placeholderTextColor={Colors.gray[400]}
+                value={input}
+                onChangeText={setInput}
+                multiline
+                returnKeyType="send"
+                onSubmitEditing={sendText}
+                editable={!loading && !convoActive}
+              />
+
+              <Pressable
+                style={[styles.composerMicBtn, isRecording && styles.composerMicBtnActive]}
+                onPressIn={handleMicPressIn}
+                onPressOut={handleMicPressOut}
+                disabled={convoActive}
+                hitSlop={8}
+              >
+                <Text style={styles.composerMicIcon}>{isRecording ? '🔴' : '🎙'}</Text>
+              </Pressable>
+
+              {input.trim().length > 0 ? (
+                <Pressable
+                  style={[styles.composerActionBtn, loading && styles.composerActionBtnDisabled]}
+                  onPress={sendText}
+                  disabled={!input.trim() || loading || convoActive}
+                  hitSlop={8}
+                >
+                  <Text style={styles.composerActionIcon}>↑</Text>
+                </Pressable>
+              ) : (
+                <Pressable
+                  style={styles.composerActionBtn}
+                  onPress={toggleLiveVoice}
+                  hitSlop={8}
+                >
+                  <Text style={styles.composerActionIcon}>〰</Text>
+                </Pressable>
+              )}
+            </View>
+          </View>
+        )}
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
@@ -330,6 +461,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255,255,255,0.15)',
     alignItems: 'center', justifyContent: 'center',
   },
+  headerClearBtn: {
+    width: 36, height: 36, borderRadius: 18,
+    backgroundColor: 'rgba(255,255,255,0.12)',
+    alignItems: 'center', justifyContent: 'center',
+  },
+  headerClearIcon: { fontSize: 16, color: 'rgba(255,255,255,0.85)' },
   convoBtnActive: { backgroundColor: Colors.error + '40', borderWidth: 1, borderColor: Colors.error },
   convoBtnDisabled: { backgroundColor: 'rgba(255,255,255,0.08)', borderWidth: 1, borderColor: 'rgba(255,255,255,0.15)', borderStyle: 'dashed' },
   convoBtnText: { fontSize: 20 },
@@ -447,6 +584,53 @@ const styles = StyleSheet.create({
   },
   composerActionBtnDisabled: { backgroundColor: Colors.gray[300] },
   composerActionIcon: {
+    color: Colors.white,
+    fontSize: 22,
+    fontWeight: FontWeight.bold,
+    lineHeight: 22,
+  },
+
+  // Inline live-voice panel — replaces the composer when a session is active.
+  liveVoicePanel: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: Colors.white,
+    borderRadius: BorderRadius.lg,
+    paddingHorizontal: Spacing.md,
+    paddingVertical: Spacing.sm,
+    gap: Spacing.md,
+    borderWidth: 1,
+    borderColor: Colors.gray[200],
+    shadowColor: Colors.black,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.06,
+    shadowRadius: 8,
+    elevation: 2,
+  },
+  liveVoiceOrb: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: Colors.success,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.4,
+    shadowRadius: 12,
+    elevation: 4,
+  },
+  liveVoiceText: { flex: 1 },
+  liveVoiceTitle: { fontSize: FontSize.md, fontWeight: FontWeight.bold, color: Colors.gray[900] },
+  liveVoiceSub:   { fontSize: FontSize.xs, color: Colors.gray[500], marginTop: 2 },
+  liveVoiceHangup: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: Colors.error,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  liveVoiceHangupIcon: {
     color: Colors.white,
     fontSize: 22,
     fontWeight: FontWeight.bold,

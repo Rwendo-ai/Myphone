@@ -120,6 +120,11 @@ export class ConvAISession {
       };
       ws.onmessage = (ev) => this.onMessage(ev);
       ws.onerror = (ev: Event) => {
+        // Suppress errors that fire as part of intentional close — many RN
+        // WebSocket implementations emit `error` immediately before `close`
+        // when the client tears the socket down, and surfacing that as a
+        // user-visible error is just noise.
+        if (this.closed) return;
         // RN WebSocket onerror Event has a `message` property at runtime
         // even though it's not in the standard WebSocket Event type.
         const msg = (ev as unknown as { message?: string }).message ?? 'WebSocket error';
@@ -234,6 +239,12 @@ export class ConvAISession {
     if (!data || typeof data !== 'object') return;
     const msg = data as Record<string, unknown>;
     const type = msg.type as string | undefined;
+
+    // Dev-only event log — quiet for the audio firehose, verbose for the
+    // text events we actually want to see arriving (or NOT arriving).
+    if (__DEV__ && type !== 'audio' && type !== 'vad_score' && type !== 'ping') {
+      console.log('[ConvAI evt]', type, JSON.stringify(msg).slice(0, 200));
+    }
 
     switch (type) {
       case 'conversation_initiation_metadata': {

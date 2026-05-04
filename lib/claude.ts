@@ -3,6 +3,7 @@ import { SpeakerPack } from '../types/packs';
 import { english as defaultSpeaker } from '../data/speakers';
 import { resolvePreset } from './active-companion';
 import { buildCompanionPrompt } from './companion-prompts';
+import { appendConversationTurn } from './conversation-memory';
 import type { CompanionPreset } from '../data/companions/presets';
 
 const CLAUDE_API_URL = 'https://api.anthropic.com/v1/messages';
@@ -238,13 +239,9 @@ export async function sendMessage(
    *  Tendai, Aria, etc.) instead of always speaking as Rwen. */
   activeCompanionPresetId?: string | null,
 ): Promise<string> {
-  // Save user message
-  await supabase.from('conversations').insert({
-    user_id: userId,
-    role: 'user',
-    content: userMessage,
-    pack_context: lessonContext ?? null,
-  });
+  // Save user message — single write path shared by text + voice + future
+  // avatar/lipsync flows. See lib/conversation-memory.ts.
+  await appendConversationTurn(userId, 'user', userMessage, { packContext: lessonContext });
 
   // Fetch full profile (cached)
   const profile = await fetchUserProfile(userId);
@@ -322,28 +319,31 @@ export async function sendMessage(
   const data   = await response.json();
   const reply  = data.content[0]?.text ?? "Ndine urombo — I'm having a moment. Try again?";
 
-  // Save Rwen's reply
-  await supabase.from('conversations').insert({
-    user_id: userId,
-    role: 'rwen',
-    content: reply,
-    pack_context: lessonContext ?? null,
-  });
+  // Save Rwen's reply via the shared writer.
+  await appendConversationTurn(userId, 'rwen', reply, { packContext: lessonContext });
 
   return reply;
 }
 
 export async function loadConversationHistory(userId: string): Promise<ChatMessage[]> {
+  // Pull the most recent 40 rows. Sort descending in the query so the LIMIT
+  // gives us the latest, then flip to ascending in JS so they render
+  // oldest → newest in the chat. The previous order(asc).limit(40) returned
+  // the FIRST 40 messages forever, hiding everything after that — which
+  // looked exactly like "saves are broken" once history grew past 40.
   const { data } = await supabase
     .from('conversations')
     .select('role, content')
     .eq('user_id', userId)
-    .order('created_at', { ascending: true })
+    .order('created_at', { ascending: false })
     .limit(40);
 
   if (!data) return [];
-  return data.map(row => ({
-    role: row.role === 'rwen' ? 'assistant' : 'user',
-    content: row.content,
-  }));
+  return data
+    .slice()
+    .reverse()
+    .map((row) => ({
+      role: row.role === 'rwen' ? 'assistant' : 'user',
+      content: row.content,
+    }));
 }

@@ -9,6 +9,7 @@ import { useAuth } from '../../lib/AuthContext';
 import { deleteAccount } from '../../lib/progress';
 import { useProgress } from '../../hooks/useProgress';
 import { useSettings, RwenVoiceKey } from '../../lib/SettingsContext';
+import type { SpeakerPackId } from '../../types/packs';
 import { useDailyXpGoal, useDailyReminders } from '../../lib/preferences';
 import { pickAndUploadAvatar } from '../../lib/storage';
 import { supabase } from '../../lib/supabase';
@@ -64,7 +65,7 @@ export default function ProfileScreen() {
     : 'en';
   const { user, signOut } = useAuth();
   const { xp, streakDays, username, completedLessons, refresh } = useProgress();
-  const { rwenVoice, setRwenVoice, learnedLanguage, spokenLanguage, theme, setThemeId, avatarUrl, setAvatarUrl, speaker, jurisdiction, voiceEngine, setVoiceEngine } = useSettings();
+  const { rwenVoice, setRwenVoice, learnedLanguage, spokenLanguage, theme, setThemeId, avatarUrl, setAvatarUrl, speaker, jurisdiction, voiceEngine, setVoiceEngine, setSpeakerPack } = useSettings();
   const { goal: dailyXpGoal } = useDailyXpGoal();
   const { enabled: remindersOn, setEnabled: setRemindersOn } = useDailyReminders();
   const [uploadingAvatar, setUploadingAvatar] = useState(false);
@@ -86,8 +87,28 @@ export default function ProfileScreen() {
   };
 
   const handleAppLanguageSelect = async (lang: SupportedLanguage) => {
+    // Two things to keep in sync when the user changes language:
+    //   1. i18n strings (`app_language` in DB) — drives UI translation
+    //   2. Speaker pack (`speaker_pack_id` in DB) — drives AI persona, voice
+    //      options, greetings, ElevenLabs language code, companion behaviour
+    // ISO_TO_DB happens to map both to the same string ('english','shona',
+    // 'french','chinese','tagalog'), since each supported app language has a
+    // matching speaker pack one-for-one. So a single update keeps them in
+    // sync, and the live-voice agent picks up speaker.isoCode on the next
+    // session start.
     setAppLanguage(lang);
-    if (user) await supabase.from('profiles').update({ app_language: ISO_TO_DB[lang] }).eq('id', user.id);
+    const speakerPackId = ISO_TO_DB[lang] as SpeakerPackId;
+    setSpeakerPack(speakerPackId);
+    if (user) {
+      await supabase
+        .from('profiles')
+        .update({
+          app_language: ISO_TO_DB[lang],
+          speaker_pack_id: speakerPackId,
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', user.id);
+    }
   };
   useFocusEffect(useCallback(() => { refresh(); }, [refresh]));
 
@@ -339,6 +360,34 @@ export default function ProfileScreen() {
             <SettingsRow label={t('profile.account_rows.change_password')} onPress={() => router.push('/profile/change-password')} />
             <SettingsRow label={t('profile.account_rows.privacy_settings')} onPress={() => router.push('/profile/privacy')} />
             <SettingsRow label={t('profile.account_rows.export_data')} onPress={() => router.push('/profile/export')} />
+            <SettingsRow
+              label="Erase saved chat history"
+              onPress={() => {
+                if (!user) return;
+                Alert.alert(
+                  'Erase saved chat history?',
+                  'Permanently deletes every text and voice turn the companion has saved. The companion will forget everything you’ve told it. This is different from clearing the on-screen view (use the ⌫ button on the chat). This cannot be undone.',
+                  [
+                    { text: 'Cancel', style: 'cancel' },
+                    {
+                      text: 'Clear',
+                      style: 'destructive',
+                      onPress: async () => {
+                        const { error } = await supabase
+                          .from('conversations')
+                          .delete()
+                          .eq('user_id', user.id);
+                        if (error) {
+                          Alert.alert('Couldn’t clear', error.message);
+                          return;
+                        }
+                        Alert.alert('Cleared', 'All conversations deleted. Open the chat tab to start fresh.');
+                      },
+                    },
+                  ],
+                );
+              }}
+            />
           </Section>
 
           {/* Legal */}
