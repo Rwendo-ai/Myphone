@@ -6,7 +6,7 @@
  * a "unlock with course" CTA on the rest.
  */
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
@@ -18,6 +18,12 @@ import { getDestinationForCourse } from '../../data/travel/destinations';
 import { getPhrasebookForCountry } from '../../data/travel/phrasebook';
 import type { PhrasebookCategory, TravelPhrase } from '../../data/travel/phrasebook/types';
 import { DEV_UNLOCK_ALL } from '../../constants/dev';
+import {
+  loadAudioManifest,
+  getAudioPathForPhrase,
+  playPhraseAudio,
+  stopPhraseAudio,
+} from '../../lib/phrasebook-audio';
 
 const FREE_PREVIEW_LIMIT = 4;
 
@@ -34,6 +40,32 @@ export default function PhrasebookScreen() {
   }, [activeCourseId, entitlementContext]);
 
   const [openCategory, setOpenCategory] = useState<string>(phrasebook?.[0]?.id ?? '');
+
+  // Audio manifest for this country. Built once by scripts/generate-phrasebook-audio.ts
+  // and stored at audio/phrasebook/<code>/manifest.json. We fetch it lazily on
+  // screen open. While it's loading, play buttons stay disabled.
+  const [manifest, setManifest] = useState<Awaited<ReturnType<typeof loadAudioManifest>>>(null);
+  const [playingId, setPlayingId] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    loadAudioManifest(destination.countryCode).then(m => { if (!cancelled) setManifest(m); });
+    return () => { cancelled = true; stopPhraseAudio(); };
+  }, [destination.countryCode]);
+
+  const handlePlay = async (phrase: TravelPhrase) => {
+    const audioPath = phrase.audioPath ?? getAudioPathForPhrase(manifest, phrase.id);
+    if (!audioPath) return;
+    setPlayingId(phrase.id);
+    try {
+      await playPhraseAudio(audioPath);
+    } finally {
+      // Reset the playing indicator after a short delay — expo-audio doesn't
+      // emit a clean "ended" callback on the simple player, and 4s is roughly
+      // the longest phrase length we have.
+      setTimeout(() => setPlayingId(prev => (prev === phrase.id ? null : prev)), 4000);
+    }
+  };
 
   if (!phrasebook) {
     return (
@@ -68,6 +100,10 @@ export default function PhrasebookScreen() {
             open={openCategory === cat.id}
             onToggle={() => setOpenCategory(openCategory === cat.id ? '' : cat.id)}
             owned={owned}
+            onPlay={handlePlay}
+            playingId={playingId}
+            audioReady={!!manifest}
+            manifest={manifest}
           />
         ))}
 
@@ -98,11 +134,15 @@ function Header() {
   );
 }
 
-function Category({ category, open, onToggle, owned }: {
+function Category({ category, open, onToggle, owned, onPlay, playingId, audioReady, manifest }: {
   category: PhrasebookCategory;
   open: boolean;
   onToggle: () => void;
   owned: boolean;
+  onPlay: (p: TravelPhrase) => void;
+  playingId: string | null;
+  audioReady: boolean;
+  manifest: Awaited<ReturnType<typeof loadAudioManifest>>;
 }) {
   const visiblePhrases = (category.free || owned)
     ? category.phrases
@@ -120,7 +160,15 @@ function Category({ category, open, onToggle, owned }: {
 
       {open && (
         <View style={styles.phraseList}>
-          {visiblePhrases.map(p => <PhraseRow key={p.id} phrase={p} />)}
+          {visiblePhrases.map(p => (
+            <PhraseRow
+              key={p.id}
+              phrase={p}
+              onPlay={onPlay}
+              isPlaying={playingId === p.id}
+              hasAudio={!!p.audioPath || (audioReady && !!getAudioPathForPhrase(manifest, p.id))}
+            />
+          ))}
           {hiddenCount > 0 && (
             <Text style={styles.hiddenCount}>+ {hiddenCount} more · unlock with course</Text>
           )}
@@ -130,7 +178,12 @@ function Category({ category, open, onToggle, owned }: {
   );
 }
 
-function PhraseRow({ phrase }: { phrase: TravelPhrase }) {
+function PhraseRow({ phrase, onPlay, isPlaying, hasAudio }: {
+  phrase: TravelPhrase;
+  onPlay: (p: TravelPhrase) => void;
+  isPlaying: boolean;
+  hasAudio: boolean;
+}) {
   return (
     <View style={styles.phraseRow}>
       <View style={{ flex: 1 }}>
@@ -138,9 +191,14 @@ function PhraseRow({ phrase }: { phrase: TravelPhrase }) {
         {phrase.phonetic && <Text style={styles.phonetic}>{phrase.phonetic}</Text>}
         <Text style={styles.native}>{phrase.native}</Text>
       </View>
-      {/* Audio button: enabled once Phase 2 generates ElevenLabs MP3s */}
-      <Pressable style={[styles.playBtn, !phrase.audioPath && styles.playBtnDisabled]} disabled={!phrase.audioPath}>
-        <Text style={[styles.playBtnText, !phrase.audioPath && styles.playBtnTextDisabled]}>♪</Text>
+      <Pressable
+        style={[styles.playBtn, !hasAudio && styles.playBtnDisabled, isPlaying && styles.playBtnActive]}
+        disabled={!hasAudio}
+        onPress={() => onPlay(phrase)}
+      >
+        <Text style={[styles.playBtnText, !hasAudio && styles.playBtnTextDisabled]}>
+          {isPlaying ? '◼' : '♪'}
+        </Text>
       </Pressable>
     </View>
   );
@@ -172,6 +230,7 @@ const styles = StyleSheet.create({
 
   playBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: Colors.xp, alignItems: 'center', justifyContent: 'center' },
   playBtnDisabled: { backgroundColor: 'rgba(255,255,255,0.08)' },
+  playBtnActive: { backgroundColor: Colors.secondary },
   playBtnText: { color: Colors.white, fontSize: FontSize.md, fontWeight: FontWeight.bold },
   playBtnTextDisabled: { color: 'rgba(255,255,255,0.3)' },
 

@@ -1,12 +1,19 @@
 /**
- * Phrasebook content shared types.
+ * Vocab content shared types.
  *
- * Travel phrasebook is intentionally distinct from the language-course flip
- * cards (see docs/FLIP-CARDS-DESIGN.md). Phrasebook = the 50 things you
- * actually need on the ground; flip cards = the 500-word vocab pack tied
- * to the lesson curriculum. They overlap but the phrasebook prioritises
- * "say this when X happens" while flip cards prioritise lesson coverage.
+ * One database, three surfaces. A vocab entry can carry tags marking it as a
+ * `word` (single-token lookup, useful for the toolbox dictionary), a `phrase`
+ * (multi-token functional unit, useful for the phrasebook), a `flipcard`
+ * (curated learning unit), or any combination. The audio file generated
+ * from `target` works in every surface — generate once, play anywhere.
+ *
+ * Surface filters:
+ *   - Phrasebook         → tags includes 'phrase' (or omitted = phrase)
+ *   - Flip cards         → tags includes 'flipcard'
+ *   - Dictionary toolbox → all entries for the active course
  */
+
+export type VocabTag = 'word' | 'phrase' | 'flipcard';
 
 export interface TravelPhrase {
   /** Stable ID, scoped to category. */
@@ -17,9 +24,12 @@ export interface TravelPhrase {
   native: string;
   /** Optional phonetic guide for tricky pronunciation. */
   phonetic?: string;
-  /** Optional path to ElevenLabs MP3 in Storage at flipcards/<courseId>/audio.
-   *  Phase 2 wires audio playback. */
+  /** Optional path to ElevenLabs MP3 in Supabase Storage. Bucket: `audio`,
+   *  path: `phrasebook/<countryCode>/<id>.mp3`. */
   audioPath?: string;
+  /** Surface markers. Default behaviour when omitted: treat as 'phrase' (the
+   *  phrasebook is the historical home of these entries). */
+  tags?: VocabTag[];
 }
 
 export interface PhrasebookCategory {
