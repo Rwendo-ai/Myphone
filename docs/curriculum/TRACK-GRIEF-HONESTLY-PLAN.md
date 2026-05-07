@@ -2,11 +2,17 @@
 
 *One unit. Ten lessons. 5–10 minutes each. The heaviest of the Build Yourself tracks. Treat with care.*
 
-Document version: 1.0 — 2026-05-04
+Document version: 2.0 — 2026-05-05 (Christian-foundation editorial pass)
 Authoring model: Claude Opus 4.7
 Source language: English (single source-of-truth; runtime translation by Claude)
 Schema: `types/lesson.ts` (`LessonData`)
 Pack meta: `meta.type: 'self-development'`, `meta.displayName: 'Grief, Honestly'`, `meta.emoji: '🌒'`
+
+---
+
+## Editorial foundation
+
+All authoring in this track follows [CHRISTIAN-FOUNDATION-SPEC.md](./CHRISTIAN-FOUNDATION-SPEC.md). Christian foundation underneath, neutral surface, no overt religious language, no other-religion framing. **Read that spec before authoring or rewriting any lesson.** Note: this track has both `crisisHandoff: true` lessons and unusually heavy emotional load — read the content-care guardrails in §5 with the spec's surface rules in mind.
 
 ---
 
@@ -33,11 +39,11 @@ It is built on three honest claims, each of which corrects a piece of folklore t
 | **Megan Devine** — *It's OK That You're Not OK* | Tone, refusal of saccharine reassurance, the line "some things cannot be fixed; they can only be carried." |
 | **Joanne Cacciatore** — *Bearing the Unbearable* | Witnessing as the central act; presence over advice; the grief of child loss handled with appropriate seriousness. |
 | **ACT** — Hayes, Harris | Living *with* what you cannot change; values-based action while grieving; psychological flexibility instead of "acceptance" as a destination. |
-| **Self-Compassion** — Kristin Neff | The parts where the user blames themselves — for surviving, for the last argument, for not being there, for the relief. |
+| **Dignity-based self-kindness** ([spec §6](./CHRISTIAN-FOUNDATION-SPEC.md)) | The parts where the user blames themselves — for surviving, for the last argument, for not being there, for the relief. Three moves: honest acknowledgement of what is here; shared dignity (you are not uniquely failing — every griever hits this); kindness toward yourself. Backed by clinical evidence on self-criticism's role in stalling grief recovery (Gilbert; Brown). |
 | **Polyvagal theory** — Porges | Grief's somatic load: shutdown, exhaustion, the body grieving even when the mind tries to function. Presented as a useful clinical map, not settled neuroanatomy. |
 | **Continuing bonds** — Klass / Silverman / Nickman | The ongoing relationship with what is lost as a sign of integration, not failure. |
 | **William Worden** — Tasks of Mourning | Used lightly as a frame (acknowledging the loss; processing the pain; adjusting; finding an enduring connection while moving forward) — without prescribing a sequence. |
-| **Cultural traditions** | Día de los Muertos (Mexico), Shiva (Jewish), Kurova guva (Shona), tahlil (Indonesian Muslim), the wake (Irish), 49-day mourning (Buddhist) — referenced where relevant, never appropriated. |
+| **Cultural traditions** | Día de los Muertos (Mexico), Shiva (Jewish), Kurova guva (Shona), the wake (Irish), tahlil (Indonesian Muslim) — referenced where relevant, never appropriated. Cultural examples are evidence of the universality of *continuing-bond* practices, not endorsements of any tradition's metaphysics. |
 
 ---
 

@@ -1,0 +1,129 @@
+{
+  "__warnings": [
+    { "key": "tab.categories.know_yourself", "note": "'Know Yourself' translated as 'ख़ुद को जानो'. Reviewer: alternative is 'स्वयं को जानें' (more formal/Sanskritised)." },
+    { "key": "lesson.locked.subscription_*", "note": "Mentions paid tiers (Text AI, Modules 5-10). Reviewer: confirm tier names should remain English or be transliterated." },
+    { "key": "lesson.phases.hook", "note": "'The Scene' translated as 'दृश्य'. Pedagogical term — reviewer to confirm it lands for adult learners." },
+    { "key": "lesson.hook.tsika_label", "note": "'TSIKA — Cultural Context' kept Shona word 'TSIKA' as cultural anchor (matches French pack pattern). 'Cultural Context' → 'सांस्कृतिक संदर्भ'." },
+    { "key": "lesson.mission.cta", "note": "'Famba zvakanaka →' kept Shona verbatim — it is Rwen's signature sign-off ('go well'). Reviewer: confirm verbatim retention." },
+    { "key": "lesson.phase8.unlocked_cta", "note": "'Start a 2-minute chat →' translated as '2 मिनट की बातचीत शुरू करो →'. Reviewer: confirm informal register." },
+    { "key": "exercises.translate.placeholder", "note": "'Type your answer...' → 'अपना जवाब टाइप करो...'. Loanword 'टाइप' kept (universal in tech-Hindi)." },
+    { "key": "exercises feedback marks", "note": "'✓' / '✗' symbols kept; surrounding text translated." }
+  ],
+  "tab": {
+    "daily_xp": "रोज़ाना XP",
+    "units": "इकाइयाँ",
+    "lesson_count": "{{count}} leçons",
+    "unit_progress": "{{total}} में से {{completed}} पूरी",
+    "coming_soon_title": "{{lang}} पाठ्यक्रम जल्द आ रहा है",
+    "coming_soon_sub": "हम अभी leçons बना रहे हैं। थोड़ी देर में फिर देखो!",
+    "categories_title": "पाठ्यक्रम",
+    "categories": {
+      "languages": "भाषाएँ",
+      "ai_courses": "AI पाठ्यक्रम",
+      "know_yourself": "ख़ुद को जानो"
+    },
+    "buy": {
+      "language_course": "+ कोई और भाषा का पाठ्यक्रम ख़रीदो",
+      "ai_course": "+ कोई और AI पाठ्यक्रम ख़रीदो",
+      "know_yourself_course": "+ कोई और 'ख़ुद को जानो' पाठ्यक्रम ख़रीदो",
+      "alert_title": "जल्द आ रहा है",
+      "alert_body": "पाठ्यक्रमों की दुकान अगले अपडेट में खुलेगी।"
+    },
+    "empty_category": {
+      "ai_courses_title": "AI पाठ्यक्रम आ रहे हैं",
+      "ai_courses_body": "पहला पाठ्यक्रम जल्द शुरू होगा। तैयार होते ही हम तुम्हें बताएँगे।",
+      "know_yourself_title": "'ख़ुद को जानो' आ रहा है",
+      "know_yourself_body": "पहला पाठ्यक्रम जल्द शुरू होगा। तैयार होते ही हम तुम्हें बताएँगे।"
+    }
+  },
+  "screen_header": {
+    "back": "← वापस"
+  },
+  "unit": {
+    "section_label": "LEÇONS",
+    "xp_value": "{{count}} XP"
+  },
+  "lesson": {
+    "not_found": "Leçon नहीं मिली: {{id}}",
+    "locked": {
+      "subscription_title": "बंद — सशुल्क योजना चाहिए",
+      "subscription_body": "मॉड्यूल 5–10 Text AI और उससे ऊपर के स्तर का हिस्सा हैं। Rwen के साथ आगे बढ़ने के लिए अपग्रेड करो।",
+      "subscription_cta": "योजनाएँ देखो",
+      "course_title": "बंद — पाठ्यक्रम सक्रिय नहीं है",
+      "course_body": "यह leçon ऐसे पाठ्यक्रम की है जिसे तुमने अभी तक सक्रिय नहीं किया। शुरू करने के लिए पाठ्यक्रम अपने खाते में जोड़ो।",
+      "course_cta": "पाठ्यक्रम देखो"
+    },
+    "phases": {
+      "hook": "दृश्य",
+      "chunks": "नए शब्द",
+      "pattern": "नियम",
+      "practice": "अभ्यास",
+      "dialogue": "बातचीत",
+      "recall": "याद करो",
+      "mission": "तुम्हारा मिशन"
+    },
+    "quit": {
+      "title": "Leçon छोड़ दें?",
+      "body": "इस leçon में तुम्हारी प्रगति खो जाएगी। पक्का?",
+      "keep_going": "जारी रखो",
+      "quit": "छोड़ो"
+    },
+    "hook": {
+      "tsika_label": "TSIKA — सांस्कृतिक संदर्भ",
+      "cta": "आओ सीखें →"
+    },
+    "chunks": {
+      "counter": "शब्द {{total}} में से {{current}}",
+      "literal": "शाब्दिक रूप से: \"{{value}}\"",
+      "see_pattern": "नियम देखो →",
+      "got_it": "समझ गया →"
+    },
+    "pattern": {
+      "start_practice": "अभ्यास शुरू करो →"
+    },
+    "practice": {
+      "counter": "अभ्यास {{total}} में से {{current}}"
+    },
+    "dialogue": {
+      "to_recall": "बढ़िया — अब याद करो →",
+      "continue": "आगे बढ़ो →"
+    },
+    "recall": {
+      "title": "सक्रिय स्मरण",
+      "counter": "{{total}} में से {{current}}"
+    },
+    "mission": {
+      "complete_title": "Leçon पूरी!",
+      "xp_badge": "+{{count}} XP",
+      "score": "{{total}} में से {{score}} सही",
+      "card_title_prefix": "📍 ",
+      "cta": "Famba zvakanaka →"
+    },
+    "phase8": {
+      "unlocked_title": "Rwen के साथ अभ्यास",
+      "unlocked_body": "बातचीत में '{{topic}}' आज़माओ। Rwen वही इस्तेमाल करेगा जो तुमने अभी सीखा।",
+      "unlocked_cta": "2 मिनट की बातचीत शुरू करो →",
+      "locked_title": "Rwen के साथ अभ्यास — बंद",
+      "locked_body": "'{{topic}}' पर 2 मिनट की बातचीत करो। Rwen वही इस्तेमाल करेगा जो तुमने अभी सीखा।",
+      "locked_cta": "Text AI से खोलो →"
+    }
+  },
+  "exercises": {
+    "check": "जाँचो",
+    "feedback_correct": "✓ सही!",
+    "fill_blank": {
+      "wrong": "✗ सही जवाब है \"{{correct}}\""
+    },
+    "translate": {
+      "placeholder": "अपना जवाब टाइप करो...",
+      "wrong": "✗ सही जवाब: {{correct}}"
+    },
+    "build_sentence": {
+      "placeholder": "वाक्य बनाने के लिए नीचे शब्दों पर टैप करो",
+      "wrong": "✗ सही: {{correct}}"
+    },
+    "multiple_choice": {
+      "wrong": "✗ बिल्कुल नहीं"
+    }
+  }
+}

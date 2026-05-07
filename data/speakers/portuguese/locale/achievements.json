@@ -1,0 +1,24 @@
+{
+  "__warnings": [
+    { "key": "items.streak_30.description", "note": "'Mês de Mhoro' — keeps the 'Mhoro' wordplay while translating 'Month of...'. Native review: confirm cadence." },
+    { "key": "items.xp_100.title", "note": "'Faísca brilhante' chosen for 'Bright Spark' — figurative; native review on idiomaticity." },
+    { "key": "items.lessons_50.title", "note": "'Halfway Tree' is a Shona-style image — kept as 'Árvore do Meio do Caminho'. Confirm." },
+    { "key": "items.graduated.description_fmt", "note": "{{total}} placeholder preserved." }
+  ],
+  "title": "Conquistas",
+  "subtitle": "{{unlocked}} de {{total}} desbloqueadas",
+  "items": {
+    "first_lesson": { "title": "Primeiros passos",        "description": "Você concluiu sua primeira lição." },
+    "streak_3":     { "title": "Centelha de três dias",   "description": "3 dias seguidos." },
+    "streak_7":     { "title": "Guerreiro(a) da semana",  "description": "Manteve a sequência viva por 7 dias." },
+    "streak_30":    { "title": "Mês de Mhoro",            "description": "Sequência de 30 dias. O Rwen está orgulhoso." },
+    "xp_100":       { "title": "Faísca brilhante",        "description": "Conquistou 100 XP." },
+    "xp_500":       { "title": "Estrela em ascensão",     "description": "Conquistou 500 XP." },
+    "xp_1000":      { "title": "Constelação",             "description": "Conquistou 1.000 XP." },
+    "module_1":     { "title": "Mestre de módulo",        "description": "Concluiu seu primeiro módulo." },
+    "module_5":     { "title": "Metade do caminho",       "description": "Concluiu 5 módulos." },
+    "lessons_25":   { "title": "Quarto vencido",          "description": "Concluiu 25 lições." },
+    "lessons_50":   { "title": "Árvore do Meio do Caminho", "description": "Concluiu 50 lições." },
+    "graduated":    { "title": "Formado(a) Rwendo",       "description_fmt": "Concluiu todas as {{total}} lições." }
+  }
+}

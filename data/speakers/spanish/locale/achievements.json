@@ -1,0 +1,27 @@
+{
+  "__warnings": [
+    { "key": "items.streak_30.title", "note": "'Month of Mhoro' → 'Mes de Mhoro'. Kept Shona 'Mhoro' verbatim as it's Rwen's brand-signature greeting. Reviewer: confirm consistency with rwen.json's welcome decision." },
+    { "key": "items.first_lesson.title", "note": "'First Steps' → 'Primeros pasos'. Standard idiom in LatAm Spanish." },
+    { "key": "items.streak_3.title / items.streak_7.title", "note": "Names are playful/poetic ('Three-Day Spark', 'Week Warrior'). Spanish equivalents are functional — reviewer should rewrite for emotional resonance." },
+    { "key": "items.xp_*.title", "note": "'Bright Spark', 'Rising Star', 'Constellation' — translated literally ('Chispa brillante', 'Estrella en ascenso', 'Constelación'). Reviewer free to substitute equivalent Spanish metaphors." },
+    { "key": "items.lessons_50.title", "note": "'Halfway Tree' is a Jamaican idiom in the original — used 'A mitad del camino' here as the geographic reference doesn't carry. Reviewer: confirm or propose a Spanish cultural anchor." },
+    { "key": "items.graduated.description_fmt", "note": "Plural form uses {{total}} — Spanish plural agreement is automatic at the placeholder; verify {{total}} > 1 reads naturally ('Completaste las {{total}} lecciones')." },
+    { "key": "tu vs usted", "note": "Used informal 'tú' throughout to match Rwen's warm-companion tone, default for LatAm Spanish (e.g. Mexico, Colombia, Peru). Note: Argentina/Uruguay/parts of Central America use 'vos'; Spain uses 'tú' but conjugates differently in 2pl. Reviewer: confirm 'tú' is the right default for the target region." }
+  ],
+  "title": "Logros",
+  "subtitle": "{{unlocked}} de {{total}} desbloqueados",
+  "items": {
+    "first_lesson": { "title": "Primeros pasos",          "description": "Completaste tu primera lección." },
+    "streak_3":     { "title": "Chispa de tres días",     "description": "3 días seguidos." },
+    "streak_7":     { "title": "Guerrero de la semana",   "description": "Mantuviste tu racha viva durante 7 días." },
+    "streak_30":    { "title": "Mes de Mhoro",            "description": "Racha de 30 días. Rwen está orgulloso de ti." },
+    "xp_100":       { "title": "Chispa brillante",        "description": "Ganaste 100 XP." },
+    "xp_500":       { "title": "Estrella en ascenso",     "description": "Ganaste 500 XP." },
+    "xp_1000":      { "title": "Constelación",            "description": "Ganaste 1.000 XP." },
+    "module_1":     { "title": "Maestro del módulo",      "description": "Completaste tu primer módulo." },
+    "module_5":     { "title": "A mitad del camino",      "description": "Completaste 5 módulos." },
+    "lessons_25":   { "title": "Escalador del primer cuarto", "description": "Completaste 25 lecciones." },
+    "lessons_50":   { "title": "Árbol del medio camino",  "description": "Completaste 50 lecciones." },
+    "graduated":    { "title": "Graduado de Rwendo",      "description_fmt": "Completaste las {{total}} lecciones." }
+  }
+}

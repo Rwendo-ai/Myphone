@@ -2,11 +2,17 @@
 
 *8 lessons. One unit. 5–10 minutes a day. Sits under the "Build Yourself" umbrella alongside Knowing Yourself.*
 
-Document version: 1.0 — 2026-05-04
+Document version: 2.0 — 2026-05-05 (Christian-foundation editorial pass)
 Authoring model: Claude Opus 4.7
 Source language: English (single source-of-truth; runtime translation by Claude)
 Schema: `types/lesson.ts` (`LessonData`)
 Course pack: `data/courses/hard-conversations-work/index.ts` (`meta.type: 'self-development'`)
+
+---
+
+## Editorial foundation
+
+All authoring in this track follows [CHRISTIAN-FOUNDATION-SPEC.md](./CHRISTIAN-FOUNDATION-SPEC.md). Christian foundation underneath, neutral surface, no overt religious language, no other-religion framing. **Read that spec before authoring or rewriting any lesson.** This track was found largely compliant in the 2026-05-05 audit; the spec applies to any future authoring and to the one lesson-level fix flagged for `m01-l01.ts` (Buddhist reference in a multi-tradition list — replace with secular framing).
 
 ---
 

@@ -64,7 +64,7 @@ interface TranscriptLine {
 export default function VoiceScreen() {
   const { lessonContext } = useLocalSearchParams<{ lessonContext?: string }>();
   const { user } = useAuth();
-  const { speaker, rwenVoice, activeCompanionPresetId } = useSettings();
+  const { speaker, rwenVoice, activeCompanionPresetId, learnedLanguage } = useSettings();
 
   const [mode, setMode] = useState<Mode>('idle');
   const [transcript, setTranscript] = useState<TranscriptLine[]>([]);
@@ -172,6 +172,7 @@ export default function VoiceScreen() {
         text,
         historyRef.current,
         speaker,
+        learnedLanguage.name,
         lessonContext,
         activeCompanionPresetId,
       );

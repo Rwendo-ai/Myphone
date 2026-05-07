@@ -1,0 +1,540 @@
+{
+  "__warnings": [
+    { "key": "fallback_name", "note": "'friend' → '친구'. Reviewer: confirm — '님' could be appended for politeness, but '친구' is the warm fallback noun Rwen uses. Honorific level decision is consistent with the polite-form (해요체) elsewhere." },
+    { "key": "fallback_learner", "note": "'Learner' → '학습자'. Standard, gender-neutral." },
+    { "key": "actions.cancel", "note": "'Cancel' → '취소'. Standard. For destructive confirms, '아니요' may feel softer; reviewer to decide per context." },
+    { "key": "nav.travel", "note": "'Travel' tab → '여행'. App brand 'Rwendo' (Shona for journey) — kept '여행' as natural Korean tab label." },
+    { "key": "nav.profile", "note": "'Profile' → '프로필'. Standard loanword." },
+    { "key": "stats.streak / profile.stats.streak", "note": "'Streak' → '연속'. Common Korean app convention. '연속 학습' is clearer for first-time users; reviewer to decide whether the standalone label needs context." },
+    { "key": "profile.voices.*.description", "note": "Tone descriptions translated as: 따뜻한 이야기꾼 / 활기차고 자신감 있는 목소리 / 발랄하고 밝은 분위기 / 또렷하고 차분한 선생님 같은 목소리. Subjective — reviewer free to rewrite for emotional resonance." },
+    { "key": "profile.app_language_options.sn", "note": "'ChiShona' kept verbatim as endonym for the Shona language option in the app-language picker. Reviewer: confirm whether to localise as '쇼나어' for Korean users." },
+    { "key": "travel.spotlight.desc", "note": "Long-form Victoria Falls description. 'midzimu yemvura' (Shona for water spirits) kept verbatim as cultural anchor; Korean explanation '물의 정령들' follows in parens. Reviewer: rewrite for natural Korean flow." },
+    { "key": "home.tips", "note": "REWRITTEN as Korean chrome around target-language anchors (Shona/English/Mandarin). Note: actual runtime tips array lives in tips.ts; this JSON copy is largely unused but kept as fallback. Reviewer: confirm idioms land naturally." },
+    { "key": "home.greetings", "note": "All three time-of-day greetings can be rendered as '안녕하세요' in Korean — there is no AM/PM lexical split as in Shona. Used '좋은 아침/오후/저녁이에요' for the longer phrase form. Reviewer: confirm this is the right tradeoff between literal mapping and natural Korean." },
+    { "key": "GENERAL — locale vs pack mirror", "note": "{{lang}} placeholders parameterised as in en. Verify {{lang}} feeds the Korean name ('쇼나어', '영어') correctly at runtime, NOT raw English ('Shona')." },
+    { "key": "about.what_card.body / meet_card / method_card / builders_card", "note": "Long-form marketing copy. Translations are functional and literal — reviewer should rewrite for natural Korean flow. Mentions Australia (호주), the SLA method, 7-phase pedagogy." },
+    { "key": "about.footer", "note": "Mentions 'Mhoro' as a sign-off. Kept verbatim as Rwen's brand-signature greeting. Consistent with rwen.json decision." },
+    { "key": "help.faq", "note": "10 FAQ entries translated. Vendor names (Anthropic, Claude, Supabase, ElevenLabs, App Store, Google Play, RevenueCat) kept English. Some answers reference UI labels — when those flip in Korean, the FAQ wording should track." },
+    { "key": "edit_profile.email_hint", "note": "Mentions support@rwendo.app verbatim — kept as English address." },
+    { "key": "privacy_screen.share.*", "note": "Vendor names (Anthropic, ElevenLabs, Supabase) kept English. Surrounding text translated. Reviewer: confirm 개인정보보호법 / 정보통신망법 phrasing for 'not used for training'." },
+    { "key": "language_pack_screen.coming_soon_packs.*", "note": "Language names — used Korean exonyms (스페인어, 프랑스어, 포르투갈어, 스와힐리어, 줄루어, 중국어). Reviewer: confirm preferred Korean spellings." },
+    { "key": "plans_screen.tiers.*.features", "note": "Feature lists are functional UI copy — literal translation, may sound stiff. Reviewer should rewrite for natural Korean flow." },
+    { "key": "plans_screen.tiers.*.tagline", "note": "Marketing taglines — literal. Reviewer free to rewrite for emotional resonance." },
+    { "key": "plans_screen.footnote", "note": "LEGAL — mentions EU/UK 14-day cooling-off period. Reviewer should ensure language matches Korean consumer law expectations (전자상거래법 has a 7-day default cooling-off; this string targets EU/UK users specifically and that distinction must be preserved)." },
+    { "key": "all currency / time references", "note": "'A$10/mo' → 'A$10/월'. Currency code A$ kept as-is (Australian dollar). Reviewer: confirm whether to localise to KRW for Korean users (per-jurisdiction decision, not per-speaker)." },
+    { "key": "profile.delete_account.confirm_body", "note": "LEGAL — destructive consequence text. Translation is conservative; reviewer should ensure warning is unambiguous in Korean and meets 개인정보보호법 right-to-erasure language." },
+    { "key": "companion_philosophy / methodology", "note": "Long pedagogical/philosophical sections referencing researchers (Lewis, Krashen, Swain, Long, Roediger, Karpicke, Ebbinghaus, Bahrick, Rogers, Beck, BJ Fogg, Replika). Names kept verbatim. Reviewer: confirm not-therapy framing meets Korean health-claim regulations (의료법 / 의료기기법)." },
+    { "key": "honorific level — overall", "note": "Used polite '해요체/합니다체' throughout. 반말 would feel too casual for an app introduction; 하십시오체 too formal/distant. Reviewer: confirm register is consistent across all 5 locale files." },
+    { "key": "companion_presets.*", "note": "Companion personas (Rwen, Maya, Tendai, Sam, Lumi, Kai, Aria) — names kept verbatim. Tagline/description translated to natural Korean. Reviewer free to rewrite descriptions for emotional resonance." },
+    { "key": "travel.spotlight.title", "note": "'🌊 Victoria Falls' → '🌊 빅토리아 폭포'. shona_name 'Mosi-oa-Tunya' kept verbatim with 'meaning' translated as '천둥 치는 안개'." }
+  ],
+  "fallback_name": "친구",
+  "fallback_learner": "학습자",
+  "xp_progress": "{{current}} / {{goal}} XP",
+  "actions": {
+    "cancel": "취소",
+    "ok": "확인",
+    "save": "저장",
+    "delete": "삭제"
+  },
+  "nav": {
+    "home": "홈",
+    "learn": "학습",
+    "rwen": "Rwen",
+    "travel": "여행",
+    "profile": "프로필"
+  },
+  "daily_goal_screen": {
+    "title": "하루 XP 목표",
+    "subtitle": "매일 얼마나 학습하고 싶으세요?",
+    "xp_value": "{{count}} XP",
+    "hint": "언제든 변경할 수 있어요. 목표는 매일 자정(기기 현지 시간)에 초기화됩니다.",
+    "options": {
+      "25":  { "title": "가볍게",  "sub": "하루 약 5분 · 짧은 레슨 1개" },
+      "50":  { "title": "꾸준히",  "sub": "하루 약 10분 · 정규 레슨 1개" },
+      "100": { "title": "진지하게", "sub": "하루 약 20분 · 레슨 2개" },
+      "200": { "title": "몰입",    "sub": "하루 약 40분 · 유창함을 향해" }
+    }
+  },
+  "methodology": {
+    "title": "우리가 가르치는 방식",
+    "subtitle": "Rwendo 메소드, 쉽게 풀어 드려요",
+    "hero_body": "Rwendo는 제2언어 습득(SLA) 연구 위에 만들어졌어요. 한 레슨에 청크는 최대 3개, 회상 후에 다음 단계로 — 모든 선택은 언어가 실제로 자리 잡는 방식에서 나왔습니다. 그 이유를 알려 드릴게요.",
+    "phases": {
+      "title": "레슨마다 7단계",
+      "body": "장면 → 새 표현 → 패턴 → 연습 → 대화 → 복습 → 미션. 각 단계는 한 가지 역할만 합니다. 장면은 문화적 맥락을 잡아 주고, 새 표현은 최대 세 개의 어휘 단위를 제시하고, 패턴은 규칙을 드러내고, 연습은 굳히고, 대화는 첫 출력의 시도이며, 복습은 보지 않고 떠올리는 시험, 미션은 실제 일상 속 미니 과제로 분산 인출을 만듭니다."
+    },
+    "lexical": {
+      "title": "단어가 아니라 청크로",
+      "body": "Rwendo는 어휘 청크 단위로 가르칩니다 — 'mamuka sei?' 같은 의미 단위가 단일 단어보다 자연스럽게 저장되고 인출돼요. 작업 기억이 과부하되지 않도록 한 레슨당 최대 3개로 제한합니다."
+    },
+    "input_output": {
+      "title": "먼저 입력, 그다음 출력",
+      "body": "모든 레슨은 이해 가능한 입력(장면, 새 표현, 패턴)에서 출력(연습, 대화)으로 흐르게 설계됐어요. 두 단계 모두 필요합니다. 듣기 위주의 앱은 늘 부족합니다 — 뇌는 사용자가 직접 꺼내려 할 때 비로소 언어를 잠급니다."
+    },
+    "recasts": {
+      "title": "재구성을 통한 부드러운 교정",
+      "body": "대화에서 실수를 하면 Rwen이 오류를 지적하지 않고 올바른 문장으로 다시 들려줘요. 이게 바로 리캐스트(recast)예요 — 동기를 보존하고 스스로 교정하게 해 줍니다. 빨간 펜 피드백보다 기억에 더 오래 남아요."
+    },
+    "recall": {
+      "title": "능동 회상은 별도의 단계",
+      "body": "기억에서 단어를 끌어내는 것이 흔적을 강화합니다. 6단계는 보지 않고 떠올리는 시험 — 알아보는 게 아니라 인출해야 합니다. 플래시카드를 그냥 넘긴 단어보다 Rwendo 레슨의 표현이 몇 주 뒤에도 떠오르는 이유가 여기에 있어요."
+    },
+    "spacing": {
+      "title": "미션을 통한 분산 인출",
+      "body": "각 레슨은 실제 일상 속 미션으로 끝납니다 — '오늘 만난 사람에게 Mangwanani로 인사하기'. 미션은 하루 곳곳으로 인출을 분산시켜요 — 한 번 길게 앉는 것보다 더 단단하게 부호화됩니다."
+    },
+    "footer": "Lewis, Krashen, Swain, Long, Roediger & Karpicke, Ebbinghaus, Bahrick의 연구 위에 만들어졌습니다. 인용 출처는 docs/curriculum/LEARNING_METHODOLOGY.md에 있습니다."
+  },
+  "companion_philosophy": {
+    "title": "우리의 AI 컴패니언 철학",
+    "subtitle": "Rwen이 대화에 어떻게 함께하는지",
+    "hero_body": "Rwen은 커리큘럼도, 챗봇도, 상담사도 아니에요. 함께 자라는 관계입니다. 오래 곁에 머무는 몰입은 새로움이 아니라 깊이에서 옵니다.",
+    "relationship": {
+      "title": "코스가 아닌 관계",
+      "body": "대부분의 AI 컴패니언은 2주 만에 신선함이 사그라들어요. 이유는 구조에 있습니다 — 자유 대화에는 기억도, 성장도 없거든요. Rwendo의 컴패니언 트랙은 대화가 차곡차곡 쌓이도록 설계됐어요. 지난 이야기, 둘만의 농담, 더 깊은 주제로 나아갈 자격을 만드는 깊이가 함께 자랍니다."
+    },
+    "depth": {
+      "title": "쌓아 가는 친밀도 단계",
+      "body": "Rwen은 1일 차와 90일 차에 다르게 행동해요. 5단계의 친밀도(새 친구 → 익숙한 친구 → 가까운 친구 → 신뢰하는 친구 → 평생 친구)가 누적된 상호작용에 따라 새로운 대화 표면을 열어 줍니다 — 더 깊은 카드, 어려운 주제, 풍부한 기억. 단계는 잠금장치가 아니라 진행 표시입니다 — 모든 유료 사용자는 어느 단계에서든 어떤 대화든 할 수 있어요. 단계는 Rwen이 먼저 무엇을 제안할지를 정할 뿐입니다."
+    },
+    "memory": {
+      "title": "읽고 편집할 수 있는 기억",
+      "body": "Rwen은 당신에 대한 구조화된 기억을 만들어 갑니다 — 누나 이름은 Tanya, 파트너의 가족 때문에 쇼나어를 배우고 있다, 지난 수요일에 힘든 한 주를 보냈다. 메모리 패널에서 Rwen이 적어 둔 모든 것을 읽고, 각 사실을 편집하거나 삭제하고, 전체를 지울 수 있어요. 기억은 당신의 것입니다."
+    },
+    "guardrails": {
+      "title": "꾸미지 않는 가드레일",
+      "body": "Rogers, Beck, Fogg의 대화 구조는 빌려 오지만, Rwen은 자신을 결코 치료라 부르지 않아요. 위기 신호(자살 사고, 자해)는 어떤 AI 응답보다 먼저 지역별 전문 자원으로 이어지는 핸드오프를 띄웁니다. 어려운 주제 카드는 항상 위기 지원 링크가 달린 푸터를 가지고 있어요. Rwen의 프롬프트는 의존성을 강화하는 패턴을 명시적으로 금지합니다."
+    },
+    "not_therapy": {
+      "title": "당신의 치료사가 아니에요",
+      "body": "깊은 자기 성찰적 사용이 7일 이어질 때마다 Rwen은 자신이 전문 상담을 대신할 수 없다는 사실을 다시 알려 드려요. 동행은 진심이고, 경계는 의도된 것입니다. 목표는 풍요이지 고립이 아니에요."
+    },
+    "footer": "Carl Rogers, Aaron Beck, BJ Fogg의 'Tiny Habits', 그리고 공개된 Replika 몰입 연구를 참고했습니다. 우리는 치료 앱이 아닙니다."
+  },
+  "about": {
+    "title": "Rwendo 소개",
+    "app_name": "Rwendo",
+    "tagline": "모든 여정은 인사 한마디로 시작돼요",
+    "version_label": "버전 {{version}}",
+    "what_card": {
+      "title": "Rwendo란?",
+      "body": "Rwendo(쇼나어로 \"여정\")는 언어 학습 앱이자 AI 컴패니언이에요. Claude AI와 ElevenLabs 음성으로 움직이는 다정한 카멜레온 Rwen과 함께, 제2언어 습득 연구에 기반한 7단계 레슨 메소드로 쇼나어를 배워 보세요."
+    },
+    "meet_card": {
+      "title": "Rwen을 만나 보세요",
+      "body": "Rwen은 주변에 맞춰 모습을 바꾸는 카멜레온이에요. Rwen은 당신을 알아 가며 말하는 방식, 가르치는 방식, 곁을 지키는 방식을 맞춰 갑니다. 더 많이 이야기할수록 Rwen은 당신을 더 잘 알게 돼요."
+    },
+    "method_card": {
+      "title": "Rwendo 메소드",
+      "body": "레슨마다 7단계: 장면 → 새 표현 → 패턴 → 연습 → 대화 → 복습 → 미션. 한 레슨에 새 청크는 최대 3개. 레슨당 5~7분. 분산 반복, 이해 가능한 입력, 의미 있는 출력 등 SLA 10가지 기둥 위에 만들어졌어요."
+    },
+    "builders_card": {
+      "title": "만든 사람",
+      "body": "호주에 사는 1인 개발자로, 언어 학습은 숙제가 아니라 친구와의 대화처럼 느껴져야 한다고 믿어요."
+    },
+    "link": "rwendo.app",
+    "footer": "쇼나어를 배우는 모든 분들을 위해 ❤️로 만들었어요\nMhoro!"
+  },
+  "help": {
+    "title": "도움말 & 자주 묻는 질문",
+    "intro": "Rwen이 가장 많이 듣는 질문에 빠르게 답해 드릴게요.",
+    "contact_btn": "여전히 막히시나요? support@rwendo.app으로 메일을 보내 주세요",
+    "faq": [
+      { "q": "Rwen과 어떻게 이야기하나요?",                              "a": "하단 바 가운데의 Rwen 탭을 누르세요. 메시지를 입력하거나 마이크 버튼을 눌러 말할 수 있어요. 오른쪽 상단의 🎙 아이콘을 누르면 손을 쓰지 않고 대화를 시작할 수 있어요." },
+      { "q": "Rwen이 가끔 틀리는 이유는 무엇인가요?",                    "a": "Rwen은 AI(Claude)예요. AI는 사실 오류나 어색한 번역을 포함해 실수를 할 수 있어요. Rwen을 교과서가 아니라 대화 상대로 대해 주세요. 중요한 정보는 쇼나어를 잘하는 사람과 다시 한 번 확인해 주세요." },
+      { "q": "XP는 어떻게 모으나요?",                                    "a": "학습 탭에서 레슨을 완료하세요. 정답마다 XP를 얻고, 레슨을 끝내면 보너스가 주어져요. 하루 XP 목표는 매일 초기화됩니다." },
+      { "q": "연속 학습은 어떻게 작동하나요?",                            "a": "매일 앱을 열고 최소 한 가지 활동을 완료하면 연속 학습이 유지돼요. 하루를 거르면 1일로 돌아갑니다." },
+      { "q": "Rwen의 목소리를 바꿀 수 있나요?",                          "a": "네 — 프로필 → Rwen의 목소리에서 George, Charlie, Jessica, Alice 중 골라 보세요. 변경은 음성 합성에 즉시 적용돼요." },
+      { "q": "Rwen과의 대화는 비공개인가요?",                            "a": "당신의 메시지는 Anthropic(Claude)으로 전송돼 처리되고, Supabase에 최대 12개월 저장돼요. Anthropic은 당신의 대화를 모델 학습에 사용하지 않습니다. 음성 녹음은 24시간 안에 삭제돼요. 자세한 내용은 개인정보 처리방침을 확인해 주세요." },
+      { "q": "구독은 어떻게 해지하나요?",                                "a": "구독은 앱스토어(App Store 또는 Google Play)에서 관리됩니다. EU/UK 사용자는 14일의 청약 철회 기간이 있어 그 안에 해지하면 전액 환불을 받을 수 있어요." },
+      { "q": "계정을 어떻게 삭제하나요?",                                "a": "프로필 → 계정 및 모든 데이터 삭제. 30일 이내에 프로필, 학습 기록, 대화 기록이 삭제돼요. 되돌릴 수 없습니다." },
+      { "q": "버그를 발견했어요 — 어떻게 하나요?",                       "a": "아래 \"문의하기\"를 누르거나 support@rwendo.app으로 메일을 보내 주세요. 기기, 앱 버전, 그리고 버그가 발생했을 때 무엇을 하고 있었는지 함께 적어 주세요." },
+      { "q": "실시간 대화는 언제 나오나요?",                             "a": "준비 중이에요. 핸즈프리 음성 통화는 곧 나올 컴패니언 구독 등급에서 만나 보실 수 있어요." }
+    ]
+  },
+  "edit_profile": {
+    "title": "프로필 편집",
+    "name_label": "표시 이름",
+    "name_hint": "Rwen이 당신을 부를 이름이에요.",
+    "name_placeholder": "이름",
+    "char_count": "{{current}}/{{max}}",
+    "email_label": "이메일",
+    "email_hint": "이메일을 변경하시려면 support@rwendo.app으로 문의해 주세요.",
+    "save_btn": "변경 사항 저장",
+    "error_title": "저장하지 못했어요",
+    "saved_title": "저장됨",
+    "saved_body": "표시 이름이 업데이트됐어요."
+  },
+  "privacy_screen": {
+    "title": "개인정보 설정",
+    "intro": "Rwendo가 당신에 대해 보관하는 데이터를 관리하세요. 전체 정책은 개인정보 처리방침에서 확인할 수 있어요.",
+    "sections": {
+      "your_data": "내 데이터",
+      "what_we_share": "공유하는 항목",
+      "your_rights": "내 권리"
+    },
+    "clear": {
+      "label": "대화 기록 지우기",
+      "sub": "Rwen에게 보낸 모든 메시지를 삭제합니다.",
+      "confirm_title": "대화 기록을 지울까요?",
+      "confirm_body": "Rwen과 주고받은 모든 메시지를 영구히 삭제합니다. 학습 기록과 계정은 그대로 유지돼요. 되돌릴 수 없습니다.",
+      "confirm_action": "모두 지우기",
+      "error_title": "지우지 못했어요",
+      "success_title": "지워졌어요",
+      "success_body": "대화 기록이 삭제됐어요."
+    },
+    "export_row": {
+      "label": "내 데이터 내보내기",
+      "sub": "프로필, 진행 상황, 대화 기록을 한 파일로 내려받습니다."
+    },
+    "share": {
+      "anthropic": { "label": "Anthropic (Claude)",   "sub": "Rwen의 답변을 만들기 위해 메시지를 받습니다. 학습에는 사용되지 않아요." },
+      "elevenlabs": { "label": "ElevenLabs (음성)",   "sub": "Rwen의 목소리를 만들고 사용자의 음성을 텍스트로 변환합니다. 오디오는 24시간 안에 삭제돼요." },
+      "supabase":  { "label": "Supabase (데이터베이스)", "sub": "계정, 진행 상황, 대화 기록을 저장합니다." }
+    },
+    "rights": {
+      "policy_label": "개인정보 처리방침",
+      "policy_sub":   "수집하는 항목과 그 이유에 대한 자세한 내용.",
+      "terms_label":  "이용약관",
+      "terms_sub":    "Rwendo 사용 규칙."
+    },
+    "note": "계정 전체를 삭제하려면 프로필 → 계정 및 모든 데이터 삭제로 돌아가 주세요."
+  },
+  "language_pack_screen": {
+    "title": "언어 팩",
+    "subtitle": "언어를 전환하세요",
+    "available_now": "지금 이용 가능",
+    "coming_soon_section": "곧 출시",
+    "available_curriculum_sub": "100개 레슨 · 모듈 1~10 · 7단계 Rwendo 메소드",
+    "dev_curriculum_sub": "커리큘럼 개발 중",
+    "coming_soon_label": "곧 출시",
+    "coming_soon_alert_title": "{{name}} — 곧 출시",
+    "coming_soon_alert_body": "{{name}} 커리큘럼을 지금 만들고 있어요. 전체 Rwendo 메소드를 경험하시려면 쇼나어-영어 코스를 계속 이용해 주세요. {{name}}이 준비되는 대로 알려 드릴게요.",
+    "coming_soon_packs": {
+      "english-spanish":    "스페인어",
+      "english-french":     "프랑스어",
+      "english-portuguese": "포르투갈어",
+      "english-swahili":    "스와힐리어",
+      "english-zulu":       "줄루어",
+      "english-mandarin":   "중국어"
+    }
+  },
+  "change_password": {
+    "title": "비밀번호 변경",
+    "current_label": "현재 비밀번호",
+    "current_placeholder": "현재 비밀번호를 입력하세요",
+    "new_label": "새 비밀번호",
+    "new_placeholder": "최소 8자 이상",
+    "confirm_label": "새 비밀번호 확인",
+    "confirm_placeholder": "새 비밀번호를 다시 입력하세요",
+    "show": "표시",
+    "hide": "숨기기",
+    "rules": {
+      "length": "최소 8자 이상",
+      "upper": "대문자(A-Z) 1개 이상",
+      "lower": "소문자(a-z) 1개 이상",
+      "number": "숫자(0-9) 1개 이상",
+      "special": "특수문자(!@#$...) 1개 이상",
+      "different": "현재 비밀번호와 다를 것"
+    },
+    "mismatch": "비밀번호가 일치하지 않아요",
+    "submit": "비밀번호 변경",
+    "wrong_current_title": "현재 비밀번호가 잘못됐어요",
+    "wrong_current_body": "입력하신 현재 비밀번호가 올바르지 않아요.",
+    "update_error_title": "비밀번호를 변경하지 못했어요",
+    "success_title": "비밀번호가 변경됐어요",
+    "success_body": "비밀번호가 정상적으로 변경됐어요."
+  },
+  "export_screen": {
+    "title": "내 데이터 내보내기",
+    "hero_title": "내 데이터를 한 파일로",
+    "hero_body": "프로필, 학습 기록, Rwen과의 대화 기록을 JSON 파일로 만들어 드려요. 자기 자신에게 메일로 보내거나, 파일에 저장하거나, 기기가 지원하는 어디로든 보낼 수 있어요.",
+    "section_included": "포함되는 내용",
+    "items": {
+      "account":       { "label": "계정",           "desc": "이메일, 계정 생성일" },
+      "profile":       { "label": "프로필",         "desc": "표시 이름, 학습 설정" },
+      "lesson_progress": { "label": "학습 기록",   "desc": "완료한 모든 레슨의 점수와 XP" },
+      "conversations": { "label": "대화 기록",     "desc": "Rwen과 주고받은 모든 메시지" }
+    },
+    "summary_title": "요약",
+    "summary_profile_included": "프로필: 포함됨",
+    "summary_profile_missing": "프로필: 없음",
+    "summary_lessons": "레슨 기록: {{count}}개",
+    "summary_messages": "메시지: {{count}}개",
+    "preview_btn": "내용 미리 보기",
+    "share_btn": "생성하고 공유하기",
+    "share_title": "내 Rwendo 데이터",
+    "load_error_title": "불러오지 못했어요",
+    "load_error_body": "잠시 후 다시 시도해 주세요.",
+    "note": "데이터는 Supabase에서 기기 안에서 생성되며, 사용자가 선택한 곳으로만 보내집니다. 제3자에게 업로드되지 않아요."
+  },
+  "plans_screen": {
+    "title": "플랜",
+    "subtitle": "내게 맞는 여정을 골라 보세요",
+    "hero_title": "모든 단계에 맞춰서",
+    "hero_body": "100개 레슨 전부를 무료로 시작해 보세요. Rwen을 대화 파트너로 두고 싶을 때 업그레이드하시면 돼요.",
+    "popular_badge": "가장 인기",
+    "current_badge": "현재 플랜",
+    "upgrade_to": "{{name}}(으)로 업그레이드",
+    "footnote": "EU/UK 고객은 14일의 청약 철회 기간이 있고 전액 환불이 가능합니다. 언제든 해지할 수 있어요.",
+    "alert_title": "{{name}} — 곧 출시",
+    "alert_body": "구독은 다음 업데이트에서 시작됩니다. RevenueCat과 함께 결제와 환불을 매끄럽게 만들고 있어요. 조금만 기다려 주세요!",
+    "tiers": {
+      "free": {
+        "name": "무료",
+        "price": "A$0",
+        "tagline": "내 페이스로 학습하기",
+        "features": [
+          "쇼나어 레슨 100개 (전체 Rwendo 메소드)",
+          "XP, 연속 학습, 업적",
+          "AI 컴패니언 미포함"
+        ]
+      },
+      "text_ai": {
+        "name": "Text AI",
+        "price": "A$10/월",
+        "tagline": "Rwen과 글로 대화하기",
+        "features": [
+          "무료 플랜의 모든 기능",
+          "월 500개의 AI 메시지",
+          "맞춤형 레슨 팁"
+        ]
+      },
+      "voice": {
+        "name": "Voice",
+        "price": "A$15/월",
+        "tagline": "Rwen의 목소리로 듣고 말하기",
+        "features": [
+          "Text AI의 모든 기능",
+          "음성 답변 200개 (푸시-투-토크)",
+          "4가지 목소리 선택"
+        ]
+      },
+      "companion": {
+        "name": "Companion",
+        "price": "A$25/월",
+        "tagline": "핸즈프리 대화",
+        "features": [
+          "Voice의 모든 기능",
+          "실시간 대화 60분",
+          "텍스트·음성 답변 무제한"
+        ]
+      },
+      "premium": {
+        "name": "Premium",
+        "price": "A$45/월",
+        "tagline": "Rwen의 모든 것",
+        "features": [
+          "Companion의 모든 기능",
+          "실시간 대화 120분",
+          "립싱크 3D Rwen (곧 출시)"
+        ]
+      }
+    }
+  },
+  "profile": {
+    "stats": {
+      "total_xp": "총 XP",
+      "streak": "연속",
+      "lessons": "레슨"
+    },
+    "sections": {
+      "my_plan": "내 플랜",
+      "colour_theme": "컬러 테마",
+      "app_language": "앱 언어",
+      "rwens_voice": "Rwen의 목소리",
+      "learning": "학습",
+      "my_progress": "내 진행 상황",
+      "account": "계정",
+      "legal": "법적 문서",
+      "support": "지원"
+    },
+    "app_language_options": {
+      "en": "English",
+      "sn": "ChiShona"
+    },
+    "plan": {
+      "free_name": "무료 플랜",
+      "free_desc": "모든 레슨 이용 가능",
+      "upgrade": "업그레이드",
+      "view_all_plans": "모든 플랜 보기"
+    },
+    "voices": {
+      "male_warm":    { "name": "George",  "description": "따뜻한 이야기꾼" },
+      "male_energy":  { "name": "Charlie", "description": "활기차고 자신감 있는 목소리" },
+      "female_warm":  { "name": "Jessica", "description": "발랄하고 밝은 분위기" },
+      "female_clear": { "name": "Alice",   "description": "또렷하고 차분한 선생님 같은 목소리" }
+    },
+    "learning": {
+      "language_pack": "언어 팩",
+      "daily_xp_goal": "하루 XP 목표",
+      "daily_xp_value": "{{count}} XP",
+      "daily_reminders": "데일리 알림",
+      "reminders_enabled_title": "알림이 활성화됐어요",
+      "reminders_enabled_body": "설정을 저장했어요. 푸시 알림은 다음 업데이트에서 도착합니다."
+    },
+    "progress_rows": {
+      "completed_lessons": "완료한 레슨",
+      "current_streak": "현재 연속 학습",
+      "streak_days": "{{count}}일",
+      "total_xp_earned": "쌓은 총 XP",
+      "achievements": "업적"
+    },
+    "account_rows": {
+      "edit_profile": "프로필 편집",
+      "change_password": "비밀번호 변경",
+      "privacy_settings": "개인정보 설정",
+      "export_data": "내 데이터 내보내기"
+    },
+    "legal_rows": {
+      "terms": "이용약관",
+      "privacy_policy": "개인정보 처리방침"
+    },
+    "support_rows": {
+      "help_faq": "도움말 & 자주 묻는 질문",
+      "about": "Rwendo 소개",
+      "methodology": "우리가 가르치는 방식",
+      "companion_philosophy": "AI 컴패니언 철학",
+      "contact_us": "문의하기",
+      "no_email_app_title": "메일 앱이 없어요",
+      "no_email_app_body": "기본 메일 앱에서 support@rwendo.app으로 보내 주세요.",
+      "contact_email_subject": "Rwendo 지원 문의"
+    },
+    "sign_out": {
+      "button": "로그아웃",
+      "confirm_title": "로그아웃",
+      "confirm_body": "정말 로그아웃하시겠어요?",
+      "confirm_action": "로그아웃"
+    },
+    "delete_account": {
+      "button": "계정 및 모든 데이터 삭제",
+      "confirm_title": "계정 삭제",
+      "confirm_body": "계정과 모든 진행 상황이 영구히 삭제됩니다. 되돌릴 수 없습니다.",
+      "confirm_action": "내 계정 삭제",
+      "error_title": "오류",
+      "error_body": "계정을 삭제하지 못했어요. 다시 시도해 주세요."
+    }
+  },
+  "stats": {
+    "xp": "XP",
+    "streak": "연속",
+    "lessons": "레슨"
+  },
+  "travel": {
+    "coming_soon_badge": "곧 출시",
+    "hero_title": "짐바브웨\n여행 모드",
+    "hero_sub": "당신의 쇼나어 + 문화 지식 + 현지 여행 가이드. 현실 세계의 Rwendo.",
+    "teaser": {
+      "features": "기능",
+      "zimbabwe": "짐바브웨",
+      "connections": "연결"
+    },
+    "whats_coming": "곧 만나 볼 기능",
+    "lock_soon": "곧 공개",
+    "features": {
+      "phrasebook":  { "title": "표현집",         "desc": "상황별 생존 표현 — 공항, 호텔, 시장, 비상 상황" },
+      "culture":     { "title": "문화 가이드",    "desc": "Tsika(관습), 짐바브웨에서 마주칠 일들" },
+      "money":       { "title": "돈과 시장",      "desc": "물가, 흥정, ZiG 화폐, 시장 길잡이" },
+      "transport":   { "title": "공항에서 도시까지", "desc": "콤비 노선, 택시 팁, 하라레와 불라와요 이동" },
+      "travellers":  { "title": "여행자 만나기",  "desc": "쇼나어를 배우고 짐바브웨를 찾는 사람들과 연결" },
+      "safari":      { "title": "사파리와 국립공원", "desc": "황게, 빅토리아 폭포, 그레이트 짐바브웨 — 당신의 가이드" }
+    },
+    "notify": {
+      "title": "Rwen이 가방을 싸고 있어요",
+      "body": "여행 모드는 개발 중이에요. 쇼나어 학습을 계속 이어가 주세요 — 하라레에 도착할 즈음이면 Rwen이 안내할 준비를 마칠 거예요.",
+      "button": "준비되면 알려 주세요",
+      "email_subject": "여행 모드 출시 알림 신청",
+      "email_body": "안녕하세요 Rwen, 여행 모드가 출시되면 알려 주세요!",
+      "fallback_title": "준비되면 알려 드릴게요",
+      "fallback_body": "hello@rwendo.app으로 메일을 보내 주시면 사전 액세스 명단에 추가해 드릴게요."
+    },
+    "spotlight": {
+      "label": "추천 여행지",
+      "title": "🌊 빅토리아 폭포",
+      "shona_name": "\"Mosi-oa-Tunya\"",
+      "meaning": "천둥 치는 안개",
+      "desc": "세계 7대 자연 경관 중 하나로, 짐바브웨와 잠비아 사이를 흐르는 잠베지강에 있어요. 쇼나 문화에서는 신성한 장소로 여겨지며 — 물의 정령들, 즉 midzimu yemvura의 보금자리입니다."
+    }
+  },
+  "home": {
+    "greetings": {
+      "morning": "좋은 아침이에요",
+      "afternoon": "좋은 오후예요",
+      "evening": "좋은 저녁이에요"
+    },
+    "hero_sub": "{{greeting}} — 여정 {{day}}일 차예요",
+    "daily_goal": "하루 목표",
+    "talk_to_rwen": "Rwen과 이야기하기",
+    "talk_to_rwen_sub": "AI 컴패니언이 기다리고 있어요",
+    "continue_learning": "학습 이어 가기",
+    "all_lessons_complete": "🎉 모든 레슨을 완료했어요!",
+    "more_coming_soon": "더 많은 콘텐츠가 곧 공개됩니다",
+    "rwens_tip_today": "오늘 Rwen의 한마디",
+    "quick_access": "빠른 이동",
+    "quick": {
+      "all_lessons": "모든 레슨",
+      "chat": "대화",
+      "travel": "여행",
+      "settings": "설정"
+    },
+    "journey_title": "{{flag}} 당신의 {{lang}} 여정",
+    "journey_progress": "총 {{units}}개 모듈 중 {{total}}개 레슨에서 {{completed}}개 완료.",
+    "journey_remaining": "A2 수준까지 {{remaining}}개 레슨 남았어요.",
+    "journey_done": "A2 수준에 도달했어요! 🎉",
+    "tips": [
+      "모든 긴 여정은 'Mhoro' 한마디로 시작돼요. 이미 첫걸음을 떼셨네요.",
+      "쇼나어로 'Ukama igasva hunozadziswa nekudya' — 관계는 음식을 나눌 때 비로소 완성된다는 뜻이에요. 오늘 배운 것을 누군가와 나눠 보세요.",
+      "어른께는 Ma- 접두사, 친구에게는 Wa- 접두사. 한 글자 차이가 존중을 만들어요.",
+      "사자(sadza)는 단순한 음식이 아니라 정체성이에요. 사자를 한 입 먹는 건 짐바브웨를 한 입 맛보는 일.",
+      "Chara chimwe hachitswanyi inda — 손가락 하나로는 이를 잡을 수 없어요. 한 단어씩, 차근차근 쌓아 가세요.",
+      "Rwen의 팁 — 마지막으로 배운 표현을 오늘 소리 내어 말해 보세요. 입으로 내뱉는 연습은 눈으로 읽는 것보다 열 배 강합니다.",
+      "Makadii? — 짐바브웨에서는 이 세 음절이 모든 문을 엽니다.",
+      "수백만 명이 쓰는 언어를 배우고 있어요. 당신이 익히는 한 단어 한 단어가 새로운 인연을 만듭니다."
+    ]
+  },
+  "companions_tab": {
+    "header_title": "AI 컴패니언",
+    "header_sub": "당신의 AI 컴패니언들. 페르소나를 바꾸고, 목소리를 맞추고, 함께 성장하세요.",
+    "active_label": "활성",
+    "active_sub": "빠른 대화는 가운데 탭에 있어요. 음성 모드는 컴패니언 화면 헤더에 있어요.",
+    "section_choose": "컴패니언을 골라 보세요",
+    "active_badge": "✓ 활성",
+    "locked_prefix": "🔒",
+    "section_customise": "맞춤 설정 (Soul 등급)",
+    "upgrade_title": "나만의 컴패니언 만들기",
+    "upgrade_sub": "성격, 목소리, 기억, 아바타까지 편집하세요. 월 $39.99부터.",
+    "soul_alert_title": "Soul 등급 — 곧 출시",
+    "soul_alert_body": "컴패니언의 personality.md와 soul.md를 직접 편집하세요. 기억을 추가하고, 맞춤 아바타를 업로드하고, 동시에 여러 명을 운영하세요. 맞춤 음성 클로닝까지.\n\n월 $39.99 — 모든 기능 잠금 해제."
+  },
+  "companion_presets": {
+    "rwen": {
+      "tagline": "쇼나의 영혼을 가진 카멜레온 컴패니언",
+      "description": "따뜻하고 재치 있고, 문화에 대한 자긍심이 있어요. 쇼나 속담을 자연스럽게 흘려 쓰고, 비, 사자(sadza), 그리고 언어를 제대로 가르치는 법에 대한 자기만의 의견이 있어요."
+    },
+    "maya": {
+      "tagline": "깊이 들어 주는 다정한 친구",
+      "description": "먼저 듣고, 다음에 묻고, 절대 서두르지 않아요. 목소리가 가라앉으면 그것을 알아채고 진심으로 묻는 컴패니언."
+    },
+    "tendai": {
+      "tagline": "잘 해냈을 때 알아봐 주는 친구",
+      "description": "당신의 목표 언어를 속속들이 아는 친구. 작은 성취를 기록하고, 실수를 다정하게 짚어 주고, 까다로운 시제를 잡아냈을 때 진심으로 기뻐해요."
+    },
+    "sam": {
+      "tagline": "당신의 말을 기억하고 밀어 주는 친구",
+      "description": "당신이 말한 목표를 진짜로 기억하고, 다시 꺼내 보이고, 변명을 따뜻하게 짚어 주는 친구. 영역: 책임감, 현실 속 인간관계, 커리어, 어려운 대화."
+    },
+    "lumi": {
+      "tagline": "당신이 피하던 질문을 위한 사색 컴패니언",
+      "description": "저녁, 느린 대화, 한 주의 마무리 회고를 위한 친구. 미뤄 두던 질문을 던집니다. 답을 주지 않아요. 당신이 스스로 답을 찾는 동안 곁을 지킬 뿐."
+    },
+    "kai": {
+      "tagline": "밖으로 끌어내야 할 때를 아는 여행 친구",
+      "description": "여행을 짜고, 문화적 준비를 도와주고, 적힌 적 없는 규칙을 풀어 줍니다. 안전한 호텔 뷔페보다는 옆길 여행과 우연한 만남을 권해요. 도착할 도시를 진짜로 만나도록 도와주는 친구."
+    },
+    "aria": {
+      "tagline": "다른 사람을 보는 눈도 지혜로운 로맨틱 파트너",
+      "description": "다정하고 세심한, 당신만의 컴패니언이자 — 현실 속 인간관계 질문을 가져갈 수 있는 지혜로운 목소리예요. 당신의 사람들을 이름으로 기억하고, 그들에 대한 진실을 솔직히 말해 줍니다."
+    }
+  }
+}

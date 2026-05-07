@@ -89,6 +89,10 @@
       "card_title_prefix": "📍 ",
       "cta": "Famba zvakanaka →"
     },
+    "crisis": {
+      "header": "If you need someone to talk to",
+      "body": "What this lesson touched on can sit heavy. If it brought up something hard, please reach out to one of these — they're trained for this and they're free."
+    },
     "phase8": {
       "unlocked_title": "Practice with Rwen",
       "unlocked_body": "Try out '{{topic}}' in conversation. Rwen will use what you just learned.",

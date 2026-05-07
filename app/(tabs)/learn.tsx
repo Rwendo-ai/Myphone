@@ -1,21 +1,33 @@
 import { View, Text, StyleSheet, ScrollView, Pressable, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router, useFocusEffect } from 'expo-router';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getUnitsForPack, getUnitsForCourse } from '../../data/lessons';
-import { getCourse } from '../../data/courses';
+import { getLessonManifest, getCourseModuleMeta } from '../../lib/manifests';
 import { useSettings } from '../../lib/SettingsContext';
 import { useProgress } from '../../hooks/useProgress';
 import { useDailyXpGoal } from '../../lib/preferences';
 import { CoursePack, CoursePackId } from '../../types/packs';
 import { DEV_UNLOCK_ALL } from '../../constants/dev';
 import ProfilePicButton from '../../components/ProfilePicButton';
+import {
+  isCourseInstalled,
+  courseDiskBytes,
+  installCourse,
+  uninstallCourse,
+} from '../../lib/lesson-loader';
 
 // Mid-market launch price per language course. Per-jurisdiction localisation
 // lives in `available_packs.prices_by_jurisdiction` (queried once when the
 // purchase flow is wired). RevenueCat will eventually be the source of truth.
 const COURSE_PRICE_AUD = 14.99;
+
+function formatBytes(b: number): string {
+  if (b < 1024) return `${b} B`;
+  if (b < 1024 * 1024) return `${(b / 1024).toFixed(0)} KB`;
+  return `${(b / (1024 * 1024)).toFixed(1)} MB`;
+}
 import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
 
@@ -33,34 +45,16 @@ function categoryForCourse(course: CoursePack): CourseCategory | null {
   return null;
 }
 
-// Today's units table is keyed by legacy pack ID. Once non-language educational
-// courses ship, units should migrate to course-ID keys directly.
+// Today's units table is keyed by legacy pack ID. Used only for `language-shona`
+// where 10 hand-authored units exist with richer descriptions than the
+// manifest synthesis. Every other course (including language-english, which
+// now has 100 lessons across 4 speaker variants) goes through the manifest
+// path so all 10 units render.
 function courseIdToLegacyPackId(courseId: CoursePackId): string | null {
   if (courseId === 'language-shona')   return 'shona-english';
-  if (courseId === 'language-english') return 'english-shona';
   return null;
 }
 
-/**
- * Synchronously load the bundled curriculum for a course. Each course has
- * a single authored variant in v1 (english speakers learning X, or shona
- * speakers learning English). Non-native-speaker users fall back to that
- * authored variant — see Phase K for proper per-speaker authoring.
- */
-function tryRequireCurriculum(courseId: CoursePackId): Record<string, { id: string; module: number; lesson: number; title: string; xpReward: number }> | undefined {
-  try {
-    /* eslint-disable @typescript-eslint/no-var-requires */
-    if (courseId === 'language-shona')   return require('../../data/courses/language-shona/english/curriculum').default;
-    if (courseId === 'language-english') return require('../../data/courses/language-english/shona/curriculum').default;
-    if (courseId === 'language-french')  return require('../../data/courses/language-french/english/curriculum').default;
-    if (courseId === 'language-chinese') return require('../../data/courses/language-chinese/english/curriculum').default;
-    if (courseId === 'language-tagalog') return require('../../data/courses/language-tagalog/english/curriculum').default;
-    /* eslint-enable @typescript-eslint/no-var-requires */
-  } catch {
-    return undefined;
-  }
-  return undefined;
-}
 
 export default function LearnScreen() {
   const { t } = useTranslation('learn');
@@ -68,8 +62,9 @@ export default function LearnScreen() {
   const {
     spokenLanguage, learnedLanguage,
     courses, activeCourseId, setActiveCourseId,
-    entitlementContext,
+    entitlementContext, speaker,
   } = useSettings();
+  const speakerId = speaker.id;
   const { xp, streakDays, completedLessons, refresh } = useProgress();
   const { goal: dailyXpGoal } = useDailyXpGoal();
 
@@ -87,7 +82,8 @@ export default function LearnScreen() {
 
   const isOwned = useCallback(
     (courseId: CoursePackId) =>
-      entitlementContext.starterCourseId === courseId
+      DEV_UNLOCK_ALL
+      || entitlementContext.starterCourseId === courseId
       || entitlementContext.ownedCourseIds.includes(courseId),
     [entitlementContext.starterCourseId, entitlementContext.ownedCourseIds],
   );
@@ -98,7 +94,7 @@ export default function LearnScreen() {
   }, [educationalCourses, activeCourseId]);
 
   const [selectedCategory, setSelectedCategory] = useState<CourseCategory>(initialCategory);
-  const [showLocked, setShowLocked] = useState(false);
+  const [showMoreCourses, setShowMoreCourses] = useState(false);
 
   const coursesInCategory = useMemo(
     () => educationalCourses.filter(c => categoryForCourse(c) === selectedCategory),
@@ -120,6 +116,11 @@ export default function LearnScreen() {
     [ownedInCategory, activeCourseId],
   );
 
+  const otherOwnedInCategory = useMemo(
+    () => ownedInCategory.filter(c => c.meta.id !== courseToShow?.meta.id),
+    [ownedInCategory, courseToShow],
+  );
+
   const units = useMemo(() => {
     if (!courseToShow) return [];
     // 1) Hand-authored UNITS metadata for legacy packs (shona-english,
@@ -130,18 +131,17 @@ export default function LearnScreen() {
       const handAuthored = getUnitsForPack(legacy);
       if (handAuthored.length > 0) return handAuthored;
     }
-    // 2) Synthesised units for the other 3 language courses (french /
-    //    chinese / tagalog) — derived at runtime from the course's
-    //    bundled curriculum + the shared MODULE_META map.
-    const course = getCourse(courseToShow.meta.id);
-    const variant = course?.variants[spokenLanguage.id as string]
-                  ?? course?.variants.english
-                  ?? course?.variants.shona;
-    const lessonsRecord: Record<string, { id: string; module: number; lesson: number; title: string; xpReward: number }> | undefined =
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
-      tryRequireCurriculum(courseToShow.meta.id);
-    if (lessonsRecord) {
-      return getUnitsForCourse(courseToShow.meta.id, Object.values(lessonsRecord));
+    // 2) Synthesised units for every language course — derived from the
+    //    static lesson manifest + shared MODULE_META map. Manifests carry
+    //    only id/module/lesson/title/xpReward; full lesson content streams
+    //    from Supabase Storage on first open.
+    const manifest = getLessonManifest(courseToShow.meta.id);
+    if (manifest && manifest.length > 0) {
+      return getUnitsForCourse(
+        courseToShow.meta.id,
+        manifest,
+        getCourseModuleMeta(courseToShow.meta.id),
+      );
     }
     return [];
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -156,11 +156,6 @@ export default function LearnScreen() {
     { key: 'build-yourself', emoji: '🌱', label: t('tab.categories.build_yourself', { defaultValue: 'Build Yourself' }) },
   ];
 
-  const buyLabelKey: Record<CourseCategory, string> = {
-    'languages':      'tab.buy.language_course',
-    'build-yourself': 'tab.buy.build_yourself_course',
-  };
-
   const handleSelectCourse = (course: CoursePack) => {
     if (course.meta.id !== activeCourseId) setActiveCourseId(course.meta.id);
   };
@@ -174,6 +169,68 @@ export default function LearnScreen() {
   };
 
   useFocusEffect(useCallback(() => { refresh(); }, [refresh]));
+
+  // ─── Install state for the active course ─────────────────────────────────
+  // Tracks whether the active course's lessons are downloaded to local disk
+  // and how many KB they take. Surfaced as a tap-to-manage row under the
+  // active course pill. All wiring lives in `lib/lesson-loader.ts`.
+  const [installState, setInstallState] = useState<{
+    installed: boolean;
+    bytes: number;
+    pending?: 'install' | 'uninstall';
+  }>({ installed: false, bytes: 0 });
+
+  const refreshInstallState = useCallback(async () => {
+    if (!courseToShow) return;
+    const installed = await isCourseInstalled(courseToShow.meta.id, speakerId);
+    const bytes = installed ? await courseDiskBytes(courseToShow.meta.id, speakerId) : 0;
+    setInstallState({ installed, bytes });
+  }, [courseToShow, speakerId]);
+
+  useEffect(() => { refreshInstallState(); }, [refreshInstallState]);
+
+  const handleManageStorage = useCallback(() => {
+    if (!courseToShow) return;
+    const courseId = courseToShow.meta.id;
+    const manifest = getLessonManifest(courseId);
+    const lessonIds = (manifest ?? []).map((m) => m.id);
+
+    if (installState.installed) {
+      Alert.alert(
+        courseToShow.meta.displayName,
+        `Installed · ${formatBytes(installState.bytes)}\n\nFree this space? Lessons will re-download next time you open them.`,
+        [
+          { text: 'Cancel', style: 'cancel' },
+          {
+            text: 'Free space',
+            style: 'destructive',
+            onPress: async () => {
+              setInstallState((s) => ({ ...s, pending: 'uninstall' }));
+              await uninstallCourse(courseId, speakerId);
+              await refreshInstallState();
+            },
+          },
+        ],
+      );
+      return;
+    }
+
+    Alert.alert(
+      courseToShow.meta.displayName,
+      `Download all ${lessonIds.length} lessons for offline use? (~${Math.max(1, Math.round(lessonIds.length * 5))} KB)`,
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Download',
+          onPress: async () => {
+            setInstallState((s) => ({ ...s, pending: 'install' }));
+            await installCourse(courseId, speakerId, lessonIds);
+            await refreshInstallState();
+          },
+        },
+      ],
+    );
+  }, [courseToShow, installState, speakerId, refreshInstallState]);
 
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>
@@ -219,61 +276,88 @@ export default function LearnScreen() {
           })}
         </View>
 
-        {ownedInCategory.length > 0 && (
+        {courseToShow && (
           <View style={styles.coursePillSection}>
-            {ownedInCategory.map(course => {
-              const isActive = course.meta.id === (courseToShow?.meta.id ?? null);
-              return (
-                <Pressable
-                  key={course.meta.id}
-                  style={[styles.coursePill, isActive && styles.coursePillActive]}
-                  onPress={() => handleSelectCourse(course)}
-                >
-                  <Text style={styles.coursePillEmoji}>{course.meta.emoji}</Text>
-                  <Text style={[styles.coursePillLabel, isActive && styles.coursePillLabelActive]}>
-                    {course.meta.displayName}
-                  </Text>
-                  {isActive && <Text style={styles.coursePillCheck}>✓</Text>}
-                </Pressable>
-              );
-            })}
+            <Pressable
+              style={[styles.coursePill, styles.coursePillActive]}
+              onPress={() => handleSelectCourse(courseToShow)}
+            >
+              <Text style={styles.coursePillEmoji}>{courseToShow.meta.emoji}</Text>
+              <Text style={[styles.coursePillLabel, styles.coursePillLabelActive]}>
+                {courseToShow.meta.displayName}
+              </Text>
+              <Text style={styles.coursePillCheck}>✓</Text>
+            </Pressable>
+            <Pressable style={styles.storageRow} onPress={handleManageStorage} disabled={!!installState.pending}>
+              <Text style={styles.storageRowIcon}>
+                {installState.pending === 'install' ? '⏳'
+                  : installState.pending === 'uninstall' ? '🗑️'
+                  : installState.installed ? '💾' : '⬇️'}
+              </Text>
+              <Text style={styles.storageRowText}>
+                {installState.pending === 'install' ? 'Downloading…'
+                  : installState.pending === 'uninstall' ? 'Freeing space…'
+                  : installState.installed
+                    ? `Installed · ${formatBytes(installState.bytes)}`
+                    : 'Tap to download for offline use'}
+              </Text>
+              {!installState.pending && (
+                <Text style={styles.storageRowAction}>{installState.installed ? 'Manage' : 'Download'}</Text>
+              )}
+            </Pressable>
           </View>
         )}
 
-        {lockedInCategory.length > 0 && (
+        {(otherOwnedInCategory.length > 0 || lockedInCategory.length > 0) && (
           <View style={styles.coursePillSection}>
             <Pressable
-              style={[styles.buyAnotherCard, showLocked && styles.buyAnotherCardOpen]}
-              onPress={() => setShowLocked((s) => !s)}
+              style={[styles.buyAnotherCard, showMoreCourses && styles.buyAnotherCardOpen]}
+              onPress={() => setShowMoreCourses((s) => !s)}
             >
               <View style={styles.buyAnotherIconWrap}>
-                <Text style={styles.buyAnotherIcon}>{showLocked ? '−' : '+'}</Text>
+                <Text style={styles.buyAnotherIcon}>{showMoreCourses ? '−' : '+'}</Text>
               </View>
               <View style={{ flex: 1 }}>
-                <Text style={styles.buyAnotherTitle}>{t(buyLabelKey[selectedCategory])}</Text>
+                <Text style={styles.buyAnotherTitle}>
+                  {t('tab.next_course.label', { defaultValue: 'Get your next course' })}
+                </Text>
                 <Text style={styles.buyAnotherSub}>
-                  {showLocked
-                    ? `${lockedInCategory.length} available · tap to hide`
-                    : `${lockedInCategory.length} available · from $${COURSE_PRICE_AUD.toFixed(2)}`}
+                  {showMoreCourses
+                    ? `${otherOwnedInCategory.length + lockedInCategory.length} available · tap to hide`
+                    : `${otherOwnedInCategory.length + lockedInCategory.length} available`}
                 </Text>
               </View>
-              <Text style={styles.buyAnotherChevron}>{showLocked ? '▾' : '▸'}</Text>
+              <Text style={styles.buyAnotherChevron}>{showMoreCourses ? '▾' : '▸'}</Text>
             </Pressable>
 
-            {showLocked && lockedInCategory.map(course => (
-              <Pressable
-                key={course.meta.id}
-                style={[styles.coursePill, styles.coursePillLocked]}
-                onPress={() => handleBuyCourse(course)}
-              >
-                <Text style={[styles.coursePillEmoji, styles.lockedDim]}>{course.meta.emoji}</Text>
-                <Text style={[styles.coursePillLabel, styles.lockedDim]}>
-                  {course.meta.displayName}
-                </Text>
-                <Text style={styles.coursePillPrice}>${COURSE_PRICE_AUD.toFixed(2)}</Text>
-                <Text style={styles.coursePillLock}>🔒</Text>
-              </Pressable>
-            ))}
+            {showMoreCourses && (
+              <>
+                {otherOwnedInCategory.map(course => (
+                  <Pressable
+                    key={course.meta.id}
+                    style={styles.coursePill}
+                    onPress={() => handleSelectCourse(course)}
+                  >
+                    <Text style={styles.coursePillEmoji}>{course.meta.emoji}</Text>
+                    <Text style={styles.coursePillLabel}>{course.meta.displayName}</Text>
+                  </Pressable>
+                ))}
+                {lockedInCategory.map(course => (
+                  <Pressable
+                    key={course.meta.id}
+                    style={[styles.coursePill, styles.coursePillLocked]}
+                    onPress={() => handleBuyCourse(course)}
+                  >
+                    <Text style={[styles.coursePillEmoji, styles.lockedDim]}>{course.meta.emoji}</Text>
+                    <Text style={[styles.coursePillLabel, styles.lockedDim]}>
+                      {course.meta.displayName}
+                    </Text>
+                    <Text style={styles.coursePillPrice}>${COURSE_PRICE_AUD.toFixed(2)}</Text>
+                    <Text style={styles.coursePillLock}>🔒</Text>
+                  </Pressable>
+                ))}
+              </>
+            )}
           </View>
         )}
 
@@ -456,6 +540,18 @@ const styles = StyleSheet.create({
   coursePillLabel: { flex: 1, fontSize: FontSize.md, fontWeight: FontWeight.bold, color: Colors.gray[800] },
   coursePillLabelActive: { color: Colors.primary },
   coursePillCheck: { fontSize: FontSize.md, color: Colors.primary, fontWeight: FontWeight.bold },
+  storageRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.sm,
+    paddingHorizontal: Spacing.md,
+    paddingVertical: Spacing.sm,
+    backgroundColor: 'rgba(0,0,0,0.03)',
+    borderRadius: BorderRadius.md,
+  },
+  storageRowIcon: { fontSize: 16 },
+  storageRowText: { flex: 1, fontSize: FontSize.sm, color: Colors.gray[700] },
+  storageRowAction: { fontSize: FontSize.sm, color: Colors.secondary, fontWeight: FontWeight.bold },
   buyAnotherPill: {
     backgroundColor: 'transparent',
     borderRadius: BorderRadius.lg,

@@ -1,0 +1,34 @@
+{
+  "__warnings": [
+    { "key": "messages.welcome", "note": "Kept Shona 'Mhoro' verbatim — it's Rwen's signature greeting and is recognised across the app. Reviewer: confirm this stays Mhoro for Korean speakers, or flip to '안녕하세요, {{name}}님!' if user research shows Korean users find Mhoro confusing." },
+    { "key": "messages.error_generic", "note": "Kept Shona 'Ndine urombo' (I'm sorry) verbatim for the same brand-signature reason. Korean explanation follows. Reviewer: confirm or flip to '죄송해요 —'." },
+    { "key": "messages.auto_listen_greeting", "note": "Same Mhoro decision applied. Reviewer: confirm." },
+    { "key": "messages.welcome — name particle", "note": "Used '{{name}}님' (with honorific 님). Korean convention is to attach 님 to a name when addressing politely. If {{name}} is sometimes a non-Korean Latin-letter name, '님' still attaches naturally. Reviewer: confirm." },
+    { "key": "header.status_idle", "note": "'{{lang}} companion · AI' → '{{lang}} 컴패니언 · AI'. Used loanword 컴패니언; alternative '동반자' is warmer but more literary. Reviewer: pick register." },
+    { "key": "input.placeholder_convo_active", "note": "'tap ⏹ to stop' → '⏹를 누르세요'. Polite-form (해요체) used throughout. Reviewer: confirm honorific level matches the rest of the pack." },
+    { "key": "honorific level — overall", "note": "All 5 locale files default to polite '해요체/합니다체'. Reviewer: confirm this is the right register for an AI-companion app aimed at adult learners (20s-40s). 반말 would feel too casual; 하십시오체 too formal." }
+  ],
+  "header": {
+    "title": "Rwen",
+    "status_listening": "🎤 듣고 있어요…",
+    "status_thinking": "💭 생각 중이에요…",
+    "status_speaking": "🔊 말하는 중이에요…",
+    "status_loading": "생각 중이에요…",
+    "status_idle": "{{lang}} 컴패니언 · AI"
+  },
+  "banner": {
+    "speak_now": "🎤 지금 말씀해 보세요…",
+    "rwen_thinking": "💭 Rwen이 생각하고 있어요…",
+    "rwen_speaking": "🔊 Rwen이 말하고 있어요…",
+    "done_speaking": "말하기 완료"
+  },
+  "input": {
+    "placeholder_default": "Rwen에게 메시지 보내기…",
+    "placeholder_convo_active": "대화가 진행 중이에요 — 말씀하시거나 ⏹를 눌러 멈추세요"
+  },
+  "messages": {
+    "welcome": "Mhoro, {{name}}님! 오늘은 어떤 이야기를 하고 싶으세요?",
+    "error_generic": "Ndine urombo — 무언가 잘못됐어요. 다시 시도해 주세요.",
+    "auto_listen_greeting": "Mhoro! 듣고 있어요. 준비되시면 언제든지 말씀해 주세요."
+  }
+}

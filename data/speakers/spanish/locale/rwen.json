@@ -1,0 +1,33 @@
+{
+  "__warnings": [
+    { "key": "messages.welcome", "note": "Kept Shona 'Mhoro' verbatim — Rwen's signature greeting (also appears in tips, branding, welcome flow). Reviewer: confirm this stays Mhoro for Spanish speakers, or flip to '¡Hola, {{name}}!' if user research shows it confuses early users." },
+    { "key": "messages.error_generic", "note": "Kept Shona 'Ndine urombo' (I'm sorry) verbatim for the same brand-signature reason. The Spanish explanation follows. Reviewer: confirm or flip to 'Lo siento —'." },
+    { "key": "messages.auto_listen_greeting", "note": "Same Mhoro decision applied. Reviewer: confirm." },
+    { "key": "header.status_idle", "note": "'{{lang}} companion · AI' — translated 'companion' to 'Compañero'. The {{lang}} placeholder may render the target language name in Spanish or English depending on i18n wiring upstream." },
+    { "key": "input.placeholder_convo_active", "note": "'tap ⏹ to stop' — translated to 'toca ⏹' (tú register, LatAm)." },
+    { "key": "tu vs usted", "note": "Whole file uses informal 'tú' to match Rwen's warm tone. Spanish formal convention is 'usted'. Reviewer: pick a register consistent across all 5 locale files." }
+  ],
+  "header": {
+    "title": "Rwen",
+    "status_listening": "🎤 Escuchando…",
+    "status_thinking": "💭 Pensando…",
+    "status_speaking": "🔊 Hablando…",
+    "status_loading": "Pensando…",
+    "status_idle": "Compañero de {{lang}} · IA"
+  },
+  "banner": {
+    "speak_now": "🎤 Habla ahora…",
+    "rwen_thinking": "💭 Rwen está pensando…",
+    "rwen_speaking": "🔊 Rwen está hablando…",
+    "done_speaking": "Listo, terminó de hablar"
+  },
+  "input": {
+    "placeholder_default": "Escríbele a Rwen…",
+    "placeholder_convo_active": "Conversación activa — habla o toca ⏹ para detener"
+  },
+  "messages": {
+    "welcome": "Mhoro, {{name}}. ¿Qué tienes en mente hoy?",
+    "error_generic": "Ndine urombo — algo salió mal. Inténtalo otra vez.",
+    "auto_listen_greeting": "¡Mhoro! Te escucho. Habla cuando estés listo."
+  }
+}

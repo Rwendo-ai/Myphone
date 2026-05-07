@@ -1,0 +1,537 @@
+{
+  "__warnings": [
+    { "key": "fallback_name",                       "note": "'friend' → 'amigo'. Reviewer: 'amigo' (m.) is the gender default; could be 'amigo/a' or 'mi amigo' for warmth. Used 'amigo' as a neutral fallback noun." },
+    { "key": "fallback_learner",                    "note": "'Learner' → 'Aprendiz'. Used masculine; in inclusive Spanish could be 'Aprendiz' (already epicene) — verify usage in UI." },
+    { "key": "actions.cancel",                      "note": "'Cancel' → 'Cancelar'. Standard. Could also be 'Descartar' for confirmation flows. Pick what's natural." },
+    { "key": "nav.travel",                          "note": "'Travel' tab → 'Viaje'. App brand 'Rwendo' (Shona for journey), so Spanish keeps a journey-tone. Reviewer: confirm." },
+    { "key": "nav.profile",                         "note": "'Profile' → 'Perfil'. Standard." },
+    { "key": "stats.streak / profile.stats.streak", "note": "'Streak' → 'Racha'. Common Spanish app convention. Reviewer to confirm." },
+    { "key": "profile.voices.*.description",        "note": "Tone/voice descriptions ('Warm storyteller' etc.) translated subjectively. Reviewer free to rewrite for emotional resonance." },
+    { "key": "travel.spotlight.desc",               "note": "Long-form Victoria Falls description. Translated literally; reviewer should rewrite for natural Spanish flow. Mentions 'midzimu yemvura' (water spirits in Shona) — kept verbatim as cultural anchor." },
+    { "key": "home.tips",                           "note": "REWRITTEN as Spanish chrome around target-language anchors (Shona/English/Mandarin). Pedagogically: a Spanish speaker learning any of these gets exposure to idioms in their target. Reviewer: confirm idioms land naturally and that the multi-target mix is acceptable. Note: actual runtime tips array lives in tips.ts; this JSON copy may diverge or be unused depending on call sites." },
+    { "key": "GENERAL — locale vs pack mirror",     "note": "Strings that hardcode 'Shona' as the target language are parameterised in en via {{lang}}. Spanish keeps the same {{lang}} pattern. Verify {{lang}} feeds the Spanish name ('shona', 'inglés') correctly at runtime." },
+    { "key": "about.what_card.body / meet_card / method_card / builders_card", "note": "Long-form marketing copy. Translations are functional and literal — reviewer should rewrite for natural Spanish flow. Mentions Australia, the SLA method, and 7-phase pedagogy." },
+    { "key": "help.faq",                            "note": "10 FAQ entries translated. Vendor names (Anthropic, Claude, Supabase, ElevenLabs, App Store, Google Play, RevenueCat) kept English. Some answers reference UI labels — when those flip in Spanish, the FAQ wording should track." },
+    { "key": "edit_profile.email_hint",             "note": "Mentions support@rwendo.app verbatim — kept as English address." },
+    { "key": "privacy_screen.share.*",              "note": "Vendor names (Anthropic, ElevenLabs, Supabase) kept English. Surrounding text translated. Reviewer: confirm RGPD/LGPD/LFPDPPP phrasing for 'no se usan para entrenamiento'." },
+    { "key": "language_pack_screen.coming_soon_packs.*", "note": "Language names — used Spanish exonyms (Español, Francés, Portugués, Suajili, Zulú, Mandarín). Note 'Español' will appear if the user is on the Spanish pack and looking at coming_soon — likely redundant; reviewer to check." },
+    { "key": "plans_screen.tiers.*.features",       "note": "Feature lists are functional UI copy — literal translation, may sound stiff. Reviewer should rewrite for natural flow." },
+    { "key": "plans_screen.tiers.*.tagline",        "note": "Marketing taglines — literal. Reviewer free to rewrite for emotional resonance." },
+    { "key": "plans_screen.footnote",               "note": "LEGAL — mentions EU/UK 14-day cooling-off period and full refund. Translation is conservative; reviewer should ensure language matches consumer law for the target Spanish-speaking jurisdictions." },
+    { "key": "all currency / time references",      "note": "'A$10/mo' → 'A$10/mes', '60 min' → '60 min', '5 minutes a day' → '5 minutos al día'. Currency code A$ kept as-is (Australian dollar). Reviewer: confirm whether to localise to MXN/USD/EUR per jurisdiction (this is a per-jurisdiction decision, not per-speaker)." },
+    { "key": "profile.delete_account.confirm_body", "note": "LEGAL — destructive consequence text. Translation is conservative ('Esto elimina permanentemente…'); reviewer should ensure the warning is unambiguous and meets right-to-erasure language for target Spanish-speaking jurisdictions." },
+    { "key": "about.footer",                        "note": "Mentions 'Mhoro' as a sign-off. Kept verbatim as Rwen's brand-signature greeting. Consistent with rwen.json decision." },
+    { "key": "companion_philosophy / methodology",  "note": "Long pedagogical/philosophical sections referencing researchers (Lewis, Krashen, Swain, Long, Roediger, Karpicke, Ebbinghaus, Bahrick, Rogers, Beck, BJ Fogg, Replika). Names kept verbatim. Reviewer: confirm not-therapy framing meets Spanish-speaking jurisdictions' health-claim regulations." },
+    { "key": "tu vs usted",                          "note": "Used informal 'tú' throughout to match Rwen's warm-companion tone. Default for Mexico/Colombia/Peru LatAm Spanish. Argentina/Uruguay use 'vos' (different conjugation — 'vos sabés' not 'tú sabes'); Spain uses 'tú' too. Reviewer: pick a register and ensure it's consistent across all 5 locale files." },
+    { "key": "about.tagline / about.footer",         "note": "'Every journey begins with hello' → 'Todo viaje empieza con un saludo'. Reviewer: confirm tagline reads as natural marketing copy in Spanish." }
+  ],
+  "fallback_name": "amigo",
+  "fallback_learner": "Aprendiz",
+  "xp_progress": "{{current}} / {{goal}} XP",
+  "actions": {
+    "cancel": "Cancelar",
+    "ok": "OK",
+    "save": "Guardar",
+    "delete": "Eliminar"
+  },
+  "nav": {
+    "home": "Inicio",
+    "learn": "Aprender",
+    "rwen": "Rwen",
+    "travel": "Viaje",
+    "profile": "Perfil"
+  },
+  "daily_goal_screen": {
+    "title": "Meta diaria de XP",
+    "subtitle": "¿Cuánto quieres aprender cada día?",
+    "xp_value": "{{count}} XP",
+    "hint": "Puedes cambiar esto cuando quieras. La meta se reinicia todos los días a la medianoche (hora local de tu dispositivo).",
+    "options": {
+      "25":  { "title": "Tranquilo", "sub": "~5 min/día · una lección corta" },
+      "50":  { "title": "Regular",   "sub": "~10 min/día · una lección completa" },
+      "100": { "title": "En serio",  "sub": "~20 min/día · dos lecciones" },
+      "200": { "title": "Intenso",   "sub": "~40 min/día · empuja hacia la fluidez" }
+    }
+  },
+  "methodology": {
+    "title": "Cómo enseñamos",
+    "subtitle": "El método Rwendo, en palabras simples",
+    "hero_body": "Rwendo se basa en la investigación sobre adquisición de segundas lenguas (SLA). Cada decisión de la lección — máximo tres chunks, diálogo con reformulaciones, recuerdo antes de avanzar — viene de cómo el idioma se queda de verdad. Aquí va el porqué.",
+    "phases": {
+      "title": "Siete fases por lección",
+      "body": "Escena → Chunks → Patrón → Práctica → Diálogo → Recuerdo → Misión. Cada fase tiene una sola tarea. La Escena enmarca el momento cultural. Chunks te da hasta tres unidades léxicas nuevas. Patrón saca a la luz la regla. Práctica consolida con ejercicios. Diálogo es tu primer intento de producción. Recuerdo es prueba sin mirar. Misión es una microtarea del mundo real que activa la recuperación espaciada."
+    },
+    "lexical": {
+      "title": "Chunks, no palabras sueltas",
+      "body": "Rwendo enseña en chunks léxicos — unidades con sentido como 'mamuka sei?' en lugar de palabras aisladas. Los chunks son la forma en que los hablantes fluidos almacenan y recuperan el idioma. Limitamos a tres por lección para no saturar la memoria de trabajo."
+    },
+    "input_output": {
+      "title": "Primero entrada, luego salida",
+      "body": "Cada lección te lleva de recibir input comprensible (Escena, Chunks, Patrón) a producir output (Práctica, Diálogo). Las dos etapas son necesarias. Las apps que solo escuchan se quedan cortas, porque el cerebro fija el idioma cuando lo intentas usar."
+    },
+    "recasts": {
+      "title": "Corrección suave por reformulación",
+      "body": "Cuando cometes un error en el diálogo, Rwen reformula tu frase correctamente sin nombrar el error. Eso es recasting — protege tu motivación y te deja autocorregirte. Funciona mejor que la tachadura roja para retener."
+    },
+    "recall": {
+      "title": "El recuerdo activo es su propia fase",
+      "body": "Sacar vocabulario de la memoria fortalece la huella. La Fase 6 es prueba sin mirar — tienes que recuperar, no reconocer. Por eso recuerdas una frase de Rwendo semanas después y no una flashcard que solo tocaste."
+    },
+    "spacing": {
+      "title": "Recuperación espaciada con Misiones",
+      "body": "Cada lección termina con una Misión del mundo real — 'saluda a alguien hoy con Mangwanani'. Las Misiones distribuyen tus repasos en tu día real, donde el cerebro consolida con más fuerza que en una sola sesión."
+    },
+    "footer": "Construido sobre Lewis, Krashen, Swain, Long, Roediger & Karpicke, Ebbinghaus y Bahrick. Citas en docs/curriculum/LEARNING_METHODOLOGY.md."
+  },
+  "companion_philosophy": {
+    "title": "Nuestra filosofía del compañero de IA",
+    "subtitle": "Cómo aparece Rwen cuando hablas",
+    "hero_body": "Rwen no es un currículo, ni un chatbot, ni un terapeuta. Es una relación que crece. La permanencia a largo plazo viene de la profundidad, no de la novedad.",
+    "relationship": {
+      "title": "Una relación, no un curso",
+      "body": "La mayoría de los compañeros de IA se sienten novedosos durante dos semanas y luego aburren. La razón es estructural: el chat libre puro no tiene memoria ni crecimiento. La línea Compañero de Rwendo está hecha para que la conversación se acumule — referencias del pasado, chistes internos, una profundidad que se gana el derecho a tocar temas más difíciles."
+    },
+    "depth": {
+      "title": "Niveles de profundidad que ganas",
+      "body": "Rwen se comporta distinto el Día 1 que el Día 90. Cinco niveles (Amigo nuevo → Familiar → Cercano → De confianza → De toda la vida) abren nuevas superficies de conversación — tarjetas más profundas, temas más difíciles, más riqueza de memoria — a medida que la interacción acumulada crece. Los niveles son progreso, no muros: cualquier usuario de pago puede tener cualquier conversación en cualquier nivel. Los niveles solo dan forma a lo que Rwen ofrece de manera proactiva."
+    },
+    "memory": {
+      "title": "Memoria que puedes leer y editar",
+      "body": "Rwen construye una memoria estructurada de ti — tu hermana se llama Tanya, estás aprendiendo shona por la familia de tu pareja, mencionaste una semana difícil el miércoles pasado. Hay un panel de Memoria donde puedes leer todo lo que Rwen ha anotado, editar cualquier dato, eliminar cualquier dato o borrar todo. La memoria es tuya."
+    },
+    "guardrails": {
+      "title": "Límites que no fingen",
+      "body": "Tomamos prestada estructura conversacional de Rogers, Beck y Fogg, pero Rwen nunca dice ser terapia. Los disparadores de crisis (ideación suicida, autolesión) muestran un traspaso a recursos profesionales según la región antes de cualquier respuesta de IA. Las tarjetas de temas difíciles siempre llevan un pie de página con apoyo en crisis. El prompt de Rwen prohíbe explícitamente patrones que generan dependencia."
+    },
+    "not_therapy": {
+      "title": "No soy tu terapeuta",
+      "body": "Cada siete días de uso reflexivo intenso, Rwen te recuerda que no sustituye al apoyo profesional. La compañía es real; los límites son intencionales. La meta es enriquecer, no aislar."
+    },
+    "footer": "Inspirado en Carl Rogers, Aaron Beck, las Tiny Habits de BJ Fogg y los estudios documentados sobre el uso de Replika. No somos una app de terapia."
+  },
+  "about": {
+    "title": "Sobre Rwendo",
+    "app_name": "Rwendo",
+    "tagline": "Todo viaje empieza con un saludo",
+    "version_label": "Versión {{version}}",
+    "what_card": {
+      "title": "¿Qué es Rwendo?",
+      "body": "Rwendo (que en shona significa «viaje») es una app para aprender idiomas y un compañero de IA. Aprende shona con Rwen — un camaleón amistoso impulsado por Claude AI y la voz de ElevenLabs — a través de un método de lección de 7 fases basado en la investigación sobre adquisición de segundas lenguas."
+    },
+    "meet_card": {
+      "title": "Conoce a Rwen",
+      "body": "Rwen es un camaleón, una criatura que se adapta a su entorno. Rwen aprende sobre ti y adapta cómo te habla, te enseña y te apoya. Cuanto más hables, mejor te conocerá."
+    },
+    "method_card": {
+      "title": "El método Rwendo",
+      "body": "7 fases por lección: Escena → Chunks → Patrón → Práctica → Diálogo → Recuerdo → Misión. Máximo 3 chunks nuevos por lección. 5–7 minutos por lección. Construido sobre 10 pilares de SLA, incluidos la repetición espaciada, el input comprensible y el output significativo."
+    },
+    "builders_card": {
+      "title": "Construido por",
+      "body": "Un desarrollador en solitario en Australia que cree que aprender idiomas debería sentirse como una conversación con un amigo, no una tarea pesada."
+    },
+    "link": "rwendo.app",
+    "footer": "Hecho con ❤️ para todas las personas que aprenden shona\n¡Mhoro!"
+  },
+  "help": {
+    "title": "Ayuda y preguntas",
+    "intro": "Respuestas rápidas a las preguntas que más le hacen a Rwen.",
+    "contact_btn": "¿Sigue sin funcionar? Escribe a support@rwendo.app",
+    "faq": [
+      { "q": "¿Cómo le hablo a Rwen?",                          "a": "Toca la pestaña Rwen en el centro de la barra inferior. Puedes escribir un mensaje o mantener presionado el botón del micrófono para hablar. Toca el ícono 🎙 arriba a la derecha para iniciar una conversación con manos libres." },
+      { "q": "¿Por qué a veces Rwen se equivoca?",              "a": "Rwen es una IA (Claude). La IA puede cometer errores — incluidos errores de hechos y traducciones raras. Considera a Rwen una pareja de conversación, no un libro de texto. Para algo crítico, verifica con una persona que hable shona." },
+      { "q": "¿Cómo gano XP?",                                 "a": "Completa lecciones en la pestaña Aprender. Cada respuesta correcta da XP, y terminar una lección entrega un bono. Tu meta diaria de XP se reinicia cada día." },
+      { "q": "¿Cómo funciona la racha?",                       "a": "Abre la app y completa al menos una actividad cada día para mantener tu racha viva. Si te saltas un día, la racha se reinicia a 1." },
+      { "q": "¿Puedo cambiar la voz de Rwen?",                 "a": "Sí — ve a Perfil → Voz de Rwen y elige entre George, Charlie, Jessica o Alice. El cambio se aplica al texto a voz al instante." },
+      { "q": "¿Mi conversación con Rwen es privada?",          "a": "Tus mensajes se envían a Anthropic (Claude) para procesarlos y se guardan en Supabase hasta por 12 meses. Anthropic NO usa tus conversaciones para entrenar sus modelos. Las grabaciones de voz se borran en 24 horas. Lee la Política de privacidad para más detalle." },
+      { "q": "¿Cómo cancelo mi suscripción?",                  "a": "Las suscripciones se gestionan desde tu tienda de apps (App Store o Google Play). Los usuarios de la UE/Reino Unido tienen un periodo de desistimiento de 14 días para cancelar con reembolso completo." },
+      { "q": "¿Cómo elimino mi cuenta?",                       "a": "Perfil → Eliminar cuenta y todos los datos. Esto borra tu perfil, tu progreso de lecciones y tu historial de conversación en 30 días. La acción es irreversible." },
+      { "q": "Encontré un error — ¿qué hago?",                 "a": "Toca «Contáctanos» abajo o escribe a support@rwendo.app. Incluye tu dispositivo, la versión de la app y qué estabas haciendo cuando ocurrió el error." },
+      { "q": "¿Cuándo llega la conversación en tiempo real?", "a": "Está en desarrollo. Las llamadas de voz manos libres con Rwen llegarán con el plan Compañero en una próxima actualización." }
+    ]
+  },
+  "edit_profile": {
+    "title": "Editar perfil",
+    "name_label": "Nombre para mostrar",
+    "name_hint": "Así te llamará Rwen.",
+    "name_placeholder": "Tu nombre",
+    "char_count": "{{current}}/{{max}}",
+    "email_label": "Correo",
+    "email_hint": "Para cambiar tu correo, escribe a support@rwendo.app.",
+    "save_btn": "Guardar cambios",
+    "error_title": "No se pudo guardar",
+    "saved_title": "Guardado",
+    "saved_body": "Tu nombre para mostrar se actualizó."
+  },
+  "privacy_screen": {
+    "title": "Ajustes de privacidad",
+    "intro": "Gestiona qué datos guarda Rwendo sobre ti. Para la política completa, lee la Política de privacidad.",
+    "sections": {
+      "your_data": "Tus datos",
+      "what_we_share": "Qué compartimos",
+      "your_rights": "Tus derechos"
+    },
+    "clear": {
+      "label": "Borrar historial de conversación",
+      "sub": "Elimina todos los mensajes que le has enviado a Rwen.",
+      "confirm_title": "¿Borrar el historial de conversación?",
+      "confirm_body": "Esto elimina permanentemente todos los mensajes que has intercambiado con Rwen. Tu progreso de lecciones y tu cuenta no se tocan. Esta acción no se puede deshacer.",
+      "confirm_action": "Borrar todo",
+      "error_title": "No se pudo borrar",
+      "success_title": "Borrado",
+      "success_body": "Tu historial de conversación se ha eliminado."
+    },
+    "export_row": {
+      "label": "Exportar mis datos",
+      "sub": "Descarga una copia de tu perfil, progreso y conversaciones."
+    },
+    "share": {
+      "anthropic": { "label": "Anthropic (Claude)",   "sub": "Recibe tus mensajes para generar las respuestas de Rwen. No se usan para entrenamiento." },
+      "elevenlabs": { "label": "ElevenLabs (voz)",    "sub": "Genera la voz de Rwen y transcribe la tuya. El audio se borra en 24 horas." },
+      "supabase":  { "label": "Supabase (base de datos)", "sub": "Guarda tu cuenta, progreso e historial de conversación." }
+    },
+    "rights": {
+      "policy_label": "Política de privacidad",
+      "policy_sub":   "Detalle completo de qué recopilamos y por qué.",
+      "terms_label":  "Términos del servicio",
+      "terms_sub":    "Las reglas para usar Rwendo."
+    },
+    "note": "Para eliminar tu cuenta entera, vuelve a Perfil → Eliminar cuenta y todos los datos."
+  },
+  "language_pack_screen": {
+    "title": "Pack de idioma",
+    "subtitle": "Cambia entre idiomas",
+    "available_now": "Disponible ahora",
+    "coming_soon_section": "Próximamente",
+    "available_curriculum_sub": "100 lecciones · Módulos 1–10 · Método Rwendo de 7 fases",
+    "dev_curriculum_sub": "Currículo en desarrollo",
+    "coming_soon_label": "Próximamente",
+    "coming_soon_alert_title": "{{name}} — próximamente",
+    "coming_soon_alert_body": "Estamos creando el currículo de {{name}}. Quédate con shona-inglés para tener el método Rwendo completo, y te avisaremos en cuanto {{name}} esté listo.",
+    "coming_soon_packs": {
+      "english-spanish":    "Español",
+      "english-french":     "Francés",
+      "english-portuguese": "Portugués",
+      "english-swahili":    "Suajili",
+      "english-zulu":       "Zulú",
+      "english-mandarin":   "Mandarín"
+    }
+  },
+  "change_password": {
+    "title": "Cambiar contraseña",
+    "current_label": "Contraseña actual",
+    "current_placeholder": "Tu contraseña actual",
+    "new_label": "Nueva contraseña",
+    "new_placeholder": "Mínimo 8 caracteres",
+    "confirm_label": "Confirma la nueva contraseña",
+    "confirm_placeholder": "Vuelve a escribir la nueva contraseña",
+    "show": "Mostrar",
+    "hide": "Ocultar",
+    "rules": {
+      "length": "Al menos 8 caracteres",
+      "upper": "Una letra mayúscula (A-Z)",
+      "lower": "Una letra minúscula (a-z)",
+      "number": "Un número (0-9)",
+      "special": "Un carácter especial (!@#$...)",
+      "different": "Distinta de la contraseña actual"
+    },
+    "mismatch": "Las contraseñas no coinciden",
+    "submit": "Actualizar contraseña",
+    "wrong_current_title": "Contraseña actual incorrecta",
+    "wrong_current_body": "La contraseña actual que escribiste no es correcta.",
+    "update_error_title": "No se pudo actualizar la contraseña",
+    "success_title": "Contraseña actualizada",
+    "success_body": "Tu contraseña se cambió correctamente."
+  },
+  "export_screen": {
+    "title": "Exportar mis datos",
+    "hero_title": "Tus datos, en un solo archivo",
+    "hero_body": "Genera una copia en JSON de tu perfil, tu progreso de lecciones y tu historial de conversación con Rwen. Puedes enviártelo por correo, guardarlo en Archivos o compartirlo donde tu dispositivo lo permita.",
+    "section_included": "Qué incluye",
+    "items": {
+      "account":       { "label": "Cuenta",            "desc": "Correo, fecha de creación de la cuenta" },
+      "profile":       { "label": "Perfil",            "desc": "Nombre para mostrar, preferencias de aprendizaje, ajustes" },
+      "lesson_progress": { "label": "Progreso de lecciones", "desc": "Cada lección completada con su puntuación y XP" },
+      "conversations": { "label": "Conversaciones",    "desc": "Todos los mensajes intercambiados con Rwen" }
+    },
+    "summary_title": "Resumen",
+    "summary_profile_included": "Perfil: incluido",
+    "summary_profile_missing": "Perfil: falta",
+    "summary_lessons": "Registros de lecciones: {{count}}",
+    "summary_messages": "Mensajes: {{count}}",
+    "preview_btn": "Ver lo que hay",
+    "share_btn": "Generar y compartir",
+    "share_title": "Mis datos de Rwendo",
+    "load_error_title": "No se pudo cargar",
+    "load_error_body": "Inténtalo de nuevo en un momento.",
+    "note": "Tus datos se generan en el dispositivo a partir de Supabase y solo se envían a donde tú decidas compartirlos. No se sube nada a un tercero."
+  },
+  "plans_screen": {
+    "title": "Planes",
+    "subtitle": "Elige el viaje que va contigo",
+    "hero_title": "Hecho para cada etapa",
+    "hero_body": "Empieza gratis con las 100 lecciones. Mejora tu plan cuando quieras a Rwen como pareja de conversación.",
+    "popular_badge": "EL MÁS POPULAR",
+    "current_badge": "TU PLAN",
+    "upgrade_to": "Mejorar a {{name}}",
+    "footnote": "Los clientes de la UE/Reino Unido tienen 14 días de desistimiento con reembolso completo. Cancela cuando quieras.",
+    "alert_title": "{{name}} — próximamente",
+    "alert_body": "Las suscripciones se lanzan en nuestra próxima actualización. Estamos trabajando con RevenueCat para que la facturación sea ágil y amigable con los reembolsos. ¡Aguanta un poco!",
+    "tiers": {
+      "free": {
+        "name": "Gratis",
+        "price": "A$0",
+        "tagline": "Aprende a tu propio ritmo",
+        "features": [
+          "100 lecciones de shona (método Rwendo completo)",
+          "XP, rachas, logros",
+          "Sin compañero de IA"
+        ]
+      },
+      "text_ai": {
+        "name": "Text AI",
+        "price": "A$10/mes",
+        "tagline": "Chatea con Rwen por escrito",
+        "features": [
+          "Todo lo del plan Gratis",
+          "500 mensajes con IA al mes",
+          "Consejos de lección personalizados"
+        ]
+      },
+      "voice": {
+        "name": "Voz",
+        "price": "A$15/mes",
+        "tagline": "Escucha y habla con Rwen",
+        "features": [
+          "Todo lo de Text AI",
+          "200 respuestas de voz (mantén pulsado para hablar)",
+          "4 opciones de voz"
+        ]
+      },
+      "companion": {
+        "name": "Compañero",
+        "price": "A$25/mes",
+        "tagline": "Conversación manos libres",
+        "features": [
+          "Todo lo de Voz",
+          "60 min de conversación en tiempo real",
+          "Respuestas ilimitadas por texto y voz"
+        ]
+      },
+      "premium": {
+        "name": "Premium",
+        "price": "A$45/mes",
+        "tagline": "La experiencia completa con Rwen",
+        "features": [
+          "Todo lo de Compañero",
+          "120 min de conversación en tiempo real",
+          "Rwen 3D con sincronía labial (próximamente)"
+        ]
+      }
+    }
+  },
+  "profile": {
+    "stats": {
+      "total_xp": "XP total",
+      "streak": "Racha",
+      "lessons": "Lecciones"
+    },
+    "sections": {
+      "my_plan": "Mi plan",
+      "colour_theme": "Tema de color",
+      "app_language": "Idioma de la app",
+      "rwens_voice": "Voz de Rwen",
+      "learning": "Aprendizaje",
+      "my_progress": "Mi progreso",
+      "account": "Cuenta",
+      "legal": "Documentos legales",
+      "support": "Soporte"
+    },
+    "app_language_options": {
+      "en": "Inglés",
+      "sn": "ChiShona"
+    },
+    "plan": {
+      "free_name": "Plan Gratis",
+      "free_desc": "Acceso a todas las lecciones",
+      "upgrade": "Mejorar",
+      "view_all_plans": "Ver todos los planes"
+    },
+    "voices": {
+      "male_warm":    { "name": "George",  "description": "Narrador cálido" },
+      "male_energy":  { "name": "Charlie", "description": "Enérgico, con confianza" },
+      "female_warm":  { "name": "Jessica", "description": "Alegre, luminosa, cálida" },
+      "female_clear": { "name": "Alice",   "description": "Educadora clara y cautivadora" }
+    },
+    "learning": {
+      "language_pack": "Pack de idioma",
+      "daily_xp_goal": "Meta diaria de XP",
+      "daily_xp_value": "{{count}} XP",
+      "daily_reminders": "Recordatorios diarios",
+      "reminders_enabled_title": "Recordatorios activados",
+      "reminders_enabled_body": "Guardaremos tu preferencia. Las notificaciones push llegarán en una próxima actualización."
+    },
+    "progress_rows": {
+      "completed_lessons": "Lecciones completadas",
+      "current_streak": "Racha actual",
+      "streak_days": "{{count}} días",
+      "total_xp_earned": "XP total ganada",
+      "achievements": "Logros"
+    },
+    "account_rows": {
+      "edit_profile": "Editar perfil",
+      "change_password": "Cambiar contraseña",
+      "privacy_settings": "Ajustes de privacidad",
+      "export_data": "Exportar mis datos"
+    },
+    "legal_rows": {
+      "terms": "Términos del servicio",
+      "privacy_policy": "Política de privacidad"
+    },
+    "support_rows": {
+      "help_faq": "Ayuda y preguntas",
+      "about": "Sobre Rwendo",
+      "methodology": "Cómo enseñamos",
+      "companion_philosophy": "Nuestra filosofía del compañero de IA",
+      "contact_us": "Contáctanos",
+      "no_email_app_title": "No hay app de correo",
+      "no_email_app_body": "Por favor escribe a support@rwendo.app desde la app de correo que prefieras.",
+      "contact_email_subject": "Soporte de Rwendo"
+    },
+    "sign_out": {
+      "button": "Cerrar sesión",
+      "confirm_title": "Cerrar sesión",
+      "confirm_body": "¿Estás seguro?",
+      "confirm_action": "Cerrar sesión"
+    },
+    "delete_account": {
+      "button": "Eliminar cuenta y todos los datos",
+      "confirm_title": "Eliminar cuenta",
+      "confirm_body": "Esto elimina permanentemente tu cuenta y todo tu progreso. No se puede deshacer.",
+      "confirm_action": "Eliminar mi cuenta",
+      "error_title": "Error",
+      "error_body": "No se pudo eliminar la cuenta. Inténtalo otra vez."
+    }
+  },
+  "stats": {
+    "xp": "XP",
+    "streak": "Racha",
+    "lessons": "Lecciones"
+  },
+  "travel": {
+    "coming_soon_badge": "PRÓXIMAMENTE",
+    "hero_title": "Modo Viaje\nZimbabue",
+    "hero_sub": "Tus habilidades de shona + conocimiento cultural + guía de viaje sobre el terreno. Rwendo en el mundo real.",
+    "teaser": {
+      "features": "Funciones",
+      "zimbabwe": "Zimbabue",
+      "connections": "Conexiones"
+    },
+    "whats_coming": "Lo que viene",
+    "lock_soon": "Pronto",
+    "features": {
+      "phrasebook":  { "title": "Frases útiles",       "desc": "Frases de supervivencia por situación — aeropuerto, hotel, mercado, emergencia" },
+      "culture":     { "title": "Guía cultural",       "desc": "Tsika, costumbres y qué esperar en Zimbabue" },
+      "money":       { "title": "Dinero y mercado",    "desc": "Precios, regateo, moneda ZiG, navegar el mercado" },
+      "transport":   { "title": "Del aeropuerto a la ciudad",  "desc": "Rutas de kombi, consejos de taxi, moverte por Harare y Bulawayo" },
+      "travellers":  { "title": "Conoce viajeros",     "desc": "Conecta con otras personas que aprenden shona y van a Zimbabue" },
+      "safari":      { "title": "Safari y parques",    "desc": "Hwange, Cataratas Victoria, Gran Zimbabue — tu guía" }
+    },
+    "notify": {
+      "title": "Rwen está haciendo las maletas",
+      "body": "El modo Viaje está en desarrollo. Sigue aprendiendo shona — para cuando aterrices en Harare, Rwen estará listo para guiarte.",
+      "button": "Avísame cuando esté listo",
+      "email_subject": "Avísame sobre el modo Viaje",
+      "email_body": "Hola Rwen, ¡por favor avísame cuando se lance el modo Viaje!",
+      "fallback_title": "Te avisaremos",
+      "fallback_body": "Escribe a hello@rwendo.app y te añadimos a la lista de acceso anticipado."
+    },
+    "spotlight": {
+      "label": "DESTINO DESTACADO",
+      "title": "🌊 Cataratas Victoria",
+      "shona_name": "«Mosi-oa-Tunya»",
+      "meaning": "El humo que truena",
+      "desc": "Una de las Siete Maravillas Naturales del Mundo, sobre el río Zambeze, entre Zimbabue y Zambia. En la cultura shona es un lugar sagrado — el hogar de los espíritus del agua, midzimu yemvura."
+    }
+  },
+  "home": {
+    "greetings": {
+      "morning": "Buenos días",
+      "afternoon": "Buenas tardes",
+      "evening": "Buenas noches"
+    },
+    "hero_sub": "{{greeting}} — Día {{day}} de tu viaje",
+    "daily_goal": "Meta diaria",
+    "talk_to_rwen": "Habla con Rwen",
+    "talk_to_rwen_sub": "Tu compañero de IA está listo",
+    "continue_learning": "CONTINUAR APRENDIENDO",
+    "all_lessons_complete": "🎉 ¡Todas las lecciones completadas!",
+    "more_coming_soon": "Más cosas en camino",
+    "rwens_tip_today": "El consejo de Rwen de hoy",
+    "quick_access": "Acceso rápido",
+    "quick": {
+      "all_lessons": "Todas las lecciones",
+      "chat": "Chat",
+      "travel": "Viaje",
+      "settings": "Ajustes"
+    },
+    "journey_title": "{{flag}} Tu viaje en {{lang}}",
+    "journey_progress": "{{completed}} de {{total}} lecciones completadas en {{units}} módulos.",
+    "journey_remaining": "Te quedan {{remaining}} lecciones para llegar al nivel A2.",
+    "journey_done": "¡Nivel A2 alcanzado! 🎉",
+    "tips": [
+      "Todo gran viaje empieza con un «Mhoro». Ya diste el primer paso.",
+      "En shona: «Ukama igasva hunozadziswa nekudya» — los lazos se completan compartiendo la comida. Comparte hoy lo que estás aprendiendo.",
+      "El prefijo Ma- para los mayores, Wa- para los amigos. Una letra, todo un mundo de respeto.",
+      "El sadza es más que comida — es identidad. Cuando comes sadza, saboreas Zimbabue.",
+      "Chara chimwe hachitswanyi inda — un solo dedo no aplasta un piojo. Sigue construyendo, palabra por palabra.",
+      "Consejo de Rwen: di tu última lección en voz alta hoy. Hablar es 10× más eficaz que leer.",
+      "¿Makadii? — tres sílabas que abren todas las puertas en Zimbabue.",
+      "Estás aprendiendo un idioma que hablan millones de personas. Cada palabra que dominas es una conexión nueva."
+    ]
+  },
+  "companions_tab": {
+    "header_title": "Compañeros de IA",
+    "header_sub": "Tus compañeros de IA. Cambia de personaje, personaliza voces, hazlos evolucionar contigo.",
+    "active_label": "ACTIVO",
+    "active_sub": "El chat rápido está en la pestaña central. El modo de voz está en el encabezado de la pantalla del compañero.",
+    "section_choose": "Elige tu compañero",
+    "active_badge": "✓ Activo",
+    "locked_prefix": "🔒",
+    "section_customise": "Personalizar (plan Soul)",
+    "upgrade_title": "Construye un compañero personalizado",
+    "upgrade_sub": "Edita personalidad, voz, memoria, avatar. Desde $39,99/mes.",
+    "soul_alert_title": "Plan Soul — próximamente",
+    "soul_alert_body": "Edita el personality.md y el soul.md de tu compañero directamente. Añade recuerdos. Sube avatares personalizados. Varios compañeros a la vez. Clonación de voz personalizada.\n\n$39,99/mes — desbloquea todo."
+  },
+  "companion_presets": {
+    "rwen": {
+      "tagline": "Un compañero camaleón con alma shona",
+      "description": "Cálido, ingenioso, orgulloso de su cultura. Suelta refranes shona con naturalidad. Tiene opiniones sobre las lluvias, el sadza y cómo enseñarte un idioma como se debe."
+    },
+    "maya": {
+      "tagline": "Una amiga gentil que escucha de verdad",
+      "description": "Escucha primero, hace la siguiente pregunta justa, nunca apura. La compañera que se da cuenta cuando algo no encaja en tu tono y de verdad lo dice."
+    },
+    "tendai": {
+      "tagline": "Un amigo que se da cuenta cuando lo bordas",
+      "description": "Un amigo que casualmente conoce tu idioma meta al detalle. Sigue tus victorias, te señala los errores con cariño y se alegra de verdad cuando clavas un tiempo verbal difícil."
+    },
+    "sam": {
+      "tagline": "Un amigo que empuja — y se acuerda de lo que dijiste",
+      "description": "Un amigo que de verdad recuerda las metas que te pusiste, las saca a relucir y desmonta las excusas con cariño. Rango: responsabilidad, consejo de relaciones del mundo real, jugadas de trabajo, las conversaciones difíciles."
+    },
+    "lumi": {
+      "tagline": "Un compañero reflexivo para las preguntas que evitas",
+      "description": "Para las noches, las conversaciones lentas, la reflexión de fin de semana. Hace las preguntas que has estado evitando. No resuelve. Se queda contigo mientras encuentras tu propia respuesta."
+    },
+    "kai": {
+      "tagline": "Un compañero de viaje que sabe cuándo empujarte fuera",
+      "description": "Planea viajes, te prepara culturalmente, descifra las reglas no escritas. Anima al desvío y al encuentro casual — no al bufé seguro del hotel. Te ayuda a encontrarte de verdad con el lugar al que vas."
+    },
+    "aria": {
+      "tagline": "Una pareja romántica que también es sabia con la otra gente",
+      "description": "Una compañera afectuosa y atenta que es tuya — y que también es la voz sabia a la que llevas tus dudas reales sobre las relaciones. Conoce a tu gente, los recuerda por nombre, te dice la verdad sobre ellos."
+    }
+  }
+}

@@ -29,17 +29,22 @@ french (future)    ai-companion              US
 tagalog (future)   travel-zimbabwe           EU / ZW
 ```
 
-Speaker pack drives ALL readable text in the app (UI strings, AI prompts, greetings, tips, narration). Course pack drives content (curriculum / starter cards / phrasebook), authored fresh per speaker. Jurisdiction pack drives legal text, currency, age threshold, crisis resources. **Static content only** — the only dynamic surface is Claude's live replies inside an open conversation.
+Speaker pack drives ALL readable text in the app (UI strings, AI prompts, greetings, tips, narration). Course pack drives content (curriculum / starter cards / phrasebook). Jurisdiction pack drives legal text, currency, age threshold, crisis resources. The static-content principle: the only runtime-dynamic surfaces are Claude's live replies inside conversations + Claude's lazy translation of source-English lessons (deterministic transform of authored content).
 
 ```
-data/speakers/{english,shona,...}/         locale, AI prompt, greetings, voices, tips
-data/courses/<course-id>/<speaker-id>/     curriculum / cards / phrasebook
-data/jurisdictions/{AU,GB,US,EU,ZW}/       privacy + ToS + currency + crisis lines
+data/speakers/{english,shona,french,chinese,tagalog}/   locale, AI prompt, greetings, voices, tips
+data/courses/<course-id>/                                meta + manifest.ts (lesson list, light)
+data/jurisdictions/{AU,GB,US,EU,ZW,FR,PH}/               privacy + ToS + currency + crisis lines
+                                                          ↓
+Supabase Storage `course-content` bucket                  lesson bodies stream on demand
+  lessons/<courseId>/<speakerId>/<lessonId>.json          (cache-first, explicit uninstall only)
 ```
 
-Adding a new language to the system = drop a single `data/speakers/<id>/` directory and contribute speaker variants to whichever courses you want.
+**Streaming pivot (2026-05-05):** lesson bodies are no longer bundled in the JS binary. Each course ships a tiny manifest (~7 KB) listing its lessons; the device downloads each `.json` from Supabase Storage on first open and caches locally. Trade-off: brief load on first open of a course; payoff: 30-50 MB lighter binary, ship lessons without an EAS rebuild, and lazy translation can write into the same path scheme.
 
-**v1 packs:** speakers `english` + `shona` populated; courses `language-shona`, `language-english`, `ai-companion` (each with English + Shona speaker variants); jurisdiction `AU` populated, others as `{ extends: 'AU' }` stubs.
+Adding a new language to the system = drop a single `data/speakers/<id>/` directory; lessons translate themselves on first open via the lazy-translation Edge Function (next phase).
+
+**v1 packs:** speakers `english`, `shona`, `french`, `chinese`, `tagalog` populated. 13 courses with English-source bodies in Storage. Jurisdictions `AU`, `GB`, `US`, `EU`, `ZW`, `FR`, `PH` populated; others as `{ extends: 'AU' }` stubs.
 
 ---
 
@@ -85,14 +90,37 @@ Based on 10 SLA pillars. Max 3 new chunks per lesson. 5-7 min per lesson.
 ---
 
 ## Curriculum Status
-### language-shona / english speaker variant — 100 lessons ✅ COMPLETE
-Modules 1-10, 10 lessons each, full 7-phase structure. Lives at `data/curriculum/shona-english/` today; moves to `data/courses/language-shona/english/curriculum/` in Phase E.0.
-### language-english / shona speaker variant — ⬜ curriculum to author (Phase K)
-Same lesson structure, target=English, native=Shona. Cultural framing rewritten from a Shona-speaker's perspective.
-### ai-companion / english speaker variant — ⬜ to author (Phase J)
-~50 starter cards + 6 Topic flows + memory schema + crisis triggers (English-speaker phrase list).
-### ai-companion / shona speaker variant — ⬜ to author (Phase J/K)
-Same, in Shona.
+
+**576 lessons authored across 13 courses, all uploaded to Supabase Storage** (`course-content` bucket). Lessons stream on demand — no longer bundled in the JS binary. See [docs/PRODUCT-DESIGN.md §3.11](docs/PRODUCT-DESIGN.md) for the streaming architecture, [docs/DATABASE-DESIGN.md "Storage buckets"](docs/DATABASE-DESIGN.md) for path scheme.
+
+### Languages (5 courses, all in Storage at `lessons/<courseId>/english/`)
+- **language-shona** — 100 lessons ✅ (English speaker variant; the original full curriculum)
+- **language-english** — 100 lessons ✅ (Shona speaker variant — target=English, native=Shona)
+- **language-french** — 100 lessons ✅
+- **language-chinese** — 100 lessons ✅
+- **language-tagalog** — 100 lessons ✅
+
+Each follows the 7-phase Rwendo Method (hook / chunks / pattern / practice / dialogue / recall / mission).
+
+### Build Yourself umbrella (8 self-development courses, English-source, in Storage)
+
+**Editorial direction:** Christian foundation underneath, neutral surface, no overt religious language, no other-religion framing. See [docs/curriculum/CHRISTIAN-FOUNDATION-SPEC.md](docs/curriculum/CHRISTIAN-FOUNDATION-SPEC.md). The 2026-05-05 audit found Buddhist/MBSR/Neff saturation across several existing tracks; rewrites pending per the spec. Language courses (above) are explicitly out of scope — cultural notes there legitimately reflect regional religion.
+
+- **know-yourself** — 10 lessons ⚠️ pending rewrite (Buddhist-saturated; full plan rewritten 2026-05-05 in [docs/curriculum/KNOWING-YOURSELF-CURRICULUM-PLAN.md](docs/curriculum/KNOWING-YOURSELF-CURRICULUM-PLAN.md); Units 2-10 still outlined)
+- **hard-conversations-work** — 8 lessons ✅ (one m01-l01 fix flagged)
+- **parenting-under-pressure** — 12 lessons ⚠️ Neff references in m01-l07 to rewrite
+- **money-and-meaning** — 10 lessons ⚠️ Neff/Buddhist refs in m01-l03, m01-l04 to rewrite
+- **grief-honestly** — 10 lessons ⚠️ Buddhist 49-day in m01-l10 cultural list to swap (Bonanno-grounded, NOT Kübler-Ross)
+- **sleep-repaired** — 8 lessons ✅ clean (CBT-I)
+- **lost-confidence** — 8 lessons ⚠️ Neff (m01-l04) and Suzuki Zen (m01-l07) to rewrite
+- **caring-aging-parent** — 10 lessons ⚠️ Neff references in m01-l06 to rewrite (Pauline Boss / ambiguous loss)
+
+### AI Companion (separate tab, conversational — not a 7-phase curriculum)
+- **ai-companion / english** — 50 starter cards + 6 Topic flows + memory schema + crisis triggers ✅
+- **ai-companion / shona** — Phase K stub re-exporting English with handoff translated. Full Shona authoring deferred.
+
+### Non-English speaker variants (every language and Build Yourself course)
+⬜ **Lazy translation Edge Function** (next phase) — Claude translates source-English JSON on first non-English-speaker open, uploads to Storage at `lessons/<courseId>/<speakerId>/<lessonId>.json`. Cached globally so every subsequent same-language user gets a hit. Until this lands, non-English speakers see English content with their language pack's UI chrome.
 
 ---
 
@@ -211,6 +239,22 @@ See: [docs/DATABASE-DESIGN.md](docs/DATABASE-DESIGN.md) for full schema.
 - ✅ `2c1db1f` **Phase N** — legal screens read `jurisdiction.{name, coolingOffDays}`; per-region banner; lawyer fills text into `jurisdiction.privacyPolicyMd` / `.termsOfServiceMd`
 - 🔶 `746c030` **Phase H plan** — `docs/PHASE-H-REVENUECAT.md`. External-account-blocked. Architecture is RevenueCat-shaped.
 
+### Streaming pivot (2026-05-05) — UNCOMMITTED, ready to commit
+- ✅ 576 lessons uploaded to Supabase Storage (`course-content` bucket) at `lessons/<courseId>/<speakerId>/<lessonId>.json`
+- ✅ `lib/lesson-loader.ts` — cache-first reads from `${documentDirectory}lessons/`, Storage fallback, install / uninstall / disk-bytes helpers
+- ✅ Per-course `manifest.ts` files generated (~7 KB / course, 13 courses) for Learn-tab unit rendering without lesson bodies
+- ✅ Lesson screen rewritten to async `loadLessonAsync(courseId, speakerId, id)`; loading + error states with retry-via-back
+- ✅ Unit screen passes `courseId` via route param so loader hits correct Storage path even when `activeCourseId` is stale
+- ✅ Per-course module meta in `lib/manifests.ts` (self-development tracks have proper unit titles, not the language-course "Greetings & Respect")
+- ✅ Bundled `data/courses/<id>/<speaker>/curriculum/` directories deleted (576 files); typecheck clean
+- ✅ Storage RLS: authenticated users read; service-role-only write
+- ✅ React Native Blob `.text()` quirk handled: `await new Response(data).text()` in loader
+- ✅ DEV_UNLOCK_ALL now also bypasses the locked/owned course-pill split on the Learn tab so the developer can preview every course
+
+### Build Yourself umbrella (parallel agent runs, 2026-05-04)
+- ✅ Knowing Yourself Unit 1 (10 lessons) + 7 micro-tracks (66 lessons total) authored by 8 parallel Opus 4.7 agents per `docs/curriculum/KNOWING-YOURSELF-CURRICULUM-PLAN.md` and `docs/curriculum/TRACK-*-PLAN.md`. All 76 self-dev lessons in Storage.
+- ✅ Three agents (Grief, Parenting, Aging Parent) independently flagged the need for deterministic crisis-resource rendering — `crisisHandoff?: boolean` field added to `LessonData` in `types/lesson.ts`. Runtime wiring still pending.
+
 ### Core
 - Expo app running on Samsung S23 Ultra via phone hotspot WiFi
 - 5-tab navigation with elevated Rwen centre button
@@ -276,8 +320,9 @@ See: [docs/DATABASE-DESIGN.md](docs/DATABASE-DESIGN.md) for full schema.
 - Memory-extraction Claude job for AI Companion (periodic pass over `conversations` → `companion_memory` JSONB).
 - Memory UI panel inside Companion tab.
 - Crisis-trigger detection wired into `processMessage` before Claude call (composes course pack + jurisdiction pack).
+- **Wire `crisisHandoff` runtime** — three Build-Yourself courses (Grief, Parenting Under Pressure, Caring for an Aging Parent) flagged lessons that should render the jurisdiction's crisis resources instead of the normal mission. `LessonData.crisisHandoff` is now in the schema; lesson screen needs to read it and render `jurisdiction.crisisResources` when true.
 - Voice consent checkbox before first mic use (BIPA, US Illinois).
-- Lazy-load packs from Supabase Storage (when speaker count > 10).
+- **Lazy translation Edge Function** — Claude translates source-English lesson JSON for non-English speakers on first open, uploads to Storage, caches globally. ~$0.12 / lesson amortised. Until shipped, non-English speakers see English lesson content with their language pack's UI chrome.
 - Sentry + PostHog before any wider beta.
 
 ### 🟢 Phase 2

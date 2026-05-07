@@ -33,6 +33,7 @@ yarn-error.*
 # local env files
 .env
 .env*.local
+.env.*-tmp
 
 # Dead-asset archive — files preserved on disk for review, not bundled
 # into the app and not tracked in git. See dead assets/README.md if any.

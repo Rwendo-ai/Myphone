@@ -232,6 +232,11 @@ export async function sendMessage(
   userMessage: string,
   history: ChatMessage[],
   speaker: SpeakerPack = defaultSpeaker,
+  /** Display name of the language the user is currently LEARNING. Caller
+   *  reads from `useSettings().learnedLanguage.name`. Required for the AI
+   *  to respond in the right language (the legacy profile field is
+   *  unreliable for non-English speakers). */
+  learnedLang: string = 'English',
   lessonContext?: string,
   /** The active companion preset. If omitted, falls back to Rwen. The chat
    *  screen passes this from useSettings().activeCompanionPresetId so the
@@ -258,6 +263,7 @@ export async function sendMessage(
     preset: presetForChat,
     profile,
     speaker,
+    learnedLang,
     fallbackName: profile?.display_name?.trim() || 'friend',
     lessonContext,
   });

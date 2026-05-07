@@ -1,0 +1,128 @@
+{
+  "__warnings": [
+    { "key": "lesson.phases.*", "note": "Phase names translated functionally ('Hook' → 'シーン', 'Chunks' → '新しい言葉', 'Pattern' → 'パターン', etc.). The English originals are SLA-research labels — reviewer: confirm whether Japanese learners recognise them better translated, or whether keeping katakana loanwords (e.g. フック, パターン) feels more on-brand." },
+    { "key": "lesson.mission.cta", "note": "'Famba zvakanaka' is Shona ('travel well / go in peace'). Kept verbatim as Rwen's brand signature, like Mhoro. Reviewer: confirm consistency with rwen.json." },
+    { "key": "lesson.locked.subscription_body", "note": "Mentions 'Modules 5-10' and 'Text AI tier' — UI labels kept consistent. Verify wording when subscription tier names settle in Japanese." },
+    { "key": "lesson.phase8.unlocked_body / locked_body", "note": "'2-minute conversation' rendered as '2分間の会話'. Reviewer: confirm natural flow." },
+    { "key": "exercises.translate.placeholder", "note": "'Type your answer...' → '答えを入力してください…'. Polite-form maintained." },
+    { "key": "tab.coming_soon_title", "note": "'{{lang}} curriculum coming soon' → '{{lang}}のカリキュラムは近日公開'. Japanese has no gender — straightforward." },
+    { "key": "POLITENESS", "note": "Used polite-form (です／ます) throughout. Reviewer: confirm tone matches app voice across all 5 locale files." }
+  ],
+  "tab": {
+    "daily_xp": "今日のXP",
+    "units": "ユニット",
+    "lesson_count": "{{count}}レッスン",
+    "unit_progress": "{{completed}}/{{total}} 完了",
+    "coming_soon_title": "{{lang}}のカリキュラムは近日公開",
+    "coming_soon_sub": "現在レッスンを準備中です。もうしばらくお待ちください。",
+    "categories_title": "コース",
+    "categories": {
+      "languages": "言語",
+      "ai_courses": "AIコース",
+      "know_yourself": "自分を知る"
+    },
+    "buy": {
+      "language_course": "+ 別の言語コースを購入",
+      "ai_course": "+ 別のAIコースを購入",
+      "know_yourself_course": "+ 別の「自分を知る」コースを購入",
+      "alert_title": "近日公開",
+      "alert_body": "コースストアは次のアップデートで開設されます。"
+    },
+    "empty_category": {
+      "ai_courses_title": "AIコースは近日公開",
+      "ai_courses_body": "最初のコースは近日公開予定です。準備ができ次第お知らせします。",
+      "know_yourself_title": "「自分を知る」は近日公開",
+      "know_yourself_body": "最初のコースは近日公開予定です。準備ができ次第お知らせします。"
+    }
+  },
+  "screen_header": {
+    "back": "← 戻る"
+  },
+  "unit": {
+    "section_label": "レッスン",
+    "xp_value": "{{count}} XP"
+  },
+  "lesson": {
+    "not_found": "レッスンが見つかりません：{{id}}",
+    "locked": {
+      "subscription_title": "ロック中 — 有料プランが必要です",
+      "subscription_body": "モジュール5〜10はText AIプラン以上の機能です。Rwenと続けるにはアップグレードしてください。",
+      "subscription_cta": "プランを見る",
+      "course_title": "ロック中 — コース未有効",
+      "course_body": "このレッスンは、まだ有効化されていないコースに含まれています。アカウントにコースを追加してください。",
+      "course_cta": "コースを見る"
+    },
+    "phases": {
+      "hook": "シーン",
+      "chunks": "新しい言葉",
+      "pattern": "パターン",
+      "practice": "練習",
+      "dialogue": "会話",
+      "recall": "リコール",
+      "mission": "ミッション"
+    },
+    "quit": {
+      "title": "レッスンを終了しますか？",
+      "body": "このレッスンの進捗は失われます。よろしいですか？",
+      "keep_going": "続ける",
+      "quit": "終了"
+    },
+    "hook": {
+      "tsika_label": "TSIKA — 文化的背景",
+      "cta": "始めましょう →"
+    },
+    "chunks": {
+      "counter": "単語 {{current}} / {{total}}",
+      "literal": "直訳：「{{value}}」",
+      "see_pattern": "パターンを見る →",
+      "got_it": "わかりました →"
+    },
+    "pattern": {
+      "start_practice": "練習を始める →"
+    },
+    "practice": {
+      "counter": "問題 {{current}} / {{total}}"
+    },
+    "dialogue": {
+      "to_recall": "いいですね — リコールへ →",
+      "continue": "続ける →"
+    },
+    "recall": {
+      "title": "アクティブ・リコール",
+      "counter": "{{current}} / {{total}}"
+    },
+    "mission": {
+      "complete_title": "レッスン完了！",
+      "xp_badge": "+{{count}} XP",
+      "score": "{{score}} / {{total}} 正解",
+      "card_title_prefix": "📍 ",
+      "cta": "Famba zvakanaka →"
+    },
+    "phase8": {
+      "unlocked_title": "Rwenと練習する",
+      "unlocked_body": "「{{topic}}」を会話で試してみましょう。Rwenがあなたの学んだ内容を使ってくれます。",
+      "unlocked_cta": "2分間の会話を始める →",
+      "locked_title": "Rwenと練習する — ロック中",
+      "locked_body": "「{{topic}}」について2分間会話してみましょう。Rwenが学んだ内容を使ってくれます。",
+      "locked_cta": "Text AIで解放する →"
+    }
+  },
+  "exercises": {
+    "check": "確認",
+    "feedback_correct": "✓ 正解！",
+    "fill_blank": {
+      "wrong": "✗ 答えは「{{correct}}」です"
+    },
+    "translate": {
+      "placeholder": "答えを入力してください…",
+      "wrong": "✗ 正解：{{correct}}"
+    },
+    "build_sentence": {
+      "placeholder": "下の言葉をタップして文を組み立ててください",
+      "wrong": "✗ 正解：{{correct}}"
+    },
+    "multiple_choice": {
+      "wrong": "✗ 惜しい"
+    }
+  }
+}

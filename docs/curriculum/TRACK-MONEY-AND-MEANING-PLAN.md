@@ -2,10 +2,16 @@
 
 *10 lessons. One unit. 5–10 minutes a day. A self-development micro-course about your relationship with money — emotional, relational, philosophical — for the Build Yourself umbrella.*
 
-Document version: 1.0 — 2026-05-04
+Document version: 2.0 — 2026-05-05 (Christian-foundation editorial pass)
 Authoring model: Claude Opus 4.7
 Source language: English (single source-of-truth; runtime translation by Claude)
 Schema: `types/lesson.ts` (`LessonData`)
+
+---
+
+## Editorial foundation
+
+All authoring in this track follows [CHRISTIAN-FOUNDATION-SPEC.md](./CHRISTIAN-FOUNDATION-SPEC.md). Christian foundation underneath, neutral surface, no overt religious language, no other-religion framing. **Read that spec before authoring or rewriting any lesson.**
 
 ---
 
@@ -30,7 +36,7 @@ One unit. Ten lessons. A deliberate arc: from the inherited beliefs we never cho
 ### Unit 1 — Money and Meaning
 Emoji: `💰`
 Learning arc: From "money is a number I'm bad at managing" to "money is a relationship I am already in, and like every relationship, it can be examined."
-Anchor traditions: George Kinder's life planning (the three questions, the seven stages of money maturity), Kristin Neff's self-compassion (for shame), ACT (values-based decisions over maximisation), Brené Brown (scarcity culture, wholeheartedness), behavioural economics (Kahneman, Thaler — used as observation, not gospel), Stoic dichotomy of control.
+Anchor traditions: George Kinder's life planning (the three questions, the seven stages of money maturity), the dignity-based self-kindness frame for shame ([CHRISTIAN-FOUNDATION-SPEC.md §6](./CHRISTIAN-FOUNDATION-SPEC.md)), ACT (values-based decisions over maximisation), Brené Brown (scarcity culture, wholeheartedness, shame vs guilt), behavioural economics (Kahneman, Thaler — used as observation, not gospel), Stoic dichotomy of control.
 Why these ten: Each lesson targets one of the recurring emotional or relational textures of money — inheritance, scarcity, shame, identity, generosity, love, family, control, retirement, enough. Together they form a complete first pass.
 Skill outcome: The user can talk to themselves about money without flinching, identify one inherited belief, apply self-compassion to one shame moment, name one value-aligned money decision, and articulate what "enough" means in their life.
 
@@ -66,8 +72,8 @@ These choices distinguish this course from the genre.
 3. **Worked examples include shame, debt, and family conflict.**
    The genre's default subject is a wealthy person figuring out their values. We refuse that. The examples in this course include: a person hiding a debt from their partner, a sibling who earns more than the rest of the family, a parent who never talked about money, a person whose savings account does not exist. Real money is emotional, and the course must reflect that.
 
-4. **Self-compassion before behaviour change.**
-   Anchored in Neff's research: shame impairs the executive function that any money decision requires. We treat self-compassion as a prerequisite for clear thinking about money, not as a comfort blanket. Lesson 4 (Debt Without Shame) is the load-bearing example.
+4. **Kindness to yourself before behaviour change.**
+   The clinical evidence converges across compassion-focused therapy (Gilbert) and shame research (Brown): shame impairs the executive function that any money decision requires. We treat warmth toward yourself as a prerequisite for clear thinking about money, not as a comfort blanket. Lesson 4 (Debt Without Shame) is the load-bearing example. Replacement framework in [CHRISTIAN-FOUNDATION-SPEC.md §6](./CHRISTIAN-FOUNDATION-SPEC.md).
 
 5. **Behavioural economics as observation, not gospel.**
    We reference loss aversion, anchoring, mental accounting — but as ways to notice your own mind, not as immutable laws. The replication crisis in behavioural science is real (priming, ego depletion, parts of nudge theory). We use Kahneman/Thaler at the level where the findings are robust (the existence of cognitive biases) and avoid specific contested experiments.
@@ -97,7 +103,7 @@ The inherited beliefs. The silent rules learned from how parents fought, didn't 
 A scarcity *mindset* is not the same as actual scarcity. People with very little can hold a sufficiency mindset; people with a great deal can be trapped in scarcity. Anchored in Brené Brown (scarcity culture) and Sendhil Mullainathan (scarcity science — but the lesson uses it carefully: actual scarcity is real and named, and the lesson does not gaslight people who genuinely cannot pay rent).
 
 ### Lesson 4 — Debt Without Shame
-Treats debt as a fact, not a verdict. Distinguishes shame (I am bad) from guilt (I did a thing I would do differently). Uses Kristin Neff's three components of self-compassion as the working method. Carefully: the lesson does not absolve harmful financial behaviour — it absolves the person from the identity-claim that they are the debt.
+Treats debt as a fact, not a verdict. Distinguishes shame (I am bad) from guilt (I did a thing I would do differently). Uses the dignity-based three-move framework as the working method — **honest acknowledgement** of the debt, **shared dignity** (you are not uniquely failing because every adult carries financial pressure of some kind, and it doesn't make any of you less worth caring for), **kindness toward yourself** (the same charity you'd extend to a friend in this situation). Carefully: the lesson does not absolve harmful financial behaviour — it absolves the person from the identity-claim that they are the debt. Framework in [CHRISTIAN-FOUNDATION-SPEC.md §6](./CHRISTIAN-FOUNDATION-SPEC.md).
 
 ### Lesson 5 — "I'm Broke" vs. "I Have Less Right Now"
 Identity language. "I'm broke" is a fused identity statement; "I have less right now" is a description of present circumstances. Anchored in ACT defusion (carried over from the Knowing Yourself course) and narrative therapy. Important to write this without making poverty feel like a perception problem — the lesson is about identity language, not material reality.
@@ -124,7 +130,7 @@ The Kinder three-questions exercise (lightly), and the question of "enough" — 
 ### Truth — where the evidence is settled vs contested
 
 **Settled:**
-- Self-compassion improves emotional regulation and outperforms self-criticism for behaviour change (Neff, large meta-analyses).
+- Warmth toward oneself (vs. self-criticism) improves emotional regulation and behaviour-change outcomes — convergent evidence across compassion-focused therapy (Gilbert), shame-resilience research (Brown), and behaviour-change literature.
 - Cognitive biases exist; people are not consistent expected-utility maximisers (Kahneman, robustly replicated at the high level).
 - Couples who can talk about money have better relational outcomes than couples who can't (Gottman, decades of longitudinal data).
 - Material scarcity has real cognitive costs (Mullainathan & Shafir, *Scarcity*).

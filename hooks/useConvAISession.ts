@@ -68,7 +68,7 @@ export interface ConvAIControls {
 export function useConvAISession(handlers: ConvAIHandlers = {}): ConvAIControls {
   const { lessonContext } = useLocalSearchParams<{ lessonContext?: string }>();
   const { user } = useAuth();
-  const { speaker, activeCompanionPresetId, rwenVoice } = useSettings();
+  const { speaker, activeCompanionPresetId, rwenVoice, learnedLanguage } = useSettings();
 
   const [state, setState] = useState<ConvAIState>('idle');
   const [agentSpeaking, setAgentSpeaking] = useState(false);
@@ -143,6 +143,7 @@ export function useConvAISession(handlers: ConvAIHandlers = {}): ConvAIControls 
       preset,
       profile,
       speaker,
+      learnedLang: learnedLanguage.name,
       fallbackName,
       lessonContext: typeof lessonContext === 'string' ? lessonContext : undefined,
       memoryFacts,

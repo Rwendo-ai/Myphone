@@ -1,0 +1,25 @@
+{
+  "__warnings": [
+    { "key": "items.streak_30.description", "note": "'Month of Mhoro' translated as 'मरोरो का महीना' — कीप्ट्स 'Mhoro' as Rwen's signature Shona greeting per pack convention. Reviewer: confirm transliteration of 'Mhoro' (मरोरो vs म्होरो) is acceptable." },
+    { "key": "items.halfway_tree", "note": "'Halfway Tree' is a Zimbabwean cultural reference. Translated as 'आधे रास्ते का पेड़'. Reviewer: confirm whether to localise or keep cultural anchor." },
+    { "key": "items.graduated.description_fmt", "note": "Plural-aware string with {{total}} placeholder. Hindi has gendered/numbered forms — translation uses neuter/plural-friendly phrasing. Reviewer to verify naturalness." },
+    { "key": "items.module_master", "note": "Loanword 'मॉड्यूल' kept (English transliterated). Common in tech-Hindi. Reviewer: alternative is 'इकाई'." },
+    { "key": "items.constellation", "note": "'Constellation' → 'तारामंडल'. Poetic. Reviewer: confirm fits the gamification tone." }
+  ],
+  "title": "उपलब्धियाँ",
+  "subtitle": "{{total}} में से {{unlocked}} खुली",
+  "items": {
+    "first_lesson": { "title": "पहले क़दम",            "description": "अपनी पहली leçon पूरी की।" },
+    "streak_3":     { "title": "तीन दिन की चिंगारी",   "description": "लगातार 3 दिन।" },
+    "streak_7":     { "title": "सप्ताह योद्धा",        "description": "7 दिन तक streak ज़िंदा रखी।" },
+    "streak_30":    { "title": "मरोरो का महीना",      "description": "30 दिन की streak। Rwen को तुम पर गर्व है।" },
+    "xp_100":       { "title": "उज्ज्वल चिंगारी",      "description": "100 XP कमाए।" },
+    "xp_500":       { "title": "उभरता तारा",          "description": "500 XP कमाए।" },
+    "xp_1000":      { "title": "तारामंडल",            "description": "1,000 XP कमाए।" },
+    "module_1":     { "title": "मॉड्यूल मास्टर",      "description": "अपना पहला मॉड्यूल पूरा किया।" },
+    "module_5":     { "title": "आधे रास्ते पर",       "description": "5 मॉड्यूल पूरे किए।" },
+    "lessons_25":   { "title": "एक चौथाई पर्वतारोही", "description": "25 leçons पूरी कीं।" },
+    "lessons_50":   { "title": "आधे रास्ते का पेड़",   "description": "50 leçons पूरी कीं।" },
+    "graduated":    { "title": "Rwendo स्नातक",       "description_fmt": "सभी {{total}} leçons पूरी कीं।" }
+  }
+}

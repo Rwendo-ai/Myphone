@@ -1,0 +1,27 @@
+{
+  "__warnings": [
+    { "key": "items.streak_30.title", "note": "'Month of Mhoro' translated to 'Mhoroの一か月' — kept Shona 'Mhoro' verbatim as brand-signature. Reviewer: confirm consistency with rwen.json's welcome decision." },
+    { "key": "items.first_lesson.title", "note": "'First Steps' → 'はじめの一歩'. Standard idiom in Japanese." },
+    { "key": "items.streak_3.title / items.streak_7.title", "note": "Names are playful/poetic in EN ('Three-Day Spark', 'Week Warrior'). Japanese versions are functional — reviewer should rewrite for emotional resonance and natural Japanese app voice." },
+    { "key": "items.xp_*.title", "note": "'Bright Spark', 'Rising Star', 'Constellation' — translated as ひらめき／のぼる星／星座. Reviewer free to substitute equivalent Japanese metaphors (e.g. 流星, 北極星)." },
+    { "key": "items.lessons_50.title", "note": "'Halfway Tree' is a Jamaican landmark idiom in EN. Used '中間地点' here as the geographic reference doesn't carry. Reviewer: confirm or propose a Japanese cultural anchor (e.g. 半分の道)." },
+    { "key": "items.graduated.description_fmt", "note": "'Completed all {{total}} lessons.' rendered as '{{total}}レッスンすべてを終えました。'. Japanese has no plural agreement — placeholder works for any number." },
+    { "key": "POLITENESS", "note": "Descriptions use polite-form (〜ました／〜です) for warmth and consistency. Reviewer: confirm tone matches the app's overall voice." }
+  ],
+  "title": "達成",
+  "subtitle": "{{total}}件中{{unlocked}}件解除",
+  "items": {
+    "first_lesson": { "title": "はじめの一歩",     "description": "最初のレッスンを完了しました。" },
+    "streak_3":     { "title": "3日のひらめき",     "description": "3日連続。" },
+    "streak_7":     { "title": "1週間の継続者",     "description": "7日間ストリークを保ちました。" },
+    "streak_30":    { "title": "Mhoroの一か月",     "description": "30日連続。Rwenが誇りに思っています。" },
+    "xp_100":       { "title": "明るいひらめき",     "description": "100 XPを獲得しました。" },
+    "xp_500":       { "title": "のぼる星",           "description": "500 XPを獲得しました。" },
+    "xp_1000":      { "title": "星座",               "description": "1,000 XPを獲得しました。" },
+    "module_1":     { "title": "モジュール制覇",     "description": "最初のモジュールを完了しました。" },
+    "module_5":     { "title": "折り返し地点",       "description": "5つのモジュールを完了しました。" },
+    "lessons_25":   { "title": "4分の1の登山者",     "description": "25レッスンを完了しました。" },
+    "lessons_50":   { "title": "中間地点",           "description": "50レッスンを完了しました。" },
+    "graduated":    { "title": "Rwendo卒業生",       "description_fmt": "{{total}}レッスンすべてを終えました。" }
+  }
+}

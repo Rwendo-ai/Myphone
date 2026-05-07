@@ -15,6 +15,7 @@ import { pickAndUploadAvatar } from '../../lib/storage';
 import { supabase } from '../../lib/supabase';
 import { speakText, stopSpeaking } from '../../lib/voice';
 import { SUPPORTED_LANGUAGES, SupportedLanguage, setAppLanguage } from '../../lib/i18n';
+import { SPEAKERS } from '../../data/speakers';
 import { THEMES } from '../../constants/themes';
 import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
@@ -24,6 +25,35 @@ function Section({ title, children }: { title: string; children: React.ReactNode
     <View style={styles.section}>
       <Text style={styles.sectionTitle}>{title}</Text>
       <View style={styles.sectionContent}>{children}</View>
+    </View>
+  );
+}
+
+/**
+ * Section that collapses by default and expands on tap. The collapsed
+ * header shows the current selection (e.g. the active language or theme)
+ * so the user can see their pick at a glance without expanding.
+ */
+function CollapsibleSection({
+  title,
+  currentLabel,
+  children,
+}: {
+  title: string;
+  currentLabel?: string;
+  children: React.ReactNode;
+}) {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <View style={styles.section}>
+      <Pressable style={styles.collapsibleHeader} onPress={() => setExpanded((e) => !e)}>
+        <Text style={styles.sectionTitle}>{title}</Text>
+        <View style={styles.collapsibleHeaderRight}>
+          {currentLabel && <Text style={styles.collapsibleCurrent}>{currentLabel}</Text>}
+          <Text style={styles.collapsibleChevron}>{expanded ? '▾' : '▸'}</Text>
+        </View>
+      </Pressable>
+      {expanded && <View style={styles.sectionContent}>{children}</View>}
     </View>
   );
 }
@@ -49,6 +79,11 @@ const ISO_TO_DB: Record<SupportedLanguage, string> = {
   fr: 'french',
   zh: 'chinese',
   tl: 'tagalog',
+  hi: 'hindi',
+  es: 'spanish',
+  pt: 'portuguese',
+  ja: 'japanese',
+  ko: 'korean',
 };
 const LANG_FLAGS: Record<SupportedLanguage, string> = {
   en: '🇬🇧',
@@ -56,6 +91,11 @@ const LANG_FLAGS: Record<SupportedLanguage, string> = {
   fr: '🇫🇷',
   zh: '🇨🇳',
   tl: '🇵🇭',
+  hi: '🇮🇳',
+  es: '🇪🇸',
+  pt: '🇧🇷',
+  ja: '🇯🇵',
+  ko: '🇰🇷',
 };
 
 export default function ProfileScreen() {
@@ -222,8 +262,11 @@ export default function ProfileScreen() {
             <SettingsRow label={t('profile.plan.view_all_plans')} onPress={() => router.push('/profile/plans')} />
           </Section>
 
-          {/* Colour Theme */}
-          <Section title={t('profile.sections.colour_theme')}>
+          {/* Colour Theme — collapsed by default; tap header to expand */}
+          <CollapsibleSection
+            title={t('profile.sections.colour_theme')}
+            currentLabel={`${theme.emoji} ${theme.name}`}
+          >
             <View style={styles.themeGrid}>
               {Object.values(THEMES).map((th) => (
                 <Pressable
@@ -241,26 +284,35 @@ export default function ProfileScreen() {
                 </Pressable>
               ))}
             </View>
-          </Section>
+          </CollapsibleSection>
 
-          {/* App Language */}
-          <Section title={t('profile.sections.app_language')}>
+          {/* App Language — collapsed by default. Labels use the speaker pack's
+              nativeName so each language renders as its own speakers say it
+              (English / ChiShona / Français / 中文 / Tagalog). */}
+          <CollapsibleSection
+            title={t('profile.sections.app_language')}
+            currentLabel={`${LANG_FLAGS[currentLang]} ${SPEAKERS[ISO_TO_DB[currentLang] as SpeakerPackId].nativeName}`}
+          >
             <View style={styles.langGrid}>
-              {SUPPORTED_LANGUAGES.map((lang) => (
-                <Pressable
-                  key={lang}
-                  style={[styles.langChip, currentLang === lang && styles.langChipActive]}
-                  onPress={() => handleAppLanguageSelect(lang)}
-                >
-                  <Text style={styles.langFlag}>{LANG_FLAGS[lang]}</Text>
-                  <Text style={[styles.langLabel, currentLang === lang && styles.langLabelActive]}>
-                    {t(`profile.app_language_options.${lang}`)}
-                  </Text>
-                  {currentLang === lang && <Text style={styles.langCheck}>✓</Text>}
-                </Pressable>
-              ))}
+              {SUPPORTED_LANGUAGES.map((lang) => {
+                const speakerId = ISO_TO_DB[lang] as SpeakerPackId;
+                const nativeName = SPEAKERS[speakerId].nativeName;
+                return (
+                  <Pressable
+                    key={lang}
+                    style={[styles.langChip, currentLang === lang && styles.langChipActive]}
+                    onPress={() => handleAppLanguageSelect(lang)}
+                  >
+                    <Text style={styles.langFlag}>{LANG_FLAGS[lang]}</Text>
+                    <Text style={[styles.langLabel, currentLang === lang && styles.langLabelActive]}>
+                      {nativeName}
+                    </Text>
+                    {currentLang === lang && <Text style={styles.langCheck}>✓</Text>}
+                  </Pressable>
+                );
+              })}
             </View>
-          </Section>
+          </CollapsibleSection>
 
           {/* Rwen's Voice — voice options are speaker-pack-curated. A Shona
               speaker sees Shona-friendly voices, English speaker sees English
@@ -491,6 +543,29 @@ const styles = StyleSheet.create({
   section: { paddingHorizontal: Spacing.lg, paddingTop: Spacing.lg },
   sectionTitle: { fontSize: FontSize.sm, fontWeight: FontWeight.bold, color: Colors.gray[400], textTransform: 'uppercase', letterSpacing: 1, marginBottom: Spacing.sm },
   sectionContent: { backgroundColor: Colors.white, borderRadius: BorderRadius.lg, overflow: 'hidden', shadowColor: Colors.black, shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.04, shadowRadius: 4, elevation: 1 },
+
+  collapsibleHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: Spacing.sm,
+  },
+  collapsibleHeaderRight: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.xs,
+    marginBottom: Spacing.sm,
+  },
+  collapsibleCurrent: {
+    fontSize: FontSize.sm,
+    color: Colors.gray[600],
+    fontWeight: FontWeight.medium,
+  },
+  collapsibleChevron: {
+    fontSize: FontSize.md,
+    color: Colors.gray[400],
+    fontWeight: FontWeight.bold,
+  },
 
   row: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: Spacing.md, paddingVertical: Spacing.md, borderBottomWidth: 1, borderBottomColor: Colors.gray[50] },
   rowLabel: { fontSize: FontSize.md, color: Colors.gray[700] },

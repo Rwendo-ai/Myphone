@@ -407,6 +407,64 @@ enforce_companion_age_gate
 
 ---
 
+## Storage buckets (added 2026-05-05)
+
+### `course-content`
+
+Holds streaming lesson bodies. The JS binary ships with course manifests (light metadata) but no lesson content; the device downloads each `.json` on first open and caches locally per `lib/lesson-loader.ts`.
+
+**Path scheme:**
+```
+lessons/<courseId>/<speakerId>/<lessonId>.json
+```
+
+Examples:
+- `lessons/language-shona/english/m01-l01-mangwanani.json` — Shona lesson, English-speaker variant (source-of-truth)
+- `lessons/know-yourself/english/m01-l01-looking-and-seeing.json` — self-development lesson, English source
+- `lessons/language-shona/french/m01-l01-mangwanani.json` — Claude-translated French variant (populated by lazy-translation Edge Function on first French-speaker open)
+
+**Object format:** UTF-8 JSON, conforming to `LessonData` in `types/lesson.ts` (the 7-phase Rwendo Method shape — hook / chunks / pattern / practice / dialogue / recall / mission).
+
+**Volume at 2026-05-05:**
+- 576 lesson files uploaded across 13 courses
+- All under `lessons/<courseId>/english/` (source variant only)
+- Average ~5 KB / lesson; total bucket size < 3 MB
+
+**RLS policies:**
+
+```sql
+-- Authenticated users can read every lesson. Read access is the only
+-- thing the loader needs; ownership / entitlement gating happens at the
+-- application layer (lib/entitlements.ts canAccessLesson) before the
+-- loader is even called for a given lesson.
+create policy "course_content_authenticated_read"
+  on storage.objects for select
+  using (bucket_id = 'course-content' and auth.role() = 'authenticated');
+
+-- Only the service-role key can write. Authoring uploads run via
+-- scripts/upload-self-dev-lessons-to-storage.ts using SUPABASE_SERVICE_ROLE_KEY.
+-- The lazy-translation Edge Function will write here too once deployed.
+create policy "course_content_service_write"
+  on storage.objects for insert
+  with check (bucket_id = 'course-content' and auth.role() = 'service_role');
+```
+
+**Why a private bucket with authenticated read** instead of fully public:
+- Prevents trivial scraping of paid lesson content via `getPublicUrl`.
+- Pairs with the application-layer `canAccessLesson` check that already exists; bucket access is necessary-but-not-sufficient.
+- Re-using anon-key auth means no signed-URL roundtrip per lesson — `supabase.storage.from('course-content').download(path)` works directly in the loader.
+
+**React Native quirk:** `data.text()` on the Blob returned by `supabase.storage.download()` is undefined on RN (the polyfilled Blob lacks the method). The loader wraps with `await new Response(data).text()` instead. See `lib/lesson-loader.ts:97-99`.
+
+**Manifest source-of-truth:** `data/courses/<courseId>/manifest.ts` holds the bundled lesson list. Authoring source files live under `scripts/` (not deployed) for re-uploading. Regenerate manifests after authoring with:
+```
+npx tsx scripts/generate-course-manifests.ts
+```
+
+**Future variants:** the lazy-translation Edge Function (next phase) will populate `lessons/<courseId>/<non-english-speaker>/<lessonId>.json` on demand, so a French speaker who opens a Knowing Yourself lesson triggers a one-time Claude translation that benefits every subsequent French speaker.
+
+---
+
 ## Functions
 
 ### add_xp(p_user_id, p_xp)

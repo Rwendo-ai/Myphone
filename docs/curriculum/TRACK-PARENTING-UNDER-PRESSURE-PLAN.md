@@ -2,12 +2,18 @@
 
 *12 lessons. One unit. 5–10 minutes a day. For parents of any age — toddlers through teens through adult kids.*
 
-Document version: 1.0 — 2026-05-04
+Document version: 2.0 — 2026-05-05 (Christian-foundation editorial pass)
 Authoring model: Claude Opus 4.7
 Source language: English (single source-of-truth; runtime translation by Claude)
 Schema: `types/lesson.ts` (`LessonData`)
 Course pack: `data/courses/parenting-under-pressure/`
 `meta.type: 'self-development'` — sits parallel to *Knowing Yourself* under the Build Yourself umbrella.
+
+---
+
+## Editorial foundation
+
+All authoring in this track follows [CHRISTIAN-FOUNDATION-SPEC.md](./CHRISTIAN-FOUNDATION-SPEC.md). Christian foundation underneath, neutral surface, no overt religious language, no other-religion framing. **Read that spec before authoring or rewriting any lesson.**
 
 ---
 
@@ -17,7 +23,7 @@ This track is not a parenting course in the prescriptive sense. It does not teac
 
 The audience is a parent at any stage — a single mum in Lagos staring down a 3am toddler tantrum, a stay-at-home dad in Sydney whose 14-year-old just slammed a door, a grandparent in Manila raising their grandchild and feeling far too tired for any of this, an adult child standing in their own kitchen wondering why they snapped at the daughter they love. The lessons assume **exhaustion is real**, **mistakes are normal**, and **the parent's nervous system is the regulating organ for the family**. Get that right, and the rest gets workable.
 
-Anchored in: adult attachment under stress (Bowlby/Ainsworth, Levine & Heller's *Attached*), Polyvagal theory (Porges) for nervous-system co-regulation, Daniel Siegel's *The Whole-Brain Child* and *Parenting from the Inside Out*, ACT (Hayes) for values-based parenting under exhaustion, NVC (Rosenberg) for repair, Self-Compassion (Neff) for the parts where you've already screwed up.
+Anchored in: adult attachment under stress (Bowlby/Ainsworth, Levine & Heller's *Attached*), Polyvagal theory (Porges) for nervous-system co-regulation, Daniel Siegel's *The Whole-Brain Child* and *Parenting from the Inside Out*, ACT (Hayes) for values-based parenting under exhaustion, NVC (Rosenberg) for repair, the dignity-based self-kindness frame ([CHRISTIAN-FOUNDATION-SPEC.md §6](./CHRISTIAN-FOUNDATION-SPEC.md)) for the parts where you've already screwed up.
 
 Quality target: this track should sit on the shelf next to *How to Talk So Kids Will Listen* (Faber & Mazlish) and *No-Drama Discipline* (Siegel & Bryson). Not Instagram parenting.
 
@@ -38,7 +44,7 @@ The arc moves in four beats: **regulate yourself → repair what's broken → ha
 
 5. **You Will Lose It. What Happens Next Is the Lesson** — Siegel & Bryson's "rupture and repair." The blow-up is not the failure. The failure is the missing repair.
 6. **A Real Apology to a Child** — NVC-shaped: what happened, what you felt, what you needed, what you'll try. Without "but" and without making them comfort you.
-7. **Self-Compassion for the Parent Who Already Screwed Up** — Neff. Self-criticism predicts worse parenting, not better. The way you talk to yourself after a hard moment shapes the next one.
+7. **Kindness to Yourself After You Screwed Up** — convergent clinical evidence (Gilbert; Brown): self-criticism predicts worse parenting, not better. The way you talk to yourself after a hard moment shapes the next one. Three moves: honestly acknowledge what happened, recognise you are not uniquely failing (every parent hits these moments and it doesn't make any of you less worth caring for), extend to yourself the charity you would extend to a friend. Framework in [CHRISTIAN-FOUNDATION-SPEC.md §6](./CHRISTIAN-FOUNDATION-SPEC.md).
 
 ### Beat 3 — The hard hours (Lessons 8–10)
 
@@ -65,7 +71,7 @@ These are explicit choices that distinguish this track from generic parenting co
 
 4. **No suburban-Western framing.** No "after bath time," no "during the school run in your SUV," no "during your weekly therapy session." The examples assume a small flat, no time, no money, multi-generational households, late shifts, hand-me-downs, and grandparents who live with you or far from you. The skills are universal; the framing must not assume otherwise.
 
-5. **Self-compassion is a tool, not a comfort blanket.** Neff's research is explicit: self-criticism predicts worse behaviour change. Lesson 7 treats self-compassion as an instrument of better parenting tomorrow, not as a sentimental break.
+5. **Kindness to yourself is a tool, not a comfort blanket.** The clinical evidence is explicit: self-criticism predicts worse behaviour change (compassion-focused therapy [Gilbert]; shame-resilience [Brown]; behaviour-change literature). Lesson 7 treats kindness toward yourself as an instrument of better parenting tomorrow, not as a sentimental break. Replacement framework in [CHRISTIAN-FOUNDATION-SPEC.md §6](./CHRISTIAN-FOUNDATION-SPEC.md).
 
 6. **Identity-first language throughout.** "You are the kind of parent who repairs" rather than "good parents repair." Anchored in Clear/Fogg on identity-based behaviour change. The user is not being told what to do — they are being shown who they already are when they show up.
 

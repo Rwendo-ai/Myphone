@@ -142,4 +142,13 @@ export interface LessonData {
    * spoken language.
    */
   crisisHandoff?: boolean;
+  /**
+   * Content version. Bump when the lesson is re-authored so cached copies
+   * on devices get invalidated. The loader compares cached `version` against
+   * the manifest's `version` for the same lesson id; mismatch (or missing
+   * cache version) triggers a Storage refetch on next open.
+   *
+   * Default: 1 (treated as the initial v1 author).
+   */
+  version?: number;
 }

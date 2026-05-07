@@ -1,6 +1,4 @@
 import { CoursePack, CoursePackMeta } from '../../../types/packs';
-import { LessonData } from '../../../types/lesson';
-
 /**
  * Knowing Yourself — the Build Yourself umbrella's core course.
  *
@@ -35,23 +33,9 @@ const meta: CoursePackMeta = {
 
 const pack: CoursePack = {
   meta,
-  variants: {
-    english: {
-      speakerId: 'english',
-      curriculumLoader: async () => {
-        const mod = await import('./english/curriculum');
-        return mod.default ?? mod.lessons;
-      },
-    },
-  },
+  variants: {},
 };
 
-/** Synchronously fetch a Knowing Yourself lesson. Falls back to the
- *  English source-of-truth for any speaker. */
-export function getLessonSync(_speakerId: string, lessonId: string): LessonData | undefined {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const lessons = require('./english/curriculum').default as Record<string, LessonData>;
-  return lessons[lessonId];
-}
+export { LESSON_MANIFEST, type LessonMeta } from './manifest';
 
 export default pack;

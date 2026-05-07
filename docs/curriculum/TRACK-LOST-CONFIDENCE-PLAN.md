@@ -2,7 +2,7 @@
 
 *8 lessons. One unit. 5–10 minutes a day. For anyone in the dip.*
 
-Document version: 1.0 — 2026-05-04
+Document version: 2.0 — 2026-05-05 (Christian-foundation editorial pass)
 Authoring model: Claude Opus 4.7
 Source language: English (single source-of-truth; runtime translation by Claude)
 Schema: `types/lesson.ts` (`LessonData`)
@@ -10,6 +10,12 @@ Course type: `self-development`
 Course ID: `lost-confidence`
 Display name: When You've Lost Confidence
 Emoji: 🌱
+
+---
+
+## Editorial foundation
+
+All authoring in this track follows [CHRISTIAN-FOUNDATION-SPEC.md](./CHRISTIAN-FOUNDATION-SPEC.md). Christian foundation underneath, neutral surface, no overt religious language, no other-religion framing. **Read that spec before authoring or rewriting any lesson.**
 
 ---
 
@@ -42,11 +48,11 @@ Anchor traditions: CBT (Beck, Burns) on the specific distortions that flare afte
 Skill: The user names which of the three distortions is most active for them right now and produces one realistic counter-statement that is not artificial positivity.
 
 ### Lesson 4 — The Comparison Spiral
-Anchor traditions: Festinger's social comparison theory; Kristin Neff on common humanity; Stoic view-from-above (Marcus Aurelius); modern attention-economy critique (Odell, Burkeman).
+Anchor traditions: Festinger's social comparison theory; the shared-dignity frame ([CHRISTIAN-FOUNDATION-SPEC.md §6](./CHRISTIAN-FOUNDATION-SPEC.md)) — you are not uniquely failing because every person carries inherent worth and inherits the same human limits; Stoic view-from-above (Marcus Aurelius); modern attention-economy critique (Odell, Burkeman).
 Skill: The user identifies one comparison loop they fall into (a person, a feed, a peer) and chooses one specific intervention — mute, unfollow, time-cap, or pre-commit to a different signal of progress.
 
 ### Lesson 5 — Asking for Help When You're the One Who Used to Give It
-Anchor traditions: Kristin Neff on self-compassion as a precondition for change; Brené Brown on vulnerability as the price of connection; attachment research (Holt-Lunstad) on the health cost of isolation.
+Anchor traditions: kindness to yourself as a precondition for change ([CHRISTIAN-FOUNDATION-SPEC.md §6](./CHRISTIAN-FOUNDATION-SPEC.md)); Brené Brown on vulnerability as the price of connection; attachment research (Holt-Lunstad) on the health cost of isolation.
 Skill: The user names one person they have been avoiding telling, and drafts the first three sentences of what they would say.
 
 ### Lesson 6 — Small Evidence
@@ -54,7 +60,7 @@ Anchor traditions: Bandura on self-efficacy ("mastery experience" as the stronge
 Skill: The user identifies one tiny, specific, recently-completed action that counts as evidence of capability, and one tiny, specific action they will take in the next 24 hours.
 
 ### Lesson 7 — Becoming a Beginner Again
-Anchor traditions: Dweck's growth mindset, with the corrections (it is not "anyone can do anything if they try" — it is the willingness to be bad at things long enough to get less bad); Shunryu Suzuki's *shoshin* (beginner's mind); ACT acceptance of discomfort in service of values.
+Anchor traditions: Dweck's growth mindset, with the corrections (it is not "anyone can do anything if they try" — it is the willingness to be bad at things long enough to get less bad); ACT acceptance of discomfort in service of values; the courage to be a learner without it costing your sense of worth.
 Skill: The user names one thing they used to be expert at, one thing they are now a beginner at, and writes one sentence that holds both without the second invalidating the first.
 
 ### Lesson 8 — The Imposter Feeling That Doesn't Leave
@@ -69,7 +75,7 @@ Skill: The user articulates one thing they will keep doing this week even if the
 
 2. **Growth mindset is taught with Dweck's own corrections.** The popular version is "anyone can do anything if they try." Dweck has corrected this repeatedly: a growth mindset is the recognition that ability is *developable*, applied with specific effort and strategy and mentorship. It is not an instruction to praise effort regardless of outcome. Lesson 7 teaches the corrected version explicitly.
 
-3. **Self-compassion before self-criticism, always.** Neff's research is unambiguous: self-criticism predicts worse recovery, not better. The course assumes the user is already being hard on themselves and does not add to it. Where the lesson is hard (Lesson 1, Lesson 8), it is hard with warmth.
+3. **Kindness to yourself before self-criticism, always.** The clinical evidence is unambiguous: self-criticism predicts worse recovery, not better (compassion-focused therapy [Gilbert]; shame-resilience research [Brown]; behaviour-change literature). The course assumes the user is already being hard on themselves and does not add to it. Where the lesson is hard (Lesson 1, Lesson 8), it is hard with warmth. Replacement framework in [CHRISTIAN-FOUNDATION-SPEC.md §6](./CHRISTIAN-FOUNDATION-SPEC.md).
 
 4. **The imposter feeling is normalised, not eliminated.** The lesson on imposter (8) explicitly teaches that the feeling often persists across an entire career and that the skill is acting alongside it. We do not promise it leaves.
 

@@ -9,6 +9,7 @@ import {
 import { PACKS, DEFAULT_PACK_ID, resolvePackLanguages } from '../data/packs';
 import { SPEAKERS, getSpeaker, english as defaultSpeaker } from '../data/speakers';
 import { COURSES, getCourse } from '../data/courses';
+import { getLanguage } from '../data/languages';
 import { JURISDICTIONS, getJurisdiction, AU as defaultJurisdiction } from '../data/jurisdictions';
 import { SubscriptionTier, EntitlementContext } from './entitlements';
 import { Theme, THEMES, DEFAULT_THEME } from '../constants/themes';
@@ -177,18 +178,40 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
   );
 
   // ── derive v2 legacy fields from v3 ───────────────────────────────────────
+  // spoken = the speaker pack's language (Profile → App Language).
+  // learned = the active course's target language (Learn tab → active course pill).
+  // Both flow from v3 state directly so the Learn tab header reflects the
+  // user's actual selection regardless of legacy activePack state.
   const { spoken, learned } = useMemo(() => {
-    // Prefer the legacy activePack if explicitly set; otherwise derive from speaker + course
-    const legacy = resolvePackLanguages(activePack);
-    return legacy;
-  }, [activePack]);
+    const spokenLang = getLanguage(speakerId);
+    const activeCourse = activeCourseId ? COURSES[activeCourseId] : null;
+    const targetLangId = activeCourse?.meta.targetLanguageId;
+    const learnedLang = targetLangId ? getLanguage(targetLangId) : spokenLang;
+    return { spoken: spokenLang, learned: learnedLang };
+  }, [speakerId, activeCourseId]);
 
   const theme = THEMES[themeId] ?? DEFAULT_THEME;
 
   // ── setters that keep both worlds in sync ────────────────────────────────
   const setSpeakerPack = (id: SpeakerPackId) => {
     setSpeakerId(id);
-    // also update legacy pack to keep derived fields consistent
+    // If the active course is no longer available to this speaker (e.g.
+    // English speaker with active=language-shona switches to French; French
+    // speakers can't see language-shona), promote them to the first language
+    // course that IS available. Without this the Learn tab would show no
+    // active course pill.
+    if (activeCourseId) {
+      const current = COURSES[activeCourseId];
+      if (current && !current.meta.availableForSpeakers.includes(id)) {
+        const firstAvailable = Object.values(COURSES).find(
+          (c) => c.meta.type === 'language' && c.meta.availableForSpeakers.includes(id),
+        );
+        if (firstAvailable) setActiveCourseId(firstAvailable.meta.id);
+      }
+    }
+    // also update legacy pack so anything still reading activePack sees
+    // a sensible value (only english↔shona is mapped; other speakers fall
+    // back to shona-english which is harmless since v3 derives directly).
     const legacyId = id === 'shona' ? 'english-shona' : 'shona-english';
     const lp = PACKS.find(p => p.id === legacyId);
     if (lp) setActivePack(lp);

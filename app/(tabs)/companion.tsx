@@ -9,6 +9,8 @@ import { useAuth } from '../../lib/AuthContext';
 import { useSettings } from '../../lib/SettingsContext';
 import { useProgress } from '../../hooks/useProgress';
 import { sendMessage, loadConversationHistory, ChatMessage } from '../../lib/claude';
+import { buildCompanionGreeting } from '../../lib/companion-prompts';
+import { resolvePreset } from '../../lib/active-companion';
 import { speakText, stopSpeaking, startRecording, stopRecordingAndTranscribe, isCurrentlyRecording } from '../../lib/voice';
 import { useConvAISession } from '../../hooks/useConvAISession';
 import { Colors } from '../../constants/colors';
@@ -97,12 +99,42 @@ export default function CompanionScreen() {
     else liveVoice.start();
   }, [liveVoiceActive, liveVoice]);
 
-  // Load conversation history
+  // Load conversation history. If we arrived from a lesson Phase 8 card,
+  // ALWAYS show a context-aware greeting that names the lesson — even if
+  // there's existing chat history — so the user knows the AI is tracking
+  // what they just finished.
   useEffect(() => {
     if (!user || historyLoaded) return;
     loadConversationHistory(user.id).then((history) => {
       historyRef.current = history;
-      if (history.length > 0) {
+
+      // Lesson-context arrival: build a fresh greeting that references the
+      // lesson topic. The AI is also primed via system prompt's lessonContext
+      // field; this greeting is the user-visible counterpart.
+      if (lessonContext) {
+        const preset = resolvePreset('tendai'); // Tendai is the lesson companion
+        const greeting = buildCompanionGreeting(
+          preset,
+          speaker,
+          username || tCommon('fallback_name'),
+          lessonContext,
+        );
+        const baseMessages: DisplayMessage[] = history.map((m, i) => ({
+          id: String(i),
+          role: m.role === 'assistant' ? 'rwen' : 'user',
+          text: m.content,
+        }));
+        const greetingMsg: DisplayMessage = {
+          id: `lesson-greeting-${Date.now()}`,
+          role: 'rwen',
+          text: greeting,
+        };
+        // Push greeting AFTER any existing history so the user sees it as
+        // the most recent message — i.e. "I just got here from a lesson".
+        setMessages([...baseMessages, greetingMsg]);
+        // Persist the greeting to history so the AI sees it on next turn.
+        historyRef.current = [...history, { role: 'assistant', content: greeting }];
+      } else if (history.length > 0) {
         setMessages(history.map((m, i) => ({
           id: String(i),
           role: m.role === 'assistant' ? 'rwen' : 'user',
@@ -111,11 +143,12 @@ export default function CompanionScreen() {
       } else {
         setMessages([{ id: '0', role: 'rwen', text: t('messages.welcome', { name: username || tCommon('fallback_name') }) }]);
       }
+
       setHistoryLoaded(true);
       setRwenState('idle');
       setTimeout(() => scrollRef.current?.scrollToEnd({ animated: false }), 100);
     });
-  }, [user, historyLoaded, username]);
+  }, [user, historyLoaded, username, lessonContext, speaker, t, tCommon]);
 
   // ─── Core: process a user message ────────────────────────────────────────
 
@@ -130,7 +163,7 @@ export default function CompanionScreen() {
     setTimeout(() => scrollRef.current?.scrollToEnd({ animated: true }), 100);
 
     try {
-      const reply = await sendMessage(user.id, text.trim(), historyRef.current, speaker, lessonContext, activeCompanionPresetId);
+      const reply = await sendMessage(user.id, text.trim(), historyRef.current, speaker, learnedLanguage.name, lessonContext, activeCompanionPresetId);
 
       historyRef.current = [
         ...historyRef.current,
@@ -410,19 +443,30 @@ export default function CompanionScreen() {
                 editable={!loading && !convoActive}
               />
 
-              <Pressable
-                style={[styles.composerMicBtn, isRecording && styles.composerMicBtnActive]}
-                onPressIn={handleMicPressIn}
-                onPressOut={handleMicPressOut}
-                disabled={convoActive}
-                hitSlop={8}
-              >
-                <Text style={styles.composerMicIcon}>{isRecording ? '🔴' : '🎙'}</Text>
-              </Pressable>
-
-              {input.trim().length > 0 ? (
+              {/* Voice options are hidden when entering from a lesson Phase 8.
+                  Lesson chat is text-only — STT language detection is fragile
+                  for cross-language users (e.g. Tagalog speaker says
+                  "Magandang Umaga Po", STT defaults to English, replies
+                  about "thank you very much"). Voice stays available in the
+                  open Companion tab where the user is actively engaging
+                  voice mode. */}
+              {!lessonContext && (
                 <Pressable
-                  style={[styles.composerActionBtn, loading && styles.composerActionBtnDisabled]}
+                  style={[styles.composerMicBtn, isRecording && styles.composerMicBtnActive]}
+                  onPressIn={handleMicPressIn}
+                  onPressOut={handleMicPressOut}
+                  disabled={convoActive}
+                  hitSlop={8}
+                >
+                  <Text style={styles.composerMicIcon}>{isRecording ? '🔴' : '🎙'}</Text>
+                </Pressable>
+              )}
+
+              {/* In lesson context: always show the send button (disabled when empty).
+                  Otherwise: send button when text present, voice launcher when empty. */}
+              {(lessonContext || input.trim().length > 0) ? (
+                <Pressable
+                  style={[styles.composerActionBtn, (loading || !input.trim()) && styles.composerActionBtnDisabled]}
                   onPress={sendText}
                   disabled={!input.trim() || loading || convoActive}
                   hitSlop={8}

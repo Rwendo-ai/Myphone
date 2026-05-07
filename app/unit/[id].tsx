@@ -2,16 +2,36 @@ import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useTranslation } from 'react-i18next';
-import { getUnit } from '../../data/lessons';
+import { getUnit, getCourseUnit } from '../../data/lessons';
+import { getLessonManifest, getCourseModuleMeta } from '../../lib/manifests';
 import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
 
 export default function UnitScreen() {
   const { t } = useTranslation('learn');
   const { id } = useLocalSearchParams<{ id: string }>();
-  const unit = getUnit(id);
+
+  // Synthesised unit IDs follow `${courseId}::mNN` and resolve from the
+  // course's manifest. Legacy IDs (greetings, survival, …) come from
+  // hand-authored UNITS in data/lessons.ts.
+  let unit = getUnit(id);
+  if (!unit && id?.includes('::m')) {
+    const courseId = id.slice(0, id.indexOf('::m'));
+    const manifest = getLessonManifest(courseId);
+    if (manifest) unit = getCourseUnit(id, manifest, getCourseModuleMeta(courseId));
+  }
 
   if (!unit) return null;
+
+  // Resolve which course this unit belongs to so the lesson screen can load
+  // from the correct Storage path regardless of activeCourseId. Synthesised
+  // units carry the course id in `packId`; legacy hand-authored units use
+  // legacy pack ids that map 1:1 to language courses.
+  const legacyToCourse: Record<string, string> = {
+    'shona-english': 'language-shona',
+    'english-shona': 'language-english',
+  };
+  const courseId = legacyToCourse[unit.packId] ?? unit.packId;
 
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>
@@ -30,7 +50,7 @@ export default function UnitScreen() {
           <Pressable
             key={lesson.id}
             style={styles.lessonCard}
-            onPress={() => router.push(`/lesson/${lesson.id}`)}
+            onPress={() => router.push({ pathname: '/lesson/[id]', params: { id: lesson.id, courseId } })}
           >
             <View style={styles.lessonNumber}>
               <Text style={styles.lessonNumberText}>{index + 1}</Text>

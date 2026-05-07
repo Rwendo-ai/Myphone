@@ -2,12 +2,18 @@
 
 *8 lessons. One unit. 5–10 minutes a day. A behavioural, evidence-based micro-course for anyone whose sleep has gone sideways.*
 
-Document version: 1.0 — 2026-05-04
+Document version: 2.0 — 2026-05-05 (Christian-foundation editorial pass)
 Authoring model: Claude Opus 4.7
 Source language: English (single source-of-truth; runtime translation by Claude)
 Schema: `types/lesson.ts` (`LessonData`)
 Course pack: `data/courses/sleep-repaired/`
 Pack umbrella: Build Yourself (self-development)
+
+---
+
+## Editorial foundation
+
+All authoring in this track follows [CHRISTIAN-FOUNDATION-SPEC.md](./CHRISTIAN-FOUNDATION-SPEC.md). Christian foundation underneath, neutral surface, no overt religious language, no other-religion framing. **Read that spec before authoring or rewriting any lesson.** This track was found clean in the 2026-05-05 audit (CBT-I, chronobiology, ACT — all compatible). The spec applies to any future authoring.
 
 ---
 

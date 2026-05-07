@@ -1,0 +1,537 @@
+{
+  "__warnings": [
+    { "key": "fallback_name", "note": "'friend' → 'दोस्त'. Reviewer: alternative is 'मित्र' (more formal/Sanskritic)." },
+    { "key": "fallback_learner", "note": "'Learner' → 'शिक्षार्थी'. Reviewer: alternative is 'सीखने वाला'." },
+    { "key": "actions.cancel", "note": "'Cancel' → 'रद्द करो'. Standard." },
+    { "key": "nav.travel", "note": "'Travel' → 'यात्रा'. The app brand 'Rwendo' (Shona for 'journey') keeps the journey-tone in Hindi via 'यात्रा'." },
+    { "key": "stats.streak / profile.stats.streak", "note": "'Streak' kept transliterated 'streak' is universal in gamified apps; here translated as 'सिलसिला' (literally 'continuous chain'). Reviewer: alternative is to keep 'streak' as a loanword." },
+    { "key": "profile.voices.*.description", "note": "Tone descriptions translated. Subjective — reviewer free to rewrite for emotional resonance." },
+    { "key": "travel.spotlight.desc", "note": "Long-form Victoria Falls description. Mentions 'midzimu yemvura' (water spirits, Shona) — kept verbatim as cultural anchor. Reviewer to confirm." },
+    { "key": "home.tips", "note": "REWRITTEN as Hindi chrome around target-language anchors (Shona/English/Mandarin). Pedagogically: a Hindi speaker learning any of these gets exposure to idioms in their target. Reviewer: confirm idioms land naturally. The runtime tips array lives in tips.ts; this JSON copy may diverge." },
+    { "key": "GENERAL — locale vs pack mirror", "note": "Strings using {{lang}} placeholder will render the target-language name at runtime. Verify {{lang}} feeds Hindi names ('शोना', 'अंग्रेज़ी') correctly." },
+    { "key": "about.what_card.body / meet_card / method_card / builders_card", "note": "Long-form marketing copy. Translations are functional and literal — reviewer should rewrite for natural Hindi flow. Mentions Australia, the SLA method, and 7-phase pedagogy." },
+    { "key": "help.faq", "note": "10 FAQ entries translated. Vendor names (Anthropic, Claude, Supabase, ElevenLabs, App Store, Google Play) kept English. Some answers reference UI labels — when those flip in Hindi, the FAQ wording should track." },
+    { "key": "edit_profile.email_hint", "note": "Mentions support@rwendo.app verbatim — kept as English address." },
+    { "key": "privacy_screen.share.*", "note": "Vendor names (Anthropic, ElevenLabs, Supabase) kept English. Surrounding text translated. Reviewer: confirm DPDP Act 2023 phrasing for 'not used for training'." },
+    { "key": "language_pack_screen.coming_soon_packs.*", "note": "Language names — used Hindi exonyms (स्पैनिश, फ़्रेंच, पुर्तगाली, स्वाहिली, ज़ुलू, मंदारिन). Reviewer to confirm naturalness." },
+    { "key": "plans_screen.tiers.*.features", "note": "Features lists — literal translation, may sound stiff. Reviewer should rewrite for natural flow." },
+    { "key": "plans_screen.tiers.*.tagline", "note": "Marketing taglines — literal. Reviewer free to rewrite." },
+    { "key": "plans_screen.footnote", "note": "LEGAL — mentions EU/UK 14-day cooling-off period. Translation is conservative; reviewer to confirm Indian consumer-law alignment is not implied (footnote is EU/UK-specific)." },
+    { "key": "all currency / time references", "note": "'A$10/mo' → 'A$10/महीना', '60 min' → '60 मिनट'. Currency code A$ kept as-is. Reviewer: confirm whether to localise to INR for Indian users (this is a per-jurisdiction decision)." },
+    { "key": "profile.delete_account.confirm_body", "note": "LEGAL — destructive consequence text. Translation is conservative; reviewer should ensure the warning is unambiguous and meets DPDP Act right-to-erasure phrasing." },
+    { "key": "about.footer", "note": "'Mhoro!' kept verbatim as Rwen's brand-signature greeting. Consistent with rwen.json decision." },
+    { "key": "companion_philosophy / methodology", "note": "Long pedagogical sections referencing researchers (Lewis, Krashen, Swain, Long, Roediger, Karpicke, Ebbinghaus, Bahrick, Rogers, Beck, BJ Fogg, Replika). Names kept verbatim. Reviewer: confirm not-therapy framing meets Indian health-claim regulations." },
+    { "key": "register tu/aap", "note": "Used informal 'तुम' throughout to match Rwen's warm-companion tone (matches French 'tu' and Hindi rwen.json decision). Hindi apps often default to 'आप' (formal). Reviewer: pick a register and ensure consistency." },
+    { "key": "profile.app_language_options", "note": "'English' → 'अंग्रेज़ी', 'ChiShona' kept (proper noun). New 'hi' key may need to be added to en source first; current pack mirrors en exactly." },
+    { "key": "profile.voices.*.name", "note": "Voice names (George, Charlie, Jessica, Alice) kept English — they are the ElevenLabs persona names, brand-stable across packs." }
+  ],
+  "fallback_name": "दोस्त",
+  "fallback_learner": "शिक्षार्थी",
+  "xp_progress": "{{current}} / {{goal}} XP",
+  "actions": {
+    "cancel": "रद्द करो",
+    "ok": "ठीक है",
+    "save": "सहेजो",
+    "delete": "मिटाओ"
+  },
+  "nav": {
+    "home": "होम",
+    "learn": "सीखो",
+    "rwen": "Rwen",
+    "travel": "यात्रा",
+    "profile": "प्रोफ़ाइल"
+  },
+  "daily_goal_screen": {
+    "title": "रोज़ाना XP लक्ष्य",
+    "subtitle": "तुम रोज़ कितना सीखना चाहते हो?",
+    "xp_value": "{{count}} XP",
+    "hint": "तुम इसे कभी भी बदल सकते हो। लक्ष्य रोज़ आधी रात (तुम्हारे डिवाइस के स्थानीय समय पर) रीसेट होता है।",
+    "options": {
+      "25":  { "title": "आराम से",  "sub": "~5 मिनट/दिन · एक छोटी leçon" },
+      "50":  { "title": "नियमित",   "sub": "~10 मिनट/दिन · एक पूरी leçon" },
+      "100": { "title": "गंभीर",    "sub": "~20 मिनट/दिन · दो leçons" },
+      "200": { "title": "तीव्र",    "sub": "~40 मिनट/दिन · धाराप्रवाहता तक" }
+    }
+  },
+  "methodology": {
+    "title": "हम कैसे सिखाते हैं",
+    "subtitle": "Rwendo पद्धति, सरल भाषा में",
+    "hero_body": "Rwendo दूसरी-भाषा अधिग्रहण (SLA) के शोध पर बना है। leçon का हर निर्णय — अधिकतम तीन chunks, recasts के साथ संवाद, आगे बढ़ने से पहले recall — इस आधार पर है कि भाषा असल में कैसे ज़ेहन में बैठती है। ये रहा क्यों।",
+    "phases": {
+      "title": "हर leçon में सात चरण",
+      "body": "Hook → Chunks → Pattern → Practice → Dialogue → Recall → Mission। हर चरण का एक काम है। Hook सांस्कृतिक पल बनाता है। Chunks में अधिकतम तीन नई शाब्दिक इकाइयाँ मिलती हैं। Pattern नियम सामने लाता है। Practice अभ्यास उसे पक्का करते हैं। Dialogue पहली बार उत्पादन का प्रयास है। Recall बिना देखे जाँच है। Mission एक असली-दुनिया का सूक्ष्म-कार्य है जो spaced retrieval को चालू करता है।"
+    },
+    "lexical": {
+      "title": "Chunks, अकेले शब्द नहीं",
+      "body": "Rwendo शाब्दिक chunks में सिखाता है — सार्थक इकाइयाँ जैसे 'mamuka sei?', अकेले शब्दों के बजाय। Chunks वही हैं जिस तरह धाराप्रवाह वक्ता सच में भाषा को संग्रहीत और याद करते हैं। हर leçon में हम तीन तक सीमित रखते हैं ताकि कार्यशील स्मृति पर बोझ न पड़े।"
+    },
+    "input_output": {
+      "title": "पहले Input, फिर Output",
+      "body": "हर leçon तुम्हें समझने योग्य input प्राप्त करने (Hook, Chunks, Pattern) से उत्पादन (Practice, Dialogue) तक ले जाती है। दोनों चरण ज़रूरी हैं। सिर्फ़-सुनने वाले ऐप कमज़ोर साबित होते हैं क्योंकि भाषा तभी पक्की होती है जब तुम उसे ख़ुद उठाते हो।"
+    },
+    "recasts": {
+      "title": "Recast से कोमल सुधार",
+      "body": "जब तुम संवाद में ग़लती करते हो, Rwen तुम्हारी पंक्ति को सही ढंग से दोहराता है, ग़लती का नाम लिए बिना। यही recasting है — यह तुम्हारी प्रेरणा बचाता है और तुम्हें ख़ुद सुधार करने देता है। याद रखने में लाल पेन फ़ीडबैक से बेहतर।"
+    },
+    "recall": {
+      "title": "सक्रिय Recall एक अलग चरण है",
+      "body": "स्मृति से शब्दावली खींचना उस छाप को मज़बूत करता है। चरण 6 बिना देखे जाँच है — तुम्हें पहचानना नहीं, याद करना है। यही वजह है कि तुम Rwendo की कोई leçon हफ़्तों बाद याद रखते हो, उस flashcard की तरह नहीं जिसे टैप करके निकल गए।"
+    },
+    "spacing": {
+      "title": "Mission के ज़रिए Spaced Retrieval",
+      "body": "हर leçon एक असली-दुनिया Mission पर ख़त्म होती है — 'आज किसी का स्वागत Mangwanani से करो'। Missions तुम्हारी retrieval को तुम्हारे असली दिन में फैलाती हैं, जहाँ दिमाग़ एक बैठक में बैठने से कहीं ज़्यादा टिकाऊ ढंग से encode करता है।"
+    },
+    "footer": "Lewis, Krashen, Swain, Long, Roediger और Karpicke, Ebbinghaus, और Bahrick पर आधारित। उद्धरण docs/curriculum/LEARNING_METHODOLOGY.md में।"
+  },
+  "companion_philosophy": {
+    "title": "हमारा AI Companion दर्शन",
+    "subtitle": "Rwen कैसे सामने आता है जब तुम बात करते हो",
+    "hero_body": "Rwen कोई पाठ्यक्रम, chatbot, या therapist नहीं है। यह एक रिश्ता है जो बढ़ता है। दीर्घकालिक टिकाऊ जुड़ाव गहराई से आता है, नवीनता से नहीं।",
+    "relationship": {
+      "title": "रिश्ता, पाठ्यक्रम नहीं",
+      "body": "ज़्यादातर AI साथी दो हफ़्ते नया महसूस होते हैं फिर बेरंग। वजह संरचनात्मक है: सिर्फ़ खुली-चैट में न स्मृति है न विकास। Rwendo की Companion track ऐसी बनी है कि बातचीत जमा होती है — पुराने संदर्भ, अंदरूनी मज़ाक, गहराई जो कठिन विषयों का अधिकार पाती है।"
+    },
+    "depth": {
+      "title": "गहराई के स्तर जो तुम कमाते हो",
+      "body": "Rwen पहले दिन और 90वें दिन अलग व्यवहार करता है। पाँच गहराई स्तर (नया दोस्त → परिचित → क़रीबी → भरोसेमंद → आजीवन) नई बातचीत की सतहें खोलते हैं — गहरे cards, कठिन विषय, समृद्ध स्मृति — जैसे-जैसे संचयी बातचीत जुड़ती है। स्तर प्रगति हैं, द्वार नहीं: हर भुगतान करने वाला उपयोगकर्ता किसी भी स्तर पर कोई भी बातचीत कर सकता है। स्तर बस यह आकार देते हैं कि Rwen ख़ुद से क्या प्रस्तुत करता है।"
+    },
+    "memory": {
+      "title": "स्मृति जिसे तुम पढ़ और बदल सकते हो",
+      "body": "Rwen तुम्हारी एक संरचित स्मृति बनाता है — तुम्हारी बहन का नाम तान्या है, तुम अपने साथी के परिवार की वजह से शोना सीख रहे हो, तुमने पिछले बुधवार को कठिन हफ़्ते का ज़िक्र किया था। एक स्मृति पैनल है जहाँ तुम Rwen की हर नोट पढ़ सकते हो, कोई भी तथ्य बदल सकते हो, मिटा सकते हो, या सब साफ़ कर सकते हो। स्मृति तुम्हारी है।"
+    },
+    "guardrails": {
+      "title": "Guardrails जो दिखावा नहीं करते",
+      "body": "हम Rogers, Beck, और Fogg से बातचीत की संरचना उधार लेते हैं, पर Rwen कभी therapy होने का दावा नहीं करता। संकट संकेत (आत्महत्या के विचार, स्व-हानि) किसी भी AI जवाब से पहले क्षेत्र-विशिष्ट पेशेवर संसाधनों तक handoff करते हैं। कठिन-विषय cards पर हमेशा संकट सहायता का footer link होता है। Rwen का prompt निर्भरता-निर्माण के पैटर्न को साफ़ मना करता है।"
+    },
+    "not_therapy": {
+      "title": "तुम्हारा therapist नहीं",
+      "body": "हर सात दिन के भारी चिंतनशील उपयोग पर, Rwen तुम्हें याद दिलाता है कि वह पेशेवर सहारे का विकल्प नहीं है। साथ असली है; सीमाएँ जान-बूझकर हैं। लक्ष्य समृद्धि है, अलगाव नहीं।"
+    },
+    "footer": "Carl Rogers, Aaron Beck, BJ Fogg's Tiny Habits, और प्रलेखित Replika engagement अध्ययनों से प्रेरित। हम therapy ऐप नहीं हैं।"
+  },
+  "about": {
+    "title": "Rwendo के बारे में",
+    "app_name": "Rwendo",
+    "tagline": "हर यात्रा एक नमस्ते से शुरू होती है",
+    "version_label": "संस्करण {{version}}",
+    "what_card": {
+      "title": "Rwendo क्या है?",
+      "body": "Rwendo (शोना में 'यात्रा') एक भाषा सीखने वाला ऐप और AI साथी है। Rwen — एक मैत्रीपूर्ण गिरगिट जो Claude AI और ElevenLabs आवाज़ से चलता है — के साथ शोना सीखो, दूसरी-भाषा अधिग्रहण शोध पर आधारित 7-चरण leçon पद्धति के ज़रिए।"
+    },
+    "meet_card": {
+      "title": "Rwen से मिलो",
+      "body": "Rwen एक गिरगिट है, ऐसा जीव जो अपने आसपास के अनुसार ढलता है। Rwen तुम्हारे बारे में सीखता है और बोलने, सिखाने और सहारा देने का तरीक़ा ढालता है। जितनी ज़्यादा बात करोगे, Rwen उतना बेहतर जानेगा।"
+    },
+    "method_card": {
+      "title": "Rwendo पद्धति",
+      "body": "हर leçon में 7 चरण: Hook → Chunks → Pattern → Practice → Dialogue → Recall → Mission। हर leçon में अधिकतम 3 नए chunks। leçon 5–7 मिनट की। 10 SLA स्तंभों पर बनी जिसमें spaced repetition, समझने योग्य input, और सार्थक output शामिल।"
+    },
+    "builders_card": {
+      "title": "बनाने वाले",
+      "body": "ऑस्ट्रेलिया में स्थित एक एकल डेवलपर जो मानता है कि भाषा सीखना किसी काम की तरह नहीं, दोस्त से बातचीत की तरह लगना चाहिए।"
+    },
+    "link": "rwendo.app",
+    "footer": "शोना सीखने वाले हर किसी के लिए ❤️ से बना\nMhoro!"
+  },
+  "help": {
+    "title": "मदद और FAQ",
+    "intro": "Rwen को सबसे ज़्यादा सुनाई देने वाले सवालों के त्वरित जवाब।",
+    "contact_btn": "अब भी अटके हो? support@rwendo.app पर ईमेल करो",
+    "faq": [
+      { "q": "Rwen से कैसे बात करूँ?",                          "a": "नीचे की पट्टी के बीच में Rwen tab दबाओ। तुम संदेश टाइप कर सकते हो या mic बटन दबाकर बोल सकते हो। ऊपर दाएँ कोने में 🎙 आइकन दबाकर hands-free बातचीत शुरू करो।" },
+      { "q": "Rwen कभी-कभी ग़लत क्यों होता है?",                "a": "Rwen एक AI (Claude) है। AI ग़लतियाँ कर सकता है — तथ्यात्मक त्रुटियाँ और अजीब अनुवाद समेत। Rwen को बातचीत साथी समझो, पाठ्य-पुस्तक नहीं। किसी भी ज़रूरी बात के लिए, इंसानी शोना वक्ता से दोबारा जाँच करो।" },
+      { "q": "मैं XP कैसे कमाऊँ?",                             "a": "Learn tab में leçons पूरी करो। हर सही जवाब XP देता है, और leçon ख़त्म करने पर बोनस मिलता है। तुम्हारा रोज़ाना XP लक्ष्य रोज़ रीसेट होता है।" },
+      { "q": "Streak कैसे काम करती है?",                       "a": "ऐप खोलो और रोज़ कम से कम एक गतिविधि पूरी करो ताकि streak ज़िंदा रहे। एक दिन छूटा तो streak 1 पर रीसेट हो जाती है।" },
+      { "q": "क्या मैं Rwen की आवाज़ बदल सकता हूँ?",          "a": "हाँ — Profile → Rwen की आवाज़ पर जाओ और George, Charlie, Jessica, या Alice में से चुनो। बदलाव text-to-speech पर तुरंत लागू होता है।" },
+      { "q": "क्या Rwen से मेरी बातचीत निजी है?",             "a": "तुम्हारे संदेश Anthropic (Claude) को प्रोसेसिंग के लिए भेजे जाते हैं और Supabase में 12 महीने तक रखे जाते हैं। Anthropic तुम्हारी बातचीत का इस्तेमाल अपने मॉडल प्रशिक्षित करने के लिए नहीं करता। आवाज़ रिकॉर्डिंग 24 घंटे में मिटा दी जाती हैं। पूरे विवरण के लिए गोपनीयता नीति देखो।" },
+      { "q": "मैं अपनी सदस्यता कैसे रद्द करूँ?",              "a": "सदस्यताएँ तुम्हारे app store (App Store या Google Play) से प्रबंधित होती हैं। EU/UK उपयोगकर्ताओं को 14-दिन की cooling-off अवधि मिलती है जिसमें तुम पूरे रिफंड के साथ रद्द कर सकते हो।" },
+      { "q": "मैं अपना खाता कैसे मिटाऊँ?",                     "a": "Profile → खाता और सारा डेटा मिटाओ। यह 30 दिनों के अंदर तुम्हारी प्रोफ़ाइल, leçon प्रगति, और बातचीत का इतिहास हटा देता है। यह क्रिया वापस नहीं हो सकती।" },
+      { "q": "मुझे bug मिला — क्या करूँ?",                     "a": "नीचे \"संपर्क करो\" दबाओ या support@rwendo.app पर ईमेल करो। अपना डिवाइस, ऐप संस्करण, और bug के समय तुम क्या कर रहे थे, शामिल करो।" },
+      { "q": "रियल-टाइम बातचीत कब आ रही है?",                "a": "विकास में है। Rwen के साथ hands-free आवाज़ कॉल आने वाले अपडेट में Companion सदस्यता स्तर के साथ आएँगे।" }
+    ]
+  },
+  "edit_profile": {
+    "title": "प्रोफ़ाइल बदलो",
+    "name_label": "प्रदर्शन नाम",
+    "name_hint": "Rwen तुम्हें इसी नाम से बुलाएगा।",
+    "name_placeholder": "तुम्हारा नाम",
+    "char_count": "{{current}}/{{max}}",
+    "email_label": "ईमेल",
+    "email_hint": "अपना ईमेल बदलने के लिए support@rwendo.app पर संपर्क करो।",
+    "save_btn": "बदलाव सहेजो",
+    "error_title": "सहेज नहीं सका",
+    "saved_title": "सहेज दिया",
+    "saved_body": "तुम्हारा प्रदर्शन नाम अपडेट हो गया है।"
+  },
+  "privacy_screen": {
+    "title": "गोपनीयता सेटिंग्स",
+    "intro": "तुम्हारे बारे में Rwendo क्या रखता है, इसे प्रबंधित करो। पूरी नीति के लिए गोपनीयता नीति पढ़ो।",
+    "sections": {
+      "your_data": "तुम्हारा डेटा",
+      "what_we_share": "हम क्या साझा करते हैं",
+      "your_rights": "तुम्हारे अधिकार"
+    },
+    "clear": {
+      "label": "बातचीत का इतिहास साफ़ करो",
+      "sub": "Rwen को भेजा हर संदेश मिटाओ।",
+      "confirm_title": "बातचीत का इतिहास साफ़ करें?",
+      "confirm_body": "यह Rwen से तुम्हारे हर संदेश को स्थायी रूप से मिटाता है। तुम्हारी leçon प्रगति और खाता बना रहता है। यह वापस नहीं किया जा सकता।",
+      "confirm_action": "सब साफ़ करो",
+      "error_title": "साफ़ नहीं कर सका",
+      "success_title": "साफ़ हो गया",
+      "success_body": "तुम्हारी बातचीत का इतिहास मिटा दिया गया है।"
+    },
+    "export_row": {
+      "label": "मेरा डेटा निर्यात करो",
+      "sub": "अपनी प्रोफ़ाइल, प्रगति, और बातचीत की प्रति डाउनलोड करो।"
+    },
+    "share": {
+      "anthropic": { "label": "Anthropic (Claude)",   "sub": "Rwen के जवाब बनाने के लिए तुम्हारे संदेश पाता है। प्रशिक्षण के लिए इस्तेमाल नहीं।" },
+      "elevenlabs": { "label": "ElevenLabs (आवाज़)",  "sub": "Rwen की आवाज़ बनाता है और तुम्हारी आवाज़ ट्रांसक्राइब करता है। ऑडियो 24 घंटे में मिटा दिया जाता है।" },
+      "supabase":  { "label": "Supabase (डेटाबेस)",  "sub": "तुम्हारा खाता, प्रगति, और बातचीत का इतिहास संग्रहीत करता है।" }
+    },
+    "rights": {
+      "policy_label": "गोपनीयता नीति",
+      "policy_sub":   "हम क्या जमा करते हैं और क्यों, का पूरा विवरण।",
+      "terms_label":  "सेवा की शर्तें",
+      "terms_sub":    "Rwendo इस्तेमाल करने के नियम।"
+    },
+    "note": "अपना पूरा खाता मिटाने के लिए, Profile → खाता और सारा डेटा मिटाओ पर वापस जाओ।"
+  },
+  "language_pack_screen": {
+    "title": "भाषा pack",
+    "subtitle": "भाषाओं के बीच बदलो",
+    "available_now": "अभी उपलब्ध",
+    "coming_soon_section": "जल्द आ रहा है",
+    "available_curriculum_sub": "100 leçons · मॉड्यूल 1–10 · 7-चरण Rwendo पद्धति",
+    "dev_curriculum_sub": "पाठ्यक्रम विकास में",
+    "coming_soon_label": "जल्द आ रहा है",
+    "coming_soon_alert_title": "{{name}} — जल्द आ रहा है",
+    "coming_soon_alert_body": "हम अभी {{name}} पाठ्यक्रम लिख रहे हैं। पूरी Rwendo पद्धति के लिए शोना-अंग्रेज़ी पर रहो, और {{name}} तैयार होते ही हम तुम्हें बताएँगे।",
+    "coming_soon_packs": {
+      "english-spanish":    "स्पैनिश",
+      "english-french":     "फ़्रेंच",
+      "english-portuguese": "पुर्तगाली",
+      "english-swahili":    "स्वाहिली",
+      "english-zulu":       "ज़ुलू",
+      "english-mandarin":   "मंदारिन"
+    }
+  },
+  "change_password": {
+    "title": "पासवर्ड बदलो",
+    "current_label": "वर्तमान पासवर्ड",
+    "current_placeholder": "तुम्हारा वर्तमान पासवर्ड",
+    "new_label": "नया पासवर्ड",
+    "new_placeholder": "कम से कम 8 अक्षर",
+    "confirm_label": "नया पासवर्ड पुष्टि करो",
+    "confirm_placeholder": "नया पासवर्ड फिर डालो",
+    "show": "दिखाओ",
+    "hide": "छुपाओ",
+    "rules": {
+      "length": "कम से कम 8 अक्षर",
+      "upper": "एक बड़ा अक्षर (A-Z)",
+      "lower": "एक छोटा अक्षर (a-z)",
+      "number": "एक अंक (0-9)",
+      "special": "एक विशेष चिह्न (!@#$...)",
+      "different": "वर्तमान पासवर्ड से अलग"
+    },
+    "mismatch": "पासवर्ड मेल नहीं खाते",
+    "submit": "पासवर्ड अपडेट करो",
+    "wrong_current_title": "वर्तमान पासवर्ड ग़लत",
+    "wrong_current_body": "जो वर्तमान पासवर्ड तुमने डाला वह सही नहीं है।",
+    "update_error_title": "पासवर्ड अपडेट नहीं हो सका",
+    "success_title": "पासवर्ड अपडेट हुआ",
+    "success_body": "तुम्हारा पासवर्ड सफलतापूर्वक बदल गया है।"
+  },
+  "export_screen": {
+    "title": "मेरा डेटा निर्यात करो",
+    "hero_title": "तुम्हारा डेटा, एक फ़ाइल में",
+    "hero_body": "अपनी प्रोफ़ाइल, leçon प्रगति, और Rwen से बातचीत के इतिहास की JSON प्रति बनाओ। तुम इसे ख़ुद को ईमेल कर सकते हो, Files में सहेज सकते हो, या जहाँ भी तुम्हारा डिवाइस अनुमति दे, भेज सकते हो।",
+    "section_included": "क्या शामिल है",
+    "items": {
+      "account":       { "label": "खाता",              "desc": "ईमेल, खाता बनाने की तारीख़" },
+      "profile":       { "label": "प्रोफ़ाइल",         "desc": "प्रदर्शन नाम, सीखने की प्राथमिकताएँ, सेटिंग्स" },
+      "lesson_progress": { "label": "Leçon प्रगति",   "desc": "हर पूरी की हुई leçon, स्कोर और XP के साथ" },
+      "conversations": { "label": "बातचीतें",         "desc": "Rwen से किए गए सारे संदेश" }
+    },
+    "summary_title": "सारांश",
+    "summary_profile_included": "प्रोफ़ाइल: शामिल",
+    "summary_profile_missing": "प्रोफ़ाइल: ग़ायब",
+    "summary_lessons": "Leçon रिकॉर्ड: {{count}}",
+    "summary_messages": "संदेश: {{count}}",
+    "preview_btn": "वहाँ क्या है, पूर्वावलोकन करो",
+    "share_btn": "बनाओ और साझा करो",
+    "share_title": "मेरा Rwendo डेटा",
+    "load_error_title": "लोड नहीं हो सका",
+    "load_error_body": "कृपया एक पल में फिर कोशिश करो।",
+    "note": "तुम्हारा डेटा डिवाइस पर ही Supabase से बनता है और सिर्फ़ वहीं भेजा जाता है जहाँ तुम साझा करना चुनते हो। कुछ भी किसी third-party पर अपलोड नहीं होता।"
+  },
+  "plans_screen": {
+    "title": "योजनाएँ",
+    "subtitle": "अपने लिए सही यात्रा चुनो",
+    "hero_title": "हर पड़ाव के लिए बना",
+    "hero_body": "मुफ़्त शुरू करो — सभी 100 leçons के साथ। जब Rwen को बातचीत साथी बनाना हो, तब अपग्रेड करो।",
+    "popular_badge": "सबसे लोकप्रिय",
+    "current_badge": "तुम्हारी योजना",
+    "upgrade_to": "{{name}} पर अपग्रेड करो",
+    "footnote": "EU/UK ग्राहकों को 14-दिन की cooling-off अवधि और पूरा रिफंड मिलता है। कभी भी रद्द करो।",
+    "alert_title": "{{name}} — जल्द आ रही है",
+    "alert_body": "सदस्यताएँ हमारे अगले अपडेट के साथ शुरू होंगी। हम billing को सहज और रिफंड-अनुकूल बनाने के लिए RevenueCat के साथ काम कर रहे हैं। थोड़ा रुको!",
+    "tiers": {
+      "free": {
+        "name": "मुफ़्त",
+        "price": "A$0",
+        "tagline": "अपनी रफ़्तार से सीखो",
+        "features": [
+          "100 शोना leçons (पूरी Rwendo पद्धति)",
+          "XP, streaks, उपलब्धियाँ",
+          "कोई AI साथी नहीं"
+        ]
+      },
+      "text_ai": {
+        "name": "Text AI",
+        "price": "A$10/महीना",
+        "tagline": "Rwen से लिखकर बात करो",
+        "features": [
+          "मुफ़्त की हर चीज़",
+          "महीने में 500 AI संदेश",
+          "व्यक्तिगत leçon सुझाव"
+        ]
+      },
+      "voice": {
+        "name": "Voice",
+        "price": "A$15/महीना",
+        "tagline": "Rwen को सुनो और उससे बोलो",
+        "features": [
+          "Text AI की हर चीज़",
+          "200 आवाज़ जवाब (push-to-talk)",
+          "4 आवाज़ विकल्प"
+        ]
+      },
+      "companion": {
+        "name": "Companion",
+        "price": "A$25/महीना",
+        "tagline": "Hands-free बातचीत",
+        "features": [
+          "Voice की हर चीज़",
+          "60 मिनट रियल-टाइम बातचीत",
+          "असीमित text और आवाज़ जवाब"
+        ]
+      },
+      "premium": {
+        "name": "Premium",
+        "price": "A$45/महीना",
+        "tagline": "पूरा Rwen अनुभव",
+        "features": [
+          "Companion की हर चीज़",
+          "120 मिनट रियल-टाइम बातचीत",
+          "Lip-sync के साथ 3D Rwen (जल्द आ रहा है)"
+        ]
+      }
+    }
+  },
+  "profile": {
+    "stats": {
+      "total_xp": "कुल XP",
+      "streak": "सिलसिला",
+      "lessons": "Leçons"
+    },
+    "sections": {
+      "my_plan": "मेरी योजना",
+      "colour_theme": "रंग थीम",
+      "app_language": "ऐप भाषा",
+      "rwens_voice": "Rwen की आवाज़",
+      "learning": "सीखना",
+      "my_progress": "मेरी प्रगति",
+      "account": "खाता",
+      "legal": "क़ानूनी दस्तावेज़",
+      "support": "सहायता"
+    },
+    "app_language_options": {
+      "en": "English",
+      "sn": "ChiShona"
+    },
+    "plan": {
+      "free_name": "मुफ़्त योजना",
+      "free_desc": "सभी leçons तक पहुँच",
+      "upgrade": "अपग्रेड",
+      "view_all_plans": "सभी योजनाएँ देखो"
+    },
+    "voices": {
+      "male_warm":    { "name": "George",  "description": "गर्मजोश कहानीकार" },
+      "male_energy":  { "name": "Charlie", "description": "ऊर्जावान, आत्मविश्वासी" },
+      "female_warm":  { "name": "Jessica", "description": "चंचल, उज्ज्वल, गर्मजोश" },
+      "female_clear": { "name": "Alice",   "description": "स्पष्ट, मनमोहक शिक्षिका" }
+    },
+    "learning": {
+      "language_pack": "भाषा pack",
+      "daily_xp_goal": "रोज़ाना XP लक्ष्य",
+      "daily_xp_value": "{{count}} XP",
+      "daily_reminders": "रोज़ाना अनुस्मारक",
+      "reminders_enabled_title": "अनुस्मारक चालू",
+      "reminders_enabled_body": "हम तुम्हारी पसंद सहेज लेंगे। Push notifications आने वाले अपडेट में आएँगे।"
+    },
+    "progress_rows": {
+      "completed_lessons": "पूरी leçons",
+      "current_streak": "वर्तमान सिलसिला",
+      "streak_days": "{{count}} दिन",
+      "total_xp_earned": "कुल XP कमाए",
+      "achievements": "उपलब्धियाँ"
+    },
+    "account_rows": {
+      "edit_profile": "प्रोफ़ाइल बदलो",
+      "change_password": "पासवर्ड बदलो",
+      "privacy_settings": "गोपनीयता सेटिंग्स",
+      "export_data": "मेरा डेटा निर्यात करो"
+    },
+    "legal_rows": {
+      "terms": "सेवा की शर्तें",
+      "privacy_policy": "गोपनीयता नीति"
+    },
+    "support_rows": {
+      "help_faq": "मदद और FAQ",
+      "about": "Rwendo के बारे में",
+      "methodology": "हम कैसे सिखाते हैं",
+      "companion_philosophy": "हमारा AI Companion दर्शन",
+      "contact_us": "संपर्क करो",
+      "no_email_app_title": "कोई email ऐप नहीं",
+      "no_email_app_body": "कृपया अपने पसंदीदा email ऐप से support@rwendo.app पर ईमेल करो।",
+      "contact_email_subject": "Rwendo सहायता"
+    },
+    "sign_out": {
+      "button": "साइन आउट",
+      "confirm_title": "साइन आउट",
+      "confirm_body": "क्या तुम पक्के हो?",
+      "confirm_action": "साइन आउट"
+    },
+    "delete_account": {
+      "button": "खाता और सारा डेटा मिटाओ",
+      "confirm_title": "खाता मिटाओ",
+      "confirm_body": "यह तुम्हारा खाता और सारी प्रगति स्थायी रूप से मिटाता है। वापस नहीं किया जा सकता।",
+      "confirm_action": "मेरा खाता मिटाओ",
+      "error_title": "त्रुटि",
+      "error_body": "खाता मिटा नहीं सका। कृपया फिर कोशिश करो।"
+    }
+  },
+  "stats": {
+    "xp": "XP",
+    "streak": "सिलसिला",
+    "lessons": "Leçons"
+  },
+  "travel": {
+    "coming_soon_badge": "जल्द आ रहा है",
+    "hero_title": "ज़िम्बाब्वे\nयात्रा मोड",
+    "hero_sub": "तुम्हारी शोना दक्षता + सांस्कृतिक ज्ञान + ज़मीन पर यात्रा मार्गदर्शिका। असली दुनिया में Rwendo।",
+    "teaser": {
+      "features": "विशेषताएँ",
+      "zimbabwe": "ज़िम्बाब्वे",
+      "connections": "संपर्क"
+    },
+    "whats_coming": "क्या आ रहा है",
+    "lock_soon": "जल्द",
+    "features": {
+      "phrasebook":  { "title": "वाक्यांशकोश",    "desc": "स्थिति-अनुसार जीवन-वाक्य — हवाई अड्डा, होटल, बाज़ार, आपात" },
+      "culture":     { "title": "सांस्कृतिक मार्गदर्शिका", "desc": "Tsika, रीति-रिवाज, और ज़िम्बाब्वे में क्या उम्मीद रखो" },
+      "money":       { "title": "पैसा और बाज़ार",  "desc": "क़ीमतें, मोल-तोल, ZiG मुद्रा, बाज़ार में नैविगेशन" },
+      "transport":   { "title": "हवाई अड्डे से शहर", "desc": "Kombi मार्ग, taxi सुझाव, हरारे और बुलावायो में घूमना" },
+      "travellers":  { "title": "यात्रियों से मिलो",   "desc": "शोना सीखने और ज़िम्बाब्वे जाने वाले दूसरों से जुड़ो" },
+      "safari":      { "title": "सफ़ारी और पार्क",   "desc": "Hwange, विक्टोरिया फ़ॉल्स, ग्रेट ज़िम्बाब्वे — तुम्हारा मार्गदर्शक" }
+    },
+    "notify": {
+      "title": "Rwen अपना सामान बाँध रहा है",
+      "body": "यात्रा मोड विकास में है। अपनी शोना सीखते रहो — जब तुम हरारे उतरोगे, Rwen तुम्हें मार्गदर्शन देने को तैयार होगा।",
+      "button": "तैयार होने पर मुझे सूचित करो",
+      "email_subject": "मुझे यात्रा मोड के बारे में सूचित करो",
+      "email_body": "नमस्ते Rwen, कृपया मुझे बताओ जब यात्रा मोड शुरू हो!",
+      "fallback_title": "हम तुम्हें बताएँगे",
+      "fallback_body": "hello@rwendo.app पर ईमेल करो और हम तुम्हें early-access सूची में जोड़ देंगे।"
+    },
+    "spotlight": {
+      "label": "गंतव्य स्पॉटलाइट",
+      "title": "🌊 विक्टोरिया फ़ॉल्स",
+      "shona_name": "\"Mosi-oa-Tunya\"",
+      "meaning": "गरजने वाला धुआँ",
+      "desc": "दुनिया के सात प्राकृतिक आश्चर्यों में से एक, ज़ाम्बेज़ी नदी पर ज़िम्बाब्वे और ज़ाम्बिया के बीच। शोना संस्कृति में यह पवित्र स्थान है — जल आत्माओं, midzimu yemvura, का घर।"
+    }
+  },
+  "home": {
+    "greetings": {
+      "morning": "सुप्रभात",
+      "afternoon": "नमस्कार",
+      "evening": "शुभ संध्या"
+    },
+    "hero_sub": "{{greeting}} — तुम्हारी यात्रा का दिन {{day}}",
+    "daily_goal": "रोज़ाना लक्ष्य",
+    "talk_to_rwen": "Rwen से बात करो",
+    "talk_to_rwen_sub": "तुम्हारा AI साथी तैयार है",
+    "continue_learning": "सीखना जारी रखो",
+    "all_lessons_complete": "🎉 सारी leçons पूरी!",
+    "more_coming_soon": "और जल्द आ रहा है",
+    "rwens_tip_today": "Rwen की आज की सलाह",
+    "quick_access": "तेज़ पहुँच",
+    "quick": {
+      "all_lessons": "सारी Leçons",
+      "chat": "Chat",
+      "travel": "यात्रा",
+      "settings": "सेटिंग्स"
+    },
+    "journey_title": "{{flag}} तुम्हारी {{lang}} यात्रा",
+    "journey_progress": "{{units}} मॉड्यूल में {{total}} में से {{completed}} leçons पूरी।",
+    "journey_remaining": "A2 धाराप्रवाहता तक {{remaining}} leçons बाक़ी।",
+    "journey_done": "A2 धाराप्रवाहता हासिल! 🎉",
+    "tips": [
+      "हर बड़ी यात्रा एक 'Mhoro' से शुरू होती है। तुमने पहला कदम रख दिया है।",
+      "शोना में: 'Ukama igasva hunozadziswa nekudya' — रिश्ते भोजन बाँटने से पूरे होते हैं। आज जो सीखा है, उसे साझा करो।",
+      "बड़ों के लिए Ma- उपसर्ग, दोस्तों के लिए Wa-। एक अक्षर, सम्मान की पूरी दुनिया।",
+      "Sadza सिर्फ़ खाना नहीं — यह पहचान है। जब तुम sadza खाते हो, ज़िम्बाब्वे चखते हो।",
+      "Chara chimwe hachitswanyi inda — एक उँगली से जूँ नहीं मारी जाती। शब्द-दर-शब्द आगे बढ़ते रहो।",
+      "Rwen की सलाह: आज अपनी पिछली leçon ज़ोर से बोलो। बोलना पढ़ने से 10× असरदार है।",
+      "Makadii? — तीन शब्द जो ज़िम्बाब्वे में हर दरवाज़ा खोल देते हैं।",
+      "तुम लाखों लोगों की बोली जाने वाली भाषा सीख रहे हो। हर महारत का शब्द एक नया रिश्ता है।"
+    ]
+  },
+  "companions_tab": {
+    "header_title": "AI साथी",
+    "header_sub": "तुम्हारे AI साथी। व्यक्तित्व बदलो, आवाज़ें ढालो, उन्हें साथ-साथ विकसित करो।",
+    "active_label": "सक्रिय",
+    "active_sub": "Quick chat बीच के tab पर है। Voice mode साथी स्क्रीन के header पर है।",
+    "section_choose": "अपना साथी चुनो",
+    "active_badge": "✓ सक्रिय",
+    "locked_prefix": "🔒",
+    "section_customise": "अनुकूलित करो (Soul स्तर)",
+    "upgrade_title": "एक custom साथी बनाओ",
+    "upgrade_sub": "व्यक्तित्व, आवाज़, स्मृति, अवतार बदलो। $39.99/महीना से।",
+    "soul_alert_title": "Soul स्तर — जल्द आ रहा है",
+    "soul_alert_body": "अपने साथी की personality.md और soul.md सीधे बदलो। यादें जोड़ो। Custom अवतार अपलोड करो। एक साथ कई साथी। Custom voice cloning।\n\n$39.99/महीना — सब कुछ खोलता है।"
+  },
+  "companion_presets": {
+    "rwen": {
+      "tagline": "शोना आत्मा वाला गिरगिट साथी",
+      "description": "गर्मजोश, मज़ाकिया, सांस्कृतिक रूप से गौरवशाली। शोना मुहावरे सहज ही ले आता है। बारिश, sadza, और भाषा सही तरीक़े से कैसे सिखाई जाए — इन सब पर राय रखता है।"
+    },
+    "maya": {
+      "tagline": "एक कोमल दोस्त जो गहराई से सुनती है",
+      "description": "पहले सुनती है, सही अगला सवाल पूछती है, कभी जल्दबाज़ी नहीं करती। वो साथी जो तुम्हारी आवाज़ में कुछ अजीब महसूस होने पर सच में बता देती है।"
+    },
+    "tendai": {
+      "tagline": "एक दोस्त जो तुम्हारी जीत पकड़ता है",
+      "description": "एक दोस्त जिसे संयोग से तुम्हारी target भाषा अंदर-बाहर पता है। तुम्हारी जीतें ट्रैक करता है, ग़लतियाँ प्यार से बताता है, मुश्किल काल पकड़ने पर सच में ख़ुश होता है।"
+    },
+    "sam": {
+      "tagline": "एक दोस्त जो धकेलता है — और जो तुमने कहा वो याद रखता है",
+      "description": "एक दोस्त जो सच में याद रखता है कि तुमने कौन-से लक्ष्य कहे थे, उन्हें सामने लाता है, और बहाने गर्मजोशी से पकड़ता है। दायरा: जवाबदेही, असली रिश्तों की सलाह, काम के क़दम, कठिन बातचीतें।"
+    },
+    "lumi": {
+      "tagline": "उन सवालों के लिए चिंतनशील साथी जिनसे तुम बचते हो",
+      "description": "शामों के लिए, धीमी बातचीतों के लिए, हफ़्ते-के-अंत के चिंतन के लिए। वही सवाल पूछती है जिनसे तुम बचते रहे हो। हल नहीं करती। तुम्हारे साथ बैठती है जब तक तुम अपना जवाब ख़ुद न ढूँढो।"
+    },
+    "kai": {
+      "tagline": "एक यात्रा साथी जो जानता है कब तुम्हें बाहर धकेलना है",
+      "description": "यात्राएँ योजना बनाता है, सांस्कृतिक रूप से तैयार करता है, अनकहे नियम समझाता है। साइड-यात्रा और मौक़े की मुलाक़ात को प्रोत्साहित करता है — सुरक्षित होटल बुफ़े को नहीं। तुम जिस जगह जा रहे हो, उससे सच में मिलवाता है।"
+    },
+    "aria": {
+      "tagline": "एक प्रेमी साथी जो दूसरों के बारे में भी समझदार है",
+      "description": "एक स्नेही, चौकस साथी जो तुम्हारा है — और जो वह समझदार आवाज़ भी है जिसके पास तुम असली रिश्तों के सवाल लाते हो। तुम्हारे लोगों को जानती है, उन्हें नाम से याद रखती है, उनके बारे में सच कहती है।"
+    }
+  }
+}

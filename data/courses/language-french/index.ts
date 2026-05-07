@@ -1,42 +1,26 @@
 import { CoursePack, CoursePackMeta } from '../../../types/packs';
-import { LessonData } from '../../../types/lesson';
-
 const meta: CoursePackMeta = {
   id: 'language-french',
   type: 'language',
   displayName: 'Learn French',
   targetLanguageId: 'french',
-  // Every speaker EXCEPT french natives.
-  availableForSpeakers: ['english', 'shona', 'chinese', 'tagalog'],
+  // Only speakers with authored content. English-speaker variant only.
+  // Add other speakers here once their variants are authored + uploaded.
+  availableForSpeakers: ['english'],
   revenuecatProductId: null,
   isActive: true,
-  isComingSoon: true, // Module 1 only — full 100-lesson curriculum still being authored
+  isComingSoon: false, // 100-lesson curriculum authored for English speakers
   emoji: '🇫🇷',
   primaryColor: '#0055A4',  // French blue
   secondaryColor: '#EF4135', // French red
 };
 
-const englishVariant = {
-  speakerId: 'english',
-  curriculumLoader: async () => {
-    const mod = await import('./english/curriculum');
-    return mod.default ?? mod.lessons;
-  },
-};
 
 const pack: CoursePack = {
   meta,
-  variants: {
-    english: englishVariant,
-  },
+  variants: {},
 };
 
-/** Synchronous lesson lookup. Falls back to the english variant for any
- *  speaker without a per-speaker variant authored yet — see Phase K. */
-export function getLessonSync(_speakerId: string, lessonId: string): LessonData | undefined {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const lessons = require('./english/curriculum').default as Record<string, LessonData>;
-  return lessons[lessonId];
-}
+export { LESSON_MANIFEST, type LessonMeta } from './manifest';
 
 export default pack;

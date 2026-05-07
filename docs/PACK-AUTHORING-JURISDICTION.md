@@ -18,6 +18,8 @@ A user is the join: `speaker × courses[] × jurisdiction`.
 
 The jurisdiction pack exists because launching a single binary globally requires per-region customisation that has nothing to do with language: minimum age varies (16 in AU, 13 in US, 16 in EU), refund rights vary (14-day cooling-off in EU/UK, none in AU), crisis hotline numbers vary, and Privacy/Terms text needs lawyer authoring per region. All of that consolidates here.
 
+**Note (post-2026-05-05 streaming pivot):** jurisdiction packs are still **bundled in the binary** — they're tiny (~5KB per pack), change rarely, and a missing jurisdiction breaks the legal screens. Only **course content** (lesson bodies) moved to Supabase Storage in the streaming pivot. See PACK-AUTHORING-COURSE.md §1.5 for the new course-content storage model. Jurisdiction pack authoring is unaffected.
+
 The jurisdiction is set at signup (declared by the user during onboarding) and stored on `profiles.jurisdiction_id`. The same user can travel without changing it — jurisdiction is "where I live", not "where I am right now".
 
 ## 2. Jurisdiction model — country vs bloc
@@ -405,7 +407,7 @@ Before declaring done:
 Don't put in a jurisdiction pack:
 
 - **UI strings or speaker chrome**. Speaker pack territory.
-- **Curriculum content**. Course pack territory.
+- **Curriculum content**. Course pack territory — and post-streaming-pivot, lesson bodies live in Supabase Storage rather than git. See `PACK-AUTHORING-COURSE.md` §1.5.
 - **AI persona / system prompts**. Speaker pack.
 - **Course pricing per region in this file**. Pricing lives in `available_packs.prices_by_jurisdiction` jsonb, set per course pack — see Phase H. The jurisdiction pack carries the **currency code/symbol**, not the prices.
 - **AI Companion crisis trigger phrases**. Trigger phrases (regex patterns to detect distress) live in the AI Companion course pack per speaker. The jurisdiction pack carries the phone numbers shown when a trigger fires. Composition happens at runtime.

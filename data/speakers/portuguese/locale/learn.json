@@ -1,0 +1,129 @@
+{
+  "__warnings": [
+    { "key": "tab.categories.know_yourself", "note": "'Conheça-se' chosen as canonical translation. Confirm against the course series brand." },
+    { "key": "tab.buy.know_yourself_course", "note": "'+ Comprar outro curso de Conheça-se' — confirm phrasing matches the brand." },
+    { "key": "lesson.locked.subscription_body", "note": "'Text AI' kept untranslated as it's a tier name; consider 'IA por texto'." },
+    { "key": "lesson.phases.hook", "note": "'A Cena' chosen for Hook (vs 'Gancho' used in methodology body). Native review: phase labels should match the methodology vocabulary." },
+    { "key": "lesson.phases.recall", "note": "'Recordação' kept consistent with methodology body." },
+    { "key": "lesson.hook.tsika_label", "note": "'TSIKA' verbatim — Shona term for cultural context." },
+    { "key": "lesson.mission.cta", "note": "'Famba zvakanaka →' kept verbatim — Shona send-off (like 'go well')." },
+    { "key": "exercises.translate.placeholder", "note": "'Digite sua resposta...' — generic." }
+  ],
+  "tab": {
+    "daily_xp": "XP diário",
+    "units": "Unidades",
+    "lesson_count": "{{count}} lições",
+    "unit_progress": "{{completed}}/{{total}} concluídas",
+    "coming_soon_title": "Currículo de {{lang}} em breve",
+    "coming_soon_sub": "Estamos construindo as lições agora. Volte logo!",
+    "categories_title": "Cursos",
+    "categories": {
+      "languages": "Idiomas",
+      "ai_courses": "Cursos de IA",
+      "know_yourself": "Conheça-se"
+    },
+    "buy": {
+      "language_course": "+ Comprar outro curso de idioma",
+      "ai_course": "+ Comprar outro curso de IA",
+      "know_yourself_course": "+ Comprar outro curso de Conheça-se",
+      "alert_title": "Em breve",
+      "alert_body": "A loja de cursos abre na próxima atualização."
+    },
+    "empty_category": {
+      "ai_courses_title": "Os cursos de IA estão a caminho",
+      "ai_courses_body": "O primeiro curso chega em breve. A gente avisa quando estiver pronto.",
+      "know_yourself_title": "Conheça-se está a caminho",
+      "know_yourself_body": "O primeiro curso chega em breve. A gente avisa quando estiver pronto."
+    }
+  },
+  "screen_header": {
+    "back": "← Voltar"
+  },
+  "unit": {
+    "section_label": "LIÇÕES",
+    "xp_value": "{{count}} XP"
+  },
+  "lesson": {
+    "not_found": "Lição não encontrada: {{id}}",
+    "locked": {
+      "subscription_title": "Bloqueada — precisa de plano pago",
+      "subscription_body": "Os módulos 5 a 10 fazem parte do plano IA por texto e superiores. Faça upgrade para continuar com o Rwen.",
+      "subscription_cta": "Ver planos",
+      "course_title": "Bloqueada — curso não ativo",
+      "course_body": "Esta lição pertence a um curso que você ainda não ativou. Adicione o curso à sua conta para começar.",
+      "course_cta": "Ver cursos"
+    },
+    "phases": {
+      "hook": "A Cena",
+      "chunks": "Palavras Novas",
+      "pattern": "O Padrão",
+      "practice": "Prática",
+      "dialogue": "Conversa",
+      "recall": "Recordação",
+      "mission": "Sua Missão"
+    },
+    "quit": {
+      "title": "Sair da lição?",
+      "body": "Seu progresso nesta lição vai ser perdido. Tem certeza?",
+      "keep_going": "Continuar",
+      "quit": "Sair"
+    },
+    "hook": {
+      "tsika_label": "TSIKA — Contexto cultural",
+      "cta": "Vamos aprender →"
+    },
+    "chunks": {
+      "counter": "Palavra {{current}} de {{total}}",
+      "literal": "Literalmente: \"{{value}}\"",
+      "see_pattern": "Ver o padrão →",
+      "got_it": "Entendi →"
+    },
+    "pattern": {
+      "start_practice": "Começar a prática →"
+    },
+    "practice": {
+      "counter": "Exercício {{current}} de {{total}}"
+    },
+    "dialogue": {
+      "to_recall": "Ótimo — agora a recordação →",
+      "continue": "Continuar →"
+    },
+    "recall": {
+      "title": "Recordação ativa",
+      "counter": "{{current}} de {{total}}"
+    },
+    "mission": {
+      "complete_title": "Lição concluída!",
+      "xp_badge": "+{{count}} XP",
+      "score": "{{score}} / {{total}} certas",
+      "card_title_prefix": "📍 ",
+      "cta": "Famba zvakanaka →"
+    },
+    "phase8": {
+      "unlocked_title": "Praticar com o Rwen",
+      "unlocked_body": "Experimente '{{topic}}' em conversa. O Rwen vai usar o que você acabou de aprender.",
+      "unlocked_cta": "Começar um bate-papo de 2 minutos →",
+      "locked_title": "Praticar com o Rwen — Bloqueado",
+      "locked_body": "Tenha uma conversa de 2 minutos sobre '{{topic}}'. O Rwen vai usar o que você acabou de aprender.",
+      "locked_cta": "Liberar com IA por texto →"
+    }
+  },
+  "exercises": {
+    "check": "Conferir",
+    "feedback_correct": "✓ Certo!",
+    "fill_blank": {
+      "wrong": "✗ A resposta é \"{{correct}}\""
+    },
+    "translate": {
+      "placeholder": "Digite sua resposta...",
+      "wrong": "✗ Resposta certa: {{correct}}"
+    },
+    "build_sentence": {
+      "placeholder": "Toque nas palavras abaixo para montar a frase",
+      "wrong": "✗ Certo: {{correct}}"
+    },
+    "multiple_choice": {
+      "wrong": "✗ Quase"
+    }
+  }
+}

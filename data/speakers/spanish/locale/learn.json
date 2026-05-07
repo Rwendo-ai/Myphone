@@ -1,0 +1,128 @@
+{
+  "__warnings": [
+    { "key": "lesson.phases.*", "note": "Phase names translated functionally ('Hook' → 'La escena', 'Chunks' → 'Palabras nuevas', etc.). The English originals are pedagogical labels from SLA research — reviewer: confirm whether Spanish learners will recognise them better translated or kept English." },
+    { "key": "lesson.mission.cta", "note": "'Famba zvakanaka' is Shona ('travel well / go in peace'). Kept verbatim — it's a brand signature like Mhoro. Reviewer: confirm." },
+    { "key": "lesson.locked.subscription_body", "note": "Mentions 'Modules 5-10' and 'Text AI tier' — UI labels kept consistent with English. Verify wording when subscription tier names settle in Spanish." },
+    { "key": "lesson.phase8.unlocked_body / locked_body", "note": "Mentions a 2-minute conversation — translated literally. Reviewer: confirm 'una conversación de 2 minutos' reads natural." },
+    { "key": "exercises.translate.placeholder", "note": "'Type your answer...' → 'Escribe tu respuesta…' in tú register, matching Rwen's tone. Reviewer: confirm tú/usted decision is consistent across the whole pack." },
+    { "key": "tab.coming_soon_title", "note": "'{{lang}} curriculum coming soon' — gender of 'currículo' (m. in Spanish) flows from the placeholder; the rest of the sentence agrees masculine." },
+    { "key": "tab.categories.know_yourself", "note": "'Know Yourself' → 'Conócete' (imperative tú). Standalone label. Reviewer: confirm tone and brevity for a tab category." }
+  ],
+  "tab": {
+    "daily_xp": "XP del día",
+    "units": "Unidades",
+    "lesson_count": "{{count}} lecciones",
+    "unit_progress": "{{completed}}/{{total}} terminadas",
+    "coming_soon_title": "El currículo de {{lang}} llega pronto",
+    "coming_soon_sub": "Estamos preparando las lecciones. ¡Vuelve pronto!",
+    "categories_title": "Cursos",
+    "categories": {
+      "languages": "Idiomas",
+      "ai_courses": "Cursos de IA",
+      "know_yourself": "Conócete"
+    },
+    "buy": {
+      "language_course": "+ Comprar otro curso de idioma",
+      "ai_course": "+ Comprar otro curso de IA",
+      "know_yourself_course": "+ Comprar otro curso «Conócete»",
+      "alert_title": "Próximamente",
+      "alert_body": "La tienda de cursos abre en la próxima actualización."
+    },
+    "empty_category": {
+      "ai_courses_title": "Los cursos de IA están en camino",
+      "ai_courses_body": "El primer curso saldrá pronto. Te avisaremos cuando esté listo.",
+      "know_yourself_title": "«Conócete» está en camino",
+      "know_yourself_body": "El primer curso saldrá pronto. Te avisaremos cuando esté listo."
+    }
+  },
+  "screen_header": {
+    "back": "← Atrás"
+  },
+  "unit": {
+    "section_label": "LECCIONES",
+    "xp_value": "{{count}} XP"
+  },
+  "lesson": {
+    "not_found": "Lección no encontrada: {{id}}",
+    "locked": {
+      "subscription_title": "Bloqueada — se necesita un plan de pago",
+      "subscription_body": "Los módulos 5 a 10 forman parte del plan Text AI y superiores. Mejora tu plan para seguir avanzando con Rwen.",
+      "subscription_cta": "Ver planes",
+      "course_title": "Bloqueada — curso no activado",
+      "course_body": "Esta lección pertenece a un curso que aún no has activado. Añade el curso a tu cuenta para empezar.",
+      "course_cta": "Ver cursos"
+    },
+    "phases": {
+      "hook": "La escena",
+      "chunks": "Palabras nuevas",
+      "pattern": "El patrón",
+      "practice": "Práctica",
+      "dialogue": "Conversación",
+      "recall": "Recuerdo",
+      "mission": "Tu misión"
+    },
+    "quit": {
+      "title": "¿Salir de la lección?",
+      "body": "Perderás tu progreso en esta lección. ¿Estás seguro?",
+      "keep_going": "Seguir",
+      "quit": "Salir"
+    },
+    "hook": {
+      "tsika_label": "TSIKA — Contexto cultural",
+      "cta": "A aprender →"
+    },
+    "chunks": {
+      "counter": "Palabra {{current}} de {{total}}",
+      "literal": "Literalmente: «{{value}}»",
+      "see_pattern": "Ver el patrón →",
+      "got_it": "Entendido →"
+    },
+    "pattern": {
+      "start_practice": "Empezar la práctica →"
+    },
+    "practice": {
+      "counter": "Ejercicio {{current}} de {{total}}"
+    },
+    "dialogue": {
+      "to_recall": "Bien — ahora a recordar →",
+      "continue": "Continuar →"
+    },
+    "recall": {
+      "title": "Recuerdo activo",
+      "counter": "{{current}} de {{total}}"
+    },
+    "mission": {
+      "complete_title": "¡Lección completada!",
+      "xp_badge": "+{{count}} XP",
+      "score": "{{score}} / {{total}} correctas",
+      "card_title_prefix": "📍 ",
+      "cta": "Famba zvakanaka →"
+    },
+    "phase8": {
+      "unlocked_title": "Practica con Rwen",
+      "unlocked_body": "Prueba «{{topic}}» en una conversación. Rwen usará lo que acabas de aprender.",
+      "unlocked_cta": "Empezar una charla de 2 minutos →",
+      "locked_title": "Practica con Rwen — Bloqueada",
+      "locked_body": "Ten una conversación de 2 minutos sobre «{{topic}}». Rwen usará lo que acabas de aprender.",
+      "locked_cta": "Desbloquear con Text AI →"
+    }
+  },
+  "exercises": {
+    "check": "Comprobar",
+    "feedback_correct": "✓ ¡Correcto!",
+    "fill_blank": {
+      "wrong": "✗ La respuesta es «{{correct}}»"
+    },
+    "translate": {
+      "placeholder": "Escribe tu respuesta…",
+      "wrong": "✗ Respuesta correcta: {{correct}}"
+    },
+    "build_sentence": {
+      "placeholder": "Toca las palabras de abajo para construir la frase",
+      "wrong": "✗ Correcto: {{correct}}"
+    },
+    "multiple_choice": {
+      "wrong": "✗ Casi"
+    }
+  }
+}

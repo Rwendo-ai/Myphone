@@ -1,0 +1,33 @@
+{
+  "__warnings": [
+    { "key": "messages.welcome", "note": "Kept Shona 'Mhoro' verbatim — it's Rwen's brand-signature greeting and recognised across the app. Reviewer: confirm whether Japanese speakers should keep 'Mhoro' or flip to 'こんにちは、{{name}}さん！' for clarity with early users." },
+    { "key": "messages.error_generic", "note": "Kept Shona 'Ndine urombo' (I'm sorry) verbatim for brand-signature consistency. Japanese explanation follows. Reviewer: confirm or flip to 'すみません —'." },
+    { "key": "messages.auto_listen_greeting", "note": "Same Mhoro decision applied. Reviewer: confirm." },
+    { "key": "header.status_idle", "note": "'{{lang}} companion · AI' rendered as '{{lang}}コンパニオン · AI'. The {{lang}} placeholder may render the target language name in Japanese (e.g. ショナ語) or English depending on i18n wiring. Verify upstream." },
+    { "key": "POLITENESS REGISTER", "note": "Used polite-form (です／ます) throughout for the UI chrome. Rwen's persona prompt also defaults to polite-form but is allowed to soften per user. Reviewer: decide whether the entire pack should switch to plain-form (だ／である) for a more friendly companion feel, or stay polite-form for consistency with Japanese app convention." },
+    { "key": "name suffix '{{name}}さん'", "note": "Used '{{name}}さん' as the courteous default. Reviewer: confirm — for very casual companions, dropping the suffix or using 'ちゃん'/'くん' may feel warmer, but suffix decisions in Japanese are sensitive and should be user-research-backed." }
+  ],
+  "header": {
+    "title": "Rwen",
+    "status_listening": "🎤 聞いています…",
+    "status_thinking": "💭 考え中…",
+    "status_speaking": "🔊 話しています…",
+    "status_loading": "考え中…",
+    "status_idle": "{{lang}}コンパニオン · AI"
+  },
+  "banner": {
+    "speak_now": "🎤 どうぞ話してください…",
+    "rwen_thinking": "💭 Rwenが考え中です…",
+    "rwen_speaking": "🔊 Rwenが話しています…",
+    "done_speaking": "話し終わりました"
+  },
+  "input": {
+    "placeholder_default": "Rwenにメッセージ…",
+    "placeholder_convo_active": "会話中 — 話すか、⏹をタップして止める"
+  },
+  "messages": {
+    "welcome": "Mhoro、{{name}}さん！今日はどんなことが気になっていますか？",
+    "error_generic": "Ndine urombo — 何か問題が発生しました。もう一度お試しください。",
+    "auto_listen_greeting": "Mhoro！聞いていますよ。準備ができたら、いつでも話しかけてください。"
+  }
+}

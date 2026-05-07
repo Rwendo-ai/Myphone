@@ -1,25 +1,25 @@
 import { CoursePack, CoursePackMeta } from '../../../types/packs';
-import { LessonData } from '../../../types/lesson';
-
 /**
  * Learn English course pack — target language = English.
  *
- * v1 status: ONE EXAMPLE LESSON authored for the Shona speaker
- * variant (data/courses/language-english/shona/curriculum/m01-l01.ts).
- * Full 100-lesson curriculum is Phase K of PRODUCT-DESIGN.md §8 —
- * authored fresh per speaker, not translated from language-shona.
+ * v1 status: full 100-lesson curriculum authored for FOUR speaker variants
+ * — Shona, French, Chinese (Mandarin), and Tagalog. Lessons live in
+ * Supabase Storage at `lessons/language-english/<speakerId>/<lessonId>.json`
+ * (post-streaming-pivot — see PACK-AUTHORING-COURSE.md §1.5). The local
+ * `<speakerId>/curriculum/` folders are temporary authoring artifacts
+ * deleted after upload.
  */
 const meta: CoursePackMeta = {
   id: 'language-english',
   type: 'language',
   displayName: 'Learn English',
   targetLanguageId: 'english',
-  // Every speaker EXCEPT english natives. Per-speaker variants fall back
-  // to the shona variant at load time (the only variant currently authored).
-  availableForSpeakers: ['shona', 'french', 'chinese', 'tagalog'],
+  // Every speaker EXCEPT english natives. All variants live in Storage
+  // with identical lesson IDs across variants.
+  availableForSpeakers: ['shona', 'french', 'chinese', 'tagalog', 'hindi', 'spanish', 'portuguese', 'japanese', 'korean'],
   revenuecatProductId: null,
-  isActive: true,                      // 1 lesson available — proves the architecture
-  isComingSoon: true,                  // user-facing badge until Phase K ships full curriculum
+  isActive: true,
+  isComingSoon: false,                 // 100 lessons authored across 4 speaker variants
   emoji: '🇬🇧',
   primaryColor: '#1A3C6E',
   secondaryColor: '#4A90D9',
@@ -27,23 +27,9 @@ const meta: CoursePackMeta = {
 
 const pack: CoursePack = {
   meta,
-  variants: {
-    shona: {
-      speakerId: 'shona',
-      curriculumLoader: async () => {
-        const mod = await import('./shona/curriculum');
-        return mod.default ?? mod.lessons;
-      },
-    },
-  },
+  variants: {},
 };
 
-/** Falls back to the shona variant (the only variant authored at v1) for
- *  any speaker — full per-speaker variants land in Phase K. */
-export function getLessonSync(_speakerId: string, lessonId: string): LessonData | undefined {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const lessons = require('./shona/curriculum').default as Record<string, LessonData>;
-  return lessons[lessonId];
-}
+export { LESSON_MANIFEST, type LessonMeta } from './manifest';
 
 export default pack;

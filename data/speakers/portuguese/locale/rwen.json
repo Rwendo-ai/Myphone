@@ -1,0 +1,31 @@
+{
+  "__warnings": [
+    { "key": "messages.welcome", "note": "'Mhoro' kept verbatim — it's Rwen's signature greeting and part of the brand. Native review may decide to flip to 'Olá' for a Brazilian Portuguese pack; keeping verbatim for now per spec §4.5." },
+    { "key": "messages.error_generic", "note": "'Ndine urombo' kept verbatim — Shona for 'I'm sorry'. Same reasoning as messages.welcome." },
+    { "key": "messages.auto_listen_greeting", "note": "'Mhoro!' kept verbatim — Rwen's signature." },
+    { "key": "header.status_idle", "note": "'companheiro de IA' chosen for casual feel. {{lang}} placeholder substitution preserved." }
+  ],
+  "header": {
+    "title": "Rwen",
+    "status_listening": "🎤 Ouvindo...",
+    "status_thinking": "💭 Pensando...",
+    "status_speaking": "🔊 Falando...",
+    "status_loading": "Pensando...",
+    "status_idle": "companheiro de {{lang}} · IA"
+  },
+  "banner": {
+    "speak_now": "🎤 Pode falar...",
+    "rwen_thinking": "💭 O Rwen está pensando...",
+    "rwen_speaking": "🔊 O Rwen está falando...",
+    "done_speaking": "Terminou de falar"
+  },
+  "input": {
+    "placeholder_default": "Mensagem para o Rwen...",
+    "placeholder_convo_active": "Conversa ativa — fale ou toque em ⏹ para parar"
+  },
+  "messages": {
+    "welcome": "Mhoro, {{name}}! O que está passando pela sua cabeça hoje?",
+    "error_generic": "Ndine urombo — algo deu errado. Tente de novo.",
+    "auto_listen_greeting": "Mhoro! Estou ouvindo. Fala quando você estiver pronto."
+  }
+}

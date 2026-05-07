@@ -36,18 +36,32 @@ const JURISDICTION_FLAGS: Record<JurisdictionPackId, string> = {
 // app's UI translation language AND the AI persona language. Five packs
 // shipped at v1; adding a sixth = drop a `data/speakers/<id>/` folder and
 // add the id + flag here.
-const LANGUAGE_IDS = ['english', 'shona', 'french', 'chinese', 'tagalog'] as const;
+const LANGUAGE_IDS = ['english', 'shona', 'french', 'chinese', 'tagalog', 'hindi', 'spanish', 'portuguese', 'japanese', 'korean'] as const;
 const LANGUAGE_FLAGS: Record<string, string> = {
-  english: '🇬🇧',
-  shona:   '🇿🇼',
-  french:  '🇫🇷',
-  chinese: '🇨🇳',
-  tagalog: '🇵🇭',
+  english:    '🇬🇧',
+  shona:      '🇿🇼',
+  french:     '🇫🇷',
+  chinese:    '🇨🇳',
+  tagalog:    '🇵🇭',
+  hindi:      '🇮🇳',
+  spanish:    '🇪🇸',
+  portuguese: '🇧🇷',
+  japanese:   '🇯🇵',
+  korean:     '🇰🇷',
 };
 // Map speaker-pack id → ISO 639-1 i18n key so we can flip the rest of
 // onboarding into the chosen language as soon as the user picks it.
 const LANGUAGE_TO_ISO: Record<string, string> = {
-  english: 'en', shona: 'sn', french: 'fr', chinese: 'zh', tagalog: 'tl',
+  english:    'en',
+  shona:      'sn',
+  french:     'fr',
+  chinese:    'zh',
+  tagalog:    'tl',
+  hindi:      'hi',
+  spanish:    'es',
+  portuguese: 'pt',
+  japanese:   'ja',
+  korean:     'ko',
 };
 
 const GENDER_IDS = ['male', 'female', 'nonbinary', 'prefer_not_to_say'] as const;

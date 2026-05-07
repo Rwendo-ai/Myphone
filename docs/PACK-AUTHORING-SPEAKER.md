@@ -20,6 +20,8 @@ When a user opens the app in their speaker language, EVERY sentence they read co
 
 **Adding a new speaker pack unlocks the app for users who speak that language**, regardless of which courses they go on to take. It does NOT add curriculum content for those users to consume — that's per (speaker, course) variant authoring, scoped in `PACK-AUTHORING-COURSE.md`.
 
+**Note (post-2026-05-05 streaming pivot):** speaker packs are still **bundled in the binary** — they're small (~50KB each across 5 locale JSONs), change rarely, and a missing locale breaks the entire UI. Only **course content** (lesson bodies) moved to Supabase Storage in the streaming pivot. See PACK-AUTHORING-COURSE.md §1.5 for the new course-content storage model. Speaker pack authoring is unaffected.
+
 ## 2. The single input the agent needs
 
 When you start, you should have these 7 facts about the language:
@@ -402,7 +404,7 @@ Before declaring done, run all of these:
 
 Don't put in a speaker pack:
 
-- **Curriculum content** (chunks, lessons, exercises). Those go in `data/courses/<course-id>/{LANG_ID}/curriculum/` — see `PACK-AUTHORING-COURSE.md`.
+- **Curriculum content** (chunks, lessons, exercises). Those go to Supabase Storage at `lessons/<course-id>/<speaker-id>/<lesson-id>.json` post-streaming-pivot — see `PACK-AUTHORING-COURSE.md` §1.5 for the new authoring + upload workflow.
 - **Privacy policy / terms of service text**. That's per-jurisdiction (`data/jurisdictions/<id>/`) — see `PACK-AUTHORING-JURISDICTION.md`.
 - **Voice TTS recordings of full lesson dialogue**. Voice clips are generated at runtime by ElevenLabs from the curriculum text. The speaker pack only carries voice IDs, not audio.
 - **AI Companion starter cards or Topics**. Those live in `data/courses/ai-companion/{LANG_ID}/` — they're course content for one specific course (AI Companion). Adding a speaker pack does NOT add Companion content; that's a follow-up Phase K task.

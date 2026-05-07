@@ -28,6 +28,14 @@ This is the canonical design doc for **how Rwendo actually works** as a multi-la
 - **Jurisdictions at v1**: ship `AU` populated (lawyer-reviewed pre-launch). Others (`GB`, `US`, `EU`, `ZW`) ship as `{ extends: 'AU' }` stubs that the lawyer fills in pre-launch per region.
 - **Currency**: per-jurisdiction. Forex alignment with live FX rates is a v1.x concern — initial pricing is locked per jurisdiction.
 
+### Locked 2026-05-05 (streaming architecture)
+- Lesson bodies stream from Supabase Storage (`course-content` bucket), NOT bundled in JS binary. See §3.11.
+- Cache-first read, explicit uninstall only (no auto-eviction).
+- Each course bundles a small `manifest.ts` for unit-list rendering; lesson IDs source-of-truth.
+- 576 authored lessons across 13 courses uploaded to Storage; binary trimmed of `data/courses/<id>/*/curriculum/` directories.
+- Lesson screen reads `courseId` from route param (passed by unit screen), falls back to `activeCourseId`.
+- Next phase: Claude lazy translation Edge Function for non-English speakers.
+
 ### Locked 2026-05-04 (auth + voice + monetisation direction)
 
 - **Auth methods (priority order)**: email + password (primary), Google (secondary), Apple (secondary, iOS only — gated on Apple Developer account), crypto wallet via WalletConnect → XRPL (tertiary, tucked at bottom). Apple/Crypto stay hidden behind `OAUTH_READY` flags until their providers are configured. Facebook explicitly out — privacy concerns + redundancy with Google.
@@ -234,14 +242,13 @@ The three-pack model fixes all three:
 
 ### 3.3 The static-content principle
 
-Every byte in every speaker / course / jurisdiction pack is **static authored content**. The ONLY dynamic surface in the entire app is Claude's live replies inside an open conversation. Voice clips, transcripts, tips, prompts, ToS clauses, currency strings, age thresholds, lesson chunks, crisis line numbers — every one of these is a string sitting in a JSON or TS file in the right pack slot.
+Every byte in every speaker / course / jurisdiction pack is **static authored content**. The ONLY dynamic surfaces in the entire app are Claude's live replies inside an open conversation **and** Claude's lazy translation of source-English lesson JSON for non-English speakers (cached per-lesson, see §3.11). Voice clips, transcripts, tips, prompts, ToS clauses, currency strings, age thresholds, lesson chunks, crisis line numbers — every one of these is a string sitting in a JSON or TS file in the right pack slot.
 
 This principle drives implementation:
 
-- No AI generation at runtime except inside the Companion conversation surface (and Phase 8 lesson conversations).
-- No translation-on-the-fly. If a string is in two languages, both are authored.
+- No free-form AI generation at runtime — only Claude conversations (Companion + Phase 8) and lazy translation (deterministic transform of authored source).
 - No region-detection magic at runtime. The user's `jurisdiction_id` is a column on `profiles`; everything keys on it.
-- Pack content is bundled at build time for v1. OTA pack downloads come later (Phase 5+) when there are 10+ speaker packs to motivate the bandwidth cost.
+- **Speaker packs, jurisdiction packs, and course manifests are bundled at build time.** Lesson *content* is NOT — it streams from Supabase Storage on first open and caches locally per device (§3.11). This keeps the binary small (~30–50 MB lighter than the bundled-curriculum approach) and lets us ship new lessons without an EAS rebuild.
 
 ### 3.4 Identifier convention
 
@@ -287,12 +294,13 @@ data/speakers/{english,shona,french,...}/
 data/courses/
   language-shona/
     index.ts            metadata, pricing keys, course type='language', target='shona'
-    {english,shona,french}/    one sub-pack per speaker that the course supports
-      curriculum/m01-l01.ts ... m10-l10.ts  authored from that speaker's POV
-      cultural.ts         hook framing, tsika notes, dialogue scenarios for this speaker
+    manifest.ts         auto-generated lesson list { id, module, lesson, title, xpReward }
+                        — bundled (light, ~7 KB/course); used by Learn tab to render units
+                        without needing the lesson bodies. Source-of-truth for lesson IDs.
+                        Regenerate: `npx tsx scripts/generate-course-manifests.ts`.
   language-english/
     index.ts
-    {shona,french,...}/...
+    manifest.ts
   ai-companion/
     index.ts            course type='ai-companion', no target language
     {english,shona,french}/
@@ -305,6 +313,10 @@ data/courses/
     index.ts
     {english,shona,french}/
       phrasebook.ts cultural-guide.ts ...
+
+# Lesson bodies (the 7-phase JSON) live in Supabase Storage, NOT in the repo:
+#   <course-content bucket>/lessons/<courseId>/<speakerId>/<lessonId>.json
+# Authoring source (TS files) is kept under scripts/ for re-uploading; see §3.11.
 
 data/jurisdictions/
   AU/
@@ -416,6 +428,44 @@ For grounding, here's how the major players solve the 1-app-many-languages probl
 - **Rosetta Stone:** Famously **does not** translate the lesson surface — uses immersion / images only. Their UI translates but lessons are picture-based. Rwendo deliberately doesn't go this route — chunks need glosses, and glosses are speaker-language-specific.
 
 **Conclusion:** No major player has the three-pack model. Duolingo gets two of three (locale + course). The jurisdiction layer is original to this design and is the load-bearing piece for shipping a single binary that's legally compliant globally.
+
+### 3.11 Lesson streaming architecture (locked 2026-05-05)
+
+**Decision:** Lesson bodies are not bundled in the JS binary. Each `.json` file streams from Supabase Storage on first open, caches locally, and stays cached until the user explicitly uninstalls the pack.
+
+**Why:** With 13 courses × ~50 lessons average × multiple speaker variants, bundling everything would push the APK well past 100 MB. Most users only ever open one or two courses. Streaming keeps the binary lean and lets us ship/edit lessons without an EAS rebuild.
+
+**Storage layout** (Supabase bucket `course-content`):
+```
+lessons/<courseId>/<speakerId>/<lessonId>.json
+```
+Authoring is English-source. Non-English speaker variants are populated lazily by the translation Edge Function (next phase) and end up at the same path scheme.
+
+**Device cache** (per `expo-file-system/legacy`):
+```
+${documentDirectory}lessons/<courseId>/<speakerId>/<lessonId>.json
+```
+
+**Loader contract** (`lib/lesson-loader.ts`):
+- `loadLessonAsync(courseId, speakerId, lessonId)` — cache-first read; on miss, downloads from Storage, writes to cache, returns parsed JSON. Tries the user's speaker variant first, falls back to the english variant. Throws if neither exists.
+- `installCourse(courseId, speakerId, lessonIds, onProgress?)` — pre-fetches every lesson in a course (~500 KB for 100 lessons). Used by the Learn-tab "install" button so users aren't blindsided on a flight.
+- `uninstallCourse(courseId, speakerId)` — wipes cached files; the user's `user_packs` ownership row stays so re-install requires no re-purchase.
+- `courseDiskBytes` / `totalCachedBytes` / `isCourseInstalled` — reporting helpers for the storage UI.
+
+**Eviction:** explicit only. No LRU, no cache-pressure eviction. A user who downloads the Sleep Repaired course onto a phone before a long flight should not have it silently disappear because they opened a different course. Trade-off accepted for the surprise-avoidance.
+
+**Fallback chain in the loader:**
+1. `${user_speaker}/${lessonId}.json` in cache
+2. `english/${lessonId}.json` in cache (source-of-truth)
+3. `${user_speaker}/${lessonId}.json` in Storage
+4. `english/${lessonId}.json` in Storage
+5. Throw "lesson not found" — UI shows error screen with Back button
+
+**Lazy translation (next phase, todo #10):** when an authenticated non-English speaker opens an english-only lesson, an Edge Function calls Claude to translate the JSON to their speaker language, uploads the result to Storage, and the loader caches it. Every subsequent user in that language gets a cache hit. Cost: ~$0.12/lesson amortised across all that-language users.
+
+**Manifest indirection:** the Learn tab needs to know what lessons exist to render unit lists, *without* downloading lesson bodies. Each course bundles a tiny `manifest.ts` (~7 KB) listing `{id, module, lesson, title, xpReward}` per lesson. Generated by `scripts/generate-course-manifests.ts` after authoring; bundled at build time.
+
+**Routing contract:** the unit screen passes `courseId` to the lesson screen via route param so the loader hits the correct Storage path even when `activeCourseId` is stale (cross-category navigation). The lesson screen prefers the route param, falls back to `activeCourseId` for direct deep-links.
 
 ---
 

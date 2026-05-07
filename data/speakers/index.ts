@@ -4,6 +4,11 @@ import shona from './shona';
 import french from './french';
 import chinese from './chinese';
 import tagalog from './tagalog';
+import hindi from './hindi';
+import spanish from './spanish';
+import portuguese from './portuguese';
+import japanese from './japanese';
+import korean from './korean';
 
 export const SPEAKERS: Record<SpeakerPackId, SpeakerPack> = {
   english,
@@ -11,6 +16,11 @@ export const SPEAKERS: Record<SpeakerPackId, SpeakerPack> = {
   french,
   chinese,
   tagalog,
+  hindi,
+  spanish,
+  portuguese,
+  japanese,
+  korean,
 };
 
 export const SPEAKER_IDS = Object.keys(SPEAKERS) as SpeakerPackId[];
@@ -23,4 +33,7 @@ export function getSpeaker(id: SpeakerPackId | string | null | undefined): Speak
   return SPEAKERS[id] ?? english;
 }
 
-export { english, shona, french, chinese, tagalog };
+export {
+  english, shona, french, chinese, tagalog,
+  hindi, spanish, portuguese, japanese, korean,
+};

@@ -268,13 +268,18 @@ export function getUnitsForPack(packId: string): Unit[] {
 // keyed by module number 1–10. Used by getUnitsForCourse() to build a
 // Unit[] for any language course on the fly from its lessons array.
 
-interface ModuleMeta {
+export interface ModuleMeta {
   title: string;
   description: string;
   emoji: string;
 }
 
-const MODULE_META: Record<number, ModuleMeta> = {
+// Default module structure — applies to every language course (the
+// curriculum was authored deliberately so every speaker × target pair
+// progresses through the same emotional/skill arc). Self-development
+// courses pass their own per-course meta map via getUnitsForCourse's
+// optional moduleMeta argument.
+const LANGUAGE_MODULE_META: Record<number, ModuleMeta> = {
   1:  { title: 'Greetings & Respect',          description: 'Open every door — morning to evening, elders to friends',                  emoji: '👋' },
   2:  { title: 'Survival Phrases',             description: 'Buy time, ask for help, and navigate real situations',                     emoji: '🧭' },
   3:  { title: 'Self & Identity',              description: 'Talk about who you are, where you\'re from, and why you\'re here',         emoji: '🪞' },
@@ -296,30 +301,35 @@ interface MinimalLesson {
 }
 
 /**
- * Build a Unit[] from any course's lesson registry. Used by the Learn tab
- * for the courses that don't have hand-authored UNITS metadata in this
- * file (every language course except shona-english / english-shona).
+ * Build a Unit[] from any course's lesson manifest. Used by the Learn tab
+ * for every course that doesn't have hand-authored UNITS metadata in this
+ * file (every course except shona-english / english-shona).
  *
- * Lesson IDs in the synthesised units use the lesson's own `id` field,
- * not the legacy `m01-l01-bonjour` shape — the lesson screen looks up by
- * id via `getCourseLesson()` which works on either form.
+ * Pass `moduleMeta` to override unit titles per course — language courses
+ * default to LANGUAGE_MODULE_META (greetings / survival / identity / …),
+ * self-development courses pass their own map keyed by module number.
  */
-export function getUnitsForCourse(courseId: string, lessons: MinimalLesson[]): Unit[] {
+export function getUnitsForCourse(
+  courseId: string,
+  lessons: MinimalLesson[],
+  moduleMeta?: Record<number, ModuleMeta>,
+): Unit[] {
+  const meta = moduleMeta ?? (courseId.startsWith('language-') ? LANGUAGE_MODULE_META : {});
   const byModule = new Map<number, MinimalLesson[]>();
   for (const l of lessons) {
     if (!byModule.has(l.module)) byModule.set(l.module, []);
     byModule.get(l.module)!.push(l);
   }
   return [...byModule.keys()].sort((a, b) => a - b).map((moduleNum) => {
-    const meta = MODULE_META[moduleNum] ?? { title: `Module ${moduleNum}`, description: '', emoji: '📚' };
+    const m = meta[moduleNum] ?? { title: `Module ${moduleNum}`, description: '', emoji: '📚' };
     const moduleLessons = byModule.get(moduleNum)!.slice().sort((a, b) => a.lesson - b.lesson);
     const unitId = `${courseId}::m${String(moduleNum).padStart(2, '0')}`;
     return {
       id: unitId,
       packId: courseId,
-      title: meta.title,
-      description: meta.description,
-      emoji: meta.emoji,
+      title: m.title,
+      description: m.description,
+      emoji: m.emoji,
       lessons: moduleLessons.map((l) => ({
         id: l.id,
         unitId,
@@ -329,6 +339,24 @@ export function getUnitsForCourse(courseId: string, lessons: MinimalLesson[]): U
       })),
     };
   });
+}
+
+/**
+ * Resolve a single synthesised unit by its `${courseId}::mNN` ID. Returns
+ * undefined for legacy unit IDs (those still go through getUnit).
+ */
+export function getCourseUnit(
+  unitId: string,
+  manifest: MinimalLesson[],
+  moduleMeta?: Record<number, ModuleMeta>,
+): Unit | undefined {
+  const sep = unitId.indexOf('::m');
+  if (sep === -1) return undefined;
+  const courseId = unitId.slice(0, sep);
+  const moduleNum = Number(unitId.slice(sep + 3));
+  if (!Number.isFinite(moduleNum)) return undefined;
+  const units = getUnitsForCourse(courseId, manifest, moduleMeta);
+  return units.find((u) => u.id === unitId);
 }
 
 export function getUnit(id: string): Unit | undefined {

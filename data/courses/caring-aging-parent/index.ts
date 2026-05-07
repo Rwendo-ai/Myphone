@@ -1,6 +1,4 @@
 import { CoursePack, CoursePackMeta } from '../../../types/packs';
-import { LessonData } from '../../../types/lesson';
-
 /**
  * Caring for an Aging Parent — a self-development micro-course in the
  * Build Yourself umbrella. 10 lessons, one unit, 5–10 minutes each.
@@ -33,28 +31,12 @@ const meta: CoursePackMeta = {
   secondaryColor: '#4A90D9',
 };
 
-const englishVariant = {
-  speakerId: 'english',
-  curriculumLoader: async () => {
-    const mod = await import('./english/curriculum');
-    return mod.default ?? mod.lessons;
-  },
-};
 
 const pack: CoursePack = {
   meta,
-  variants: {
-    english: englishVariant,
-  },
+  variants: {},
 };
 
-/** Synchronous lesson lookup. Falls back to the english variant for any
- *  speaker that doesn't have a per-speaker variant authored yet — matches
- *  the language-shona pattern. */
-export function getLessonSync(_speakerId: string, lessonId: string): LessonData | undefined {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const lessons = require('./english/curriculum').default as Record<string, LessonData>;
-  return lessons[lessonId];
-}
+export { LESSON_MANIFEST, type LessonMeta } from './manifest';
 
 export default pack;

@@ -23,8 +23,16 @@ export interface CompanionPromptInput {
   preset: CompanionPreset;
   /** User profile from Supabase (or null on first run before profile loads) */
   profile: UserProfile | null;
-  /** Active speaker pack — drives reply language + greetings */
+  /** Active speaker pack — drives reply language + greetings (the user's NATIVE language) */
   speaker: SpeakerPack;
+  /**
+   * The English name of the language the user is currently LEARNING — derived
+   * by the caller from `useSettings().learnedLanguage.name` (which itself
+   * derives from speaker + activeCourseId in v3 SettingsContext).
+   * Required because the legacy `profile.active_language_pack` is unreliable
+   * for non-English speakers (defaults to 'shona-english').
+   */
+  learnedLang: string;
   /** Display name fallback if profile missing */
   fallbackName: string;
   /** Optional: lesson context when launched from a lesson Phase 8 card */
@@ -45,10 +53,9 @@ export interface CompanionPromptInput {
  * so the prompt stays well-formed.
  */
 export function buildCompanionPrompt(input: CompanionPromptInput): string {
-  const { preset, profile, speaker, fallbackName, lessonContext, memoryFacts, weeklySummary, statedGoals, recentCommitments } = input;
+  const { preset, profile, speaker, learnedLang, fallbackName, lessonContext, memoryFacts, weeklySummary, statedGoals, recentCommitments } = input;
 
   const name = profile?.display_name?.trim() || fallbackName;
-  const learnedLang = profile?.active_language_pack || speaker.englishName;
   const spokenLang = speaker.englishName;
   const ability = profile?.ability_level || 'beginner';
   const streak = profile?.streak_days ?? 0;

@@ -1,0 +1,34 @@
+{
+  "__warnings": [
+    { "key": "messages.welcome", "note": "'Mhoro, {{name}}!' kept verbatim per design — it is Rwen's signature Shona greeting across all locales. The English 'What's on your mind today?' translated as 'आज तुम्हारे मन में क्या है?'. Reviewer: confirm 'Mhoro' should not flip to 'नमस्ते' for Hindi users." },
+    { "key": "messages.error_generic", "note": "'Ndine urombo' (I am sorry, Shona) kept verbatim per pack convention. The English 'something went wrong. Try again.' flips to Hindi. Mixed-language is intentional." },
+    { "key": "messages.auto_listen_greeting", "note": "'Mhoro!' verbatim. The English 'I'm listening...' flips to Hindi." },
+    { "key": "header.status_*", "note": "Status labels include emoji — emoji kept in front, Hindi behind. 'Listening', 'Thinking', 'Speaking' translated as continuous tense." },
+    { "key": "input.placeholder_convo_active", "note": "'⏹' symbol kept; surrounding text translated. Reviewer: confirm 'दबाओ' (informal) over 'दबाएँ' (formal)." },
+    { "key": "register tu/aap", "note": "Used informal 'तुम' / 'तुम्हारा' throughout to match Rwen's warm-companion tone (matches French 'tu' decision). Hindi apps often default to 'आप' (formal). Reviewer: pick a register and ensure consistency across all 5 locale files." },
+    { "key": "header.title", "note": "'Rwen' kept English (proper noun, brand)." }
+  ],
+  "header": {
+    "title": "Rwen",
+    "status_listening": "🎤 सुन रहा है...",
+    "status_thinking": "💭 सोच रहा है...",
+    "status_speaking": "🔊 बोल रहा है...",
+    "status_loading": "सोच रहा है...",
+    "status_idle": "{{lang}} साथी · AI"
+  },
+  "banner": {
+    "speak_now": "🎤 अभी बोलो...",
+    "rwen_thinking": "💭 Rwen सोच रहा है...",
+    "rwen_speaking": "🔊 Rwen बोल रहा है...",
+    "done_speaking": "बोलना ख़त्म"
+  },
+  "input": {
+    "placeholder_default": "Rwen को संदेश भेजो...",
+    "placeholder_convo_active": "बातचीत चालू है — बोलो या ⏹ दबाकर रोको"
+  },
+  "messages": {
+    "welcome": "Mhoro, {{name}}! आज तुम्हारे मन में क्या है?",
+    "error_generic": "Ndine urombo — कुछ गड़बड़ हो गई। फिर से कोशिश करो।",
+    "auto_listen_greeting": "Mhoro! मैं सुन रहा हूँ। जब तैयार हो, बोलो।"
+  }
+}

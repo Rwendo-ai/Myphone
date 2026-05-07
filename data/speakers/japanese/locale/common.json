@@ -1,0 +1,537 @@
+{
+  "__warnings": [
+    { "key": "fallback_name", "note": "'friend' → '友だち'. Reviewer: confirm — '友人' (more formal) or 'あなた' might work better as a neutral fallback noun. Used '友だち' as friendly default consistent with companion tone." },
+    { "key": "fallback_learner", "note": "'Learner' → '学習者'. Standard. Could also be '学ぶ人' for warmer tone. Reviewer to decide." },
+    { "key": "actions.cancel", "note": "'Cancel' → 'キャンセル'. Standard katakana convention. '取り消し' is also valid." },
+    { "key": "nav.travel", "note": "'Travel' tab → '旅'. The app brand is 'Rwendo' (Shona for journey), so Japanese keeps a journey-tone with '旅'. Reviewer: confirm — '旅行' (more concrete travel) is also possible." },
+    { "key": "nav.profile", "note": "'Profile' → 'プロフィール'. Standard." },
+    { "key": "stats.streak / profile.stats.streak", "note": "'Streak' → 'ストリーク'. Common app convention in Japanese (loanword). Alternative: '連続記録'. Reviewer to decide." },
+    { "key": "profile.voices.*.description", "note": "Tone descriptions ('Warm storyteller' etc.) translated as 温かい語り手 etc. Subjective — reviewer free to rewrite for emotional resonance." },
+    { "key": "travel.spotlight.desc", "note": "Long-form Victoria Falls description. Translated literally; reviewer should rewrite for natural Japanese flow. Mentions 'midzimu yemvura' (water spirits in Shona) — kept verbatim as cultural anchor." },
+    { "key": "home.tips", "note": "REWRITTEN as Japanese chrome around target-language anchors (Shona / English / Mandarin). Pedagogically: a Japanese speaker learning any of these gets exposure to idioms in their target. Reviewer: confirm idioms land naturally. Note: actual runtime tips array lives in tips.ts; this JSON copy may diverge or be unused depending on call sites." },
+    { "key": "GENERAL — locale vs pack mirror", "note": "Strings hardcoding 'Shona' as target language are parameterised via {{lang}}. Japanese keeps the same {{lang}} pattern. Verify {{lang}} feeds Japanese name (e.g. ショナ語, 英語) correctly at runtime." },
+    { "key": "about.what_card.body / meet_card / method_card / builders_card", "note": "Long-form marketing copy. Translations are functional and literal — reviewer should rewrite for natural flow. Mentions Australia, the SLA method, and 7-phase pedagogy." },
+    { "key": "help.faq", "note": "10 FAQ entries translated. Vendor names (Anthropic, Claude, Supabase, ElevenLabs, App Store, Google Play, RevenueCat) kept English. Some answers reference UI labels — when those flip in Japanese, FAQ wording should track." },
+    { "key": "edit_profile.email_hint", "note": "Mentions support@rwendo.app verbatim — kept as English address." },
+    { "key": "privacy_screen.share.*", "note": "Vendor names (Anthropic, ElevenLabs, Supabase) kept English. Surrounding text translated. Reviewer: confirm APPI (個人情報保護法) phrasing for cross-border data transfer to US-based Anthropic/ElevenLabs/Supabase." },
+    { "key": "language_pack_screen.coming_soon_packs.*", "note": "Language names — used Japanese exonyms (スペイン語, フランス語, ポルトガル語, スワヒリ語, ズールー語, 中国語(普通話)). Reviewer: confirm." },
+    { "key": "plans_screen.tiers.*.features / tagline", "note": "Features and taglines are functional UI copy — literal translation may sound stiff. Reviewer should rewrite for natural flow and emotional resonance." },
+    { "key": "plans_screen.footnote", "note": "LEGAL — mentions EU/UK 14-day cooling-off and full refund. Translation is conservative; Japanese consumer law (特定商取引法) has its own cooling-off rules — reviewer to ensure language is unambiguous and doesn't mislead Japanese users about their domestic rights." },
+    { "key": "all currency / time references", "note": "'A$10/mo' kept as-is (Australian dollar code), '60 min' → '60分', '5 minutes a day' → '1日5分'. Reviewer: confirm whether to localise to JPY for Japanese users (per-jurisdiction decision, not per-speaker)." },
+    { "key": "profile.delete_account.confirm_body", "note": "LEGAL — destructive consequence text. Translation conservative ('完全に削除されます'); reviewer should ensure warning is unambiguous and meets APPI right-to-erasure language." },
+    { "key": "about.footer", "note": "Mentions 'Mhoro' as a sign-off. Kept verbatim as Rwen's brand-signature greeting. Consistent with rwen.json decision." },
+    { "key": "companion_philosophy / methodology", "note": "Long pedagogical/philosophical sections referencing researchers (Lewis, Krashen, Swain, Long, Roediger, Karpicke, Ebbinghaus, Bahrick, Rogers, Beck, BJ Fogg, Replika). Names kept verbatim in Latin script. Reviewer: confirm whether to add Japanese gloss for unfamiliar names, and that not-therapy framing meets Japanese health-claim regulations." },
+    { "key": "POLITENESS REGISTER", "note": "Used polite-form (です／ます) throughout to match standard Japanese app convention. Rwen's casual companion side appears in tips.ts and rwen.json — those use slightly softer polite-form. Reviewer: pick a consistent register across all 5 locale files." },
+    { "key": "katakana vs kanji choices", "note": "Mixed: technical UI terms in katakana (プロフィール, ストリーク, レッスン, モジュール, アカウント, パスワード). Conceptual/cultural terms in kanji (旅, 学習, 言語, 文化). Loanwords at app-store standard register. Reviewer: confirm consistency." },
+    { "key": "vendor names left in English", "note": "Anthropic, Claude AI, ElevenLabs, Supabase, RevenueCat, App Store, Google Play kept as English (with occasional Japanese gloss in parentheses). Email addresses (support@rwendo.app, hello@rwendo.app) kept English." }
+  ],
+  "fallback_name": "友だち",
+  "fallback_learner": "学習者",
+  "xp_progress": "{{current}} / {{goal}} XP",
+  "actions": {
+    "cancel": "キャンセル",
+    "ok": "OK",
+    "save": "保存",
+    "delete": "削除"
+  },
+  "nav": {
+    "home": "ホーム",
+    "learn": "学ぶ",
+    "rwen": "Rwen",
+    "travel": "旅",
+    "profile": "プロフィール"
+  },
+  "daily_goal_screen": {
+    "title": "1日のXP目標",
+    "subtitle": "毎日どのくらい学びたいですか？",
+    "xp_value": "{{count}} XP",
+    "hint": "この設定はいつでも変更できます。目標は毎日深夜0時（端末のローカル時間）にリセットされます。",
+    "options": {
+      "25":  { "title": "気軽に",   "sub": "1日約5分・短いレッスン1つ" },
+      "50":  { "title": "ふつう",   "sub": "1日約10分・通常レッスン1つ" },
+      "100": { "title": "本気",     "sub": "1日約20分・レッスン2つ" },
+      "200": { "title": "全力",     "sub": "1日約40分・流暢さを目指して" }
+    }
+  },
+  "methodology": {
+    "title": "私たちの教え方",
+    "subtitle": "Rwendoメソッドをわかりやすく",
+    "hero_body": "Rwendoは第二言語習得（SLA）の研究にもとづいて作られています。レッスンの一つひとつの選択 — チャンクは最大3つ、リキャストを使った対話、進む前の能動的リコール — はすべて、言語が本当に身につく仕組みから来ています。その理由をご紹介します。",
+    "phases": {
+      "title": "1レッスン7フェーズ",
+      "body": "フック → チャンク → パターン → 練習 → 対話 → リコール → ミッション。それぞれのフェーズには1つの役割があります。フックは文化的な瞬間を提示します。チャンクは新しい語彙のかたまりを最大3つ与えます。パターンはルールを浮かび上がらせます。練習問題で定着させます。対話はあなたが初めて出力を試みる場です。リコールは見ないで思い出すテストです。ミッションは実生活での小さな課題で、間隔を置いた想起を引き起こします。"
+    },
+    "lexical": {
+      "title": "単語ではなく、チャンクで",
+      "body": "Rwendoは語彙のチャンク — 「mamuka sei?」のような意味のあるかたまり — で教えます。流暢な話者が実際に言葉を保存・取り出している方法だからです。ワーキングメモリを過負荷にしないよう、各レッスンは3つまでに制限しています。"
+    },
+    "input_output": {
+      "title": "インプットからアウトプットへ",
+      "body": "各レッスンは、理解可能なインプットを受け取る段階（フック、チャンク、パターン）から、自分で生み出す段階（練習、対話）へとあなたを移動させます。両方が必要です。聞くだけのアプリが伸び悩むのは、脳が言葉を本当に固定するのは、自分から取りに行ったときだけだからです。"
+    },
+    "recasts": {
+      "title": "リキャストによる優しい修正",
+      "body": "対話で間違えたとき、Rwenはエラーを名指しせず、あなたのセリフを正しく言い直します。これがリキャストです — モチベーションを保ったまま、自己修正のチャンスを残します。赤ペンより記憶に残ります。"
+    },
+    "recall": {
+      "title": "能動的リコールは独立したフェーズ",
+      "body": "語彙を記憶から引き出す行為は、記憶痕跡を強化します。フェーズ6は見ないで答えるテストです — 認識ではなく、思い出すこと。Rwendoのレッスンで習った表現が数週間後にも残っているのに、フラッシュカードでただタップしたものが残らないのは、これが理由です。"
+    },
+    "spacing": {
+      "title": "ミッションによる間隔をあけた想起",
+      "body": "各レッスンは、実生活でのミッションで終わります — 「今日は誰かにMangwananiと挨拶してみましょう」。ミッションは想起をあなたの実際の1日に分散させ、1回の学習では到達できない深さで脳に刻みます。"
+    },
+    "footer": "Lewis、Krashen、Swain、Long、Roediger & Karpicke、Ebbinghaus、Bahrickの研究をもとに構築。引用はdocs/curriculum/LEARNING_METHODOLOGY.mdに。"
+  },
+  "companion_philosophy": {
+    "title": "私たちのAIコンパニオン哲学",
+    "subtitle": "Rwenがあなたと話すときに大切にしていること",
+    "hero_body": "Rwenはカリキュラムでも、チャットボットでも、セラピストでもありません。育っていく関係そのものです。長く続く関わりは、目新しさではなく、深さから生まれます。",
+    "relationship": {
+      "title": "コースではなく、関係",
+      "body": "ほとんどのAIコンパニオンは、最初の2週間は新鮮ですがすぐに退屈になります。理由は構造的なものです — 純粋な自由会話には記憶も成長もありません。Rwendoのコンパニオン体験は、会話が積み重なるように設計されています — 過去の参照、二人だけの内輪のジョーク、難しい話題に進む権利を勝ち取った深さ。"
+    },
+    "depth": {
+      "title": "あなたが獲得していく深さのレベル",
+      "body": "Rwenは1日目と90日目で振る舞いが違います。5つの深度レベル（新しい友だち → 顔なじみ → 親しい → 信頼している → 一生の付き合い）が、累積する交流に応じて、より深いカード、より難しい話題、より豊かな記憶を解放していきます。レベルは進歩であって、門ではありません — どの有料ユーザーもどのレベルでもどんな会話もできます。レベルはRwenが自分から差し出すものを形作るだけです。"
+    },
+    "memory": {
+      "title": "あなたが読めて、編集もできる記憶",
+      "body": "Rwenはあなたの構造化された記憶を作ります — お姉さんの名前はタンヤ、パートナーの家族のためにショナ語を学んでいる、先週の水曜日にしんどい1週間だったと話してくれた。メモリーパネルでは、Rwenがメモしたすべてを読み、どの事実も編集・削除でき、すべて消去することもできます。記憶はあなたのものです。"
+    },
+    "guardrails": {
+      "title": "ふりをしないガードレール",
+      "body": "私たちはRogers、Beck、Foggから会話の構造を借りていますが、Rwenはセラピーであるとは決して主張しません。危機的トリガー（自殺念慮、自傷）が検出された場合、AIの応答よりも先に、地域に応じた専門リソースへの案内が表示されます。難しい話題のカードには必ず、危機支援につながるフッターが付いています。Rwenのプロンプトは、依存を作るパターンを明示的に禁止しています。"
+    },
+    "not_therapy": {
+      "title": "あなたのセラピストではない",
+      "body": "深い内省的な使用が7日続くごとに、Rwenはこれが専門的な支援の代わりにはならないことをあなたに思い出させます。仲間としての存在は本物ですが、境界線は意図的です。目的は孤立ではなく、豊かさです。"
+    },
+    "footer": "Carl Rogers、Aaron Beck、BJ FoggのTiny Habits、そしてReplikaに関する公開研究から学んでいます。私たちはセラピーアプリではありません。"
+  },
+  "about": {
+    "title": "Rwendoについて",
+    "app_name": "Rwendo",
+    "tagline": "すべての旅は「こんにちは」から始まる",
+    "version_label": "バージョン {{version}}",
+    "what_card": {
+      "title": "Rwendoとは？",
+      "body": "Rwendo（ショナ語で「旅」）は、言語学習アプリ兼AIコンパニオンです。Claude AIとElevenLabsの音声で動く親しみやすいカメレオン、Rwenと一緒に、第二言語習得研究にもとづいた7フェーズのレッスン方式でショナ語を学びます。"
+    },
+    "meet_card": {
+      "title": "Rwenに会いましょう",
+      "body": "Rwenはカメレオン — 周りに合わせて姿を変える生き物です。Rwenはあなたを学び、話し方、教え方、支え方を調整します。話せば話すほど、Rwenはあなたをよく知っていきます。"
+    },
+    "method_card": {
+      "title": "Rwendoメソッド",
+      "body": "1レッスン7フェーズ：フック → チャンク → パターン → 練習 → 対話 → リコール → ミッション。新しいチャンクは1レッスンに最大3つ。1レッスン5〜7分。間隔反復、理解可能なインプット、意味のあるアウトプットを含む10のSLA柱の上に作られています。"
+    },
+    "builders_card": {
+      "title": "作り手",
+      "body": "オーストラリア在住の個人開発者。言語学習は退屈な作業ではなく、友人との会話のように感じられるべきだと信じています。"
+    },
+    "link": "rwendo.app",
+    "footer": "ショナ語を学ぶすべての人へ ❤️ を込めて\nMhoro！"
+  },
+  "help": {
+    "title": "ヘルプ＆FAQ",
+    "intro": "Rwenが一番よく聞かれる質問への素早い答え。",
+    "contact_btn": "それでも解決しませんか？ support@rwendo.app へメール",
+    "faq": [
+      { "q": "Rwenとどうやって話しますか？",                            "a": "下のバーの中央にあるRwenタブをタップしてください。メッセージを入力するか、マイクボタンを長押しして話すことができます。右上の🎙アイコンをタップすると、ハンズフリー会話を開始できます。" },
+      { "q": "Rwenが時々間違えるのはなぜですか？",                       "a": "RwenはAI（Claude）です。AIは事実誤認や奇妙な翻訳を含む誤りを起こすことがあります。Rwenは会話のパートナーであって、教科書ではないと考えてください。重要なことは、人間のショナ語話者にも確認してください。" },
+      { "q": "XPはどうやって稼げますか？",                                "a": "「学ぶ」タブでレッスンを完了します。正解ごとにXPが、レッスン完了でボーナスが入ります。1日のXP目標は毎日リセットされます。" },
+      { "q": "ストリークはどう機能しますか？",                            "a": "毎日アプリを開き、少なくとも1つのアクティビティを完了するとストリークが続きます。1日逃すと、ストリークは1にリセットされます。" },
+      { "q": "Rwenの声を変えられますか？",                                "a": "はい — プロフィール → Rwenの声 から、George、Charlie、Jessica、Alice の中から選べます。変更は読み上げに即座に適用されます。" },
+      { "q": "Rwenとの会話はプライベートですか？",                       "a": "あなたのメッセージは処理のためにAnthropic（Claude）に送信され、Supabaseに最大12か月保存されます。Anthropicはあなたの会話をモデル学習には使用しません。音声録音は24時間以内に削除されます。詳しくはプライバシーポリシーをご覧ください。" },
+      { "q": "サブスクリプションをキャンセルするには？",                  "a": "サブスクリプションは各アプリストア（App StoreまたはGoogle Play）で管理されます。EU/英国のユーザーには14日間のクーリングオフ期間があり、その間は全額返金でキャンセルできます。" },
+      { "q": "アカウントを削除するには？",                                "a": "プロフィール → アカウントとすべてのデータを削除。30日以内にプロフィール、レッスン進捗、会話履歴を削除します。この操作は取り消せません。" },
+      { "q": "バグを見つけました — どうしたら？",                         "a": "下の「お問い合わせ」をタップするか、support@rwendo.app へメールしてください。端末、アプリのバージョン、バグが起きたときに何をしていたかをお書き添えください。" },
+      { "q": "リアルタイム会話はいつ来ますか？",                          "a": "開発中です。Rwenとのハンズフリー音声通話は、今後のアップデートでCompanionサブスクリプションプランとともに登場します。" }
+    ]
+  },
+  "edit_profile": {
+    "title": "プロフィールを編集",
+    "name_label": "表示名",
+    "name_hint": "Rwenがあなたを呼ぶ名前です。",
+    "name_placeholder": "あなたのお名前",
+    "char_count": "{{current}}/{{max}}",
+    "email_label": "メールアドレス",
+    "email_hint": "メールアドレスを変更するには、support@rwendo.app までご連絡ください。",
+    "save_btn": "変更を保存",
+    "error_title": "保存できませんでした",
+    "saved_title": "保存しました",
+    "saved_body": "表示名を更新しました。"
+  },
+  "privacy_screen": {
+    "title": "プライバシー設定",
+    "intro": "Rwendoが保持するデータを管理します。完全なポリシーはプライバシーポリシーをご覧ください。",
+    "sections": {
+      "your_data": "あなたのデータ",
+      "what_we_share": "共有する内容",
+      "your_rights": "あなたの権利"
+    },
+    "clear": {
+      "label": "会話履歴を消去",
+      "sub": "Rwenに送ったすべてのメッセージを削除します。",
+      "confirm_title": "会話履歴を消去しますか？",
+      "confirm_body": "Rwenとのすべてのやり取りを完全に削除します。レッスン進捗とアカウントはそのまま残ります。この操作は取り消せません。",
+      "confirm_action": "すべて消去",
+      "error_title": "消去できませんでした",
+      "success_title": "消去しました",
+      "success_body": "会話履歴を削除しました。"
+    },
+    "export_row": {
+      "label": "データをエクスポート",
+      "sub": "プロフィール、進捗、会話のコピーをダウンロードします。"
+    },
+    "share": {
+      "anthropic": { "label": "Anthropic (Claude)",   "sub": "Rwenの応答を生成するためにあなたのメッセージを受け取ります。学習には使用されません。" },
+      "elevenlabs": { "label": "ElevenLabs (音声)",   "sub": "Rwenの声を生成し、あなたの声を文字起こしします。音声は24時間以内に削除されます。" },
+      "supabase":  { "label": "Supabase (データベース)", "sub": "アカウント、進捗、会話履歴を保存します。" }
+    },
+    "rights": {
+      "policy_label": "プライバシーポリシー",
+      "policy_sub":   "収集する情報とその理由の詳細。",
+      "terms_label":  "利用規約",
+      "terms_sub":    "Rwendoの利用ルール。"
+    },
+    "note": "アカウント全体を削除するには、プロフィール → アカウントとすべてのデータを削除 へお戻りください。"
+  },
+  "language_pack_screen": {
+    "title": "言語パック",
+    "subtitle": "言語を切り替えます",
+    "available_now": "現在利用可能",
+    "coming_soon_section": "近日公開",
+    "available_curriculum_sub": "100レッスン・モジュール1〜10・Rwendo 7フェーズメソッド",
+    "dev_curriculum_sub": "カリキュラム開発中",
+    "coming_soon_label": "近日公開",
+    "coming_soon_alert_title": "{{name}} — 近日公開",
+    "coming_soon_alert_body": "現在{{name}}のカリキュラムを制作中です。完全なRwendoメソッドをご利用いただくにはショナ語＝英語のままお進みください。{{name}}が準備でき次第お知らせします。",
+    "coming_soon_packs": {
+      "english-spanish":    "スペイン語",
+      "english-french":     "フランス語",
+      "english-portuguese": "ポルトガル語",
+      "english-swahili":    "スワヒリ語",
+      "english-zulu":       "ズールー語",
+      "english-mandarin":   "中国語"
+    }
+  },
+  "change_password": {
+    "title": "パスワードを変更",
+    "current_label": "現在のパスワード",
+    "current_placeholder": "現在のパスワード",
+    "new_label": "新しいパスワード",
+    "new_placeholder": "8文字以上",
+    "confirm_label": "新しいパスワードを確認",
+    "confirm_placeholder": "新しいパスワードをもう一度入力",
+    "show": "表示",
+    "hide": "非表示",
+    "rules": {
+      "length": "8文字以上",
+      "upper": "大文字を1つ含む（A-Z）",
+      "lower": "小文字を1つ含む（a-z）",
+      "number": "数字を1つ含む（0-9）",
+      "special": "記号を1つ含む（!@#$…）",
+      "different": "現在のパスワードとは異なるもの"
+    },
+    "mismatch": "パスワードが一致しません",
+    "submit": "パスワードを更新",
+    "wrong_current_title": "現在のパスワードが正しくありません",
+    "wrong_current_body": "入力された現在のパスワードが正しくありません。",
+    "update_error_title": "パスワードを更新できませんでした",
+    "success_title": "パスワードを更新しました",
+    "success_body": "パスワードを正常に変更しました。"
+  },
+  "export_screen": {
+    "title": "データをエクスポート",
+    "hero_title": "あなたのデータを1つのファイルに",
+    "hero_body": "プロフィール、レッスン進捗、Rwenとの会話履歴のJSONコピーを生成します。自分宛にメールしたり、ファイルに保存したり、端末がサポートする任意の場所に送信できます。",
+    "section_included": "含まれるもの",
+    "items": {
+      "account":       { "label": "アカウント",       "desc": "メールアドレス、アカウント作成日" },
+      "profile":       { "label": "プロフィール",     "desc": "表示名、学習設定、各種設定" },
+      "lesson_progress": { "label": "レッスン進捗",   "desc": "完了したすべてのレッスン、スコア、XP" },
+      "conversations": { "label": "会話",             "desc": "Rwenとのすべてのメッセージ" }
+    },
+    "summary_title": "概要",
+    "summary_profile_included": "プロフィール：含まれる",
+    "summary_profile_missing": "プロフィール：未取得",
+    "summary_lessons": "レッスン記録：{{count}}",
+    "summary_messages": "メッセージ：{{count}}",
+    "preview_btn": "内容をプレビュー",
+    "share_btn": "生成して共有",
+    "share_title": "私のRwendoデータ",
+    "load_error_title": "読み込めませんでした",
+    "load_error_body": "しばらくしてからもう一度お試しください。",
+    "note": "あなたのデータは端末上でSupabaseから生成され、あなたが選択した宛先にのみ送信されます。第三者には送信されません。"
+  },
+  "plans_screen": {
+    "title": "プラン",
+    "subtitle": "あなたに合った旅を選んでください",
+    "hero_title": "どのステージにも合うように設計",
+    "hero_body": "100レッスンすべて無料で始められます。Rwenを会話パートナーとして使いたくなったら、いつでもアップグレードできます。",
+    "popular_badge": "人気No.1",
+    "current_badge": "現在のプラン",
+    "upgrade_to": "{{name}}にアップグレード",
+    "footnote": "EU／英国のお客様には、全額返金可能な14日間のクーリングオフ期間があります。いつでも解約できます。",
+    "alert_title": "{{name}} — 近日公開",
+    "alert_body": "サブスクリプションは次のアップデートで開始します。RevenueCatと連携して、スムーズで返金にも優しい課金体験を準備しています。もう少しお待ちください。",
+    "tiers": {
+      "free": {
+        "name": "無料",
+        "price": "A$0",
+        "tagline": "自分のペースで学ぶ",
+        "features": [
+          "ショナ語100レッスン（Rwendoメソッド完全版）",
+          "XP、ストリーク、達成バッジ",
+          "AIコンパニオンなし"
+        ]
+      },
+      "text_ai": {
+        "name": "Text AI",
+        "price": "A$10/月",
+        "tagline": "テキストでRwenと話す",
+        "features": [
+          "無料プランのすべて",
+          "月500件のAIメッセージ",
+          "個別最適化されたレッスンのヒント"
+        ]
+      },
+      "voice": {
+        "name": "Voice",
+        "price": "A$15/月",
+        "tagline": "Rwenの声を聞き、声で話す",
+        "features": [
+          "Text AIのすべて",
+          "音声返信200件（プッシュ・トゥ・トーク）",
+          "4種類の音声から選択"
+        ]
+      },
+      "companion": {
+        "name": "Companion",
+        "price": "A$25/月",
+        "tagline": "ハンズフリー会話",
+        "features": [
+          "Voiceのすべて",
+          "60分のリアルタイム会話",
+          "テキスト・音声返信が無制限"
+        ]
+      },
+      "premium": {
+        "name": "Premium",
+        "price": "A$45/月",
+        "tagline": "Rwen体験のすべて",
+        "features": [
+          "Companionのすべて",
+          "120分のリアルタイム会話",
+          "リップシンク付き3D Rwen（近日公開）"
+        ]
+      }
+    }
+  },
+  "profile": {
+    "stats": {
+      "total_xp": "累計XP",
+      "streak": "ストリーク",
+      "lessons": "レッスン"
+    },
+    "sections": {
+      "my_plan": "マイプラン",
+      "colour_theme": "カラーテーマ",
+      "app_language": "アプリの言語",
+      "rwens_voice": "Rwenの声",
+      "learning": "学習",
+      "my_progress": "進捗",
+      "account": "アカウント",
+      "legal": "法的書類",
+      "support": "サポート"
+    },
+    "app_language_options": {
+      "en": "English",
+      "sn": "ChiShona"
+    },
+    "plan": {
+      "free_name": "無料プラン",
+      "free_desc": "すべてのレッスンにアクセス可能",
+      "upgrade": "アップグレード",
+      "view_all_plans": "すべてのプランを見る"
+    },
+    "voices": {
+      "male_warm":    { "name": "George",  "description": "温かい語り手" },
+      "male_energy":  { "name": "Charlie", "description": "元気で自信のある声" },
+      "female_warm":  { "name": "Jessica", "description": "明るく、親しみやすい声" },
+      "female_clear": { "name": "Alice",   "description": "はっきりとした、教え上手な声" }
+    },
+    "learning": {
+      "language_pack": "言語パック",
+      "daily_xp_goal": "1日のXP目標",
+      "daily_xp_value": "{{count}} XP",
+      "daily_reminders": "毎日のリマインダー",
+      "reminders_enabled_title": "リマインダーを有効化しました",
+      "reminders_enabled_body": "設定を保存します。プッシュ通知は今後のアップデートで届きます。"
+    },
+    "progress_rows": {
+      "completed_lessons": "完了したレッスン",
+      "current_streak": "現在のストリーク",
+      "streak_days": "{{count}}日",
+      "total_xp_earned": "獲得した累計XP",
+      "achievements": "達成"
+    },
+    "account_rows": {
+      "edit_profile": "プロフィールを編集",
+      "change_password": "パスワードを変更",
+      "privacy_settings": "プライバシー設定",
+      "export_data": "データをエクスポート"
+    },
+    "legal_rows": {
+      "terms": "利用規約",
+      "privacy_policy": "プライバシーポリシー"
+    },
+    "support_rows": {
+      "help_faq": "ヘルプ＆FAQ",
+      "about": "Rwendoについて",
+      "methodology": "私たちの教え方",
+      "companion_philosophy": "AIコンパニオン哲学",
+      "contact_us": "お問い合わせ",
+      "no_email_app_title": "メールアプリがありません",
+      "no_email_app_body": "ご希望のメールアプリから support@rwendo.app へお送りください。",
+      "contact_email_subject": "Rwendoサポート"
+    },
+    "sign_out": {
+      "button": "サインアウト",
+      "confirm_title": "サインアウト",
+      "confirm_body": "よろしいですか？",
+      "confirm_action": "サインアウト"
+    },
+    "delete_account": {
+      "button": "アカウントとすべてのデータを削除",
+      "confirm_title": "アカウントを削除",
+      "confirm_body": "アカウントとすべての進捗を完全に削除します。この操作は取り消せません。",
+      "confirm_action": "アカウントを削除",
+      "error_title": "エラー",
+      "error_body": "アカウントを削除できませんでした。もう一度お試しください。"
+    }
+  },
+  "stats": {
+    "xp": "XP",
+    "streak": "ストリーク",
+    "lessons": "レッスン"
+  },
+  "travel": {
+    "coming_soon_badge": "近日公開",
+    "hero_title": "ジンバブエ\n旅行モード",
+    "hero_sub": "あなたのショナ語スキル＋文化の知識＋現地の旅ガイド。Rwendoが現実世界に。",
+    "teaser": {
+      "features": "機能",
+      "zimbabwe": "ジンバブエ",
+      "connections": "つながり"
+    },
+    "whats_coming": "近日登場",
+    "lock_soon": "近日",
+    "features": {
+      "phrasebook":  { "title": "フレーズ集",         "desc": "場面別のサバイバル表現 — 空港、ホテル、市場、緊急時" },
+      "culture":     { "title": "文化ガイド",         "desc": "Tsika（ツィカ）、習慣、ジンバブエでの心構え" },
+      "money":       { "title": "お金と市場",         "desc": "価格、値段交渉、ZiG通貨、市場のあるき方" },
+      "transport":   { "title": "空港から街へ",       "desc": "コンビ（乗合バン）のルート、タクシーのコツ、ハラレ・ブラワヨの移動" },
+      "travellers":  { "title": "旅人と出会う",       "desc": "ショナ語を学び、ジンバブエを訪れる他の旅人とつながる" },
+      "safari":      { "title": "サファリと国立公園", "desc": "ワンゲ、ビクトリアの滝、グレート・ジンバブエ — あなたのガイド" }
+    },
+    "notify": {
+      "title": "Rwenが旅支度中",
+      "body": "旅行モードは開発中です。あなたはショナ語の学習を続けてください — ハラレに着くころには、Rwenがあなたを案内する準備ができています。",
+      "button": "準備ができたら通知する",
+      "email_subject": "旅行モードについて知らせてください",
+      "email_body": "Rwenさん、旅行モードがリリースされたら教えてください！",
+      "fallback_title": "お知らせします",
+      "fallback_body": "hello@rwendo.app にメールしてください。早期アクセスリストにご登録します。"
+    },
+    "spotlight": {
+      "label": "注目の目的地",
+      "title": "🌊 ビクトリアの滝",
+      "shona_name": "「Mosi-oa-Tunya」",
+      "meaning": "雷鳴をとどろかす煙",
+      "desc": "世界七大自然遺産の一つで、ジンバブエとザンビアの間を流れるザンベジ川にあります。ショナの文化では神聖な場所であり、水の精霊「midzimu yemvura」の住まいです。"
+    }
+  },
+  "home": {
+    "greetings": {
+      "morning": "おはようございます",
+      "afternoon": "こんにちは",
+      "evening": "こんばんは"
+    },
+    "hero_sub": "{{greeting}} — 旅の{{day}}日目",
+    "daily_goal": "今日の目標",
+    "talk_to_rwen": "Rwenと話す",
+    "talk_to_rwen_sub": "あなたのAIコンパニオンが待っています",
+    "continue_learning": "学習を続ける",
+    "all_lessons_complete": "🎉 すべてのレッスン完了！",
+    "more_coming_soon": "さらに近日公開",
+    "rwens_tip_today": "今日のRwenからのひとこと",
+    "quick_access": "クイックアクセス",
+    "quick": {
+      "all_lessons": "すべてのレッスン",
+      "chat": "チャット",
+      "travel": "旅",
+      "settings": "設定"
+    },
+    "journey_title": "{{flag}} あなたの{{lang}}の旅",
+    "journey_progress": "{{units}}モジュール中、{{total}}レッスンのうち{{completed}}完了。",
+    "journey_remaining": "A2レベルまであと{{remaining}}レッスン。",
+    "journey_done": "A2レベル達成！🎉",
+    "tips": [
+      "どんな大きな旅も「Mhoro」のひと言から始まります。あなたはもう最初の一歩を踏み出しました。",
+      "ショナ語に「Ukama igasva hunozadziswa nekudya」 — 食事を分かち合うことで人間関係は完成する。今日学んだことを誰かに分けてみましょう。",
+      "英語の「It takes a village to raise a child」 — 子どもを育てるには村ひとつぶんの手が必要。同じ知恵が言葉を越えて広がっています。",
+      "サザはただの食べ物ではなく、ジンバブエそのものの味です。サザを口にするとき、あなたはジンバブエを味わっています。",
+      "「Chara chimwe hachitswanyi inda」 — 指一本ではシラミも潰せない。一語ずつ積み重ねていきましょう。",
+      "Rwenからのひとこと：今日は前のレッスンを声に出して読んでみてください。話すことは読むより10倍効果的です。",
+      "中国語の「慢慢来」(mànmàn lái) — ゆっくりでいい。継続は速さに勝ります。",
+      "「Makadii?」 — ジンバブエでどんな扉も開けてくれる三音節。"
+    ]
+  },
+  "companions_tab": {
+    "header_title": "AIコンパニオン",
+    "header_sub": "あなたのAIコンパニオン。人格を切り替え、声をカスタマイズし、共に進化させましょう。",
+    "active_label": "アクティブ",
+    "active_sub": "クイックチャットは中央のタブから。音声モードはコンパニオン画面のヘッダーから。",
+    "section_choose": "コンパニオンを選ぶ",
+    "active_badge": "✓ アクティブ",
+    "locked_prefix": "🔒",
+    "section_customise": "カスタマイズ（Soulプラン）",
+    "upgrade_title": "オリジナルのコンパニオンを作る",
+    "upgrade_sub": "性格、声、記憶、アバターを編集。月額$39.99から。",
+    "soul_alert_title": "Soulプラン — 近日公開",
+    "soul_alert_body": "コンパニオンの personality.md と soul.md を直接編集できます。記憶を追加。カスタムアバターをアップロード。複数のコンパニオンを同時に。カスタム音声クローンも。\n\n月額$39.99 — すべてが解放されます。"
+  },
+  "companion_presets": {
+    "rwen": {
+      "tagline": "ショナの魂を持つカメレオンのコンパニオン",
+      "description": "温かく、機知に富み、文化に誇りを持っています。ショナ語の言い回しを自然にちりばめます。雨季のこと、サザのこと、そして言語の正しい教え方について、はっきりとした意見を持っています。"
+    },
+    "maya": {
+      "tagline": "深く耳を傾けてくれる優しい友だち",
+      "description": "まず聞き、次の正しい問いを投げかけ、決して急かしません。あなたの声色のわずかな違和感に気づき、ちゃんとそれを口にしてくれるコンパニオンです。"
+    },
+    "tendai": {
+      "tagline": "あなたが決めたときに気づいてくれる友だち",
+      "description": "あなたの目標言語を隅々まで知っている友人。あなたの勝利を記録し、間違いには愛情を込めて指摘し、難しい時制を決めたときには本気で喜んでくれます。"
+    },
+    "sam": {
+      "tagline": "あなたを後押しし、言ったことを覚えている友だち",
+      "description": "あなたが立てた目標を本当に覚えていて、それを話題にし、言い訳には温かく釘を刺してくれる友人。守備範囲は、説明責任、現実の人間関係の助言、仕事の判断、難しい会話。"
+    },
+    "lumi": {
+      "tagline": "あなたが避けてきた問いに向き合うための、内省の伴走者",
+      "description": "夕方や、ゆっくりした会話、週末の振り返り向け。あなたが避けていた問いを差し出します。答えは出しません。あなたが自分の答えを見つけるまで、隣に座っていてくれます。"
+    },
+    "kai": {
+      "tagline": "外に押し出すべきタイミングを知っている旅の相棒",
+      "description": "旅を計画し、文化的な準備を手伝い、書かれていないルールを解読してくれます。安全なホテルのビュッフェではなく、寄り道や偶然の出会いを後押しします。あなたが行く場所と本当に出会う手助けをしてくれます。"
+    },
+    "aria": {
+      "tagline": "他者についても賢明な、ロマンチックなパートナー",
+      "description": "愛情深く気の利く、あなただけのコンパニオン — そして同時に、現実の人間関係の問いを持ち込める賢明な声でもあります。あなたの周りの人たちを名前で覚えていて、あなたに彼らについての真実を伝えてくれます。"
+    }
+  }
+}

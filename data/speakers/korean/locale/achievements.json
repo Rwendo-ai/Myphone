@@ -1,0 +1,25 @@
+{
+  "__warnings": [
+    { "key": "items.streak_30.description", "note": "'Rwen is proud' → 'Rwen이 자랑스러워해요'. Personifies Rwen warmly; reviewer to confirm tone." },
+    { "key": "items.module_1 / module_5", "note": "'Module Master' / 'Halfway There' translated as '모듈 마스터' / '절반 왔어요'. Loanword 'Module' kept as 모듈; reviewer can substitute 단원 if preferred." },
+    { "key": "items.lessons_50.title", "note": "'Halfway Tree' is a play on 'halfway there' — translated as '반환점' (turning point / midpoint marker). Loses the tree metaphor; reviewer to decide whether to keep the imagery as '반쯤 자란 나무' or rewrite." },
+    { "key": "items.graduated.description_fmt", "note": "'Completed all {{total}} lessons.' → 'Rwendo 레슨 {{total}}개를 모두 완료했어요.' Includes vendor name 'Rwendo' kept verbatim." },
+    { "key": "items.first_lesson.title", "note": "'First Steps' → '첫걸음'. Standard Korean idiom for 'first steps'." }
+  ],
+  "title": "업적",
+  "subtitle": "{{total}}개 중 {{unlocked}}개 달성",
+  "items": {
+    "first_lesson": { "title": "첫걸음",         "description": "첫 번째 레슨을 완료했어요." },
+    "streak_3":     { "title": "사흘의 불꽃",     "description": "3일 연속 학습." },
+    "streak_7":     { "title": "한 주의 전사",   "description": "7일 동안 연속 학습을 이어갔어요." },
+    "streak_30":    { "title": "Mhoro의 한 달",   "description": "30일 연속 학습. Rwen이 자랑스러워해요." },
+    "xp_100":       { "title": "반짝이는 불씨",   "description": "100 XP를 모았어요." },
+    "xp_500":       { "title": "떠오르는 별",     "description": "500 XP를 모았어요." },
+    "xp_1000":      { "title": "별자리",          "description": "1,000 XP를 모았어요." },
+    "module_1":     { "title": "모듈 마스터",     "description": "첫 모듈을 완료했어요." },
+    "module_5":     { "title": "절반 왔어요",     "description": "5개 모듈을 완료했어요." },
+    "lessons_25":   { "title": "사분의 일 등반자", "description": "25개 레슨을 완료했어요." },
+    "lessons_50":   { "title": "반환점",          "description": "50개 레슨을 완료했어요." },
+    "graduated":    { "title": "Rwendo 졸업생",   "description_fmt": "Rwendo 레슨 {{total}}개를 모두 완료했어요." }
+  }
+}

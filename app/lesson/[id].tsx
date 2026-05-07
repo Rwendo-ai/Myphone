@@ -1,7 +1,7 @@
-import { View, Text, StyleSheet, Pressable, ScrollView, Alert } from 'react-native';
+import { View, Text, StyleSheet, Pressable, ScrollView, Alert, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router, useLocalSearchParams } from 'expo-router';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../lib/AuthContext';
 import RwenImage from '../../components/rwen/RwenImage';
@@ -16,9 +16,10 @@ import Translate from '../../components/exercises/Translate';
 import BuildSentence from '../../components/exercises/BuildSentence';
 import MultipleChoice from '../../components/exercises/MultipleChoice';
 
-import { DialogueLine } from '../../types/lesson';
+import { DialogueLine, LessonData } from '../../types/lesson';
 import { useSettings } from '../../lib/SettingsContext';
-import { getCourseLesson } from '../../data/courses';
+import { loadLessonAsync } from '../../lib/lesson-loader';
+import { getLessonManifest } from '../../lib/manifests';
 import { canAccessLesson, canUseAiFeature } from '../../lib/entitlements';
 
 type Phase = 'hook' | 'chunks' | 'pattern' | 'practice' | 'dialogue' | 'recall' | 'mission';
@@ -27,15 +28,54 @@ const PHASES: Phase[] = ['hook', 'chunks', 'pattern', 'practice', 'dialogue', 'r
 
 export default function LessonScreen() {
   const { t } = useTranslation('learn');
-  const { id } = useLocalSearchParams<{ id: string }>();
-  const { speaker, activeCourseId, entitlementContext } = useSettings();
-  const lesson = getCourseLesson(activeCourseId, speaker.id, id);
+  const { id, courseId: routeCourseId } = useLocalSearchParams<{ id: string; courseId?: string }>();
+  const { speaker, activeCourseId, entitlementContext, jurisdiction } = useSettings();
+  // Prefer the courseId passed from the unit screen — activeCourseId may be
+  // stale if the user is browsing a different category than the one their
+  // active pick lives in. Fall back to activeCourseId for direct deep-links.
+  const lessonCourseId = routeCourseId ?? activeCourseId;
   const { user } = useAuth();
+
+  // Streaming lesson loader — cache-first, falls back to Storage on miss,
+  // then to the english variant if user's speaker variant doesn't exist
+  // (most courses ship english-only at v1; per-speaker variants are Phase K).
+  // Lessons are not bundled in the binary anymore — pure download-on-pick.
+  const [lesson, setLesson] = useState<LessonData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!id) {
+      setLoadError('Missing lesson id in route.');
+      setLoading(false);
+      return;
+    }
+    if (!lessonCourseId) {
+      setLoadError('No course is active. Pick a course on the Learn tab first.');
+      setLoading(false);
+      return;
+    }
+    let cancelled = false;
+    setLoading(true);
+    setLoadError(null);
+    const manifest = getLessonManifest(lessonCourseId);
+    const expectedVersion = manifest?.find((m) => m.id === id)?.version;
+    loadLessonAsync(lessonCourseId, speaker.id, id, expectedVersion)
+      .then((data) => {
+        if (!cancelled) { setLesson(data); setLoading(false); }
+      })
+      .catch((e) => {
+        if (cancelled) return;
+        setLoadError(e instanceof Error ? e.message : 'Lesson not available offline.');
+        setLoading(false);
+      });
+    return () => { cancelled = true; };
+  }, [lessonCourseId, speaker.id, id]);
 
   // Phase E gating — runs before any lesson UI renders. DEV_UNLOCK_ALL
   // short-circuits to allowed.
-  const entitlement = activeCourseId
-    ? canAccessLesson(activeCourseId, id, entitlementContext)
+  const entitlement = lessonCourseId
+    ? canAccessLesson(lessonCourseId, id, entitlementContext)
     : { allowed: false as const, reason: 'course_required' as const };
 
   const [phase, setPhase] = useState<Phase>('hook');
@@ -49,10 +89,29 @@ export default function LessonScreen() {
   const [saved, setSaved] = useState(false);
   const [toolsOpen, setToolsOpen] = useState(false);
 
-  if (!lesson) {
+  if (loading) {
     return (
-      <SafeAreaView style={styles.safe}>
-        <Text style={{ padding: 20, color: Colors.gray[600] }}>{t('lesson.not_found', { id })}</Text>
+      <SafeAreaView style={[styles.safe, { backgroundColor: Colors.primary, alignItems: 'center', justifyContent: 'center' }]}>
+        <ActivityIndicator color={Colors.white} size="large" />
+        <Text style={{ marginTop: Spacing.md, color: 'rgba(255,255,255,0.7)' }}>
+          {t('lesson.loading', { defaultValue: 'Loading lesson…' })}
+        </Text>
+      </SafeAreaView>
+    );
+  }
+
+  if (loadError || !lesson) {
+    return (
+      <SafeAreaView style={[styles.safe, { backgroundColor: Colors.primary, alignItems: 'center', justifyContent: 'center', padding: Spacing.lg }]}>
+        <Text style={{ color: Colors.white, fontSize: FontSize.lg, fontWeight: FontWeight.bold, textAlign: 'center' }}>
+          {t('lesson.load_error_title', { defaultValue: "Couldn't load this lesson" })}
+        </Text>
+        <Text style={{ color: 'rgba(255,255,255,0.7)', marginTop: Spacing.sm, textAlign: 'center' }}>
+          {loadError ?? t('lesson.not_found', { id })}
+        </Text>
+        <Pressable style={[styles.lockedCta, { marginTop: Spacing.lg }]} onPress={() => router.back()}>
+          <Text style={styles.lockedCtaText}>{t('lesson.back', { defaultValue: 'Back' })}</Text>
+        </Pressable>
       </SafeAreaView>
     );
   }
@@ -106,8 +165,8 @@ export default function LessonScreen() {
         totalQuestions: totalAnswered,
         xpEarned: xpEarned,
       }).catch((e) => console.error('saveLessonProgress failed:', e));
-      if (activeCourseId) {
-        autoAddLessonChunks(user.id, activeCourseId, lesson).catch((e) =>
+      if (lessonCourseId) {
+        autoAddLessonChunks(user.id, lessonCourseId, lesson).catch((e) =>
           console.error('autoAddLessonChunks failed:', e),
         );
       }
@@ -206,12 +265,12 @@ export default function LessonScreen() {
           <Text style={[styles.toolsBtnText, light && { color: Colors.white }]}>🧰</Text>
         </Pressable>
       </View>
-      {user && activeCourseId && (
+      {user && lessonCourseId && (
         <LessonToolsSheet
           visible={toolsOpen}
           onClose={() => setToolsOpen(false)}
           userId={user.id}
-          courseId={activeCourseId}
+          courseId={lessonCourseId}
           lesson={lesson}
           entitlementContext={entitlementContext}
         />
@@ -487,6 +546,27 @@ export default function LessonScreen() {
             </View>
           </View>
 
+          {lesson.crisisHandoff && jurisdiction.crisisResources.length > 0 && (
+            <View style={styles.crisisCard}>
+              <Text style={styles.crisisTitle}>
+                {t('lesson.crisis.header', { defaultValue: 'If you need someone to talk to' })}
+              </Text>
+              <Text style={styles.crisisBody}>
+                {t('lesson.crisis.body', {
+                  defaultValue:
+                    "What this lesson touched on can sit heavy. If it brought up something hard, please reach out to one of these — they're trained for this and they're free.",
+                })}
+              </Text>
+              {jurisdiction.crisisResources.map((r) => (
+                <View key={r.name} style={styles.crisisRow}>
+                  <Text style={styles.crisisName}>{r.name}</Text>
+                  {!!r.phone && <Text style={styles.crisisDetail}>📞 {r.phone}</Text>}
+                  {!!r.url && <Text style={styles.crisisDetail}>{r.url}</Text>}
+                </View>
+              ))}
+            </View>
+          )}
+
           {/* Phase 8 teaser — locked or unlocked based on AI tier */}
           {(() => {
             const aiCheck = canUseAiFeature('text', entitlementContext);
@@ -688,6 +768,14 @@ const styles = StyleSheet.create({
   missionTask: { color: Colors.white, fontSize: FontSize.lg, lineHeight: 26 },
   rwenSignoffRow: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm, marginTop: Spacing.sm },
   rwenSignoff: { color: 'rgba(255,255,255,0.7)', fontSize: FontSize.sm, fontStyle: 'italic', flex: 1 },
+
+  // Crisis handoff card — rendered after the mission when lesson.crisisHandoff is true.
+  crisisCard: { backgroundColor: 'rgba(255,255,255,0.94)', borderRadius: BorderRadius.lg, padding: Spacing.lg, width: '100%', gap: Spacing.sm, borderLeftWidth: 4, borderLeftColor: Colors.xp },
+  crisisTitle: { color: Colors.gray[900], fontSize: FontSize.md, fontWeight: FontWeight.extrabold },
+  crisisBody: { color: Colors.gray[700], fontSize: FontSize.sm, lineHeight: 20 },
+  crisisRow: { paddingVertical: Spacing.xs, borderTopWidth: 1, borderTopColor: 'rgba(0,0,0,0.06)' },
+  crisisName: { color: Colors.gray[900], fontSize: FontSize.sm, fontWeight: FontWeight.bold },
+  crisisDetail: { color: Colors.gray[700], fontSize: FontSize.sm, marginTop: 2 },
 
   // Shared
   bottomAction: { padding: Spacing.lg, paddingBottom: Spacing.xl },

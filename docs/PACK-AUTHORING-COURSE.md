@@ -18,9 +18,40 @@ A user is the join: `speaker × courses[] × jurisdiction`.
 
 A course pack is the **purchasable product**. Users buy "Learn Shona" or "AI Companion" or "Know Yourself" — one product, one course pack ID. But the **content** inside a course pack is authored per speaker variant: the English-speaker variant of Learn Shona is a different folder of authored content from the French-speaker variant. Same SKU, different content artifacts.
 
-This is why courses live at `data/courses/<course-id>/<speaker-id>/`.
-
 The runtime composes the experience: the user's speaker pack drives UI and AI; the active course's speaker variant drives lesson content; the jurisdiction pack drives legal/currency. Adding a new speaker pack alone (per `PACK-AUTHORING-SPEAKER.md`) doesn't give that user any course content — that requires authoring at least one course variant for the new speaker.
+
+## 1.5 Storage architecture — post-streaming-pivot (2026-05-05)
+
+**Course content lives in Supabase Storage, not in the binary.** This is a hard pivot from the original v1 design (which bundled all lesson `.ts` files into the EAS build).
+
+| Artifact | Where it lives now |
+|---|---|
+| Course `index.ts` (`CoursePackMeta`) | Bundled — `data/courses/<courseId>/index.ts` |
+| Per-course manifest (lesson IDs + titles + module/unit meta) | Bundled — `data/courses/<courseId>/manifest.ts` |
+| **Lesson bodies** (`LessonData` JSON — chunks, exercises, dialogue, mission, phase8) | **Storage — `lessons/<courseId>/<speakerId>/<lessonId>.json`** |
+| Speaker packs (UI/AI/locale) | Bundled — small + rarely change |
+| Jurisdiction packs (legal/crisis/currency) | Bundled |
+
+**Why:** 30-50 MB lighter binary + ship/edit lessons without an EAS rebuild + lazy translation flywheel (a translation paid for by one user is cached globally for every subsequent same-speaker user).
+
+**Authoring → live workflow:**
+
+1. Author lesson `.ts` files locally at `data/courses/<courseId>/<speakerId>/curriculum/m{NN}-l{NN}.ts` (temporary working files; conform to `LessonData` from `types/lesson.ts`).
+2. Run `npx tsc --noEmit` — must exit 0 before upload.
+3. Upload via `scripts/upload-self-dev-lessons-to-storage.ts` (or equivalent for language courses) — converts each `.ts` to JSON and uploads to `lessons/<courseId>/<speakerId>/<lessonId>.json` with `upsert: true` (atomic replace).
+4. Regenerate `data/courses/<courseId>/manifest.ts` via `scripts/generate-course-manifests.ts` so the Learn tab can list units/lessons without the bodies.
+5. Delete the source `.ts` files from `data/courses/<courseId>/<speakerId>/curriculum/` (they were temporary). Only `manifest.ts` and the course `index.ts` stay in git.
+6. Update `data/courses/<courseId>/index.ts` `availableForSpeakers` if a new speaker variant was added.
+7. Commit the manifest + index changes. Don't commit lesson `.ts` files.
+
+**Runtime read path** (`lib/lesson-loader.ts`):
+1. AsyncStorage cache (per device, persistent until uninstall) →
+2. Supabase Storage at `lessons/<courseId>/<speakerId>/<lessonId>.json` →
+3. English fallback at `lessons/<courseId>/english/<lessonId>.json` (when the speaker variant doesn't exist yet).
+
+**Cache invalidation:** new lessons can include a `version` field; loader compares cached vs Storage on read; mismatch triggers refetch. Add `version: 2` (or higher) when re-uploading edited lessons so existing devices pick up the change instead of serving stale cache.
+
+**`getLessonSync` is gone.** Pre-pivot, each language course exported a sync resolver (`getCourseLesson` switched on courseId). Post-pivot, the lesson screen calls `loadLessonAsync(courseId, speakerId, lessonId)` and the loader handles cache + Storage + fallback. **Do not add `getLessonSync` to new courses.** References to it in §8, §11, §13, §16 below are pre-pivot and should be ignored.
 
 ## 2. Course types
 
@@ -58,10 +89,13 @@ For course pack ID `{COURSE_ID}` (e.g. `know-yourself`):
 
 ```
 data/courses/{COURSE_ID}/
-  index.ts                      ← course metadata
-  {SPEAKER_ID}/                 ← one folder per speaker variant
+  index.ts                      ← course metadata (BUNDLED in git)
+  manifest.ts                   ← lesson IDs + titles + unit meta (BUNDLED — for Learn tab)
+  {SPEAKER_ID}/                 ← TEMPORARY authoring folder per §1.5; deleted after upload
     [content files — see §5/§6/§7 per type]
 ```
+
+Per §1.5: the per-speaker folder is a working directory during authoring. Lesson bodies upload to Supabase Storage, then the local files are deleted. Only `index.ts` and `manifest.ts` stay in git.
 
 The course-level `index.ts` template:
 
@@ -258,7 +292,7 @@ export const COURSES: Record<CoursePackId, CoursePack> = {
 ```
 
 Add the new course:
-1. Import it (and its `getLessonSync` if type=`language`):
+1. Import it:
    ```ts
    import {COURSE_ID_camel} from './{COURSE_ID}';
    ```
@@ -266,10 +300,8 @@ Add the new course:
    ```ts
    '{COURSE_ID}': {COURSE_ID_camel},
    ```
-3. For `language` types, extend `getCourseLesson`:
-   ```ts
-   case '{COURSE_ID}': return get{X}LessonSync(speakerId, lessonId);
-   ```
+
+Post-pivot (§1.5), there is no `getCourseLesson` sync resolver per course. The lesson screen calls `loadLessonAsync(courseId, speakerId, lessonId)` from `lib/lesson-loader.ts`, which goes cache → Storage → English fallback. New courses don't need any per-course resolver work.
 
 Database row in `available_packs`:
 
@@ -303,44 +335,61 @@ The cadence per PRODUCT-DESIGN.md §4.4 is:
 
 ## 10. Ship it — from authored files to live for users
 
-Adding a course is more complex than a speaker or jurisdiction pack because courses are usually **paid** (RevenueCat) and the content is large (100 lessons × N speaker variants). This section is the canonical end-to-end recipe — the registry edit + DB row in §8 are pieces of it.
+Adding a course is more complex than a speaker or jurisdiction pack because courses are usually **paid** (RevenueCat) and the content is large (100 lessons × N speaker variants). Post-streaming-pivot (see §1.5), the **lesson bodies live in Supabase Storage; only the course metadata + manifest are in git + the binary**.
 
 ### 10.1 Where each artifact lives
 
 | Stage | Artifact | Location |
 |---|---|---|
-| **Authored** | Lesson / Companion / Travel content | `data/courses/{COURSE_ID}/{SPEAKER_ID}/` (in git) |
-| **Code-wired** | `COURSES` registry + sync resolver | `data/courses/index.ts` |
+| **Authored (locally)** | Lesson `.ts` files | `data/courses/{COURSE_ID}/{SPEAKER_ID}/curriculum/` — temporary, deleted after upload |
+| **Bundled (git)** | Course metadata + lesson manifest | `data/courses/{COURSE_ID}/index.ts` + `manifest.ts` |
+| **Storage** | Lesson bodies as JSON | `course-content` bucket → `lessons/{COURSE_ID}/{SPEAKER_ID}/{LESSON_ID}.json` |
+| **Code-wired** | `COURSES` registry | `data/courses/index.ts` |
 | **Database** | Catalogue row | `available_packs` table — one row per course pack |
 | **Storefront** | IAP product (paid courses only) | RevenueCat dashboard + App Store Connect + Google Play Console |
-| **Bundled** | Compiled into app binary | `eas build` — courses are bundled in v1; Phase 2 may move large packs to lazy-load |
-| **Live** | Visible in Learn tab + buyable | After binary release + RevenueCat product activation |
+| **Runtime read path** | Cache → Storage → English fallback | `lib/lesson-loader.ts` |
+| **Live** | Visible in Learn tab + buyable | After Storage upload + DB row + (for paid) RevenueCat product activation |
 | **Owned** | Per-user entitlement | `user_packs` row with `pack_id = '{COURSE_ID}'` (written by RevenueCat webhook on purchase, or by onboarding for the starter course) |
 
 ### 10.2 The pipeline (in order)
 
-1. **Author + commit** content per §4-7.
-2. **Wire the code registry** per §8 — import the pack, add it to `COURSES`, and (for `language` types) extend `getCourseLesson`'s switch.
-3. **`npx tsc --noEmit` clean**, push to main.
-4. **Run the `available_packs` SQL insert** from §8 in the Supabase SQL Editor.
-5. **Phase H — RevenueCat setup** (skip entirely for free courses):
+1. **Author** the lesson `.ts` files locally per §4-7.
+2. **`npx tsc --noEmit` clean** — every `.ts` must conform to `LessonData` (or `CompanionContent`, etc.) before upload.
+3. **Upload to Storage** via `scripts/upload-self-dev-lessons-to-storage.ts` (self-development) or the language-course equivalent. The script converts each `.ts` to JSON and uploads to `lessons/{COURSE_ID}/{SPEAKER_ID}/{LESSON_ID}.json` with `upsert: true`.
+4. **Regenerate manifest** via `scripts/generate-course-manifests.ts`. The Learn tab reads `manifest.ts` to list units + lessons without downloading bodies.
+5. **Delete the local lesson `.ts` files** (they're temporary). Only `index.ts` + `manifest.ts` stay in git.
+6. **Wire the code registry** per §8 (only on first speaker variant of a new course, or when adding a new speaker variant).
+7. **Update `availableForSpeakers`** in the course `index.ts` if a new speaker variant landed in Storage.
+8. **Run the `available_packs` SQL insert** from §8 in the Supabase SQL Editor (one-time per course).
+9. **Phase H — RevenueCat setup** (skip entirely for free courses):
    1. Create a product in App Store Connect (auto-renewable subscription OR non-consumable; Rwendo's model is per-course non-consumable + tier subscription).
    2. Create the same product in Google Play Console.
    3. Map both to one entitlement in the RevenueCat dashboard.
    4. `UPDATE available_packs SET revenuecat_product_id = '<rc-id>' WHERE id = '{COURSE_ID}'`.
    5. For region-priced courses, populate `available_packs.prices_by_jurisdiction` jsonb (e.g. `{"AU": 9.99, "EU": 6.99, "US": 7.99, "ZW": 0.50}`).
-6. **Cut a release build** with `eas build`. Course content rides the binary in v1.
-7. **Test purchase end-to-end** in App Store sandbox / Play Store internal test track — RevenueCat ships a sandbox preview environment. After a successful test purchase, the RevenueCat webhook should fire → write `user_packs` row → the Learn tab on next refresh shows the course as owned.
-8. **Submit for app review.** App Store: 1-7 days; Play Store: hours-days. New IAP products may be flagged for review.
-9. **Release.** Production users see the course in the Learn tab "Buy another X course" CTA → in-app purchase → ownership written via webhook → Learn tab updates on next focus.
+10. **Cut a release build** with `eas build` ONLY when the manifest or course `index.ts` changed (most lesson edits don't require a rebuild — the binary just reads the manifest). New courses, new units, or new speaker variants need a build; lesson body edits do not.
+11. **Test purchase end-to-end** in App Store sandbox / Play Store internal test track — RevenueCat ships a sandbox preview environment. After a successful test purchase, the RevenueCat webhook should fire → write `user_packs` row → the Learn tab on next refresh shows the course as owned.
+12. **Submit for app review** when a binary rebuild was needed. App Store: 1-7 days; Play Store: hours-days. New IAP products may be flagged for review.
+13. **Release.** Production users see the course in the Learn tab "Get your next course" CTA → in-app purchase → ownership written via webhook → Learn tab updates on next focus.
 
-### 10.3 Bundle vs lazy-load — what gets shipped where
+### 10.3 Storage as source-of-truth (post-pivot)
 
-In v1, **all course content is bundled in the binary**. A 100-lesson Shona pack is ~500KB of TypeScript; even the AI Companion English variant with full memory schema + topics is <100KB. Total course-content payload stays under 5MB even with 5-10 courses.
+In v1 (pre-pivot, original spec) all course content was bundled in the EAS build. As of 2026-05-05 the streaming pivot moved every lesson body to Supabase Storage. **Don't bundle lesson `.ts` files in git** — they get deleted after upload. The runtime cost is one Storage HEAD + GET on first lesson open per device per lesson; subsequent opens hit the per-device AsyncStorage cache instantly.
 
-**Phase 2 trigger**: when a single user has access to >5 courses, OR total bundle exceeds 20MB, switch to lazy-load via Supabase Storage. The async `curriculumLoader` / `companionLoader` / `travelLoader` functions in `CoursePackVariant` already exist for this — today they `await import()` from local paths; in Phase 2 they fetch JSON from `https://<supabase-project>.supabase.co/storage/v1/object/public/courses/{COURSE_ID}/{SPEAKER_ID}/{file}.json` and cache in AsyncStorage.
+Sizing math: a typical 7-phase lesson is ~5-10 KB JSON. 100 lessons × 5 speaker variants = 500 lessons ≈ 2-5 MB total per course in Storage. The 13 courses currently in Storage hold 576 lessons (~2.5 MB). Storage is cheap; the binary-size win is enormous (30-50 MB lighter at install, faster cold-start).
 
-When that switch happens, `getCourseLesson`'s sync path (used by the lesson screen) needs an AsyncStorage-backed fallback or pre-fetch on course-activation.
+**When a course `.ts` file edit DOES need an EAS rebuild:**
+- New course pack added (course `index.ts` is new)
+- `availableForSpeakers` array changes (the binary reads this to decide what to show)
+- Manifest entries added / removed (new lessons or unit reshuffling)
+- Course metadata changes (displayName, emoji, primaryColor)
+
+**When a course content change does NOT need a rebuild** (Storage upload is enough):
+- Lesson body edits (chunks, exercises, dialogue, mission text)
+- New speaker variant of an existing course (after `availableForSpeakers` is added; that part still needs a binary update)
+- Translation pass (lazy or eager) — translated lessons land in Storage at the speaker-variant path
+
+**Cache busting:** add a `version` field inside the JSON for any lesson you've edited post-launch. The loader compares cached vs Storage version; mismatch refetches. Without a version bump, devices that already cached the old lesson keep serving it forever.
 
 ### 10.4 RevenueCat / IAP gotchas (Phase H)
 
@@ -359,8 +408,8 @@ When that switch happens, `getCourseLesson`'s sync path (used by the lesson scre
 ### 10.6 What can break in production
 
 - **`availableForSpeakers` mismatch.** If a course's `availableForSpeakers` doesn't include the user's speaker, the course is hidden from that user **even if they own it**. Audit when adding new variants — add the speaker ID to the array or the variant content is dead.
-- **`getLessonSync` missing for language courses.** The lesson screen calls `getCourseLesson` synchronously; without the resolver case for the new course ID, every lesson shows "Lesson not found" even though metadata loads.
-- **Unauthored speaker variant referenced in `availableForSpeakers`.** The Learn tab lists the course for that speaker, but tapping a unit lands on empty curriculum. Either author the variant or remove the speaker from the array until ready.
+- **Lessons uploaded to Storage but manifest not regenerated.** The Learn tab reads `manifest.ts` to list units/lessons. If you upload new lessons but don't re-run `scripts/generate-course-manifests.ts` + commit the manifest, the binary doesn't know the new lessons exist. The Storage objects are orphaned.
+- **Unauthored speaker variant referenced in `availableForSpeakers`.** The Learn tab lists the course for that speaker, but tapping a unit hits the loader's English fallback at best, or a 404 if no English variant exists. Either upload the variant to Storage or remove the speaker from the array until ready.
 - **RevenueCat webhook not firing.** Test post-purchase: `SELECT * FROM user_packs WHERE user_id = '<test_user>'` should show the new row within seconds of a sandbox purchase. If not, check the RevenueCat → Supabase webhook config.
 - **Course registered but `available_packs` row missing.** In-app the course appears (since the registry is the runtime source); but any DB query that joins `user_packs` to `available_packs` returns no rows. The user "owns" something that doesn't exist in the catalogue — analytics + admin dashboards break.
 
@@ -389,12 +438,13 @@ If `know-yourself` (or any future type) doesn't fit `language` / `ai-companion` 
 
 Before declaring done, run:
 
-1. **TypeScript**: `npx tsc --noEmit` exits 0. Every lesson file conforms to `LessonData`. Every AI Companion variant conforms to `CompanionContent`.
+1. **TypeScript**: `npx tsc --noEmit` exits 0. Every authored `.ts` lesson file conforms to `LessonData`. Every AI Companion variant conforms to `CompanionContent`.
 2. **Course is registered**: `data/courses/index.ts` imports the new pack and includes it in the `COURSES` map.
-3. **At least one variant is authored**: not just metadata. Either the curriculum (100 lessons), the AI Companion content (cards + topics + memory + triggers), or the travel content.
-4. **DB row exists**: SELECT 1 FROM available_packs WHERE id = '{COURSE_ID}'.
-5. **Lesson screen smoke test** (language types): open a lesson by ID via `/lesson/<lesson-id>`. The screen renders without "Lesson not found" or undefined errors. All 7 phases play through.
-6. **`__warnings` review**: every file has flagged items for review. Empty arrays = unreviewed.
+3. **Manifest is current**: `data/courses/{COURSE_ID}/manifest.ts` lists every lesson ID that exists for the variant in Storage.
+4. **At least one variant is uploaded to Storage**: `lessons/{COURSE_ID}/{SPEAKER_ID}/{LESSON_ID}.json` resolves for every lesson in the manifest. Not just metadata.
+5. **DB row exists**: `SELECT 1 FROM available_packs WHERE id = '{COURSE_ID}'`.
+6. **Lesson screen smoke test** (language types): open a lesson by ID via `/lesson/<lesson-id>` (with the right `?courseId=...` route param). The lesson loader fetches from Storage on cold cache, renders without "Lesson not found", all 7 phases play through. Re-open from warm cache loads in <500 ms.
+7. **`__warnings` review**: every uploaded lesson has flagged items for review. Empty arrays = unreviewed.
 
 ## 13. Common mistakes to avoid
 
@@ -402,7 +452,8 @@ Before declaring done, run:
 - **Inventing new course types without spec'ing them.** §11 is a path; don't take it without a real reason.
 - **Authoring fewer than 100 lessons for a language pack.** Modules 1-4 are free; modules 5-10 are paid (Phase E gating). Shipping 50 lessons effectively means modules 5+ are empty paid content. Either ship 100 or mark the course `isComingSoon: true`.
 - **Forgetting to set `availableForSpeakers`.** If you author a Shona variant of a course but don't add `'shona'` to the array, the runtime won't surface the variant.
-- **Missing `getLessonSync` for language courses.** The lesson screen calls this synchronously. Without it, lessons show "not found".
+- **Bundling lesson `.ts` files in git.** Post-pivot, lesson bodies live in Storage. Source `.ts` files in `data/courses/{COURSE_ID}/{SPEAKER_ID}/curriculum/` are temporary authoring artifacts. After upload + manifest regeneration, delete them. `.gitignore` should keep them from being committed.
+- **Forgetting to bump `version` when re-uploading edited lessons.** Devices that cached the old version keep serving it. Add `version: 2` (or higher) to the JSON.
 
 ## 14. Boundary — what a course pack does NOT contain
 
@@ -441,12 +492,12 @@ This is illustrative — actual `know-yourself` design is product-owner work.
 
 A course pack with one speaker variant is shippable when:
 - Course-level `index.ts` exists with valid `CoursePackMeta`
-- One speaker variant is fully authored (curriculum / companion content / travel content per §5/§6/§7)
+- `manifest.ts` exists and lists every lesson ID for the variant
+- One speaker variant is fully **authored AND uploaded to Storage** (curriculum / companion content / travel content per §5/§6/§7) — local `.ts` files deleted after upload
 - `data/courses/index.ts` includes it in `COURSES`
-- For `language` type: `getLessonSync` works for the variant
+- `availableForSpeakers` lists every speaker variant that exists in Storage
 - `available_packs` row exists
 - `tsc --noEmit` exits 0
-- Each variant file has reviewed `__warnings`
-- A native speaker (for the speaker variant's language) has spot-checked content
+- A native speaker (for the speaker variant's language) has spot-checked content (post-upload — read JSON from Storage or the staging copy)
 
 The agent declares "drafted" when all but the native review are met. Native review is a human gate.

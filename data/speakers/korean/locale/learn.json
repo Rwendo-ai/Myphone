@@ -1,0 +1,127 @@
+{
+  "__warnings": [
+    { "key": "tab.categories.know_yourself", "note": "'Know Yourself' → '나를 알기'. Could also be '자기 이해' (more literal/clinical). Reviewer: pick what feels natural for an app menu." },
+    { "key": "lesson.phases.hook / chunks / pattern / mission", "note": "Phase names translated as: '장면', '새 표현', '패턴', '실전 미션'. 'chunks' is a methodology term — '새 표현' (new expressions) is reader-friendly; reviewer can use '청크' (loanword) if preferred." },
+    { "key": "lesson.mission.cta", "note": "'Famba zvakanaka →' kept verbatim — Shona for 'go well / safe travels', Rwen's signature lesson-end blessing. Reviewer: confirm this stays Shona for Korean speakers, or flip to '잘 다녀오세요 →'." },
+    { "key": "lesson.locked.subscription_body", "note": "Mentions 'Modules 5-10', 'Text AI tier' — vendor/product terms kept English ('Text AI'). Reviewer: confirm whether 'Text AI' should localise as '텍스트 AI'." },
+    { "key": "lesson.hook.tsika_label", "note": "'TSIKA — Cultural Context' kept Shona word 'TSIKA' verbatim (it's a curriculum term meaning 'culture/customs'). Korean explanation '문화 배경' follows. Reviewer: confirm." },
+    { "key": "exercises.feedback_correct / fill_blank.wrong / etc", "note": "Used checkmark/cross emojis as in English ('✓', '✗'). Kept English-style feedback structure but translated text." }
+  ],
+  "tab": {
+    "daily_xp": "오늘의 XP",
+    "units": "단원",
+    "lesson_count": "레슨 {{count}}개",
+    "unit_progress": "{{completed}}/{{total}} 완료",
+    "coming_soon_title": "{{lang}} 커리큘럼이 곧 공개됩니다",
+    "coming_soon_sub": "지금 레슨을 만들고 있어요. 곧 다시 확인해 주세요!",
+    "categories_title": "코스",
+    "categories": {
+      "languages": "언어",
+      "ai_courses": "AI 코스",
+      "know_yourself": "나를 알기"
+    },
+    "buy": {
+      "language_course": "+ 다른 언어 코스 구매하기",
+      "ai_course": "+ 다른 AI 코스 구매하기",
+      "know_yourself_course": "+ 다른 '나를 알기' 코스 구매하기",
+      "alert_title": "곧 출시됩니다",
+      "alert_body": "코스 스토어는 다음 업데이트에서 열립니다."
+    },
+    "empty_category": {
+      "ai_courses_title": "AI 코스가 준비 중이에요",
+      "ai_courses_body": "첫 번째 코스가 곧 공개됩니다. 준비되면 알려 드릴게요.",
+      "know_yourself_title": "'나를 알기'가 준비 중이에요",
+      "know_yourself_body": "첫 번째 코스가 곧 공개됩니다. 준비되면 알려 드릴게요."
+    }
+  },
+  "screen_header": {
+    "back": "← 뒤로"
+  },
+  "unit": {
+    "section_label": "레슨",
+    "xp_value": "{{count}} XP"
+  },
+  "lesson": {
+    "not_found": "레슨을 찾을 수 없습니다: {{id}}",
+    "locked": {
+      "subscription_title": "잠김 — 유료 플랜이 필요해요",
+      "subscription_body": "모듈 5-10은 Text AI 등급 이상에 포함되어 있어요. 업그레이드하고 Rwen과 계속 학습하세요.",
+      "subscription_cta": "플랜 보기",
+      "course_title": "잠김 — 코스가 활성화되어 있지 않아요",
+      "course_body": "이 레슨은 아직 활성화하지 않은 코스에 속해 있어요. 코스를 계정에 추가하고 시작해 보세요.",
+      "course_cta": "코스 보기"
+    },
+    "phases": {
+      "hook": "장면",
+      "chunks": "새 표현",
+      "pattern": "패턴",
+      "practice": "연습",
+      "dialogue": "대화",
+      "recall": "복습",
+      "mission": "실전 미션"
+    },
+    "quit": {
+      "title": "레슨을 그만두시겠어요?",
+      "body": "이번 레슨의 진행 상황은 사라집니다. 정말 그만두시겠어요?",
+      "keep_going": "계속하기",
+      "quit": "그만두기"
+    },
+    "hook": {
+      "tsika_label": "TSIKA — 문화 배경",
+      "cta": "배워 봅시다 →"
+    },
+    "chunks": {
+      "counter": "{{total}}개 중 {{current}}번째 표현",
+      "literal": "직역하면: \"{{value}}\"",
+      "see_pattern": "패턴 보기 →",
+      "got_it": "이해했어요 →"
+    },
+    "pattern": {
+      "start_practice": "연습 시작 →"
+    },
+    "practice": {
+      "counter": "{{total}}개 중 {{current}}번째 연습"
+    },
+    "dialogue": {
+      "to_recall": "좋아요 — 이제 복습할 시간 →",
+      "continue": "계속하기 →"
+    },
+    "recall": {
+      "title": "능동 복습",
+      "counter": "{{total}}개 중 {{current}}번째"
+    },
+    "mission": {
+      "complete_title": "레슨 완료!",
+      "xp_badge": "+{{count}} XP",
+      "score": "{{total}}개 중 {{score}}개 정답",
+      "card_title_prefix": "📍 ",
+      "cta": "Famba zvakanaka →"
+    },
+    "phase8": {
+      "unlocked_title": "Rwen과 함께 연습",
+      "unlocked_body": "방금 배운 내용으로 '{{topic}}' 주제를 대화로 시도해 보세요. Rwen이 함께해요.",
+      "unlocked_cta": "2분 대화 시작하기 →",
+      "locked_title": "Rwen과 함께 연습 — 잠김",
+      "locked_body": "'{{topic}}' 주제로 2분 대화를 나눠 보세요. Rwen이 방금 배운 내용을 사용할 거예요.",
+      "locked_cta": "Text AI로 잠금 해제 →"
+    }
+  },
+  "exercises": {
+    "check": "확인",
+    "feedback_correct": "✓ 정답!",
+    "fill_blank": {
+      "wrong": "✗ 정답은 \"{{correct}}\"이에요"
+    },
+    "translate": {
+      "placeholder": "답을 입력하세요…",
+      "wrong": "✗ 정답: {{correct}}"
+    },
+    "build_sentence": {
+      "placeholder": "아래 단어를 눌러 문장을 완성하세요",
+      "wrong": "✗ 정답: {{correct}}"
+    },
+    "multiple_choice": {
+      "wrong": "✗ 아쉬워요"
+    }
+  }
+}

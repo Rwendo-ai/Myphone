@@ -2,16 +2,22 @@
 
 *100 lessons. 10 units. 5–10 minutes a day. Designed to be read by anyone, anywhere, who is serious about an examined life.*
 
-Document version: 1.0 — 2026-05-04
+Document version: 2.0 — 2026-05-05 (Christian-foundation editorial pass)
 Authoring model: Claude Opus 4.7
 Source language: English (single source-of-truth; runtime translation by Claude)
 Schema: `types/lesson.ts` (`LessonData`)
 
 ---
 
+## Editorial foundation
+
+All authoring in this course follows [CHRISTIAN-FOUNDATION-SPEC.md](./CHRISTIAN-FOUNDATION-SPEC.md) — the editorial spec governing every Build Yourself lesson. Christian foundation underneath, neutral surface, no overt religious language, no other-religion framing. **Read that spec before authoring or rewriting any lesson in this track.** The 2026-05-05 audit found Buddhist saturation across this course's existing Unit 1 lessons; the rewrite is the first major application of the spec.
+
+---
+
 ## 1. Course philosophy
 
-Knowing Yourself is not a productivity course, a therapy substitute, or a shortcut to enlightenment. It is a slow, generous introduction to the lifelong work of seeing yourself clearly — your patterns, your values, your nervous system, your relationships, your finitude. It treats the user as an adult who is already wise about their own life and adds languages, frames, and small experiments that make that wisdom usable. The course is anchored in evidence-based traditions (CBT, ACT, IFS, MBSR, Stoicism, attachment theory, polyvagal theory, NVC, positive psychology, habit science, modern grief research) and refuses to flatten any of them into self-help slogans. A 50-year-old farmer, a 35-year-old engineer, and a 20-year-old student should each find every lesson recognisable, useful, and free of cultural snobbery. Five minutes a day. A hundred days. A life that fits a little better.
+Knowing Yourself is not a productivity course, a therapy substitute, or a shortcut to becoming someone different. It is a slow, generous introduction to the lifelong work of seeing yourself clearly — your patterns, your values, your nervous system, your relationships, your finitude. It treats the user as an adult who is already wise about their own life and adds languages, frames, and small experiments that make that wisdom usable. The course is anchored in evidence-based, ethically-compatible traditions (CBT, ACT, IFS, Stoicism, attachment theory, polyvagal theory, NVC, positive psychology, habit science, modern grief research) and refuses to flatten any of them into self-help slogans. A 50-year-old farmer, a 35-year-old engineer, and a 20-year-old student should each find every lesson recognisable, useful, and free of cultural snobbery. Five minutes a day. A hundred days. A life that fits a little better.
 
 ---
 
@@ -22,21 +28,21 @@ Each unit is 10 lessons. The sequence is intentional: we begin with attention (t
 ### Unit 1 — Attention as the Foundation
 Emoji: `🪟`
 Learning arc: From "I am my thoughts" to "I am the one who notices my thoughts." The user moves from automatic-pilot living to the rudimentary capacity to observe one breath, one sound, one feeling without immediately reacting.
-Anchor traditions: MBSR (Kabat-Zinn), Buddhist psychology (mindfulness, not non-self yet), William James on attention, ACT defusion (introduced gently).
+Anchor traditions: ACT defusion (Hayes), Stoic *prosoche* (attention as moral discipline), William James on attention, modern attention science (Kahneman, Newport).
 Why first: Every other unit depends on the user being able to notice something internal without flinching. No attention, no self-knowledge.
 Skill outcome: The user can pause, locate themselves in their body, and name what is present — once a day, on demand.
 
 ### Unit 2 — The Body You Live In
 Emoji: `🫀`
 Learning arc: From "I have a body" to "I read my body for information." Body scan, interoception, polyvagal states, sleep, breath, movement.
-Anchor traditions: Polyvagal theory (Porges), MBSR body scan, sleep science (Walker, Foster), Peter Levine on somatic awareness, Bessel van der Kolk (lightly).
+Anchor traditions: Polyvagal theory (Porges), somatic body-awareness practice (secular framing), sleep science (Walker, Foster), Peter Levine on somatic awareness, Bessel van der Kolk (lightly).
 Why second: The body is where emotions live. Trying to regulate emotions without somatic literacy is like fixing a leak through a spreadsheet.
 Skill outcome: The user can identify their nervous-system state (regulated, activated, shut-down) and apply at least one body-based intervention.
 
 ### Unit 3 — Feelings, Honestly
 Emoji: `🌊`
 Learning arc: From "I'm fine / I'm stressed / I don't know" to a working emotional vocabulary, the function of each major emotion, and the difference between feeling and acting on a feeling.
-Anchor traditions: Marc Brackett's *Permission to Feel*, Lisa Feldman Barrett's constructed-emotion theory, Kristin Neff's self-compassion, Bonanno on grief, NVC's "feeling word" lists.
+Anchor traditions: Marc Brackett's *Permission to Feel*, Lisa Feldman Barrett's constructed-emotion theory, the dignity-based self-kindness frame (see [CHRISTIAN-FOUNDATION-SPEC.md §6](./CHRISTIAN-FOUNDATION-SPEC.md)), Brené Brown on shame vs. guilt, Bonanno on grief, NVC's "feeling word" lists.
 Why third: With attention and somatic grounding in place, the user can now meet emotions instead of bracing against them.
 Skill outcome: The user can name what they feel using more than three words and treat the feeling as information rather than a verdict.
 
@@ -71,7 +77,7 @@ Skill outcome: The user can structure a difficult message in four parts (observa
 ### Unit 8 — The Habits That Carry You
 Emoji: `🌱`
 Learning arc: From "I lack discipline" to "I design my environment and identity so the right things become easy." Tiny habits, identity-based change, environment design, the role of self-compassion in change.
-Anchor traditions: BJ Fogg (Tiny Habits), James Clear (Atomic Habits), Charles Duhigg (cue–routine–reward), Kelly McGonigal on willpower, Kristin Neff on the role of self-compassion in actual change.
+Anchor traditions: BJ Fogg (Tiny Habits), James Clear (Atomic Habits), Charles Duhigg (cue–routine–reward), Kelly McGonigal on willpower, Brené Brown on shame's role in stalling change, the dignity-based self-kindness frame ([CHRISTIAN-FOUNDATION-SPEC.md §6](./CHRISTIAN-FOUNDATION-SPEC.md)).
 Why eighth: Habit formation without prior attention, somatic, emotional, and values work produces brittle behaviour change that breaks at the first stressor.
 Skill outcome: The user has installed one tiny habit aligned with a stated value and can recover from a missed day without spiralling.
 
@@ -85,7 +91,7 @@ Skill outcome: The user has audited one week of attention and can name one cost 
 ### Unit 10 — The Examined Life
 Emoji: `🌌`
 Learning arc: From "I'm working on myself" to "I am living a life I can stand behind, including its grief." Mortality, meaning, gratitude, integration of shadow, the long view.
-Anchor traditions: Stoicism (Marcus Aurelius, *premeditatio malorum*, view from above), Frankl on meaning, modern grief science (Bonanno's resilience, Kessler's sixth stage), Buddhist impermanence, Erikson's late-stage integrity-vs-despair.
+Anchor traditions: Stoicism (Marcus Aurelius, *premeditatio malorum*, view from above), Frankl on meaning, modern grief science (Bonanno's resilience, Kessler's sixth stage), Erikson's late-stage integrity-vs-despair.
 Why last: This unit reframes the previous nine. Without earlier work, mortality and meaning become abstractions. With it, they become orientation.
 Skill outcome: The user can articulate, in their own words, what a life well-lived looks like for them — and one specific thing they will do this week because of it.
 
@@ -98,13 +104,13 @@ Each title names the actual concept the lesson teaches. No clever-but-vague head
 ### Unit 1 — Attention as the Foundation
 - Unit 1 — Lesson 1: The Difference Between Looking and Seeing
 - Unit 1 — Lesson 2: One Breath, On Purpose
-- Unit 1 — Lesson 3: The Voice in Your Head Is Not You
+- Unit 1 — Lesson 3: A Thought Isn't a Verdict
 - Unit 1 — Lesson 4: When You Notice You're Distracted, You're Already Back
 - Unit 1 — Lesson 5: The Five-Senses Check
 - Unit 1 — Lesson 6: What You Pay Attention to Becomes Your Life
 - Unit 1 — Lesson 7: The Pause Between Stimulus and Response
 - Unit 1 — Lesson 8: Boredom Is Information
-- Unit 1 — Lesson 9: Sitting With What You'd Rather Avoid
+- Unit 1 — Lesson 9: Staying With What You'd Rather Avoid
 - Unit 1 — Lesson 10: Attention as a Practice, Not a Performance
 
 ### Unit 2 — The Body You Live In
@@ -221,8 +227,8 @@ Each title names the actual concept the lesson teaches. No clever-but-vague head
 
 These are the explicit choices that distinguish this curriculum from generic self-help.
 
-1. **Mindfulness is showing up to feeling, not escape from it.**
-   Anchored in MBSR (Kabat-Zinn) and ACT — both treat awareness as a turning-toward, not a turning-away. We never frame meditation as "calming down" or "clearing the mind." We frame it as the capacity to be present with whatever is actually happening, including the unpleasant. This rules out a large genre of "feel better in 60 seconds" content.
+1. **Attention is showing up to feeling, not escape from it.**
+   Anchored in ACT (acceptance as turning-toward) and Stoic *prosoche* (attention as moral discipline) — both treat awareness as a turning-toward, not a turning-away. We never frame attention practice as "calming down" or "clearing the mind." We frame it as the capacity to be present with whatever is actually happening, including the unpleasant. This rules out a large genre of "feel better in 60 seconds" content.
 
 2. **Every unit contains at least one lesson on a hard truth.**
    Examples: "You will be hurt by people you love" (Unit 3), "When your behaviour disagrees with your values" (Unit 5), "You will die" (Unit 10). Anchored in Bonanno's grief research and Stoic *premeditatio malorum*: confronting hard truths in advance reduces their later destabilising power. Sentimental curricula skip these. We don't.
@@ -233,35 +239,35 @@ These are the explicit choices that distinguish this curriculum from generic sel
 4. **No prescriptive identity claims.**
    We do not tell the user who they are, what they should value, or what kind of life is good. We provide frames and prompts. Anchored in self-determination theory — autonomy is a fundamental psychological need and motivation collapses when it is taken away. The course teaches discernment, not a doctrine.
 
-5. **Self-compassion is a prerequisite for change, not a reward for it.**
-   Kristin Neff's research is explicit: self-criticism predicts worse behaviour change, not better. Our habit unit (Unit 8) treats self-compassion as a tool of behaviour change rather than a comfort blanket. Lesson 8.6 ("The Cost of Self-Criticism in Behaviour Change") is the load-bearing example.
+5. **Kindness to yourself is a prerequisite for change, not a reward for it.**
+   Self-criticism predicts worse behaviour change, not better — clinical evidence converges across compassion-focused therapy (Gilbert), shame-resilience research (Brown), and behaviour-change literature (Fogg, Clear). Our habit unit (Unit 8) treats kindness toward yourself as a tool of behaviour change rather than a comfort blanket — extending to yourself the same charity you would extend to a friend. Lesson 8.6 ("The Cost of Self-Criticism in Behaviour Change") is the load-bearing example. The full replacement framework is in [CHRISTIAN-FOUNDATION-SPEC.md §6](./CHRISTIAN-FOUNDATION-SPEC.md).
 
 6. **Every lesson ends with a 5-minute action, not an insight.**
    Anchored in BJ Fogg's behavioural design and the broader principle that knowing-without-doing decays. The mission is small enough that a tired, overwhelmed user can do it. "Notice one breath before your next meal" is a real lesson outcome. "Live more mindfully" is not.
 
-7. **Cultural humility, especially around contemplative traditions.**
-   Buddhist and Stoic concepts are introduced with attribution and without flattening. We do not call mindfulness "scientifically proven meditation" as if to launder it of its origins. We say where ideas come from. The course is for everyone, including people for whom these traditions are home.
+7. **Sources are named honestly.**
+   Where a frame comes from clinical research, we say so. Where it comes from Stoic philosophy, ACT, NVC, attachment theory, or habit science, we attribute. We don't launder ideas of their origins or flatten them into self-help slogans. The underlying skills (honest seeing, naming what's there, choosing how to respond, showing up for hard truths) are universal human capacities, not the property of any single tradition. The course is for everyone.
 
 8. **The companion (Rwen) holds the user, but does not replace human contact.**
    Rwen is warm and present — but Unit 6 explicitly directs the user toward real people. We do not optimise for engagement at the expense of the user's actual social life. Anchored in the loneliness research (Holt-Lunstad) showing that parasocial substitutes do not deliver the health benefits of real relationships.
 
 ---
 
-## 5. Unit 1 — Authored in full
+## 5. Unit 1 — Authored, currently being rewritten
 
-The 10 lessons of Unit 1 have been written as `.ts` files at:
+The 10 lessons of Unit 1 were originally authored as `.ts` files but the 2026-05-05 audit found Buddhist saturation — Kabat-Zinn / MBSR / Buddhist witness consciousness as the scaffolding pedagogy, the "two arrows" Buddha metaphor in lesson 9, and Kristin Neff's three-pillar self-compassion model woven through. Per [CHRISTIAN-FOUNDATION-SPEC.md](./CHRISTIAN-FOUNDATION-SPEC.md), all 10 lessons are pending rewrite. New titles for lessons 3 and 9 are reflected above.
 
 ```
 c:\Users\benoc\Documents\Rwendo\data\courses\know-yourself\english\curriculum\
   m01-l01.ts  The Difference Between Looking and Seeing
   m01-l02.ts  One Breath, On Purpose
-  m01-l03.ts  The Voice in Your Head Is Not You
+  m01-l03.ts  A Thought Isn't a Verdict
   m01-l04.ts  When You Notice You're Distracted, You're Already Back
   m01-l05.ts  The Five-Senses Check
   m01-l06.ts  What You Pay Attention to Becomes Your Life
   m01-l07.ts  The Pause Between Stimulus and Response
   m01-l08.ts  Boredom Is Information
-  m01-l09.ts  Sitting With What You'd Rather Avoid
+  m01-l09.ts  Staying With What You'd Rather Avoid
   m01-l10.ts  Attention as a Practice, Not a Performance
 ```
 
@@ -288,7 +294,7 @@ Each compiles against `types/lesson.ts`. The schema reuse is explicit:
 ### Truth — are claims evidence-grounded?
 
 **Where I'm honest about tradition vs. fact:**
-Each lesson's third `chunk.literal` field names the tradition explicitly (e.g. "MBSR — Kabat-Zinn", "ACT — Hayes", "Stoic — Epictetus"). The pedagogical decisions in Section 4 cite specific researchers and bodies of evidence. We do not claim "studies show…" without naming what.
+Each lesson's third `chunk.literal` field names the tradition explicitly (e.g. "ACT — Hayes", "Stoic — Epictetus", "Brené Brown on shame"). The pedagogical decisions in Section 4 cite specific researchers and bodies of evidence. We do not claim "studies show…" without naming what. Citations follow the compatibility test in [CHRISTIAN-FOUNDATION-SPEC.md §5](./CHRISTIAN-FOUNDATION-SPEC.md) — Stoicism, ACT, NVC, attachment theory, clinical psychology, Brené Brown, habit science all compatible; Buddhist citations cut entirely.
 
 **Where I should be more careful:**
 - Polyvagal theory (Porges) is widely taught but contested in academic neuroscience. I include it in Unit 2 because its clinical utility is well-attested even where the underlying neuroanatomy is debated. The Unit 2 lessons should flag this — present the framework as a useful map, not a settled biology.
@@ -309,7 +315,7 @@ The concepts are universal — attention, breath, body, feeling, relationship, t
 - Examples in dialogues use universally legible scenarios — being interrupted, lying awake at night, a hard conversation with a relative, eating a meal — not gym workouts or knowledge-work meetings.
 
 **Where it could still slip:**
-The eulogy exercise (Unit 5 Lesson 2) and the regret-minimisation frame (Unit 5 Lesson 7) come from Bezos / Western Stoic-business-book lineage. The concept is universal but the framing should not. The Unit 5 author guidelines should specify alternative cultural frames — e.g. *imagining what your grandchildren would say of you*, which is closer to West/Southern African oral traditions, or *the Buddhist death-contemplation* (*maraṇasati*) for South-East Asian users.
+The eulogy exercise (Unit 5 Lesson 2) and the regret-minimisation frame (Unit 5 Lesson 7) come from Bezos / Western Stoic-business-book lineage. The concept is universal but the framing should not. The Unit 5 author guidelines should specify alternative cultural frames — e.g. *imagining what your grandchildren would say of you*, closer to West/Southern African oral traditions, or *what you would want said of you at the end of a long life*, a neutral framing accessible to any user.
 
 ### Pedagogy — does the 7-phase Rwendo Method work for self-development?
 

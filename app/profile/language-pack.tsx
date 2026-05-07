@@ -1,43 +1,64 @@
 import { View, Text, StyleSheet, ScrollView, Pressable, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import ScreenHeader from '../../components/ScreenHeader';
 import { useSettings } from '../../lib/SettingsContext';
 import { useAuth } from '../../lib/AuthContext';
 import { supabase } from '../../lib/supabase';
-import { PACKS, resolvePackLanguages } from '../../data/packs';
+import { CoursePack, CoursePackId } from '../../types/packs';
 import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
 
-interface ComingSoonPack {
-  id: string;
-  spokenFlag: string;
-  learnedFlag: string;
-}
+/**
+ * Language Pack screen.
+ *
+ * Surfaces the language courses available to THIS user's speaker pack,
+ * exactly the same set that appears under "Languages" in the Learn tab.
+ *   - English speaker → 4 courses (Learn Shona / French / Chinese / Tagalog)
+ *   - Shona / French / Chinese / Tagalog speaker → 1 course (Learn English,
+ *     with the speaker's variant of the content)
+ *
+ * Selection sets `activeCourseId` (the same setter the Learn tab uses) so
+ * the user's pick is reflected everywhere immediately.
+ *
+ * The legacy pair-based PACKS system (data/packs.ts) was retired here in
+ * favour of the new course architecture.
+ */
 
-const COMING_SOON: ComingSoonPack[] = [
-  { id: 'english-spanish',    spokenFlag: '🇬🇧', learnedFlag: '🇪🇸' },
-  { id: 'english-french',     spokenFlag: '🇬🇧', learnedFlag: '🇫🇷' },
-  { id: 'english-portuguese', spokenFlag: '🇬🇧', learnedFlag: '🇵🇹' },
-  { id: 'english-swahili',    spokenFlag: '🇬🇧', learnedFlag: '🇰🇪' },
-  { id: 'english-zulu',       spokenFlag: '🇬🇧', learnedFlag: '🇿🇦' },
-  { id: 'english-mandarin',   spokenFlag: '🇬🇧', learnedFlag: '🇨🇳' },
+const COMING_SOON: Array<{ id: string; flag: string; name: string }> = [
+  { id: 'language-spanish',    flag: '🇪🇸', name: 'Spanish' },
+  { id: 'language-portuguese', flag: '🇵🇹', name: 'Portuguese' },
+  { id: 'language-arabic',     flag: '🇸🇦', name: 'Arabic' },
+  { id: 'language-japanese',   flag: '🇯🇵', name: 'Japanese' },
+  { id: 'language-korean',     flag: '🇰🇷', name: 'Korean' },
 ];
 
 export default function LanguagePackScreen() {
   const { t } = useTranslation('common');
   const { user } = useAuth();
-  const { activePack, setActivePack } = useSettings();
+  const { speaker, courses, activeCourseId, setActiveCourseId } = useSettings();
 
-  const handleSelect = async (packId: string) => {
-    const pack = PACKS.find((p) => p.id === packId);
-    if (!pack) return;
-    setActivePack(pack);
+  // Just the language courses this speaker can actually use. Same filter
+  // the Learn tab applies; keeps the two surfaces in sync by construction.
+  const languageCourses = useMemo(
+    () => courses.filter((c) => c.meta.type === 'language'),
+    [courses],
+  );
+
+  const handleSelect = async (course: CoursePack) => {
+    setActiveCourseId(course.meta.id);
     if (user) {
+      // Persist to profiles.active_course_ids (text[]) so the next session
+      // resumes where the user left off. Single-active for v1 — write the
+      // pick as a one-element array.
       await supabase
         .from('profiles')
-        .update({ active_language_pack_id: packId, updated_at: new Date().toISOString() })
+        .update({
+          active_course_ids: [course.meta.id],
+          updated_at: new Date().toISOString(),
+        })
         .eq('id', user.id);
     }
     router.back();
@@ -45,39 +66,56 @@ export default function LanguagePackScreen() {
 
   const handleComingSoon = (name: string) => {
     Alert.alert(
-      t('language_pack_screen.coming_soon_alert_title', { name }),
-      t('language_pack_screen.coming_soon_alert_body', { name })
+      `${name} — coming soon`,
+      `${name} isn't available yet. We'll let you know when it lands.`,
     );
+  };
+
+  // The "available" line under each card — different message for the
+  // course we know is fully authored across multiple speakers (language-
+  // english) vs single-speaker courses still in early state.
+  const subForCourse = (course: CoursePack): string => {
+    if (course.meta.id === 'language-english') {
+      return `${speaker.englishName} speaker variant — 100 lessons`;
+    }
+    return `For ${speaker.englishName} speakers — 100 lessons`;
   };
 
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>
-      <ScreenHeader title={t('language_pack_screen.title')} subtitle={t('language_pack_screen.subtitle')} />
+      <ScreenHeader
+        title={t('language_pack_screen.title')}
+        subtitle={
+          languageCourses.length === 1
+            ? `As a ${speaker.englishName} speaker, one language course is currently available to you.`
+            : `As a ${speaker.englishName} speaker, ${languageCourses.length} language courses are available to you.`
+        }
+      />
       <ScrollView contentContainerStyle={styles.content}>
         <Text style={styles.sectionTitle}>{t('language_pack_screen.available_now')}</Text>
-        {PACKS.map((pack) => {
-          const { spoken, learned } = resolvePackLanguages(pack);
-          const isActive = activePack.id === pack.id;
+
+        {languageCourses.length === 0 && (
+          <View style={styles.emptyState}>
+            <Text style={styles.emptyEmoji}>🌍</Text>
+            <Text style={styles.emptyTitle}>No language courses for your speaker pack yet</Text>
+            <Text style={styles.emptySub}>
+              Switch your App Language in Profile to see different course options.
+            </Text>
+          </View>
+        )}
+
+        {languageCourses.map((course) => {
+          const isActive = (activeCourseId as CoursePackId | null) === course.meta.id;
           return (
             <Pressable
-              key={pack.id}
+              key={course.meta.id}
               style={[styles.card, isActive && styles.cardActive]}
-              onPress={() => handleSelect(pack.id)}
+              onPress={() => handleSelect(course)}
             >
-              <View style={styles.flagRow}>
-                <Text style={styles.flag}>{spoken.flag}</Text>
-                <Text style={styles.arrow}>→</Text>
-                <Text style={styles.flag}>{learned.flag}</Text>
-              </View>
+              <Text style={styles.flag}>{course.meta.emoji}</Text>
               <View style={styles.cardMain}>
-                <Text style={styles.cardTitle}>
-                  {spoken.name} → {learned.name}
-                </Text>
-                <Text style={styles.cardSub}>
-                  {pack.id === 'shona-english'
-                    ? t('language_pack_screen.available_curriculum_sub')
-                    : t('language_pack_screen.dev_curriculum_sub')}
-                </Text>
+                <Text style={styles.cardTitle}>{course.meta.displayName}</Text>
+                <Text style={styles.cardSub}>{subForCourse(course)}</Text>
               </View>
               {isActive ? <Text style={styles.check}>✓</Text> : null}
             </Pressable>
@@ -85,29 +123,20 @@ export default function LanguagePackScreen() {
         })}
 
         <Text style={styles.sectionTitle}>{t('language_pack_screen.coming_soon_section')}</Text>
-        {COMING_SOON.map((pack) => {
-          const learnedName = t(`language_pack_screen.coming_soon_packs.${pack.id}`);
-          return (
-            <Pressable
-              key={pack.id}
-              style={[styles.card, styles.cardLocked]}
-              onPress={() => handleComingSoon(learnedName)}
-            >
-              <View style={styles.flagRow}>
-                <Text style={[styles.flag, styles.flagLocked]}>{pack.spokenFlag}</Text>
-                <Text style={[styles.arrow, styles.arrowLocked]}>→</Text>
-                <Text style={[styles.flag, styles.flagLocked]}>{pack.learnedFlag}</Text>
-              </View>
-              <View style={styles.cardMain}>
-                <Text style={[styles.cardTitle, styles.lockedText]}>
-                  English → {learnedName}
-                </Text>
-                <Text style={[styles.cardSub, styles.lockedText]}>{t('language_pack_screen.coming_soon_label')}</Text>
-              </View>
-              <Text style={styles.lock}>🔒</Text>
-            </Pressable>
-          );
-        })}
+        {COMING_SOON.map((pack) => (
+          <Pressable
+            key={pack.id}
+            style={[styles.card, styles.cardLocked]}
+            onPress={() => handleComingSoon(pack.name)}
+          >
+            <Text style={[styles.flag, styles.flagLocked]}>{pack.flag}</Text>
+            <View style={styles.cardMain}>
+              <Text style={[styles.cardTitle, styles.lockedText]}>{pack.name}</Text>
+              <Text style={[styles.cardSub, styles.lockedText]}>{t('language_pack_screen.coming_soon_label')}</Text>
+            </View>
+            <Text style={styles.lock}>🔒</Text>
+          </Pressable>
+        ))}
 
         <View style={{ height: Spacing.xxl }} />
       </ScrollView>
@@ -144,15 +173,23 @@ const styles = StyleSheet.create({
   },
   cardActive: { borderColor: Colors.primary, backgroundColor: '#EFF6FF' },
   cardLocked: { opacity: 0.7 },
-  flagRow: { flexDirection: 'row', alignItems: 'center', gap: 4, width: 78 },
-  flag: { fontSize: 22 },
+  flag: { fontSize: 28, width: 40, textAlign: 'center' },
   flagLocked: { opacity: 0.6 },
-  arrow: { fontSize: FontSize.md, color: Colors.secondary, fontWeight: FontWeight.bold },
-  arrowLocked: { color: Colors.gray[300] },
   cardMain: { flex: 1, gap: 2 },
   cardTitle: { fontSize: FontSize.md, fontWeight: FontWeight.semibold, color: Colors.gray[800] },
   cardSub: { fontSize: FontSize.xs, color: Colors.gray[500] },
   lockedText: { color: Colors.gray[400] },
   check: { fontSize: FontSize.xl, color: Colors.primary, fontWeight: FontWeight.bold },
   lock: { fontSize: FontSize.lg },
+
+  emptyState: {
+    backgroundColor: Colors.white,
+    borderRadius: BorderRadius.lg,
+    padding: Spacing.xl,
+    alignItems: 'center',
+    gap: Spacing.sm,
+  },
+  emptyEmoji: { fontSize: 56 },
+  emptyTitle: { fontSize: FontSize.md, fontWeight: FontWeight.bold, color: Colors.gray[700], textAlign: 'center' },
+  emptySub: { fontSize: FontSize.sm, color: Colors.gray[400], textAlign: 'center', lineHeight: 20 },
 });
