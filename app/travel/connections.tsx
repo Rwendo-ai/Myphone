@@ -1,0 +1,280 @@
+/**
+ * Connections — public feed of travellers + entry to onboarding for first-timers.
+ *
+ * Logic:
+ *   1. If the user has no traveller_profiles row, show the onboarding CTA.
+ *   2. Otherwise show the feed for the active destination, with a compose
+ *      button at the top.
+ *   3. Match-prefs filter is applied client-side on the loaded feed.
+ *
+ * Composing posts is inline (modal-style sheet) — kept lightweight for v1.
+ */
+
+import { useEffect, useState, useCallback } from 'react';
+import { View, Text, StyleSheet, ScrollView, Pressable, ActivityIndicator, RefreshControl, TextInput, Alert, KeyboardAvoidingView, Platform } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { router } from 'expo-router';
+
+import { useAuth } from '../../lib/AuthContext';
+import { useSettings } from '../../lib/SettingsContext';
+import { Colors } from '../../constants/colors';
+import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
+import { getDestinationForCourse } from '../../data/travel/destinations';
+import {
+  getMyProfile,
+  getMyMatchPrefs,
+  getFeed,
+  createPost,
+  filterFeedByPrefs,
+  type FeedPost,
+  type TravellerProfile,
+  type MatchPrefs,
+} from '../../lib/travel-connections';
+
+type ScreenState =
+  | { kind: 'loading' }
+  | { kind: 'no_profile' }
+  | { kind: 'ready'; profile: TravellerProfile; prefs: MatchPrefs | null; feed: FeedPost[] };
+
+export default function ConnectionsScreen() {
+  const { user } = useAuth();
+  const { activeCourseId } = useSettings();
+  const destination = getDestinationForCourse(activeCourseId);
+
+  const [state, setState] = useState<ScreenState>({ kind: 'loading' });
+  const [refreshing, setRefreshing] = useState(false);
+  const [composeOpen, setComposeOpen] = useState(false);
+
+  const load = useCallback(async () => {
+    if (!user) { setState({ kind: 'loading' }); return; }
+    try {
+      const profile = await getMyProfile(user.id);
+      if (!profile) { setState({ kind: 'no_profile' }); return; }
+      const [prefs, feed] = await Promise.all([
+        getMyMatchPrefs(user.id),
+        getFeed({ destinationCountryCode: destination.countryCode, limit: 50 }),
+      ]);
+      const filtered = filterFeedByPrefs(feed, prefs, profile);
+      setState({ kind: 'ready', profile, prefs, feed: filtered });
+    } catch (e) {
+      console.warn('[connections] load failed', e);
+      setState({ kind: 'no_profile' });
+    }
+  }, [user, destination.countryCode]);
+
+  useEffect(() => { load(); }, [load]);
+
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    await load();
+    setRefreshing(false);
+  }, [load]);
+
+  const handlePost = useCallback(async (body: string, dates: string) => {
+    if (!user) return;
+    try {
+      await createPost({
+        author_id: user.id,
+        body,
+        destination_country_code: destination.countryCode,
+        destination_city: destination.primaryCity.name,
+        travel_dates: dates || undefined,
+      });
+      setComposeOpen(false);
+      load();
+    } catch (e) {
+      Alert.alert('Could not post', e instanceof Error ? e.message : 'Try again later.');
+    }
+  }, [user, destination, load]);
+
+  return (
+    <SafeAreaView style={styles.safe} edges={['top']}>
+      <View style={styles.header}>
+        <Pressable onPress={() => router.back()}><Text style={styles.back}>‹ Travel</Text></Pressable>
+        <Text style={styles.title}>Connections</Text>
+        <Pressable onPress={() => router.push('/travel/connections-onboarding')}>
+          <Text style={styles.editPrefs}>⚙</Text>
+        </Pressable>
+      </View>
+
+      {state.kind === 'loading' && (
+        <View style={styles.center}><ActivityIndicator color={Colors.white} /></View>
+      )}
+
+      {state.kind === 'no_profile' && (
+        <View style={styles.center}>
+          <Text style={styles.emptyEmoji}>👋</Text>
+          <Text style={styles.emptyTitle}>Join the Connections feed</Text>
+          <Text style={styles.emptyBody}>
+            Set up a quick traveller profile to see who else is heading to {destination.countryName}
+            {' '}— and let them see your trip too.
+          </Text>
+          <Pressable style={styles.primaryBtn} onPress={() => router.push('/travel/connections-onboarding')}>
+            <Text style={styles.primaryBtnText}>Set up profile</Text>
+          </Pressable>
+        </View>
+      )}
+
+      {state.kind === 'ready' && (
+        <>
+          <ScrollView
+            contentContainerStyle={{ paddingBottom: Spacing.xxl }}
+            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={Colors.white} />}
+          >
+            <View style={styles.intro}>
+              <Text style={styles.flag}>{destination.flag}</Text>
+              <Text style={styles.country}>Heading to {destination.countryName}?</Text>
+              <Text style={styles.sub}>{state.feed.length} {state.feed.length === 1 ? 'post' : 'posts'} from travellers nearby</Text>
+            </View>
+
+            <Pressable style={styles.composeBtn} onPress={() => setComposeOpen(true)}>
+              <Text style={styles.composeBtnText}>+ Share your travel plans</Text>
+            </Pressable>
+
+            {state.feed.length === 0 ? (
+              <View style={styles.empty}>
+                <Text style={styles.emptyEmoji}>🌱</Text>
+                <Text style={styles.emptyBody}>
+                  No posts yet for {destination.countryName}. Be the first to share — others coming through will see it.
+                </Text>
+              </View>
+            ) : (
+              state.feed.map(p => <PostCard key={p.id} post={p} />)
+            )}
+          </ScrollView>
+
+          {composeOpen && (
+            <ComposeSheet
+              destinationName={destination.countryName}
+              onCancel={() => setComposeOpen(false)}
+              onSubmit={handlePost}
+            />
+          )}
+        </>
+      )}
+    </SafeAreaView>
+  );
+}
+
+function PostCard({ post }: { post: FeedPost }) {
+  const created = new Date(post.created_at);
+  const ago = relativeTime(created);
+  const author = post.author;
+  return (
+    <View style={styles.postCard}>
+      <View style={styles.postHeader}>
+        <View style={styles.avatar}>
+          <Text style={styles.avatarText}>{(author?.display_name ?? '?').slice(0, 1).toUpperCase()}</Text>
+        </View>
+        <View style={{ flex: 1 }}>
+          <Text style={styles.postAuthor}>{author?.display_name ?? 'Someone'}</Text>
+          <Text style={styles.postMeta}>{ago}{post.travel_dates ? ` · ${post.travel_dates}` : ''}</Text>
+        </View>
+      </View>
+      <Text style={styles.postBody}>{post.body}</Text>
+    </View>
+  );
+}
+
+function ComposeSheet({ destinationName, onCancel, onSubmit }: {
+  destinationName: string;
+  onCancel: () => void;
+  onSubmit: (body: string, dates: string) => void;
+}) {
+  const [body, setBody] = useState('');
+  const [dates, setDates] = useState('');
+  return (
+    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={styles.sheetOverlay}>
+      <Pressable style={styles.sheetBackdrop} onPress={onCancel} />
+      <View style={styles.sheet}>
+        <Text style={styles.sheetTitle}>Share your trip to {destinationName}</Text>
+        <TextInput
+          style={styles.sheetInput}
+          placeholder="What are you up to? Looking to meet up? Need tips?"
+          placeholderTextColor="rgba(255,255,255,0.3)"
+          value={body}
+          onChangeText={setBody}
+          multiline
+          maxLength={500}
+        />
+        <Text style={styles.sheetCharCount}>{body.length} / 500</Text>
+        <TextInput
+          style={styles.sheetDateInput}
+          placeholder="When (e.g. June 2026, Jul 15-22)"
+          placeholderTextColor="rgba(255,255,255,0.3)"
+          value={dates}
+          onChangeText={setDates}
+          maxLength={40}
+        />
+        <View style={styles.sheetButtons}>
+          <Pressable style={styles.sheetCancelBtn} onPress={onCancel}>
+            <Text style={styles.sheetCancelText}>Cancel</Text>
+          </Pressable>
+          <Pressable
+            style={[styles.sheetPostBtn, !body.trim() && styles.sheetPostBtnDisabled]}
+            onPress={() => body.trim() && onSubmit(body.trim(), dates.trim())}
+            disabled={!body.trim()}
+          >
+            <Text style={styles.sheetPostText}>Post</Text>
+          </Pressable>
+        </View>
+      </View>
+    </KeyboardAvoidingView>
+  );
+}
+
+function relativeTime(date: Date): string {
+  const diff = Math.floor((Date.now() - date.getTime()) / 1000);
+  if (diff < 60) return 'just now';
+  if (diff < 3600) return `${Math.floor(diff / 60)} min ago`;
+  if (diff < 86400) return `${Math.floor(diff / 3600)} hr ago`;
+  if (diff < 604800) return `${Math.floor(diff / 86400)} d ago`;
+  return date.toLocaleDateString();
+}
+
+const styles = StyleSheet.create({
+  safe: { flex: 1, backgroundColor: Colors.primary },
+  header: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: Spacing.md, paddingVertical: Spacing.sm },
+  back: { color: Colors.white, fontSize: FontSize.md, fontWeight: FontWeight.semibold, paddingVertical: Spacing.xs },
+  title: { color: Colors.white, fontSize: FontSize.lg, fontWeight: FontWeight.bold },
+  editPrefs: { color: Colors.white, fontSize: FontSize.lg, paddingVertical: Spacing.xs, paddingHorizontal: Spacing.sm },
+
+  center: { flex: 1, padding: Spacing.xl, alignItems: 'center', justifyContent: 'center', gap: Spacing.md },
+  intro: { alignItems: 'center', padding: Spacing.lg, gap: 4 },
+  flag: { fontSize: 36 },
+  country: { color: Colors.white, fontSize: FontSize.lg, fontWeight: FontWeight.bold, textAlign: 'center' },
+  sub: { color: 'rgba(255,255,255,0.55)', fontSize: FontSize.sm },
+
+  emptyEmoji: { fontSize: 48 },
+  emptyTitle: { color: Colors.white, fontSize: FontSize.lg, fontWeight: FontWeight.bold, textAlign: 'center' },
+  emptyBody: { color: 'rgba(255,255,255,0.7)', fontSize: FontSize.sm, textAlign: 'center', lineHeight: 20, maxWidth: 320 },
+  empty: { padding: Spacing.xl, alignItems: 'center', gap: Spacing.sm },
+
+  composeBtn: { marginHorizontal: Spacing.md, marginBottom: Spacing.md, padding: Spacing.md, backgroundColor: Colors.xp, borderRadius: BorderRadius.lg, alignItems: 'center' },
+  composeBtnText: { color: Colors.white, fontSize: FontSize.sm, fontWeight: FontWeight.bold },
+
+  postCard: { marginHorizontal: Spacing.md, marginBottom: Spacing.sm, padding: Spacing.md, backgroundColor: 'rgba(255,255,255,0.06)', borderRadius: BorderRadius.lg, gap: Spacing.sm },
+  postHeader: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm },
+  avatar: { width: 36, height: 36, borderRadius: 18, backgroundColor: Colors.xp, alignItems: 'center', justifyContent: 'center' },
+  avatarText: { color: Colors.white, fontSize: FontSize.md, fontWeight: FontWeight.bold },
+  postAuthor: { color: Colors.white, fontSize: FontSize.sm, fontWeight: FontWeight.bold },
+  postMeta: { color: 'rgba(255,255,255,0.5)', fontSize: FontSize.xs, marginTop: 2 },
+  postBody: { color: Colors.white, fontSize: FontSize.sm, lineHeight: 20 },
+
+  primaryBtn: { backgroundColor: Colors.xp, paddingVertical: Spacing.md, paddingHorizontal: Spacing.xl, borderRadius: BorderRadius.full, marginTop: Spacing.sm },
+  primaryBtnText: { color: Colors.white, fontSize: FontSize.md, fontWeight: FontWeight.bold },
+
+  sheetOverlay: { ...StyleSheet.absoluteFillObject, justifyContent: 'flex-end' },
+  sheetBackdrop: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.5)' },
+  sheet: { backgroundColor: Colors.primary, borderTopLeftRadius: BorderRadius.xl, borderTopRightRadius: BorderRadius.xl, padding: Spacing.lg, gap: Spacing.sm },
+  sheetTitle: { color: Colors.white, fontSize: FontSize.md, fontWeight: FontWeight.bold },
+  sheetInput: { color: Colors.white, fontSize: FontSize.md, backgroundColor: 'rgba(0,0,0,0.2)', borderRadius: BorderRadius.md, padding: Spacing.md, minHeight: 100, textAlignVertical: 'top' },
+  sheetCharCount: { color: 'rgba(255,255,255,0.4)', fontSize: FontSize.xs, alignSelf: 'flex-end' },
+  sheetDateInput: { color: Colors.white, fontSize: FontSize.sm, backgroundColor: 'rgba(0,0,0,0.2)', borderRadius: BorderRadius.md, padding: Spacing.md },
+  sheetButtons: { flexDirection: 'row', gap: Spacing.sm, marginTop: Spacing.xs },
+  sheetCancelBtn: { flex: 1, padding: Spacing.md, alignItems: 'center', borderRadius: BorderRadius.md, backgroundColor: 'rgba(255,255,255,0.08)' },
+  sheetCancelText: { color: 'rgba(255,255,255,0.7)', fontWeight: FontWeight.semibold },
+  sheetPostBtn: { flex: 1, padding: Spacing.md, alignItems: 'center', borderRadius: BorderRadius.md, backgroundColor: Colors.xp },
+  sheetPostBtnDisabled: { opacity: 0.4 },
+  sheetPostText: { color: Colors.white, fontWeight: FontWeight.bold },
+});
