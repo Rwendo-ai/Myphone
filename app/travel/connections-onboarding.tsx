@@ -62,7 +62,8 @@ export default function ConnectionsOnboarding() {
         const [travellerProfile, prefs, baseProfileResult] = await Promise.all([
           getMyProfile(user.id),
           getMyMatchPrefs(user.id),
-          supabase.from('profiles').select('display_name, date_of_birth').eq('id', user.id).maybeSingle(),
+          // The base profiles table uses `username`, not `display_name`.
+          supabase.from('profiles').select('username, date_of_birth').eq('id', user.id).maybeSingle(),
         ]);
 
         if (travellerProfile) {
@@ -78,7 +79,7 @@ export default function ConnectionsOnboarding() {
           // auth metadata (Google OAuth `name`, Apple Sign-In first-time
           // `name`, email-handle as a last resort).
           const baseName =
-            baseProfileResult.data?.display_name?.trim() ||
+            baseProfileResult.data?.username?.trim() ||
             (user.user_metadata as { name?: string; full_name?: string } | undefined)?.name ||
             (user.user_metadata as { name?: string; full_name?: string } | undefined)?.full_name ||
             user.email?.split('@')[0] ||
