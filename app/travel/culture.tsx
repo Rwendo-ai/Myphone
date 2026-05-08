@@ -8,14 +8,14 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 
 import { useSettings } from '../../lib/SettingsContext';
+import { useActiveTravelDestination } from '../../lib/travel-destination';
 import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
-import { getDestinationForCourse } from '../../data/travel/destinations';
 import { getCulturalGuideForCountry } from '../../data/travel/culture';
 
 export default function CultureScreen() {
   const { activeCourseId } = useSettings();
-  const destination = getDestinationForCourse(activeCourseId);
+  const { destination } = useActiveTravelDestination(activeCourseId);
   const guide = getCulturalGuideForCountry(destination.countryCode);
 
   const [openSection, setOpenSection] = useState<string>(guide?.sections[0]?.id ?? '');

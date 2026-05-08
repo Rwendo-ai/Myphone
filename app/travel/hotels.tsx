@@ -12,9 +12,9 @@ import { router } from 'expo-router';
 import * as WebBrowser from 'expo-web-browser';
 
 import { useSettings } from '../../lib/SettingsContext';
+import { useActiveTravelDestination } from '../../lib/travel-destination';
 import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
-import { getDestinationForCourse } from '../../data/travel/destinations';
 
 const BOOKING_AID = process.env.EXPO_PUBLIC_BOOKING_AID ?? '';
 
@@ -48,7 +48,7 @@ function isoTodayPlus(days: number): string {
 
 export default function HotelsScreen() {
   const { activeCourseId } = useSettings();
-  const destination = getDestinationForCourse(activeCourseId);
+  const { destination } = useActiveTravelDestination(activeCourseId);
 
   const [city, setCity] = useState(destination.primaryCity.name);
   const [checkin, setCheckin] = useState(isoTodayPlus(14));

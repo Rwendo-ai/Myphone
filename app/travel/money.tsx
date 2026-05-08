@@ -14,9 +14,9 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 
 import { useSettings } from '../../lib/SettingsContext';
+import { useActiveTravelDestination } from '../../lib/travel-destination';
 import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
-import { getDestinationForCourse } from '../../data/travel/destinations';
 
 const FX_API = 'https://api.exchangerate.host/latest';
 
@@ -98,7 +98,7 @@ interface FxResponse {
 
 export default function MoneyScreen() {
   const { activeCourseId, jurisdiction } = useSettings();
-  const destination = getDestinationForCourse(activeCourseId);
+  const { destination } = useActiveTravelDestination(activeCourseId);
 
   // Home currency comes from the active jurisdiction (AU → AUD, GB → GBP, ...).
   // Falls back to USD if the jurisdiction's currency isn't set.

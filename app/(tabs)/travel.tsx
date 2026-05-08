@@ -16,7 +16,7 @@
  */
 
 import { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Pressable, Modal } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
@@ -26,9 +26,9 @@ import { useSettings } from '../../lib/SettingsContext';
 import { useAuth } from '../../lib/AuthContext';
 import { supabase } from '../../lib/supabase';
 import { ageFromDob } from '../../lib/active-companion';
+import { useActiveTravelDestination, listAllDestinations } from '../../lib/travel-destination';
 import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
-import { getDestinationForCourse } from '../../data/travel/destinations';
 
 /** Connections (Meet Travellers) is 18+ — same age-gating philosophy as the
  *  Aria romance preset. Under-18s don't see the card at all (no tease, no
@@ -48,7 +48,9 @@ interface TravelFeature {
 export default function TravelScreen() {
   const { activeCourseId } = useSettings();
   const { user } = useAuth();
-  const destination = getDestinationForCourse(activeCourseId);
+  const { destination, override, setOverride } = useActiveTravelDestination(activeCourseId);
+  const [pickerOpen, setPickerOpen] = useState(false);
+  const allDestinations = listAllDestinations();
 
   // Connections age gate — same pattern as the Aria romance preset.
   // Conservative: missing DOB / not loaded yet → treat as under-18 so the
@@ -121,9 +123,19 @@ export default function TravelScreen() {
         <LinearGradient colors={['#1A3C6E', '#0D2140']} style={styles.hero}>
           <View style={styles.heroBadgeRow}>
             <View style={styles.modeBadge}><Text style={styles.modeBadgeText}>TRAVEL MODE</Text></View>
+            {override && (
+              <Pressable style={styles.resetBadge} onPress={() => setOverride(null)}>
+                <Text style={styles.resetBadgeText}>Reset to course</Text>
+              </Pressable>
+            )}
           </View>
-          <Text style={styles.heroFlag}>{destination.flag}</Text>
-          <Text style={styles.heroCountry}>{destination.countryName}</Text>
+          <Pressable onPress={() => setPickerOpen(true)} style={styles.heroPicker}>
+            <Text style={styles.heroFlag}>{destination.flag}</Text>
+            <View style={styles.heroPickerText}>
+              <Text style={styles.heroCountry}>{destination.countryName}</Text>
+              <Text style={styles.heroPickerHint}>Tap to change destination ▾</Text>
+            </View>
+          </Pressable>
           <Text style={styles.heroTagline}>{destination.tagline}</Text>
           <View style={styles.heroMetaRow}>
             <Text style={styles.heroMetaItem}>✈️ {destination.primaryCity.iata}</Text>
@@ -131,6 +143,31 @@ export default function TravelScreen() {
             <Text style={styles.heroMetaItem}>{destination.currencySymbol} {destination.currencyCode}</Text>
           </View>
         </LinearGradient>
+
+        <Modal visible={pickerOpen} animationType="slide" transparent onRequestClose={() => setPickerOpen(false)}>
+          <Pressable style={styles.modalBackdrop} onPress={() => setPickerOpen(false)} />
+          <View style={styles.modalSheet}>
+            <View style={styles.modalHandle} />
+            <Text style={styles.modalTitle}>Where to?</Text>
+            <Text style={styles.modalSub}>Pick any destination — phrasebook, culture and money switch with it.</Text>
+            <ScrollView style={{ maxHeight: 400 }}>
+              {allDestinations.map(d => (
+                <Pressable
+                  key={d.countryCode}
+                  style={[styles.destRow, destination.countryCode === d.countryCode && styles.destRowActive]}
+                  onPress={() => { setOverride(d.countryCode); setPickerOpen(false); }}
+                >
+                  <Text style={styles.destFlag}>{d.flag}</Text>
+                  <View style={{ flex: 1 }}>
+                    <Text style={styles.destName}>{d.countryName}</Text>
+                    <Text style={styles.destCity}>{d.primaryCity.name} · {d.currencyCode}</Text>
+                  </View>
+                  {destination.countryCode === d.countryCode && <Text style={styles.destCheck}>✓</Text>}
+                </Pressable>
+              ))}
+            </ScrollView>
+          </View>
+        </Modal>
 
         <View style={styles.content}>
           <Text style={styles.sectionTitle}>Travel tools</Text>
@@ -182,7 +219,7 @@ const styles = StyleSheet.create({
   profileBtnFloat: { position: 'absolute', top: Spacing.sm, right: Spacing.md, zIndex: 10 },
 
   hero: { padding: Spacing.lg, paddingTop: Spacing.xl, paddingBottom: Spacing.xl },
-  heroBadgeRow: { marginBottom: Spacing.md },
+  heroBadgeRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: Spacing.md },
   modeBadge: {
     alignSelf: 'flex-start',
     backgroundColor: 'rgba(255,255,255,0.15)',
@@ -191,12 +228,30 @@ const styles = StyleSheet.create({
     borderRadius: BorderRadius.full,
   },
   modeBadgeText: { color: Colors.white, fontSize: FontSize.xs, fontWeight: FontWeight.bold, letterSpacing: 1.2 },
+  resetBadge: { paddingHorizontal: Spacing.sm, paddingVertical: 4, borderRadius: BorderRadius.full, backgroundColor: 'rgba(255,255,255,0.08)' },
+  resetBadgeText: { color: 'rgba(255,255,255,0.8)', fontSize: FontSize.xs, fontWeight: FontWeight.semibold },
+
+  heroPicker: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md },
+  heroPickerText: { flex: 1 },
+  heroPickerHint: { color: 'rgba(255,255,255,0.45)', fontSize: FontSize.xs, marginTop: 2 },
   heroFlag: { fontSize: 48 },
-  heroCountry: { fontSize: FontSize.xxl, fontWeight: FontWeight.extrabold, color: Colors.white, marginTop: Spacing.xs },
-  heroTagline: { fontSize: FontSize.sm, color: 'rgba(255,255,255,0.7)', marginTop: 4, fontStyle: 'italic' },
+  heroCountry: { fontSize: FontSize.xxl, fontWeight: FontWeight.extrabold, color: Colors.white },
+  heroTagline: { fontSize: FontSize.sm, color: 'rgba(255,255,255,0.7)', marginTop: Spacing.xs, fontStyle: 'italic' },
   heroMetaRow: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm, marginTop: Spacing.md },
   heroMetaItem: { fontSize: FontSize.sm, color: 'rgba(255,255,255,0.85)', fontWeight: FontWeight.semibold },
   heroMetaDivider: { fontSize: FontSize.sm, color: 'rgba(255,255,255,0.4)' },
+
+  modalBackdrop: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.5)' },
+  modalSheet: { position: 'absolute', bottom: 0, left: 0, right: 0, backgroundColor: Colors.primary, borderTopLeftRadius: BorderRadius.xl, borderTopRightRadius: BorderRadius.xl, paddingHorizontal: Spacing.lg, paddingTop: Spacing.sm, paddingBottom: Spacing.xl },
+  modalHandle: { width: 40, height: 4, borderRadius: 2, backgroundColor: 'rgba(255,255,255,0.2)', alignSelf: 'center', marginBottom: Spacing.sm },
+  modalTitle: { color: Colors.white, fontSize: FontSize.lg, fontWeight: FontWeight.bold, marginBottom: Spacing.xs },
+  modalSub: { color: 'rgba(255,255,255,0.55)', fontSize: FontSize.sm, marginBottom: Spacing.md },
+  destRow: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md, paddingVertical: Spacing.sm, paddingHorizontal: Spacing.sm, borderRadius: BorderRadius.md },
+  destRowActive: { backgroundColor: 'rgba(255,255,255,0.08)' },
+  destFlag: { fontSize: 32 },
+  destName: { color: Colors.white, fontSize: FontSize.md, fontWeight: FontWeight.bold },
+  destCity: { color: 'rgba(255,255,255,0.55)', fontSize: FontSize.xs, marginTop: 2 },
+  destCheck: { color: Colors.xp, fontSize: FontSize.lg, fontWeight: FontWeight.bold },
 
   content: { backgroundColor: Colors.accent, padding: Spacing.lg, gap: Spacing.md },
   sectionTitle: { fontSize: FontSize.lg, fontWeight: FontWeight.bold, color: Colors.gray[800] },

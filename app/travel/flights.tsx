@@ -18,9 +18,9 @@ import { router } from 'expo-router';
 import * as WebBrowser from 'expo-web-browser';
 
 import { useSettings } from '../../lib/SettingsContext';
+import { useActiveTravelDestination } from '../../lib/travel-destination';
 import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
-import { getDestinationForCourse } from '../../data/travel/destinations';
 
 const SKYSCANNER_ASSOCIATE_ID = process.env.EXPO_PUBLIC_SKYSCANNER_ASSOCIATE_ID ?? '';
 
@@ -72,7 +72,7 @@ function isoTodayPlus(days: number): string {
 
 export default function FlightsScreen() {
   const { activeCourseId, jurisdiction } = useSettings();
-  const destination = getDestinationForCourse(activeCourseId);
+  const { destination } = useActiveTravelDestination(activeCourseId);
 
   const home = JURISDICTION_TO_HOME_IATA[jurisdiction.id] ?? { city: 'Sydney', iata: 'SYD' };
 

@@ -19,21 +19,25 @@ import { useAuth } from '../../lib/AuthContext';
 import { useSettings } from '../../lib/SettingsContext';
 import { supabase } from '../../lib/supabase';
 import { ageFromDob } from '../../lib/active-companion';
+import { useActiveTravelDestination } from '../../lib/travel-destination';
 import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
-import { getDestinationForCourse } from '../../data/travel/destinations';
 import {
   getMyProfile,
   getMyMatchPrefs,
   getFeed,
   createPost,
   filterFeedByPrefs,
+  likePost,
+  unlikePost,
   type FeedPost,
   type TravellerProfile,
   type MatchPrefs,
 } from '../../lib/travel-connections';
 
 const CONNECTIONS_MIN_AGE = 18;
+
+type FeedTab = 'discover' | 'following';
 
 type ScreenState =
   | { kind: 'loading' }
@@ -44,11 +48,12 @@ type ScreenState =
 export default function ConnectionsScreen() {
   const { user } = useAuth();
   const { activeCourseId } = useSettings();
-  const destination = getDestinationForCourse(activeCourseId);
+  const { destination } = useActiveTravelDestination(activeCourseId);
 
   const [state, setState] = useState<ScreenState>({ kind: 'loading' });
   const [refreshing, setRefreshing] = useState(false);
   const [composeOpen, setComposeOpen] = useState(false);
+  const [feedTab, setFeedTab] = useState<FeedTab>('discover');
 
   const load = useCallback(async () => {
     if (!user) { setState({ kind: 'loading' }); return; }
@@ -67,7 +72,12 @@ export default function ConnectionsScreen() {
       if (!profile) { setState({ kind: 'no_profile' }); return; }
       const [prefs, feed] = await Promise.all([
         getMyMatchPrefs(user.id),
-        getFeed({ destinationCountryCode: destination.countryCode, limit: 50 }),
+        getFeed({
+          destinationCountryCode: destination.countryCode,
+          limit: 50,
+          viewerId: user.id,
+          followingOnly: feedTab === 'following',
+        }),
       ]);
       const filtered = filterFeedByPrefs(feed, prefs, profile);
       setState({ kind: 'ready', profile, prefs, feed: filtered });
@@ -75,9 +85,30 @@ export default function ConnectionsScreen() {
       console.warn('[connections] load failed', e);
       setState({ kind: 'no_profile' });
     }
-  }, [user, destination.countryCode]);
+  }, [user, destination.countryCode, feedTab]);
 
   useEffect(() => { load(); }, [load]);
+
+  const toggleLike = useCallback(async (post: FeedPost) => {
+    if (!user) return;
+    // Optimistic local update
+    setState(prev => {
+      if (prev.kind !== 'ready') return prev;
+      return {
+        ...prev,
+        feed: prev.feed.map(p => p.id === post.id
+          ? { ...p, likedByMe: !p.likedByMe, likeCount: p.likeCount + (p.likedByMe ? -1 : 1) }
+          : p),
+      };
+    });
+    try {
+      if (post.likedByMe) await unlikePost(post.id, user.id);
+      else await likePost(post.id, user.id);
+    } catch (e) {
+      // Roll back on error
+      load();
+    }
+  }, [user, load]);
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
@@ -155,7 +186,16 @@ export default function ConnectionsScreen() {
             <View style={styles.intro}>
               <Text style={styles.flag}>{destination.flag}</Text>
               <Text style={styles.country}>Heading to {destination.countryName}?</Text>
-              <Text style={styles.sub}>{state.feed.length} {state.feed.length === 1 ? 'post' : 'posts'} from travellers nearby</Text>
+              <Text style={styles.sub}>{state.feed.length} {state.feed.length === 1 ? 'post' : 'posts'}</Text>
+            </View>
+
+            <View style={styles.tabRow}>
+              <Pressable style={[styles.tab, feedTab === 'discover' && styles.tabActive]} onPress={() => setFeedTab('discover')}>
+                <Text style={[styles.tabText, feedTab === 'discover' && styles.tabTextActive]}>Discover</Text>
+              </Pressable>
+              <Pressable style={[styles.tab, feedTab === 'following' && styles.tabActive]} onPress={() => setFeedTab('following')}>
+                <Text style={[styles.tabText, feedTab === 'following' && styles.tabTextActive]}>Following</Text>
+              </Pressable>
             </View>
 
             <Pressable style={styles.composeBtn} onPress={() => setComposeOpen(true)}>
@@ -166,11 +206,13 @@ export default function ConnectionsScreen() {
               <View style={styles.empty}>
                 <Text style={styles.emptyEmoji}>🌱</Text>
                 <Text style={styles.emptyBody}>
-                  No posts yet for {destination.countryName}. Be the first to share — others coming through will see it.
+                  {feedTab === 'following'
+                    ? 'No posts from travellers you follow yet. Hop over to Discover to find people to follow.'
+                    : `No posts yet for ${destination.countryName}. Be the first to share — others coming through will see it.`}
                 </Text>
               </View>
             ) : (
-              state.feed.map(p => <PostCard key={p.id} post={p} />)
+              state.feed.map(p => <PostCard key={p.id} post={p} onLike={toggleLike} />)
             )}
           </ScrollView>
 
@@ -187,23 +229,64 @@ export default function ConnectionsScreen() {
   );
 }
 
-function PostCard({ post }: { post: FeedPost }) {
+function PostCard({ post, onLike }: { post: FeedPost; onLike: (p: FeedPost) => void }) {
   const created = new Date(post.created_at);
   const ago = relativeTime(created);
   const author = post.author;
   return (
-    <View style={styles.postCard}>
-      <View style={styles.postHeader}>
+    <Pressable style={styles.postCard} onPress={() => router.push({ pathname: '/travel/post/[id]' as any, params: { id: post.id } })}>
+      <Pressable
+        style={styles.postHeader}
+        onPress={author?.handle ? () => router.push({ pathname: '/travel/profile/[handle]' as any, params: { handle: author.handle! } }) : undefined}
+      >
         <View style={styles.avatar}>
           <Text style={styles.avatarText}>{(author?.display_name ?? '?').slice(0, 1).toUpperCase()}</Text>
         </View>
         <View style={{ flex: 1 }}>
           <Text style={styles.postAuthor}>{author?.display_name ?? 'Someone'}</Text>
-          <Text style={styles.postMeta}>{ago}{post.travel_dates ? ` · ${post.travel_dates}` : ''}</Text>
+          <Text style={styles.postMeta}>
+            {author?.handle ? `@${author.handle} · ` : ''}{ago}{post.travel_dates ? ` · ${post.travel_dates}` : ''}
+          </Text>
+        </View>
+      </Pressable>
+      <PostBodyText body={post.body} />
+      <View style={styles.postActionsRow}>
+        <Pressable style={styles.actionBtn} onPress={(e) => { e.stopPropagation?.(); onLike(post); }}>
+          <Text style={[styles.actionIcon, post.likedByMe && styles.actionIconActive]}>{post.likedByMe ? '♥' : '♡'}</Text>
+          <Text style={styles.actionCount}>{post.likeCount}</Text>
+        </Pressable>
+        <View style={styles.actionBtn}>
+          <Text style={styles.actionIcon}>💬</Text>
+          <Text style={styles.actionCount}>{post.commentCount}</Text>
         </View>
       </View>
-      <Text style={styles.postBody}>{post.body}</Text>
-    </View>
+    </Pressable>
+  );
+}
+
+/** Renders post body with hashtag tap-targets. Splits text on # boundaries
+ *  and renders #tags as styled, tappable spans that route to the hashtag
+ *  feed at /travel/hashtag/[tag]. */
+function PostBodyText({ body }: { body: string }) {
+  const parts = body.split(/(#[A-Za-z0-9_]{2,30})/g);
+  return (
+    <Text style={styles.postBody}>
+      {parts.map((part, i) => {
+        if (part.startsWith('#') && part.length >= 3) {
+          const tag = part.slice(1).toLowerCase();
+          return (
+            <Text
+              key={i}
+              style={styles.hashtag}
+              onPress={() => router.push({ pathname: '/travel/hashtag/[tag]' as any, params: { tag } })}
+            >
+              {part}
+            </Text>
+          );
+        }
+        return <Text key={i}>{part}</Text>;
+      })}
+    </Text>
   );
 }
 
@@ -283,6 +366,20 @@ const styles = StyleSheet.create({
 
   composeBtn: { marginHorizontal: Spacing.md, marginBottom: Spacing.md, padding: Spacing.md, backgroundColor: Colors.xp, borderRadius: BorderRadius.lg, alignItems: 'center' },
   composeBtnText: { color: Colors.white, fontSize: FontSize.sm, fontWeight: FontWeight.bold },
+
+  tabRow: { flexDirection: 'row', gap: Spacing.xs, marginHorizontal: Spacing.md, marginBottom: Spacing.sm, backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: BorderRadius.full, padding: 4 },
+  tab: { flex: 1, paddingVertical: Spacing.xs, borderRadius: BorderRadius.full, alignItems: 'center' },
+  tabActive: { backgroundColor: Colors.xp },
+  tabText: { color: 'rgba(255,255,255,0.6)', fontSize: FontSize.sm, fontWeight: FontWeight.semibold },
+  tabTextActive: { color: Colors.white, fontWeight: FontWeight.bold },
+
+  postActionsRow: { flexDirection: 'row', gap: Spacing.lg, marginTop: Spacing.sm, paddingTop: Spacing.sm, borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.06)' },
+  actionBtn: { flexDirection: 'row', alignItems: 'center', gap: 4 },
+  actionIcon: { color: 'rgba(255,255,255,0.7)', fontSize: FontSize.lg },
+  actionIconActive: { color: '#FF5A7A' },
+  actionCount: { color: 'rgba(255,255,255,0.7)', fontSize: FontSize.sm, fontWeight: FontWeight.semibold },
+
+  hashtag: { color: Colors.xp, fontWeight: FontWeight.bold },
 
   postCard: { marginHorizontal: Spacing.md, marginBottom: Spacing.sm, padding: Spacing.md, backgroundColor: 'rgba(255,255,255,0.06)', borderRadius: BorderRadius.lg, gap: Spacing.sm },
   postHeader: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm },

@@ -17,6 +17,7 @@ import {
   getMyProfile,
   getMyPosts,
   deletePost,
+  getFollowCounts,
   type TravellerProfile,
   type TravellerPost,
 } from '../../lib/travel-connections';
@@ -25,15 +26,21 @@ export default function MyTravelScreen() {
   const { user } = useAuth();
   const [profile, setProfile] = useState<TravellerProfile | null>(null);
   const [posts, setPosts] = useState<TravellerPost[]>([]);
+  const [counts, setCounts] = useState({ followers: 0, following: 0 });
   const [loading, setLoading] = useState(true);
 
   const load = useCallback(async () => {
     if (!user) return;
     setLoading(true);
     try {
-      const [p, ps] = await Promise.all([getMyProfile(user.id), getMyPosts(user.id)]);
+      const [p, ps, c] = await Promise.all([
+        getMyProfile(user.id),
+        getMyPosts(user.id),
+        getFollowCounts(user.id),
+      ]);
       setProfile(p);
       setPosts(ps);
+      setCounts(c);
     } catch (e) {
       console.warn('[my-travel] load failed', e);
     } finally {
@@ -87,11 +94,28 @@ export default function MyTravelScreen() {
               <Text style={styles.avatarLargeText}>{profile.display_name.slice(0, 1).toUpperCase()}</Text>
             </View>
             <Text style={styles.profileName}>{profile.display_name}</Text>
+            {profile.handle && <Text style={styles.profileHandle}>@{profile.handle}</Text>}
             <Text style={styles.profileMeta}>
               {profile.age ? `${profile.age} · ` : ''}
               {profile.gender ? capitalize(profile.gender.replace(/_/g, ' ')) : ''}
             </Text>
             {profile.bio && <Text style={styles.profileBio}>{profile.bio}</Text>}
+
+            <View style={styles.statsRow}>
+              <View style={styles.statItem}>
+                <Text style={styles.statValue}>{posts.length}</Text>
+                <Text style={styles.statLabel}>Posts</Text>
+              </View>
+              <View style={styles.statItem}>
+                <Text style={styles.statValue}>{counts.followers}</Text>
+                <Text style={styles.statLabel}>Followers</Text>
+              </View>
+              <View style={styles.statItem}>
+                <Text style={styles.statValue}>{counts.following}</Text>
+                <Text style={styles.statLabel}>Following</Text>
+              </View>
+            </View>
+
             <View style={styles.publicTag}>
               <Text style={styles.publicTagText}>{profile.is_public ? 'Public profile' : 'Private profile'}</Text>
             </View>
@@ -142,7 +166,12 @@ const styles = StyleSheet.create({
   avatarLarge: { width: 80, height: 80, borderRadius: 40, backgroundColor: Colors.xp, alignItems: 'center', justifyContent: 'center' },
   avatarLargeText: { color: Colors.white, fontSize: FontSize.xxl, fontWeight: FontWeight.extrabold },
   profileName: { color: Colors.white, fontSize: FontSize.lg, fontWeight: FontWeight.bold, marginTop: Spacing.sm },
+  profileHandle: { color: 'rgba(255,255,255,0.55)', fontSize: FontSize.sm },
   profileMeta: { color: 'rgba(255,255,255,0.6)', fontSize: FontSize.sm },
+  statsRow: { flexDirection: 'row', gap: Spacing.xl, marginTop: Spacing.sm, paddingTop: Spacing.sm, borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.1)', alignSelf: 'stretch', justifyContent: 'center' },
+  statItem: { alignItems: 'center', minWidth: 70 },
+  statValue: { color: Colors.white, fontSize: FontSize.lg, fontWeight: FontWeight.bold },
+  statLabel: { color: 'rgba(255,255,255,0.55)', fontSize: FontSize.xs },
   profileBio: { color: Colors.white, fontSize: FontSize.sm, textAlign: 'center', lineHeight: 20, marginTop: Spacing.xs, marginHorizontal: Spacing.md },
   publicTag: { paddingHorizontal: Spacing.sm, paddingVertical: 3, borderRadius: BorderRadius.full, backgroundColor: 'rgba(255,255,255,0.1)', marginTop: Spacing.xs },
   publicTagText: { color: 'rgba(255,255,255,0.8)', fontSize: FontSize.xs, fontWeight: FontWeight.semibold },

@@ -25,6 +25,7 @@ import {
   getMyMatchPrefs,
   upsertProfile,
   upsertMatchPrefs,
+  isHandleAvailable,
   type TravellerProfile,
   type MatchPrefs,
 } from '../../lib/travel-connections';
@@ -37,6 +38,9 @@ export default function ConnectionsOnboarding() {
   const [saving, setSaving] = useState(false);
 
   const [displayName, setDisplayName] = useState('');
+  const [handle, setHandle] = useState('');
+  const [handleAvailable, setHandleAvailable] = useState<boolean | null>(null);
+  const [handleChecking, setHandleChecking] = useState(false);
   const [age, setAge] = useState<string>('');
   const [gender, setGender] = useState<Gender | null>(null);
   const [bio, setBio] = useState('');
@@ -64,6 +68,7 @@ export default function ConnectionsOnboarding() {
         if (travellerProfile) {
           // Existing traveller profile — pre-fill from there.
           setDisplayName(travellerProfile.display_name);
+          setHandle(travellerProfile.handle ?? '');
           setAge(travellerProfile.age ? String(travellerProfile.age) : '');
           setGender(travellerProfile.gender);
           setBio(travellerProfile.bio ?? '');
@@ -109,14 +114,41 @@ export default function ConnectionsOnboarding() {
     })();
   }, [user]);
 
+  // Debounced handle availability check.
+  useEffect(() => {
+    if (!user || !handle.trim()) { setHandleAvailable(null); return; }
+    if (!/^[A-Za-z0-9_]{3,20}$/.test(handle)) { setHandleAvailable(false); return; }
+    setHandleChecking(true);
+    const t = setTimeout(async () => {
+      try {
+        const available = await isHandleAvailable(handle, user.id);
+        setHandleAvailable(available);
+      } catch {
+        setHandleAvailable(null);
+      } finally {
+        setHandleChecking(false);
+      }
+    }, 400);
+    return () => clearTimeout(t);
+  }, [handle, user]);
+
   const save = async () => {
     if (!user) return;
     if (!displayName.trim()) { Alert.alert('Pick a display name', 'Other travellers see this.'); return; }
+    if (!handle.trim() || !/^[A-Za-z0-9_]{3,20}$/.test(handle)) {
+      Alert.alert('Pick a handle', 'A handle is 3-20 characters: letters, numbers, underscores.');
+      return;
+    }
+    if (handleAvailable === false) {
+      Alert.alert('Handle taken', 'That handle is already in use. Try another.');
+      return;
+    }
     setSaving(true);
     try {
       await upsertProfile({
         user_id: user.id,
         display_name: displayName.trim(),
+        handle: handle.trim(),
         age: age ? Number(age) : null,
         gender,
         bio: bio.trim() || null,
@@ -155,6 +187,35 @@ export default function ConnectionsOnboarding() {
       <ScrollView contentContainerStyle={{ padding: Spacing.lg, paddingBottom: Spacing.xxl, gap: Spacing.lg }}>
         <Section title="Public profile">
           <Field label="Display name" value={displayName} onChangeText={setDisplayName} placeholder="What other travellers see" />
+
+          <View style={{ gap: 4 }}>
+            <Text style={styles.label}>Handle (@username)</Text>
+            <View style={styles.handleRow}>
+              <Text style={styles.handleAt}>@</Text>
+              <TextInput
+                style={styles.handleInput}
+                value={handle}
+                onChangeText={(t) => setHandle(t.replace(/[^A-Za-z0-9_]/g, ''))}
+                placeholder="your_handle"
+                placeholderTextColor="rgba(255,255,255,0.3)"
+                autoCapitalize="none"
+                autoCorrect={false}
+                maxLength={20}
+              />
+            </View>
+            <Text style={[
+              styles.handleStatus,
+              handleAvailable === true && styles.handleAvailable,
+              handleAvailable === false && styles.handleTaken,
+            ]}>
+              {!handle.trim() ? '3–20 letters, numbers, underscores'
+                : handleChecking ? 'Checking…'
+                : handleAvailable === true ? '✓ Available'
+                : handleAvailable === false ? handle.length < 3 ? 'Too short' : 'Already taken'
+                : ''}
+            </Text>
+          </View>
+
           <Field label="Age" value={age} onChangeText={setAge} placeholder="e.g. 32" keyboardType="numeric" maxLength={3} />
 
           <Text style={styles.label}>Gender</Text>
@@ -292,6 +353,13 @@ const styles = StyleSheet.create({
   label: { color: 'rgba(255,255,255,0.6)', fontSize: FontSize.xs, fontWeight: FontWeight.bold, letterSpacing: 0.5 },
   input: { color: Colors.white, fontSize: FontSize.md, padding: Spacing.sm, backgroundColor: 'rgba(0,0,0,0.25)', borderRadius: BorderRadius.md },
   inputMultiline: { minHeight: 80, textAlignVertical: 'top' },
+
+  handleRow: { flexDirection: 'row', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.25)', borderRadius: BorderRadius.md, paddingHorizontal: Spacing.sm },
+  handleAt: { color: 'rgba(255,255,255,0.5)', fontSize: FontSize.md, fontWeight: FontWeight.bold },
+  handleInput: { flex: 1, color: Colors.white, fontSize: FontSize.md, padding: Spacing.sm },
+  handleStatus: { color: 'rgba(255,255,255,0.5)', fontSize: FontSize.xs, marginTop: 2 },
+  handleAvailable: { color: '#4ADE80' },
+  handleTaken: { color: '#FF8A80' },
 
   genderRow: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.xs },
   genderChip: { paddingHorizontal: Spacing.sm, paddingVertical: 6, borderRadius: BorderRadius.full, backgroundColor: 'rgba(255,255,255,0.08)' },

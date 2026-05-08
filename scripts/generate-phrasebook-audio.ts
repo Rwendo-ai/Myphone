@@ -24,6 +24,15 @@ import * as dotenv from 'dotenv';
 import { createClient } from '@supabase/supabase-js';
 
 import ZIMBABWE_PHRASEBOOK from '../data/travel/phrasebook/zimbabwe';
+import UK_PHRASEBOOK from '../data/travel/phrasebook/united-kingdom';
+import FRANCE_PHRASEBOOK from '../data/travel/phrasebook/france';
+import CHINA_PHRASEBOOK from '../data/travel/phrasebook/china';
+import PHILIPPINES_PHRASEBOOK from '../data/travel/phrasebook/philippines';
+import SPAIN_PHRASEBOOK from '../data/travel/phrasebook/spain';
+import PORTUGAL_PHRASEBOOK from '../data/travel/phrasebook/portugal';
+import INDIA_PHRASEBOOK from '../data/travel/phrasebook/india';
+import JAPAN_PHRASEBOOK from '../data/travel/phrasebook/japan';
+import KOREA_PHRASEBOOK from '../data/travel/phrasebook/korea';
 import type { PhrasebookCategory } from '../data/travel/phrasebook/types';
 
 dotenv.config({ path: '.env.local' });
@@ -43,12 +52,33 @@ const supabase = createClient(SUPABASE_URL, SERVICE_ROLE_KEY);
 // George (yX5kg7Bf2L8GgB1F8gqJ) — multilingual, warm, works for English + most.
 // Override per-country when we license a native voice for that language.
 const VOICE_BY_COUNTRY: Record<string, { id: string; modelId: string; name: string }> = {
+  // Multilingual George works for every language we ship — pronunciation
+  // varies by language but is recognisable. Swap in native voices once we
+  // license per-language voices in Phase 2.
   ZW: { id: 'JBFqnCBsd6RMkjVDRZzb', modelId: 'eleven_multilingual_v2', name: 'George (multilingual)' },
+  GB: { id: 'JBFqnCBsd6RMkjVDRZzb', modelId: 'eleven_multilingual_v2', name: 'George (multilingual)' },
+  FR: { id: 'JBFqnCBsd6RMkjVDRZzb', modelId: 'eleven_multilingual_v2', name: 'George (multilingual)' },
+  CN: { id: 'JBFqnCBsd6RMkjVDRZzb', modelId: 'eleven_multilingual_v2', name: 'George (multilingual)' },
+  PH: { id: 'JBFqnCBsd6RMkjVDRZzb', modelId: 'eleven_multilingual_v2', name: 'George (multilingual)' },
+  ES: { id: 'JBFqnCBsd6RMkjVDRZzb', modelId: 'eleven_multilingual_v2', name: 'George (multilingual)' },
+  PT: { id: 'JBFqnCBsd6RMkjVDRZzb', modelId: 'eleven_multilingual_v2', name: 'George (multilingual)' },
+  IN: { id: 'JBFqnCBsd6RMkjVDRZzb', modelId: 'eleven_multilingual_v2', name: 'George (multilingual)' },
+  JP: { id: 'JBFqnCBsd6RMkjVDRZzb', modelId: 'eleven_multilingual_v2', name: 'George (multilingual)' },
+  KR: { id: 'JBFqnCBsd6RMkjVDRZzb', modelId: 'eleven_multilingual_v2', name: 'George (multilingual)' },
 };
 const DEFAULT_VOICE = { id: 'JBFqnCBsd6RMkjVDRZzb', modelId: 'eleven_multilingual_v2', name: 'George (multilingual)' };
 
 const PHRASEBOOKS: Record<string, PhrasebookCategory[]> = {
   ZW: ZIMBABWE_PHRASEBOOK,
+  GB: UK_PHRASEBOOK,
+  FR: FRANCE_PHRASEBOOK,
+  CN: CHINA_PHRASEBOOK,
+  PH: PHILIPPINES_PHRASEBOOK,
+  ES: SPAIN_PHRASEBOOK,
+  PT: PORTUGAL_PHRASEBOOK,
+  IN: INDIA_PHRASEBOOK,
+  JP: JAPAN_PHRASEBOOK,
+  KR: KOREA_PHRASEBOOK,
 };
 
 // ─── ElevenLabs TTS call ────────────────────────────────────────────────────

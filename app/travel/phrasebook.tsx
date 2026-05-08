@@ -12,9 +12,9 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 
 import { useSettings } from '../../lib/SettingsContext';
+import { useActiveTravelDestination } from '../../lib/travel-destination';
 import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
-import { getDestinationForCourse } from '../../data/travel/destinations';
 import { getPhrasebookForCountry } from '../../data/travel/phrasebook';
 import type { PhrasebookCategory, TravelPhrase } from '../../data/travel/phrasebook/types';
 import { DEV_UNLOCK_ALL } from '../../constants/dev';
@@ -29,7 +29,7 @@ const FREE_PREVIEW_LIMIT = 4;
 
 export default function PhrasebookScreen() {
   const { activeCourseId, entitlementContext } = useSettings();
-  const destination = getDestinationForCourse(activeCourseId);
+  const { destination } = useActiveTravelDestination(activeCourseId);
   const phrasebook = getPhrasebookForCountry(destination.countryCode);
 
   const owned = useMemo(() => {
