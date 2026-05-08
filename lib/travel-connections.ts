@@ -42,6 +42,8 @@ export interface TravellerPost {
   destination_country_code: string | null;
   destination_city: string | null;
   travel_dates: string | null;
+  image_path: string | null;
+  image_alt: string | null;
   created_at: string;
 }
 
@@ -195,6 +197,8 @@ export async function createPost(p: {
   destination_country_code?: string;
   destination_city?: string;
   travel_dates?: string;
+  image_path?: string;
+  image_alt?: string;
 }): Promise<TravellerPost> {
   const { data, error } = await supabase
     .from('traveller_posts')

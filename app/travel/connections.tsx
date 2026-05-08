@@ -11,9 +11,11 @@
  */
 
 import { useEffect, useState, useCallback } from 'react';
-import { View, Text, StyleSheet, ScrollView, Pressable, ActivityIndicator, RefreshControl, TextInput, Alert, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Pressable, ActivityIndicator, RefreshControl, TextInput, Alert, KeyboardAvoidingView, Platform, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
+
+import { pickImage, uploadPostImage, postImageUrl, type ChosenImage } from '../../lib/post-images';
 
 import { useAuth } from '../../lib/AuthContext';
 import { useSettings } from '../../lib/SettingsContext';
@@ -116,15 +118,20 @@ export default function ConnectionsScreen() {
     setRefreshing(false);
   }, [load]);
 
-  const handlePost = useCallback(async (body: string, dates: string) => {
+  const handlePost = useCallback(async (body: string, dates: string, image: ChosenImage | null) => {
     if (!user) return;
     try {
+      let imagePath: string | undefined;
+      if (image) {
+        imagePath = await uploadPostImage(user.id, image);
+      }
       await createPost({
         author_id: user.id,
         body,
         destination_country_code: destination.countryCode,
         destination_city: destination.primaryCity.name,
         travel_dates: dates || undefined,
+        image_path: imagePath,
       });
       setComposeOpen(false);
       load();
@@ -250,6 +257,13 @@ function PostCard({ post, onLike }: { post: FeedPost; onLike: (p: FeedPost) => v
         </View>
       </Pressable>
       <PostBodyText body={post.body} />
+      {post.image_path && (
+        <Image
+          source={{ uri: postImageUrl(post.image_path) }}
+          style={styles.postImage}
+          accessibilityLabel={post.image_alt ?? undefined}
+        />
+      )}
       <View style={styles.postActionsRow}>
         <Pressable style={styles.actionBtn} onPress={(e) => { e.stopPropagation?.(); onLike(post); }}>
           <Text style={[styles.actionIcon, post.likedByMe && styles.actionIconActive]}>{post.likedByMe ? '♥' : '♡'}</Text>
@@ -293,13 +307,34 @@ function PostBodyText({ body }: { body: string }) {
 function ComposeSheet({ destinationName, onCancel, onSubmit }: {
   destinationName: string;
   onCancel: () => void;
-  onSubmit: (body: string, dates: string) => void;
+  onSubmit: (body: string, dates: string, image: ChosenImage | null) => void;
 }) {
   const [body, setBody] = useState('');
   const [dates, setDates] = useState('');
+  const [image, setImage] = useState<ChosenImage | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+
+  const choosePhoto = async () => {
+    try {
+      const picked = await pickImage();
+      if (picked) setImage(picked);
+    } catch (e) {
+      Alert.alert('Could not open photo picker', e instanceof Error ? e.message : 'Try again.');
+    }
+  };
+
+  const submit = async () => {
+    setSubmitting(true);
+    try {
+      await onSubmit(body.trim(), dates.trim(), image);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   return (
     <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={styles.sheetOverlay}>
-      <Pressable style={styles.sheetBackdrop} onPress={onCancel} />
+      <Pressable style={styles.sheetBackdrop} onPress={submitting ? undefined : onCancel} />
       <View style={styles.sheet}>
         <Text style={styles.sheetTitle}>Share your trip to {destinationName}</Text>
         <TextInput
@@ -312,6 +347,20 @@ function ComposeSheet({ destinationName, onCancel, onSubmit }: {
           maxLength={500}
         />
         <Text style={styles.sheetCharCount}>{body.length} / 500</Text>
+
+        {image ? (
+          <View style={styles.imagePreviewWrap}>
+            <Image source={{ uri: image.uri }} style={styles.imagePreview} />
+            <Pressable style={styles.imagePreviewRemove} onPress={() => setImage(null)}>
+              <Text style={styles.imagePreviewRemoveText}>✕</Text>
+            </Pressable>
+          </View>
+        ) : (
+          <Pressable style={styles.imagePickerBtn} onPress={choosePhoto}>
+            <Text style={styles.imagePickerText}>📷 Add a photo (optional)</Text>
+          </Pressable>
+        )}
+
         <TextInput
           style={styles.sheetDateInput}
           placeholder="When (e.g. June 2026, Jul 15-22)"
@@ -321,15 +370,15 @@ function ComposeSheet({ destinationName, onCancel, onSubmit }: {
           maxLength={40}
         />
         <View style={styles.sheetButtons}>
-          <Pressable style={styles.sheetCancelBtn} onPress={onCancel}>
+          <Pressable style={styles.sheetCancelBtn} onPress={onCancel} disabled={submitting}>
             <Text style={styles.sheetCancelText}>Cancel</Text>
           </Pressable>
           <Pressable
-            style={[styles.sheetPostBtn, !body.trim() && styles.sheetPostBtnDisabled]}
-            onPress={() => body.trim() && onSubmit(body.trim(), dates.trim())}
-            disabled={!body.trim()}
+            style={[styles.sheetPostBtn, (!body.trim() || submitting) && styles.sheetPostBtnDisabled]}
+            onPress={submit}
+            disabled={!body.trim() || submitting}
           >
-            <Text style={styles.sheetPostText}>Post</Text>
+            <Text style={styles.sheetPostText}>{submitting ? 'Posting…' : 'Post'}</Text>
           </Pressable>
         </View>
       </View>
@@ -388,6 +437,14 @@ const styles = StyleSheet.create({
   postAuthor: { color: Colors.white, fontSize: FontSize.sm, fontWeight: FontWeight.bold },
   postMeta: { color: 'rgba(255,255,255,0.5)', fontSize: FontSize.xs, marginTop: 2 },
   postBody: { color: Colors.white, fontSize: FontSize.sm, lineHeight: 20 },
+  postImage: { width: '100%', aspectRatio: 4/3, borderRadius: BorderRadius.md, backgroundColor: 'rgba(0,0,0,0.2)', marginTop: Spacing.xs },
+
+  imagePickerBtn: { padding: Spacing.sm, borderRadius: BorderRadius.md, backgroundColor: 'rgba(255,255,255,0.06)', alignItems: 'center', borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)', borderStyle: 'dashed' },
+  imagePickerText: { color: 'rgba(255,255,255,0.7)', fontSize: FontSize.sm, fontWeight: FontWeight.semibold },
+  imagePreviewWrap: { position: 'relative', borderRadius: BorderRadius.md, overflow: 'hidden' },
+  imagePreview: { width: '100%', aspectRatio: 4/3 },
+  imagePreviewRemove: { position: 'absolute', top: 6, right: 6, width: 28, height: 28, borderRadius: 14, backgroundColor: 'rgba(0,0,0,0.6)', alignItems: 'center', justifyContent: 'center' },
+  imagePreviewRemoveText: { color: Colors.white, fontSize: FontSize.md, fontWeight: FontWeight.bold },
 
   primaryBtn: { backgroundColor: Colors.xp, paddingVertical: Spacing.md, paddingHorizontal: Spacing.xl, borderRadius: BorderRadius.full, marginTop: Spacing.sm },
   primaryBtnText: { color: Colors.white, fontSize: FontSize.md, fontWeight: FontWeight.bold },

@@ -35,6 +35,10 @@ yarn-error.*
 .env*.local
 .env.*-tmp
 
+# Local-only audio gen logs
+scripts/.flipcard-audio.log
+scripts/.phrasebook-audio.log
+
 # Dead-asset archive — files preserved on disk for review, not bundled
 # into the app and not tracked in git. See dead assets/README.md if any.
 dead assets/

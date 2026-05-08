@@ -4,6 +4,7 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { getUnit, getCourseUnit } from '../../data/lessons';
 import { getLessonManifest, getCourseModuleMeta } from '../../lib/manifests';
+import { getFlipCardsForModule } from '../../lib/flipcards';
 import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
 
@@ -32,6 +33,15 @@ export default function UnitScreen() {
     'english-shona': 'language-english',
   };
   const courseId = legacyToCourse[unit.packId] ?? unit.packId;
+
+  // Module number from synthesised unit IDs (`<courseId>::m01` → 1).
+  // Used to surface the matching 50-card flip-card set.
+  const moduleNum = (() => {
+    if (typeof id !== 'string') return null;
+    const m = id.match(/::m(\d+)$/);
+    return m ? Number(m[1]) : null;
+  })();
+  const flipCards = moduleNum ? getFlipCardsForModule(courseId, moduleNum) : [];
 
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>
@@ -62,6 +72,24 @@ export default function UnitScreen() {
             <Text style={styles.chevron}>›</Text>
           </Pressable>
         ))}
+
+        {flipCards.length > 0 && moduleNum !== null && (
+          <Pressable
+            style={styles.flipCardCta}
+            onPress={() => router.push({
+              pathname: '/flipcards/[courseId]/[module]' as any,
+              params: { courseId, module: String(moduleNum) },
+            })}
+          >
+            <Text style={styles.flipCardCtaEmoji}>🃏</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.flipCardCtaTitle}>Flip cards · {flipCards.length} words</Text>
+              <Text style={styles.flipCardCtaSub}>Tap to flip · audio for every word</Text>
+            </View>
+            <Text style={styles.flipCardCtaArrow}>→</Text>
+          </Pressable>
+        )}
+
         <View style={{ height: Spacing.xxl }} />
       </ScrollView>
     </SafeAreaView>
@@ -137,6 +165,19 @@ const styles = StyleSheet.create({
     fontWeight: FontWeight.semibold,
     color: Colors.gray[800],
   },
+  flipCardCta: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: Colors.primary,
+    borderRadius: BorderRadius.lg,
+    padding: Spacing.md,
+    gap: Spacing.md,
+    marginTop: Spacing.md,
+  },
+  flipCardCtaEmoji: { fontSize: 28 },
+  flipCardCtaTitle: { color: Colors.white, fontSize: FontSize.md, fontWeight: FontWeight.bold },
+  flipCardCtaSub: { color: 'rgba(255,255,255,0.7)', fontSize: FontSize.xs, marginTop: 2 },
+  flipCardCtaArrow: { color: Colors.white, fontSize: FontSize.lg, fontWeight: FontWeight.bold },
   lessonMeta: {
     fontSize: FontSize.sm,
     color: Colors.gray[400],

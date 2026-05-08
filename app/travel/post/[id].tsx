@@ -4,12 +4,15 @@
  */
 
 import { useEffect, useState, useCallback } from 'react';
-import { View, Text, StyleSheet, ScrollView, Pressable, TextInput, ActivityIndicator, KeyboardAvoidingView, Platform, Alert } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Pressable, TextInput, ActivityIndicator, KeyboardAvoidingView, Platform, Alert, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router, useLocalSearchParams } from 'expo-router';
 
 import { useAuth } from '../../../lib/AuthContext';
+import { useSettings } from '../../../lib/SettingsContext';
 import { supabase } from '../../../lib/supabase';
+import { postImageUrl } from '../../../lib/post-images';
+import { translatePost, isSupportedTarget } from '../../../lib/post-translate';
 import { Colors } from '../../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../../constants/theme';
 import {
@@ -24,12 +27,16 @@ import {
 export default function PostDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { user } = useAuth();
+  const { speaker } = useSettings();
 
   const [post, setPost] = useState<FeedPost | null>(null);
   const [comments, setComments] = useState<PostComment[]>([]);
   const [loading, setLoading] = useState(true);
   const [draft, setDraft] = useState('');
   const [posting, setPosting] = useState(false);
+  const [translatedBody, setTranslatedBody] = useState<string | null>(null);
+  const [translating, setTranslating] = useState(false);
+  const [translationError, setTranslationError] = useState<string | null>(null);
 
   const load = useCallback(async () => {
     if (!id) return;
@@ -95,6 +102,23 @@ export default function PostDetailScreen() {
     }
   };
 
+  const handleTranslate = async () => {
+    if (!post) return;
+    if (translatedBody) { setTranslatedBody(null); return; } // toggle back to original
+    setTranslating(true);
+    setTranslationError(null);
+    try {
+      const result = await translatePost({ postId: post.id, text: post.body, targetLang: speaker.isoCode });
+      setTranslatedBody(result.translated);
+    } catch (e) {
+      setTranslationError(e instanceof Error ? e.message : 'Translation unavailable');
+    } finally {
+      setTranslating(false);
+    }
+  };
+
+  const canTranslate = !!post && isSupportedTarget(speaker.isoCode);
+
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>
       <View style={styles.header}>
@@ -128,7 +152,24 @@ export default function PostDetailScreen() {
                   </Text>
                 </View>
               </Pressable>
-              <Text style={styles.postBody}>{post.body}</Text>
+              <Text style={styles.postBody}>{translatedBody ?? post.body}</Text>
+              {canTranslate && (
+                <Pressable style={styles.translateBtn} onPress={handleTranslate} disabled={translating}>
+                  <Text style={styles.translateBtnText}>
+                    {translating ? 'Translating…'
+                      : translationError ? `⚠ ${translationError.slice(0, 40)}`
+                      : translatedBody ? 'Show original'
+                      : `Translate to ${speaker.isoCode.toUpperCase()}`}
+                  </Text>
+                </Pressable>
+              )}
+              {post.image_path && (
+                <Image
+                  source={{ uri: postImageUrl(post.image_path) }}
+                  style={styles.postImage}
+                  accessibilityLabel={post.image_alt ?? undefined}
+                />
+              )}
               <View style={styles.actions}>
                 <Pressable style={styles.actionBtn} onPress={toggleLike}>
                   <Text style={[styles.actionIcon, post.likedByMe && styles.actionIconActive]}>{post.likedByMe ? '♥' : '♡'}</Text>
@@ -197,6 +238,9 @@ const styles = StyleSheet.create({
   postAuthor: { color: Colors.white, fontSize: FontSize.md, fontWeight: FontWeight.bold },
   postMeta: { color: 'rgba(255,255,255,0.55)', fontSize: FontSize.xs, marginTop: 2 },
   postBody: { color: Colors.white, fontSize: FontSize.md, lineHeight: 22 },
+  postImage: { width: '100%', aspectRatio: 4/3, borderRadius: BorderRadius.md, backgroundColor: 'rgba(0,0,0,0.2)', marginTop: Spacing.xs },
+  translateBtn: { alignSelf: 'flex-start', paddingHorizontal: Spacing.sm, paddingVertical: 4, borderRadius: BorderRadius.full, backgroundColor: 'rgba(255,255,255,0.08)' },
+  translateBtnText: { color: 'rgba(255,255,255,0.75)', fontSize: FontSize.xs, fontWeight: FontWeight.semibold },
 
   actions: { flexDirection: 'row', gap: Spacing.lg, paddingTop: Spacing.sm, borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.06)' },
   actionBtn: { flexDirection: 'row', alignItems: 'center', gap: 4 },
