@@ -1,20 +1,11 @@
 /**
- * Safari & Parks registry. Top-10 list is the entire current corpus; we
- * scope it to "Africa-relevant destinations" since that's where safari is
- * culturally meaningful. Adding Asian wildlife reserves (Ranthambore, etc.)
- * is a future content pass — likely under a different "Wildlife & Parks"
- * label that doesn't carry the safari-specific connotations.
+ * Safari & Parks registry — DEPRECATED bundled imports.
+ *
+ * Content now lives in Supabase Storage at
+ * `travel-content/safari/africa-top-10.json`. App code should use
+ * `loadSafariParks()` from `lib/travel-content-loader.ts`.
+ *
+ * Authoring TS files (`africa-top-10.ts`) remain as upload-script source.
  */
 
-import AFRICA_TOP_10 from './africa-top-10';
-import type { SafariPark } from './types';
-
-export const ALL_PARKS: SafariPark[] = AFRICA_TOP_10;
-
-export function getParksForCountry(countryCode: string): SafariPark[] {
-  return ALL_PARKS.filter(p => p.countryCode === countryCode);
-}
-
-/** Used for the "see top parks" view when the active destination has no
- *  authored safari content but the user is curious about the broader region. */
-export const TOP_10_GLOBAL = AFRICA_TOP_10;
+export {};

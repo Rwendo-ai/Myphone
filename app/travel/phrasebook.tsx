@@ -15,7 +15,7 @@ import { useSettings } from '../../lib/SettingsContext';
 import { useActiveTravelDestination } from '../../lib/travel-destination';
 import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
-import { getPhrasebookForCountry } from '../../data/travel/phrasebook';
+import { loadPhrasebook } from '../../lib/travel-content-loader';
 import type { PhrasebookCategory, TravelPhrase } from '../../data/travel/phrasebook/types';
 import { DEV_UNLOCK_ALL } from '../../constants/dev';
 import {
@@ -24,13 +24,25 @@ import {
   playPhraseAudio,
   stopPhraseAudio,
 } from '../../lib/phrasebook-audio';
+import { ActivityIndicator } from 'react-native';
 
 const FREE_PREVIEW_LIMIT = 4;
 
 export default function PhrasebookScreen() {
   const { activeCourseId, entitlementContext } = useSettings();
   const { destination } = useActiveTravelDestination(activeCourseId);
-  const phrasebook = getPhrasebookForCountry(destination.countryCode);
+
+  // Lazy-load the phrasebook from Storage on destination change. While
+  // loading, render a spinner; on miss, render the "coming soon" empty.
+  const [phrasebook, setPhrasebook] = useState<PhrasebookCategory[] | null | 'loading'>('loading');
+  useEffect(() => {
+    let cancelled = false;
+    setPhrasebook('loading');
+    loadPhrasebook(destination.countryCode).then(p => {
+      if (!cancelled) setPhrasebook(p);
+    });
+    return () => { cancelled = true; };
+  }, [destination.countryCode]);
 
   const owned = useMemo(() => {
     if (DEV_UNLOCK_ALL) return true;
@@ -39,7 +51,14 @@ export default function PhrasebookScreen() {
       || entitlementContext.ownedCourseIds.includes(activeCourseId);
   }, [activeCourseId, entitlementContext]);
 
-  const [openCategory, setOpenCategory] = useState<string>(phrasebook?.[0]?.id ?? '');
+  const [openCategory, setOpenCategory] = useState<string>('');
+  // First-render select-default once the phrasebook arrives.
+  useEffect(() => {
+    if (Array.isArray(phrasebook) && phrasebook[0] && !openCategory) {
+      setOpenCategory(phrasebook[0].id);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [phrasebook]);
 
   // Audio manifest for this country. Built once by scripts/generate-phrasebook-audio.ts
   // and stored at audio/phrasebook/<code>/manifest.json. We fetch it lazily on
@@ -67,6 +86,18 @@ export default function PhrasebookScreen() {
     }
   };
 
+  if (phrasebook === 'loading') {
+    return (
+      <SafeAreaView style={styles.safe} edges={['top']}>
+        <Header />
+        <View style={styles.empty}>
+          <ActivityIndicator color={Colors.white} />
+          <Text style={styles.emptyBody}>Downloading phrasebook…</Text>
+        </View>
+      </SafeAreaView>
+    );
+  }
+
   if (!phrasebook) {
     return (
       <SafeAreaView style={styles.safe} edges={['top']}>
@@ -75,8 +106,7 @@ export default function PhrasebookScreen() {
           <Text style={styles.emptyEmoji}>🗺️</Text>
           <Text style={styles.emptyTitle}>Phrasebook coming soon for {destination.countryName}</Text>
           <Text style={styles.emptyBody}>
-            We author phrasebooks one country at a time. Zimbabwe is live;
-            others are in the queue. Let us know which country you need next.
+            We author phrasebooks one country at a time. Let us know which country you need next.
           </Text>
         </View>
       </SafeAreaView>

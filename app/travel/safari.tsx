@@ -5,8 +5,8 @@
  * regional list if the destination doesn't have safari content authored.
  */
 
-import { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
+import { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, ScrollView, Pressable, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 
@@ -14,18 +14,29 @@ import { useSettings } from '../../lib/SettingsContext';
 import { useActiveTravelDestination } from '../../lib/travel-destination';
 import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
-import { getParksForCountry, TOP_10_GLOBAL } from '../../data/travel/safari';
+import { loadSafariParks } from '../../lib/travel-content-loader';
 import type { SafariPark } from '../../data/travel/safari/types';
 
 export default function SafariScreen() {
   const { activeCourseId } = useSettings();
   const { destination } = useActiveTravelDestination(activeCourseId);
 
-  const localParks = getParksForCountry(destination.countryCode);
-  const showingLocal = localParks.length > 0;
-  const parks = showingLocal ? localParks : TOP_10_GLOBAL;
+  const [allParks, setAllParks] = useState<SafariPark[] | null | 'loading'>('loading');
+  const [selectedId, setSelectedId] = useState<string>('');
 
-  const [selectedId, setSelectedId] = useState<string>(parks[0]?.id ?? '');
+  useEffect(() => {
+    let cancelled = false;
+    loadSafariParks().then(p => {
+      if (cancelled) return;
+      setAllParks(p);
+      if (p && p.length > 0) setSelectedId(p[0].id);
+    });
+    return () => { cancelled = true; };
+  }, []);
+
+  const localParks = Array.isArray(allParks) ? allParks.filter(p => p.countryCode === destination.countryCode) : [];
+  const showingLocal = localParks.length > 0;
+  const parks = showingLocal ? localParks : (Array.isArray(allParks) ? allParks : []);
 
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>
@@ -35,6 +46,14 @@ export default function SafariScreen() {
         <View style={{ width: 60 }} />
       </View>
 
+      {allParks === 'loading' && (
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', gap: Spacing.md }}>
+          <ActivityIndicator color={Colors.white} />
+          <Text style={styles.sub}>Downloading safari guide…</Text>
+        </View>
+      )}
+
+      {allParks !== 'loading' && (
       <ScrollView contentContainerStyle={{ paddingBottom: Spacing.xxl }}>
         <View style={styles.intro}>
           <Text style={styles.flag}>{showingLocal ? destination.flag : '🌍'}</Text>
@@ -57,6 +76,7 @@ export default function SafariScreen() {
           />
         ))}
       </ScrollView>
+      )}
     </SafeAreaView>
   );
 }

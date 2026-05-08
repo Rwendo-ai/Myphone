@@ -9,14 +9,15 @@
  * a URL hit on the public Storage object.
  */
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Pressable, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router, useLocalSearchParams } from 'expo-router';
 import { createAudioPlayer, type AudioPlayer } from 'expo-audio';
 
-import { getFlipCardsForModule } from '../../../lib/flipcards';
+import { loadFlipCardsForModule } from '../../../lib/travel-content-loader';
 import { supabase } from '../../../lib/supabase';
+import type { FlipCard } from '../../../types/flipcards';
 import { Colors } from '../../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../../constants/theme';
 
@@ -52,14 +53,15 @@ function playAudio(url: string) {
 export default function FlipCardScreen() {
   const { courseId, module } = useLocalSearchParams<{ courseId: string; module: string }>();
   const moduleNum = Number(module);
-  const cards = useMemo(() => getFlipCardsForModule(courseId, moduleNum), [courseId, moduleNum]);
 
+  const [cards, setCards] = useState<FlipCard[] | 'loading'>('loading');
   const [index, setIndex] = useState(0);
   const [flipped, setFlipped] = useState(false);
   const [manifest, setManifest] = useState<ManifestEntry[] | null>(null);
 
   useEffect(() => {
     let cancelled = false;
+    loadFlipCardsForModule(courseId, moduleNum).then(c => { if (!cancelled) setCards(c); });
     loadFlipCardManifest(courseId).then(m => { if (!cancelled) setManifest(m); });
     return () => {
       cancelled = true;
@@ -67,7 +69,19 @@ export default function FlipCardScreen() {
       try { activePlayer?.remove(); } catch {}
       activePlayer = null;
     };
-  }, [courseId]);
+  }, [courseId, moduleNum]);
+
+  if (cards === 'loading') {
+    return (
+      <SafeAreaView style={styles.safe}>
+        <Header title={`Flip cards · M${moduleNum}`} />
+        <View style={styles.center}>
+          <ActivityIndicator color={Colors.white} />
+          <Text style={styles.empty}>Downloading vocab pack…</Text>
+        </View>
+      </SafeAreaView>
+    );
+  }
 
   if (!cards || cards.length === 0) {
     return (

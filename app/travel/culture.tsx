@@ -2,8 +2,8 @@
  * Cultural Guide screen — accordion of country-specific cultural sections.
  */
 
-import { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
+import { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, ScrollView, Pressable, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 
@@ -11,14 +11,26 @@ import { useSettings } from '../../lib/SettingsContext';
 import { useActiveTravelDestination } from '../../lib/travel-destination';
 import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
-import { getCulturalGuideForCountry } from '../../data/travel/culture';
+import { loadCulturalGuide } from '../../lib/travel-content-loader';
+import type { CulturalGuide } from '../../data/travel/culture/types';
 
 export default function CultureScreen() {
   const { activeCourseId } = useSettings();
   const { destination } = useActiveTravelDestination(activeCourseId);
-  const guide = getCulturalGuideForCountry(destination.countryCode);
 
-  const [openSection, setOpenSection] = useState<string>(guide?.sections[0]?.id ?? '');
+  const [guide, setGuide] = useState<CulturalGuide | null | 'loading'>('loading');
+  const [openSection, setOpenSection] = useState<string>('');
+
+  useEffect(() => {
+    let cancelled = false;
+    setGuide('loading');
+    loadCulturalGuide(destination.countryCode).then(g => {
+      if (cancelled) return;
+      setGuide(g);
+      if (g) setOpenSection(g.sections[0]?.id ?? '');
+    });
+    return () => { cancelled = true; };
+  }, [destination.countryCode]);
 
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>
@@ -28,13 +40,17 @@ export default function CultureScreen() {
         <View style={{ width: 60 }} />
       </View>
 
-      {!guide ? (
+      {guide === 'loading' ? (
+        <View style={styles.empty}>
+          <ActivityIndicator color={Colors.white} />
+          <Text style={styles.emptyBody}>Downloading cultural guide…</Text>
+        </View>
+      ) : !guide ? (
         <View style={styles.empty}>
           <Text style={styles.emptyEmoji}>🏛️</Text>
           <Text style={styles.emptyTitle}>Cultural guide coming soon for {destination.countryName}</Text>
           <Text style={styles.emptyBody}>
-            Each guide is researched and native-reviewed. Zimbabwe is live;
-            {' '}other destinations are queued.
+            Each guide is researched and native-reviewed. Other destinations are queued.
           </Text>
         </View>
       ) : (

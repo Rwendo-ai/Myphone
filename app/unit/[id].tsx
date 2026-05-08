@@ -4,7 +4,7 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { getUnit, getCourseUnit } from '../../data/lessons';
 import { getLessonManifest, getCourseModuleMeta } from '../../lib/manifests';
-import { getFlipCardsForModule } from '../../lib/flipcards';
+import { hasFlipCards } from '../../lib/flipcards';
 import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
 
@@ -41,7 +41,8 @@ export default function UnitScreen() {
     const m = id.match(/::m(\d+)$/);
     return m ? Number(m[1]) : null;
   })();
-  const flipCards = moduleNum ? getFlipCardsForModule(courseId, moduleNum) : [];
+  // Sync existence check — content streams from Storage when the user taps.
+  const flipCardsAvailable = moduleNum != null && hasFlipCards(courseId);
 
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>
@@ -73,7 +74,7 @@ export default function UnitScreen() {
           </Pressable>
         ))}
 
-        {flipCards.length > 0 && moduleNum !== null && (
+        {flipCardsAvailable && (
           <Pressable
             style={styles.flipCardCta}
             onPress={() => router.push({
@@ -83,7 +84,7 @@ export default function UnitScreen() {
           >
             <Text style={styles.flipCardCtaEmoji}>🃏</Text>
             <View style={{ flex: 1 }}>
-              <Text style={styles.flipCardCtaTitle}>Flip cards · {flipCards.length} words</Text>
+              <Text style={styles.flipCardCtaTitle}>Flip cards · 50 words</Text>
               <Text style={styles.flipCardCtaSub}>Tap to flip · audio for every word</Text>
             </View>
             <Text style={styles.flipCardCtaArrow}>→</Text>

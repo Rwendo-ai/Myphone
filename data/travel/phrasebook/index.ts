@@ -1,36 +1,14 @@
 /**
- * Phrasebook registry — keyed by ISO 3166-1 country code.
+ * Phrasebook registry — DEPRECATED bundled imports.
  *
- * Each country's phrasebook is authored in the destination's local language.
- * As we add countries, register them here. The travel screen looks up the
- * active destination's countryCode and pulls the matching phrasebook.
+ * Phrasebook content now lives in Supabase Storage at
+ * `travel-content/phrasebook/<countryCode>.json` and the app fetches lazily
+ * via `lib/travel-content-loader.ts`. This file remains only for the upload
+ * script (`scripts/upload-travel-content-to-storage.ts`) which reads the
+ * authoring TS modules and pushes JSON.
+ *
+ * App code should NOT import from here — use `loadPhrasebook(countryCode)`
+ * from the loader instead. Bundling these would re-bloat the app.
  */
 
-import type { PhrasebookCategory } from './types';
-import ZIMBABWE_PHRASEBOOK from './zimbabwe';
-import UK_PHRASEBOOK from './united-kingdom';
-import FRANCE_PHRASEBOOK from './france';
-import CHINA_PHRASEBOOK from './china';
-import PHILIPPINES_PHRASEBOOK from './philippines';
-import SPAIN_PHRASEBOOK from './spain';
-import PORTUGAL_PHRASEBOOK from './portugal';
-import INDIA_PHRASEBOOK from './india';
-import JAPAN_PHRASEBOOK from './japan';
-import KOREA_PHRASEBOOK from './korea';
-
-export const PHRASEBOOKS_BY_COUNTRY: Record<string, PhrasebookCategory[]> = {
-  ZW: ZIMBABWE_PHRASEBOOK,
-  GB: UK_PHRASEBOOK,
-  FR: FRANCE_PHRASEBOOK,
-  CN: CHINA_PHRASEBOOK,
-  PH: PHILIPPINES_PHRASEBOOK,
-  ES: SPAIN_PHRASEBOOK,
-  PT: PORTUGAL_PHRASEBOOK,
-  IN: INDIA_PHRASEBOOK,
-  JP: JAPAN_PHRASEBOOK,
-  KR: KOREA_PHRASEBOOK,
-};
-
-export function getPhrasebookForCountry(countryCode: string): PhrasebookCategory[] | undefined {
-  return PHRASEBOOKS_BY_COUNTRY[countryCode];
-}
+export {}; // intentionally empty — no app-side exports
