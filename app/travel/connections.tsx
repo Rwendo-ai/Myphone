@@ -17,6 +17,8 @@ import { router } from 'expo-router';
 
 import { useAuth } from '../../lib/AuthContext';
 import { useSettings } from '../../lib/SettingsContext';
+import { supabase } from '../../lib/supabase';
+import { ageFromDob } from '../../lib/active-companion';
 import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
 import { getDestinationForCourse } from '../../data/travel/destinations';
@@ -31,8 +33,11 @@ import {
   type MatchPrefs,
 } from '../../lib/travel-connections';
 
+const CONNECTIONS_MIN_AGE = 18;
+
 type ScreenState =
   | { kind: 'loading' }
+  | { kind: 'age_gated' }
   | { kind: 'no_profile' }
   | { kind: 'ready'; profile: TravellerProfile; prefs: MatchPrefs | null; feed: FeedPost[] };
 
@@ -48,6 +53,16 @@ export default function ConnectionsScreen() {
   const load = useCallback(async () => {
     if (!user) { setState({ kind: 'loading' }); return; }
     try {
+      // Age gate first — Connections is 18+. Same conservative behaviour as
+      // the romance preset gate: missing or unparseable DOB → blocked.
+      const { data: profileRow } = await supabase
+        .from('profiles').select('date_of_birth').eq('id', user.id).maybeSingle();
+      const age = ageFromDob(profileRow?.date_of_birth);
+      if (age === null || age < CONNECTIONS_MIN_AGE) {
+        setState({ kind: 'age_gated' });
+        return;
+      }
+
       const profile = await getMyProfile(user.id);
       if (!profile) { setState({ kind: 'no_profile' }); return; }
       const [prefs, feed] = await Promise.all([
@@ -99,6 +114,22 @@ export default function ConnectionsScreen() {
 
       {state.kind === 'loading' && (
         <View style={styles.center}><ActivityIndicator color={Colors.white} /></View>
+      )}
+
+      {state.kind === 'age_gated' && (
+        <View style={styles.center}>
+          <Text style={styles.emptyEmoji}>🔒</Text>
+          <Text style={styles.emptyTitle}>Connections is 18+</Text>
+          <Text style={styles.emptyBody}>
+            Travel companion features that involve meeting other travellers are restricted to users 18 or older.
+            {'\n\n'}
+            The rest of Travel Mode — Phrasebook, Cultural Guide, Money & Market, Flights, Hotels, Safari & Parks —
+            is open to everyone.
+          </Text>
+          <Pressable style={styles.primaryBtn} onPress={() => router.back()}>
+            <Text style={styles.primaryBtnText}>Back to Travel</Text>
+          </Pressable>
+        </View>
       )}
 
       {state.kind === 'no_profile' && (

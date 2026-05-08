@@ -15,6 +15,7 @@
  * Falls back to a destination picker if the user has no active course.
  */
 
+import { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -22,9 +23,18 @@ import { router } from 'expo-router';
 
 import ProfilePicButton from '../../components/ProfilePicButton';
 import { useSettings } from '../../lib/SettingsContext';
+import { useAuth } from '../../lib/AuthContext';
+import { supabase } from '../../lib/supabase';
+import { ageFromDob } from '../../lib/active-companion';
 import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
 import { getDestinationForCourse } from '../../data/travel/destinations';
+
+/** Connections (Meet Travellers) is 18+ — same age-gating philosophy as the
+ *  Aria romance preset. Under-18s don't see the card at all (no tease, no
+ *  "locked" badge — invisible). They get the rest of Travel Mode (Money,
+ *  Phrasebook, Cultural Guide, Safari, Flights, Hotels). */
+const CONNECTIONS_MIN_AGE = 18;
 
 interface TravelFeature {
   key: string;
@@ -37,7 +47,19 @@ interface TravelFeature {
 
 export default function TravelScreen() {
   const { activeCourseId } = useSettings();
+  const { user } = useAuth();
   const destination = getDestinationForCourse(activeCourseId);
+
+  // Connections age gate — same pattern as the Aria romance preset.
+  // Conservative: missing DOB / not loaded yet → treat as under-18 so the
+  // card stays hidden until age is verified.
+  const [age, setAge] = useState<number | null>(null);
+  useEffect(() => {
+    if (!user) return;
+    supabase.from('profiles').select('date_of_birth').eq('id', user.id).maybeSingle()
+      .then(({ data }) => setAge(ageFromDob(data?.date_of_birth)));
+  }, [user]);
+  const showConnections = age !== null && age >= CONNECTIONS_MIN_AGE;
 
   const features: TravelFeature[] = [
     {
@@ -128,18 +150,20 @@ export default function TravelScreen() {
             ))}
           </View>
 
-          <Pressable style={styles.connectionsCard} onPress={() => router.push('/travel/connections')}>
-            <View style={styles.connectionsLeft}>
-              <Text style={styles.connectionsEmoji}>👥</Text>
-              <View style={{ flex: 1 }}>
-                <Text style={styles.connectionsTitle}>Connections</Text>
-                <Text style={styles.connectionsDesc}>
-                  Meet other travellers heading to {destination.countryName}. Share a feed, plan together.
-                </Text>
+          {showConnections && (
+            <Pressable style={styles.connectionsCard} onPress={() => router.push('/travel/connections')}>
+              <View style={styles.connectionsLeft}>
+                <Text style={styles.connectionsEmoji}>👥</Text>
+                <View style={{ flex: 1 }}>
+                  <Text style={styles.connectionsTitle}>Connections</Text>
+                  <Text style={styles.connectionsDesc}>
+                    Meet other travellers heading to {destination.countryName}. Share a feed, plan together.
+                  </Text>
+                </View>
               </View>
-            </View>
-            <Text style={styles.connectionsChevron}>›</Text>
-          </Pressable>
+              <Text style={styles.connectionsChevron}>›</Text>
+            </Pressable>
+          )}
 
           <Pressable style={styles.myTravelCard} onPress={() => router.push('/travel/my-travel')}>
             <Text style={styles.myTravelTitle}>My travel</Text>

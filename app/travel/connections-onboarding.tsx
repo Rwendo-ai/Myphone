@@ -17,6 +17,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 
 import { useAuth } from '../../lib/AuthContext';
+import { supabase } from '../../lib/supabase';
 import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
 import {
@@ -49,19 +50,52 @@ export default function ConnectionsOnboarding() {
     if (!user) return;
     (async () => {
       try {
-        const [profile, prefs] = await Promise.all([
+        // Pull existing traveller profile + base profile in parallel. The
+        // base profile (signup time) is the source-of-truth for name/DOB —
+        // if Google OAuth was used, name comes from auth metadata, DOB may
+        // be missing (we'd never trust traveller_profiles to be the
+        // authoritative birth date).
+        const [travellerProfile, prefs, baseProfileResult] = await Promise.all([
           getMyProfile(user.id),
           getMyMatchPrefs(user.id),
+          supabase.from('profiles').select('display_name, date_of_birth').eq('id', user.id).maybeSingle(),
         ]);
-        if (profile) {
-          setDisplayName(profile.display_name);
-          setAge(profile.age ? String(profile.age) : '');
-          setGender(profile.gender);
-          setBio(profile.bio ?? '');
-          setIsPublic(profile.is_public);
-        } else if (user.email) {
-          setDisplayName(user.email.split('@')[0]);
+
+        if (travellerProfile) {
+          // Existing traveller profile — pre-fill from there.
+          setDisplayName(travellerProfile.display_name);
+          setAge(travellerProfile.age ? String(travellerProfile.age) : '');
+          setGender(travellerProfile.gender);
+          setBio(travellerProfile.bio ?? '');
+          setIsPublic(travellerProfile.is_public);
+        } else {
+          // First-time setup — pull what we can from base signup profile +
+          // auth metadata (Google OAuth `name`, Apple Sign-In first-time
+          // `name`, email-handle as a last resort).
+          const baseName =
+            baseProfileResult.data?.display_name?.trim() ||
+            (user.user_metadata as { name?: string; full_name?: string } | undefined)?.name ||
+            (user.user_metadata as { name?: string; full_name?: string } | undefined)?.full_name ||
+            user.email?.split('@')[0] ||
+            '';
+          setDisplayName(baseName);
+
+          // Compute age from DOB if available — the traveller-profile age
+          // field is just a display copy; the authoritative DOB lives on
+          // profiles. Avoids forcing the user to re-enter.
+          const dob = baseProfileResult.data?.date_of_birth;
+          if (dob) {
+            const d = new Date(dob);
+            if (!Number.isNaN(d.getTime())) {
+              const now = new Date();
+              let years = now.getFullYear() - d.getFullYear();
+              const monthDiff = now.getMonth() - d.getMonth();
+              if (monthDiff < 0 || (monthDiff === 0 && now.getDate() < d.getDate())) years--;
+              setAge(String(years));
+            }
+          }
         }
+
         if (prefs) {
           setSimilarAge(prefs.similar_age);
           setSimilarAgeWindow(prefs.similar_age_window);
