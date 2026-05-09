@@ -1,7 +1,7 @@
 # Rwendo — Project Overview
-*Last updated: 2026-05-04*
+*Last updated: 2026-05-09*
 
-> **For the most current status snapshot + handoff for the next session, see [docs/STATUS-2026-05-04.md](docs/STATUS-2026-05-04.md).** This file covers stable architecture and long-term direction; the status doc covers what shipped this week and what's next.
+> **For the most current status snapshot + handoff for the next session, see [docs/STATUS-2026-05-09.md](docs/STATUS-2026-05-09.md).** This file covers stable architecture and long-term direction; the status doc covers what shipped this week and what's next.
 
 > "The journey of a thousand words begins with one step."
 
@@ -44,7 +44,9 @@ Supabase Storage `course-content` bucket                  lesson bodies stream o
 
 Adding a new language to the system = drop a single `data/speakers/<id>/` directory; lessons translate themselves on first open via the lazy-translation Edge Function (next phase).
 
-**v1 packs:** speakers `english`, `shona`, `french`, `chinese`, `tagalog` populated. 13 courses with English-source bodies in Storage. Jurisdictions `AU`, `GB`, `US`, `EU`, `ZW`, `FR`, `PH` populated; others as `{ extends: 'AU' }` stubs.
+**v1 packs:** **11 speakers** populated — `english`, `shona`, `ndebele`, `french`, `chinese`, `tagalog`, `hindi`, `spanish`, `portuguese`, `japanese`, `korean`. **19 courses** in Storage (10 directional language pairs × English ↔ {Shona/Ndebele/French/Chinese/Tagalog/Hindi/Spanish/Portuguese/Japanese/Korean}, plus 8 self-development "Build Yourself" courses, plus AI Companion). Jurisdictions `AU`, `GB`, `US`, `EU`, `ZW`, `FR`, `PH` populated; others as `{ extends: 'AU' }` stubs.
+
+**Streaming pivot (extended 2026-05-09):** travel content (phrasebooks × 11, cultural guides × 11, safari, flipcards × 11 = ~6,000 vocab entries) now also streams from Supabase Storage. Bundle drops further by ~624 KB. Pattern: registries + types + UI bundled, all content (lessons, phrasebook, culture, safari, flipcards, post images) streams on demand.
 
 ---
 
