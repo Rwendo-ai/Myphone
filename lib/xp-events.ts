@@ -1,41 +1,43 @@
 /**
  * XP event client. Wraps the `award_xp` and `redeem_xp` Supabase RPCs.
  *
- * Server-side dedup (in award_xp) prevents:
- *   - Multiple `login_daily` awards in one local day
- *   - Multiple `lesson_complete` awards for the same lesson_id
- *   - More than one `ai_*_use` event per hour per type
+ * Throttling rules (locked 2026-05-09):
+ *   - Universal: once per hour per (user, event_type). Logging in 20 times
+ *     in an hour earns one login XP, not twenty.
+ *   - lesson_complete: dedup'd by lesson_id only (each lesson rewarded
+ *     once ever, but multiple different lessons in the same hour ALL
+ *     earn XP — completing a curriculum is its own legitimate stream).
+ *   - purchase_*: no cap (real-money purchases are server-validated by
+ *     the RevenueCat webhook; per-hour cap would block legitimate
+ *     same-session purchases like course + subscription).
  *
- * Beyond that, the server inserts whatever the client requests. Engagement
- * events (post/like/comment/follow) are uncapped — if a user spams them,
- * the values are tiny and the social cost (cluttered feed) self-regulates.
+ * Throttle is enforced server-side in award_xp() so a modified client
+ * can't bypass it.
  *
- * Economic model (locked 2026-05-09 — see STATUS-2026-05-09.md):
- *   XP IS earned through engagement, AI usage (rate-limited), and purchases.
- *   XP CAN be spent on digital products (courses, AI companion subscriptions).
- *   XP CANNOT be spent on AI credits (compute cost is real and paid via subscription).
- *   Travel section is free; 10 free text-AI messages per day; 1 free starter companion.
+ * Economic model:
+ *   XP earned through engagement, AI usage (per-hour throttled), purchases.
+ *   XP can be spent on digital products (courses, AI companion subscriptions).
+ *   XP CANNOT be spent on AI credits (compute cost is real, paid via subscription).
+ *   Travel free; 10 free text-AI messages per day; 1 free starter companion.
  */
 
 import { supabase } from './supabase';
 
 /** Canonical event types. Add a new entry here BEFORE calling awardXp. */
 export type XpEventType =
-  // Engagement (uncapped)
+  // Per-hour-throttled (server enforces one award per hour per user)
+  | 'login'
   | 'post_create'
   | 'comment_create'
   | 'post_like'
   | 'user_follow'
-  // Daily-capped (server enforces one-per-day)
-  | 'login_daily'
-  // Per-lesson dedup (server enforces one-per-lesson_id)
-  | 'lesson_complete'
-  // Hourly-capped (server enforces one-per-hour-per-type)
   | 'ai_text_use'
   | 'ai_voice_use'
   | 'ai_lipsync_use'
-  // Purchase rewards (uncapped — server doesn't validate spend, that's the
-  // paywall flow's job; awardXp is called after a successful purchase)
+  // Per-lesson dedup (each lesson rewarded once ever; multiple different
+  // lessons in the same hour all earn XP)
+  | 'lesson_complete'
+  // No cap (real-money purchase, server-validated upstream)
   | 'purchase_text_ai_period'
   | 'purchase_lipsync_period'
   | 'purchase_course'
@@ -44,15 +46,15 @@ export type XpEventType =
 /** Canonical XP amounts per event. Tight scale per user spec — small
  *  values feel earned, top-tier purchase caps at 1000. */
 export const XP_AMOUNTS: Record<XpEventType, number> = {
+  login: 5,
   post_create: 10,
   comment_create: 3,
   post_like: 1,
   user_follow: 2,
-  login_daily: 5,
-  lesson_complete: 25,        // base — actual lesson xp comes from manifest
   ai_text_use: 5,
   ai_voice_use: 5,
   ai_lipsync_use: 5,
+  lesson_complete: 25,        // base — actual lesson xp comes from manifest
   purchase_text_ai_period: 100,
   purchase_lipsync_period: 500,
   purchase_course: 100,

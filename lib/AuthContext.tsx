@@ -55,14 +55,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setSession(session);
       setUser(session?.user ?? null);
       if (session?.user) checkOnboarding(session.user.id);
-      // Daily-login XP. Server enforces once-per-day dedup so this is safe
-      // to fire on every SIGNED_IN event (initial sign-in + each subsequent
+      // Login XP. Server enforces once-per-hour throttle so logging in
+      // and out repeatedly only counts once per hour. Safe to fire on
+      // every SIGNED_IN event (initial sign-in + each subsequent
       // restore-from-storage on app open).
       if (event === 'SIGNED_IN' && session?.user) {
         // Lazy-import to avoid a circular dep risk between AuthContext and
         // anything that ends up reading auth state during module init.
         import('./xp-events').then(({ awardXp }) => {
-          awardXp('login_daily').catch(() => {/* best-effort */});
+          awardXp('login').catch(() => {/* best-effort */});
         });
       }
     });
