@@ -63,7 +63,7 @@ Adding a new language to the system = drop a single `data/speakers/<id>/` direct
 - **Edge Function:** `rwen-chat` deployed (Claude webhook). `rwen-tts` and `rwen-stt` exist as code, awaiting deploy + env-flag flip to remove client-side keys.
 - **2D Avatar:** 8 Rwen poses (transparent WebP) ✅
 - **3D Avatar:** rwen_final.glb (20MB, all animations) ⬜ deferred to v1.5
-- **Payments:** RevenueCat ⬜ planned for next session — see [docs/PHASE-H-REVENUECAT.md](docs/PHASE-H-REVENUECAT.md)
+- **Payments:** RevenueCat ✅ SDK wired (2026-05-09) — `react-native-purchases` + `react-native-purchases-ui` installed, `lib/purchases.ts` is the wrapper, `app/profile/plans.tsx` triggers the hosted paywall, `hooks/useEntitlements.ts` is the reactive read. Test API keys live in `.env.local`. Production keys + App Store Connect / Play Console product creation + RevenueCat dashboard mapping + webhook Edge Function are still required before purchases work end-to-end. See [docs/PAYWALL-DESIGN.md](docs/PAYWALL-DESIGN.md).
 - **Analytics:** PostHog ⬜ not yet
 - **Crash:** Sentry ⬜ not yet
 - **Email:** Supabase Auth (transactional/auth) ✅, Resend or SendGrid ⬜ for marketing/welcome emails (planned)
