@@ -51,10 +51,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setLoading(false);
     });
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       setSession(session);
       setUser(session?.user ?? null);
       if (session?.user) checkOnboarding(session.user.id);
+      // Daily-login XP. Server enforces once-per-day dedup so this is safe
+      // to fire on every SIGNED_IN event (initial sign-in + each subsequent
+      // restore-from-storage on app open).
+      if (event === 'SIGNED_IN' && session?.user) {
+        // Lazy-import to avoid a circular dep risk between AuthContext and
+        // anything that ends up reading auth state during module init.
+        import('./xp-events').then(({ awardXp }) => {
+          awardXp('login_daily').catch(() => {/* best-effort */});
+        });
+      }
     });
 
     return () => subscription.unsubscribe();

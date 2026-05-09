@@ -4,6 +4,7 @@ import { english as defaultSpeaker } from '../data/speakers';
 import { resolvePreset } from './active-companion';
 import { buildCompanionPrompt } from './companion-prompts';
 import { appendConversationTurn } from './conversation-memory';
+import { awardXp } from './xp-events';
 import type { CompanionPreset } from '../data/companions/presets';
 
 const CLAUDE_API_URL = 'https://api.anthropic.com/v1/messages';
@@ -247,6 +248,9 @@ export async function sendMessage(
   // Save user message — single write path shared by text + voice + future
   // avatar/lipsync flows. See lib/conversation-memory.ts.
   await appendConversationTurn(userId, 'user', userMessage, { packContext: lessonContext });
+
+  // XP for text-AI usage. Server caps to 1/hour automatically. Best-effort.
+  awardXp('ai_text_use').catch(() => {});
 
   // Fetch full profile (cached)
   const profile = await fetchUserProfile(userId);

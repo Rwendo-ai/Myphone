@@ -8,6 +8,7 @@
  */
 
 import { supabase } from './supabase';
+import { awardXp } from './xp-events';
 
 export interface TravellerProfile {
   user_id: string;
@@ -206,6 +207,8 @@ export async function createPost(p: {
     .select()
     .single();
   if (error) throw error;
+  // Award XP — best-effort; never blocks post creation.
+  awardXp('post_create', undefined, { post_id: data.id }).catch(() => {});
   return data as TravellerPost;
 }
 
@@ -260,6 +263,7 @@ export async function getProfileByHandle(handle: string): Promise<TravellerProfi
 export async function followUser(followerId: string, followedId: string): Promise<void> {
   const { error } = await supabase.from('traveller_follows').insert({ follower_id: followerId, followed_id: followedId });
   if (error && !error.message.toLowerCase().includes('duplicate')) throw error;
+  awardXp('user_follow', undefined, { followed_id: followedId }).catch(() => {});
 }
 
 export async function unfollowUser(followerId: string, followedId: string): Promise<void> {
@@ -298,6 +302,7 @@ export async function getFollowCounts(userId: string): Promise<{ followers: numb
 export async function likePost(postId: string, userId: string): Promise<void> {
   const { error } = await supabase.from('traveller_post_likes').insert({ post_id: postId, user_id: userId });
   if (error && !error.message.toLowerCase().includes('duplicate')) throw error;
+  awardXp('post_like', undefined, { post_id: postId }).catch(() => {});
 }
 
 export async function unlikePost(postId: string, userId: string): Promise<void> {
@@ -341,6 +346,7 @@ export async function addComment(postId: string, authorId: string, body: string)
     .select()
     .single();
   if (error) throw error;
+  awardXp('comment_create', undefined, { post_id: postId, comment_id: data.id }).catch(() => {});
   return data as PostComment;
 }
 

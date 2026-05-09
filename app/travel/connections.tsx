@@ -16,6 +16,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 
 import { pickImage, uploadPostImage, postImageUrl, type ChosenImage } from '../../lib/post-images';
+import { useIntroBubble } from '../../lib/intro-bubbles';
+import IntroBubble from '../../components/IntroBubble';
 
 import { useAuth } from '../../lib/AuthContext';
 import { useSettings } from '../../lib/SettingsContext';
@@ -56,6 +58,7 @@ export default function ConnectionsScreen() {
   const [refreshing, setRefreshing] = useState(false);
   const [composeOpen, setComposeOpen] = useState(false);
   const [feedTab, setFeedTab] = useState<FeedTab>('discover');
+  const composeIntro = useIntroBubble('connections.compose');
 
   const load = useCallback(async () => {
     if (!user) { setState({ kind: 'loading' }); return; }
@@ -142,6 +145,9 @@ export default function ConnectionsScreen() {
 
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>
+      {state.kind === 'ready' && composeIntro.show && (
+        <IntroBubble id="connections.compose" onDismiss={composeIntro.markSeen} />
+      )}
       <View style={styles.header}>
         <Pressable onPress={() => router.back()}><Text style={styles.back}>‹ Travel</Text></Pressable>
         <Text style={styles.title}>Connections</Text>

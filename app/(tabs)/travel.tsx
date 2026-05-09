@@ -27,6 +27,8 @@ import { useAuth } from '../../lib/AuthContext';
 import { supabase } from '../../lib/supabase';
 import { ageFromDob } from '../../lib/active-companion';
 import { useActiveTravelDestination, listAllDestinations } from '../../lib/travel-destination';
+import { useIntroBubble } from '../../lib/intro-bubbles';
+import IntroBubble from '../../components/IntroBubble';
 import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
 
@@ -62,6 +64,9 @@ export default function TravelScreen() {
       .then(({ data }) => setAge(ageFromDob(data?.date_of_birth)));
   }, [user]);
   const showConnections = age !== null && age >= CONNECTIONS_MIN_AGE;
+
+  // First-run bubble — once-per-user introduction to the country picker.
+  const countryPickerIntro = useIntroBubble('travel.country_picker');
 
   const features: TravelFeature[] = [
     {
@@ -116,6 +121,9 @@ export default function TravelScreen() {
 
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>
+      {countryPickerIntro.show && (
+        <IntroBubble id="travel.country_picker" onDismiss={countryPickerIntro.markSeen} />
+      )}
       <View style={styles.profileBtnFloat} pointerEvents="box-none">
         <ProfilePicButton variant="light" />
       </View>

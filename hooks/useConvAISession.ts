@@ -38,6 +38,7 @@ import {
   loadCompanionFacts,
   appendConversationTurn,
 } from '../lib/conversation-memory';
+import { awardXp } from '../lib/xp-events';
 
 const ELEVENLABS_KEY = process.env.EXPO_PUBLIC_ELEVENLABS_KEY ?? '';
 const ELEVENLABS_AGENT_ID = process.env.EXPO_PUBLIC_ELEVENLABS_AGENT_ID ?? '';
@@ -213,6 +214,8 @@ export function useConvAISession(handlers: ConvAIHandlers = {}): ConvAIControls 
           setState('active');
           isStreamingRef.current = true;
           try { toggleRecording(true); } catch {}
+          // XP for voice-AI usage — server caps to 1/hour. Best-effort.
+          awardXp('ai_voice_use').catch(() => {});
         },
         onDisconnected: (code, reason) => {
           isStreamingRef.current = false;

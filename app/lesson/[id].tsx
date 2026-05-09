@@ -6,6 +6,9 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../lib/AuthContext';
 import RwenImage from '../../components/rwen/RwenImage';
 import { saveLessonProgress } from '../../lib/progress';
+import { awardXp } from '../../lib/xp-events';
+import { useIntroBubble } from '../../lib/intro-bubbles';
+import IntroBubble from '../../components/IntroBubble';
 import { autoAddLessonChunks } from '../../lib/dictionary';
 import LessonToolsSheet from '../../components/lesson/LessonToolsSheet';
 import { Colors } from '../../constants/colors';
@@ -89,6 +92,9 @@ export default function LessonScreen() {
   const [saved, setSaved] = useState(false);
   const [toolsOpen, setToolsOpen] = useState(false);
 
+  // First-run bubble — explains the 7-phase lesson structure.
+  const phaseIntro = useIntroBubble('lesson.first_phase');
+
   if (loading) {
     return (
       <SafeAreaView style={[styles.safe, { backgroundColor: Colors.primary, alignItems: 'center', justifyContent: 'center' }]}>
@@ -165,6 +171,10 @@ export default function LessonScreen() {
         totalQuestions: totalAnswered,
         xpEarned: xpEarned,
       }).catch((e) => console.error('saveLessonProgress failed:', e));
+      // Award lesson_complete XP — server dedups on lesson_id so this is
+      // safe even if the user replays the lesson. The actual XP amount
+      // matches what saveLessonProgress recorded.
+      awardXp('lesson_complete', xpEarned || 25, { lesson_id: lesson.id }).catch(() => {});
       if (lessonCourseId) {
         autoAddLessonChunks(user.id, lessonCourseId, lesson).catch((e) =>
           console.error('autoAddLessonChunks failed:', e),
@@ -293,6 +303,9 @@ export default function LessonScreen() {
   if (phase === 'hook') {
     return (
       <SafeAreaView style={[styles.safe, { backgroundColor: Colors.primary }]} edges={['top']}>
+        {phaseIntro.show && (
+          <IntroBubble id="lesson.first_phase" onDismiss={phaseIntro.markSeen} />
+        )}
         <TopBar light />
         <View style={styles.hookContainer}>
           <RwenFace animation="arise" size={80} />

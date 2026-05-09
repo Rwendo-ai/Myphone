@@ -13,6 +13,8 @@ import { buildCompanionGreeting } from '../../lib/companion-prompts';
 import { resolvePreset } from '../../lib/active-companion';
 import { speakText, stopSpeaking, startRecording, stopRecordingAndTranscribe, isCurrentlyRecording } from '../../lib/voice';
 import { useConvAISession } from '../../hooks/useConvAISession';
+import { useIntroBubble } from '../../lib/intro-bubbles';
+import IntroBubble from '../../components/IntroBubble';
 import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
 
@@ -273,10 +275,16 @@ export default function CompanionScreen() {
     setMode('text');
   }, []);
 
+  // First-run bubble — explains text vs voice modes.
+  const companionIntro = useIntroBubble('companion.text_vs_voice');
+
   // ─── Render ───────────────────────────────────────────────────────────────
 
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>
+      {companionIntro.show && (
+        <IntroBubble id="companion.text_vs_voice" onDismiss={companionIntro.markSeen} />
+      )}
 
       {/* Header */}
       <View style={[styles.header, { backgroundColor: theme.gradient[0] }]}>
