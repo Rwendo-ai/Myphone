@@ -292,6 +292,29 @@ const LANGUAGE_MODULE_META: Record<number, ModuleMeta> = {
   10: { title: 'Emotions, Health & Stories',   description: 'Express how you feel, talk health, share stories — the deepest layer',     emoji: '❤️‍🩹' },
 };
 
+// Ndebele has an extra Module 1 — the click consonants primer — so all
+// the standard topics shift down by one. Override the default
+// LANGUAGE_MODULE_META for this course only.
+const NDEBELE_MODULE_META: Record<number, ModuleMeta> = {
+  1:  { title: 'The Clicks',                   description: 'Hear, recognise and produce c, q, x — the three Ndebele click consonants', emoji: '👅' },
+  2:  { title: 'Greetings & Respect',          description: 'Salibonani, Sawubona, and the right way to greet an elder',                emoji: '👋' },
+  3:  { title: 'Numbers, Time & Days',         description: 'Count, tell time, name the days of the week',                              emoji: '🔢' },
+  4:  { title: 'Food & Eating',                description: 'Inkobe, umngqusho, umqombothi — the language of the table',                emoji: '🍲' },
+  5:  { title: 'Family & Relationships',       description: 'Ndebele kinship is precise — uMalume vs uBabakazi, lobola, and more',      emoji: '👨‍👩‍👧' },
+  6:  { title: 'Body & Health',                description: 'Talk about the body, sickness, doctors and traditional healers',           emoji: '❤️‍🩹' },
+  7:  { title: 'Travel, Places & Directions',  description: 'Bulawayo, Hwange, Matobo — get around Matabeleland',                       emoji: '🗺️' },
+  8:  { title: 'Money & Shopping',             description: 'Bargain, pay, count change — eDamu and the markets',                        emoji: '💵' },
+  9:  { title: 'Cultural Concepts',            description: 'Ubuntu, uMthwakazi, Mzilikazi, izithakazelo — the soul of the language',    emoji: '🌍' },
+  10: { title: 'Storytelling & Narrative',     description: 'Kwasukasukela — the art of telling a story',                               emoji: '📜' },
+  11: { title: 'Conversation Mastery',         description: 'Idioms, register, the moves of a real Ndebele conversation',                emoji: '🎓' },
+};
+
+/** Per-course overrides — used when a language course's curriculum
+ *  doesn't follow the default 10-module pattern. */
+const LANGUAGE_COURSE_OVERRIDES: Record<string, Record<number, ModuleMeta>> = {
+  'language-ndebele': NDEBELE_MODULE_META,
+};
+
 interface MinimalLesson {
   id: string;
   module: number;
@@ -314,7 +337,9 @@ export function getUnitsForCourse(
   lessons: MinimalLesson[],
   moduleMeta?: Record<number, ModuleMeta>,
 ): Unit[] {
-  const meta = moduleMeta ?? (courseId.startsWith('language-') ? LANGUAGE_MODULE_META : {});
+  const meta = moduleMeta
+    ?? LANGUAGE_COURSE_OVERRIDES[courseId]
+    ?? (courseId.startsWith('language-') ? LANGUAGE_MODULE_META : {});
   const byModule = new Map<number, MinimalLesson[]>();
   for (const l of lessons) {
     if (!byModule.has(l.module)) byModule.set(l.module, []);

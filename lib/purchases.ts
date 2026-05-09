@@ -26,6 +26,13 @@ import Purchases, {
 } from 'react-native-purchases';
 import RevenueCatUI, { PAYWALL_RESULT } from 'react-native-purchases-ui';
 
+// Native-module availability guard. When running on a build that doesn't
+// have react-native-purchases linked (e.g. an older EAS dev build, or the
+// Expo Go runtime), the imported `Purchases` object is null. Any SDK call
+// would throw "Cannot read property 'X' of null". This flag lets every
+// function bail gracefully instead of crashing.
+const SDK_AVAILABLE = Purchases != null && typeof Purchases.setLogLevel === 'function';
+
 // ─── Public types ──────────────────────────────────────────────────────────
 
 export interface ActiveEntitlement {
@@ -66,6 +73,13 @@ let initialised = false;
  * the same id when receiving purchase events.
  */
 export async function initPurchases(userId: string | null): Promise<void> {
+  if (!SDK_AVAILABLE) {
+    // Older EAS build without react-native-purchases linked. Skip silently
+    // so the app keeps working in degraded "no-purchases" mode until the
+    // next build picks up the native module.
+    return;
+  }
+
   const iosKey     = process.env.EXPO_PUBLIC_REVENUECAT_IOS_KEY ?? '';
   const androidKey = process.env.EXPO_PUBLIC_REVENUECAT_ANDROID_KEY ?? '';
 
@@ -98,7 +112,7 @@ export async function initPurchases(userId: string | null): Promise<void> {
 
 /** Call on sign-out so the next user starts with a fresh anonymous session. */
 export async function logoutPurchases(): Promise<void> {
-  if (!initialised) return;
+  if (!SDK_AVAILABLE || !initialised) return;
   try {
     await Purchases.logOut();
   } catch (e) {
@@ -114,6 +128,7 @@ export async function logoutPurchases(): Promise<void> {
  * so you don't need to call it before presentPaywall().
  */
 export async function getOfferings(): Promise<OfferingProduct[]> {
+  if (!SDK_AVAILABLE) return [];
   try {
     const offerings = await Purchases.getOfferings();
     const current = offerings.current;
@@ -140,6 +155,7 @@ export async function getOfferings(): Promise<OfferingProduct[]> {
  * Returns true if the user purchased or restored, false if cancelled / error.
  */
 export async function presentPaywall(): Promise<boolean> {
+  if (!SDK_AVAILABLE) return false;
   try {
     const result = await RevenueCatUI.presentPaywall();
     switch (result) {
@@ -163,6 +179,7 @@ export async function presentPaywall(): Promise<boolean> {
  * already have the entitlement. Use this when entering a gated screen.
  */
 export async function presentPaywallIfNeeded(entitlementId: string): Promise<boolean> {
+  if (!SDK_AVAILABLE) return false;
   try {
     const result = await RevenueCatUI.presentPaywallIfNeeded({
       requiredEntitlementIdentifier: entitlementId,
@@ -184,6 +201,7 @@ export async function presentPaywallIfNeeded(entitlementId: string): Promise<boo
  * that calls this.
  */
 export async function presentCustomerCenter(): Promise<void> {
+  if (!SDK_AVAILABLE) return;
   try {
     await RevenueCatUI.presentCustomerCenter();
   } catch (e) {
@@ -198,6 +216,7 @@ export async function presentCustomerCenter(): Promise<void> {
  * presentPaywall) — this is for cases where you want a custom UI.
  */
 export async function purchaseProduct(storeId: string): Promise<PurchaseResult> {
+  if (!SDK_AVAILABLE) return { success: false, errorMessage: 'Purchases SDK unavailable' };
   try {
     const offerings = await Purchases.getOfferings();
     const current = offerings.current;
@@ -216,6 +235,7 @@ export async function purchaseProduct(storeId: string): Promise<PurchaseResult> 
 
 /** Standard "Restore Purchases" handler. Required by Apple. */
 export async function restorePurchases(): Promise<PurchaseResult> {
+  if (!SDK_AVAILABLE) return { success: false, errorMessage: 'Purchases SDK unavailable' };
   try {
     await Purchases.restorePurchases();
     return { success: true };
@@ -238,6 +258,7 @@ function mapEntitlements(info: CustomerInfo): ActiveEntitlement[] {
 }
 
 export async function getActiveEntitlements(): Promise<ActiveEntitlement[]> {
+  if (!SDK_AVAILABLE) return [];
   try {
     const info = await Purchases.getCustomerInfo();
     return mapEntitlements(info);
@@ -251,6 +272,7 @@ export async function getActiveEntitlements(): Promise<ActiveEntitlement[]> {
  *  Use 'Rwendo Pro' for the all-access pro tier, or course-specific ids
  *  once we configure individual courses. */
 export async function hasEntitlement(entitlementId: string): Promise<boolean> {
+  if (!SDK_AVAILABLE) return false;
   try {
     const info = await Purchases.getCustomerInfo();
     return info.entitlements.active[entitlementId] !== undefined;
@@ -261,6 +283,7 @@ export async function hasEntitlement(entitlementId: string): Promise<boolean> {
 
 /** Subscribe to entitlement changes. Returns an unsubscribe function. */
 export function listenEntitlements(handler: (entitlements: ActiveEntitlement[]) => void): () => void {
+  if (!SDK_AVAILABLE) return () => {};
   const cb = (info: CustomerInfo) => handler(mapEntitlements(info));
   Purchases.addCustomerInfoUpdateListener(cb);
   return () => Purchases.removeCustomerInfoUpdateListener(cb);
