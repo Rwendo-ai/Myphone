@@ -34,14 +34,16 @@ export default function UnitScreen() {
   };
   const courseId = legacyToCourse[unit.packId] ?? unit.packId;
 
-  // Module number from synthesised unit IDs (`<courseId>::m01` → 1).
-  // Used to surface the matching 50-card flip-card set.
+  // Module number derived from the unit's first lesson id (mNN-lNN format).
+  // Works for both synthesised (`<courseId>::m01`) and legacy hand-authored
+  // (`greetings`, `survival`, ...) unit shapes since every lesson id starts
+  // with mNN- regardless of how the unit itself was authored.
   const moduleNum = (() => {
-    if (typeof id !== 'string') return null;
-    const m = id.match(/::m(\d+)$/);
+    const lessonId = unit.lessons[0]?.id;
+    if (!lessonId) return null;
+    const m = lessonId.match(/^m(\d+)-/);
     return m ? Number(m[1]) : null;
   })();
-  // Sync existence check — content streams from Storage when the user taps.
   const flipCardsAvailable = moduleNum != null && hasFlipCards(courseId);
 
   return (
