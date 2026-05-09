@@ -19,6 +19,10 @@ export interface LessonMeta {
   lesson: number;
   title: string;
   xpReward: number;
+  /** Content version for cache invalidation. Defaults to 1 if absent in the
+   *  Storage JSON. Bump in the lesson's source file and re-upload to force
+   *  devices to refetch on next open. */
+  version?: number;
 }
 
 export const LESSON_MANIFEST: LessonMeta[] = [
@@ -27,56 +31,64 @@ export const LESSON_MANIFEST: LessonMeta[] = [
     "module": 1,
     "lesson": 1,
     "title": "Before You Open Your Mouth",
-    "xpReward": 25
+    "xpReward": 25,
+    "version": 1
   },
   {
     "id": "m01-l02-observation-without-evaluation",
     "module": 1,
     "lesson": 2,
     "title": "Observation Without Evaluation",
-    "xpReward": 25
+    "xpReward": 25,
+    "version": 1
   },
   {
     "id": "m01-l03-feeling-and-need-underneath",
     "module": 1,
     "lesson": 3,
     "title": "The Feeling and the Need Underneath",
-    "xpReward": 30
+    "xpReward": 30,
+    "version": 1
   },
   {
     "id": "m01-l04-real-request-not-demand",
     "module": 1,
     "lesson": 4,
     "title": "A Real Request, Not a Demand",
-    "xpReward": 30
+    "xpReward": 30,
+    "version": 1
   },
   {
     "id": "m01-l05-raising-it-with-your-manager",
     "module": 1,
     "lesson": 5,
     "title": "Raising Something With Your Manager",
-    "xpReward": 35
+    "xpReward": 35,
+    "version": 1
   },
   {
     "id": "m01-l06-feedback-that-doesnt-crush",
     "module": 1,
     "lesson": 6,
     "title": "Giving Feedback That Doesn't Crush",
-    "xpReward": 30
+    "xpReward": 30,
+    "version": 1
   },
   {
     "id": "m01-l07-saying-no-walking-back-owning",
     "module": 1,
     "lesson": 7,
     "title": "Saying No, Walking Back, Owning a Mistake",
-    "xpReward": 35
+    "xpReward": 35,
+    "version": 1
   },
   {
     "id": "m01-l08-the-conversation-youve-been-avoiding",
     "module": 1,
     "lesson": 8,
     "title": "The Conversation You've Been Avoiding",
-    "xpReward": 50
+    "xpReward": 50,
+    "version": 1
   }
 ];
 

@@ -54,6 +54,7 @@ const COURSES: Array<{ id: string; primarySpeaker: string }> = [
   { id: 'language-portuguese',      primarySpeaker: 'english' },
   { id: 'language-japanese',        primarySpeaker: 'english' },
   { id: 'language-korean',          primarySpeaker: 'english' },
+  { id: 'language-ndebele',         primarySpeaker: 'english' },
   { id: 'know-yourself',            primarySpeaker: 'english' },
   { id: 'hard-conversations-work',  primarySpeaker: 'english' },
   { id: 'parenting-under-pressure', primarySpeaker: 'english' },

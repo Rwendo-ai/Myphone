@@ -19,6 +19,10 @@ export interface LessonMeta {
   lesson: number;
   title: string;
   xpReward: number;
+  /** Content version for cache invalidation. Defaults to 1 if absent in the
+   *  Storage JSON. Bump in the lesson's source file and re-upload to force
+   *  devices to refetch on next open. */
+  version?: number;
 }
 
 export const LESSON_MANIFEST: LessonMeta[] = [
@@ -27,70 +31,80 @@ export const LESSON_MANIFEST: LessonMeta[] = [
     "module": 1,
     "lesson": 1,
     "title": "The Difference Between Looking and Seeing",
-    "xpReward": 25
+    "xpReward": 25,
+    "version": 1
   },
   {
     "id": "m01-l02-one-breath-on-purpose",
     "module": 1,
     "lesson": 2,
     "title": "One Breath, On Purpose",
-    "xpReward": 25
+    "xpReward": 25,
+    "version": 1
   },
   {
     "id": "m01-l03-thought-isnt-verdict",
     "module": 1,
     "lesson": 3,
     "title": "A Thought Isn't a Verdict",
-    "xpReward": 25
+    "xpReward": 25,
+    "version": 1
   },
   {
     "id": "m01-l04-already-back",
     "module": 1,
     "lesson": 4,
     "title": "When You Notice You're Distracted, You're Already Back",
-    "xpReward": 25
+    "xpReward": 25,
+    "version": 1
   },
   {
     "id": "m01-l05-five-senses-check",
     "module": 1,
     "lesson": 5,
     "title": "The Five-Senses Check",
-    "xpReward": 25
+    "xpReward": 25,
+    "version": 1
   },
   {
     "id": "m01-l06-attention-becomes-life",
     "module": 1,
     "lesson": 6,
     "title": "What You Pay Attention to Becomes Your Life",
-    "xpReward": 25
+    "xpReward": 25,
+    "version": 1
   },
   {
     "id": "m01-l07-the-pause",
     "module": 1,
     "lesson": 7,
     "title": "The Pause Between Stimulus and Response",
-    "xpReward": 25
+    "xpReward": 25,
+    "version": 1
   },
   {
     "id": "m01-l08-boredom-is-information",
     "module": 1,
     "lesson": 8,
     "title": "Boredom Is Information",
-    "xpReward": 25
+    "xpReward": 25,
+    "version": 1
   },
   {
     "id": "m01-l09-staying-with-what-you-avoid",
     "module": 1,
     "lesson": 9,
     "title": "Staying With What You'd Rather Avoid",
-    "xpReward": 25
+    "xpReward": 25,
+    "version": 1
   },
   {
     "id": "m01-l10-attention-as-practice",
     "module": 1,
     "lesson": 10,
     "title": "Attention as a Practice, Not a Performance",
-    "xpReward": 50
+    "xpReward": 50,
+    "version": 1
   }
 ];
 

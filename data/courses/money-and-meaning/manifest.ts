@@ -19,6 +19,10 @@ export interface LessonMeta {
   lesson: number;
   title: string;
   xpReward: number;
+  /** Content version for cache invalidation. Defaults to 1 if absent in the
+   *  Storage JSON. Bump in the lesson's source file and re-upload to force
+   *  devices to refetch on next open. */
+  version?: number;
 }
 
 export const LESSON_MANIFEST: LessonMeta[] = [
@@ -27,70 +31,80 @@ export const LESSON_MANIFEST: LessonMeta[] = [
     "module": 1,
     "lesson": 1,
     "title": "Money Is a Relationship, Not a Number",
-    "xpReward": 25
+    "xpReward": 25,
+    "version": 1
   },
   {
     "id": "m01-l02-what-your-parents-taught-you",
     "module": 1,
     "lesson": 2,
     "title": "What Your Parents Taught You Without Saying It",
-    "xpReward": 30
+    "xpReward": 30,
+    "version": 1
   },
   {
     "id": "m01-l03-scarcity-vs-sufficiency",
     "module": 1,
     "lesson": 3,
     "title": "Scarcity vs. Sufficiency",
-    "xpReward": 25
+    "xpReward": 25,
+    "version": 1
   },
   {
     "id": "m01-l04-debt-without-shame",
     "module": 1,
     "lesson": 4,
     "title": "Debt Without Shame",
-    "xpReward": 25
+    "xpReward": 25,
+    "version": 1
   },
   {
     "id": "m01-l05-broke-vs-have-less",
     "module": 1,
     "lesson": 5,
     "title": "\"I'm Broke\" vs. \"I Have Less Right Now\"",
-    "xpReward": 30
+    "xpReward": 30,
+    "version": 1
   },
   {
     "id": "m01-l06-generosity-vs-self-protection",
     "module": 1,
     "lesson": 6,
     "title": "Generosity vs. Self-Protection",
-    "xpReward": 30
+    "xpReward": 30,
+    "version": 1
   },
   {
     "id": "m01-l07-money-in-the-rooms-you-love-in",
     "module": 1,
     "lesson": 7,
     "title": "Money in the Rooms You Love In",
-    "xpReward": 35
+    "xpReward": 35,
+    "version": 1
   },
   {
     "id": "m01-l08-loneliness-of-more-and-less",
     "module": 1,
     "lesson": 8,
     "title": "The Loneliness of More — and the Loneliness of Less",
-    "xpReward": 35
+    "xpReward": 35,
+    "version": 1
   },
   {
     "id": "m01-l09-control-and-not",
     "module": 1,
     "lesson": 9,
     "title": "What You Can Control and What You Cannot",
-    "xpReward": 30
+    "xpReward": 30,
+    "version": 1
   },
   {
     "id": "m01-l10-enough",
     "module": 1,
     "lesson": 10,
     "title": "Enough — and the Life You'd Live If You Believed It",
-    "xpReward": 40
+    "xpReward": 40,
+    "version": 1
   }
 ];
 
