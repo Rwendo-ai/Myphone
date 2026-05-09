@@ -1,129 +1,267 @@
 /**
- * RevenueCat SDK wrapper. STUBBED until SDK is installed.
+ * RevenueCat SDK wrapper. Real implementation now that
+ * `react-native-purchases` is installed.
  *
- * Once `react-native-purchases` is installed (`npx expo install
- * react-native-purchases`) and the RevenueCat dashboard is configured per
- * docs/PAYWALL-DESIGN.md §2, replace the stubs in this file with real
- * Purchases.* calls.
+ * Initialise at app boot (after the user is logged in so we can pass
+ * appUserID = user.id — keeps RevenueCat customer rows linked to our
+ * Supabase auth users). See app/_layout.tsx for the call site.
  *
- * The shape of the public API (initPurchases / getOfferings /
- * purchaseProduct / restorePurchases / getActiveEntitlements) won't change —
- * the rest of the app can already integrate against this.
+ * Public API:
+ *   - initPurchases(userId)
+ *   - getOfferings()              — read available products with localised pricing
+ *   - presentPaywall()            — show RevenueCat's hosted paywall UI
+ *   - presentCustomerCenter()     — show subscription management UI
+ *   - purchaseProduct(storeId)    — programmatic purchase (alternative to paywall)
+ *   - restorePurchases()          — required by Apple
+ *   - getActiveEntitlements()     — read current entitlements
+ *   - hasEntitlement(id)          — quick check helper
+ *   - listenEntitlements(handler) — subscribe to changes
  */
 
-import type { Product } from '../data/products';
-import { PRODUCTS_BY_ID } from '../data/products';
+import { Platform } from 'react-native';
+import Purchases, {
+  LOG_LEVEL,
+  type CustomerInfo,
+  type PurchasesPackage,
+} from 'react-native-purchases';
+import RevenueCatUI, { PAYWALL_RESULT } from 'react-native-purchases-ui';
 
-// ─── Types (mirror RevenueCat shapes — keep small) ──────────────────────────
+// ─── Public types ──────────────────────────────────────────────────────────
 
 export interface ActiveEntitlement {
-  identifier: string;       // e.g. 'companion_text', 'course_shona'
+  identifier: string;
   isActive: boolean;
   willRenew: boolean;
-  periodType: 'normal' | 'trial' | 'intro';
+  periodType: string;
   expirationDate: string | null;
   productIdentifier: string;
 }
 
 export interface PurchaseResult {
   success: boolean;
-  product?: Product;
   errorMessage?: string;
-  /** Was the user already subscribed / had this entitlement? */
-  alreadyOwned?: boolean;
+  cancelled?: boolean;
 }
 
-// ─── Public API ─────────────────────────────────────────────────────────────
+export interface OfferingProduct {
+  identifier: string;
+  productIdentifier: string;
+  priceString: string;
+  title: string;
+  description: string;
+}
+
+// ─── State ──────────────────────────────────────────────────────────────────
 
 let initialised = false;
 
-export async function initPurchases(userId: string): Promise<void> {
-  if (initialised) return;
-  // TODO: Once SDK is installed:
-  //   import Purchases from 'react-native-purchases';
-  //   await Purchases.configure({
-  //     apiKey: Platform.OS === 'ios'
-  //       ? process.env.EXPO_PUBLIC_REVENUECAT_IOS_KEY!
-  //       : process.env.EXPO_PUBLIC_REVENUECAT_ANDROID_KEY!,
-  //     appUserID: userId,
-  //   });
-  initialised = true;
+// ─── Init ──────────────────────────────────────────────────────────────────
+
+/**
+ * Configure the SDK. Call once at app boot, after the user is signed in.
+ * Idempotent — calling twice is safe.
+ *
+ * Pass the Supabase user.id as `userId` so RevenueCat's appUserID matches
+ * our auth identity. This lets the webhook handler look up the user by
+ * the same id when receiving purchase events.
+ */
+export async function initPurchases(userId: string | null): Promise<void> {
+  const iosKey     = process.env.EXPO_PUBLIC_REVENUECAT_IOS_KEY ?? '';
+  const androidKey = process.env.EXPO_PUBLIC_REVENUECAT_ANDROID_KEY ?? '';
+
+  if (Platform.OS === 'ios' && !iosKey) {
+    console.warn('[purchases] EXPO_PUBLIC_REVENUECAT_IOS_KEY not set — purchases disabled');
+    return;
+  }
+  if (Platform.OS === 'android' && !androidKey) {
+    console.warn('[purchases] EXPO_PUBLIC_REVENUECAT_ANDROID_KEY not set — purchases disabled');
+    return;
+  }
+
+  // Verbose logs in dev only — production should set ERROR or WARN.
+  if (__DEV__) Purchases.setLogLevel(LOG_LEVEL.VERBOSE);
+
+  const apiKey = Platform.OS === 'ios' ? iosKey : androidKey;
+
+  if (!initialised) {
+    Purchases.configure({ apiKey, appUserID: userId ?? undefined });
+    initialised = true;
+  } else if (userId) {
+    // Subsequent calls — re-identify if the userId changed (sign-out + sign-in).
+    try {
+      await Purchases.logIn(userId);
+    } catch (e) {
+      console.warn('[purchases] logIn failed', e);
+    }
+  }
 }
 
-/** Pull the active offerings from RevenueCat. Used by the plans screen to
- *  show real local prices. Stub returns the catalogue with placeholder AUD
- *  prices. */
-export async function getOfferings(): Promise<Product[]> {
-  // TODO: Once SDK is installed:
-  //   const offerings = await Purchases.getOfferings();
-  //   const current = offerings.current;
-  //   return current.availablePackages.map(pkg => ({
-  //     ...PRODUCTS_BY_STORE_ID[pkg.product.identifier],
-  //     localPriceString: pkg.product.priceString,
-  //   }));
-  return Object.values(PRODUCTS_BY_ID);
+/** Call on sign-out so the next user starts with a fresh anonymous session. */
+export async function logoutPurchases(): Promise<void> {
+  if (!initialised) return;
+  try {
+    await Purchases.logOut();
+  } catch (e) {
+    console.warn('[purchases] logOut failed', e);
+  }
 }
 
-/** Trigger the platform purchase flow for one product. Returns success +
- *  the product on completion. Stub always returns failure for now. */
-export async function purchaseProduct(productId: string): Promise<PurchaseResult> {
-  const product = PRODUCTS_BY_ID[productId];
-  if (!product) return { success: false, errorMessage: 'Unknown product' };
+// ─── Offerings ─────────────────────────────────────────────────────────────
 
-  // TODO: Once SDK is installed:
-  //   try {
-  //     const offerings = await Purchases.getOfferings();
-  //     const pkg = offerings.current?.availablePackages.find(
-  //       (p) => p.product.identifier === product.storeId,
-  //     );
-  //     if (!pkg) throw new Error('Package not found in current offering');
-  //     const { customerInfo } = await Purchases.purchasePackage(pkg);
-  //     return { success: true, product };
-  //   } catch (e: any) {
-  //     if (e.userCancelled) return { success: false, errorMessage: 'Cancelled' };
-  //     return { success: false, errorMessage: e.message };
-  //   }
-
-  return {
-    success: false,
-    errorMessage: 'Purchases SDK not configured yet — see docs/PAYWALL-DESIGN.md',
-  };
+/**
+ * Read the current offering's available packages with localised pricing.
+ * Used to render a custom plans UI; the hosted paywall reads this internally
+ * so you don't need to call it before presentPaywall().
+ */
+export async function getOfferings(): Promise<OfferingProduct[]> {
+  try {
+    const offerings = await Purchases.getOfferings();
+    const current = offerings.current;
+    if (!current) return [];
+    return current.availablePackages.map((pkg: PurchasesPackage) => ({
+      identifier: pkg.identifier,
+      productIdentifier: pkg.product.identifier,
+      priceString: pkg.product.priceString,
+      title: pkg.product.title,
+      description: pkg.product.description,
+    }));
+  } catch (e) {
+    console.warn('[purchases] getOfferings failed', e);
+    return [];
+  }
 }
 
-/** Standard "Restore Purchases" button handler. Required by Apple. */
+// ─── Paywall ───────────────────────────────────────────────────────────────
+
+/**
+ * Present RevenueCat's hosted paywall UI. Configure the paywall in the
+ * RevenueCat dashboard (Project → Paywalls).
+ *
+ * Returns true if the user purchased or restored, false if cancelled / error.
+ */
+export async function presentPaywall(): Promise<boolean> {
+  try {
+    const result = await RevenueCatUI.presentPaywall();
+    switch (result) {
+      case PAYWALL_RESULT.PURCHASED:
+      case PAYWALL_RESULT.RESTORED:
+        return true;
+      case PAYWALL_RESULT.NOT_PRESENTED:
+      case PAYWALL_RESULT.ERROR:
+      case PAYWALL_RESULT.CANCELLED:
+      default:
+        return false;
+    }
+  } catch (e) {
+    console.warn('[purchases] presentPaywall failed', e);
+    return false;
+  }
+}
+
+/**
+ * Same as presentPaywall but only shows the paywall if the user does NOT
+ * already have the entitlement. Use this when entering a gated screen.
+ */
+export async function presentPaywallIfNeeded(entitlementId: string): Promise<boolean> {
+  try {
+    const result = await RevenueCatUI.presentPaywallIfNeeded({
+      requiredEntitlementIdentifier: entitlementId,
+    });
+    return result === PAYWALL_RESULT.PURCHASED || result === PAYWALL_RESULT.RESTORED;
+  } catch (e) {
+    console.warn('[purchases] presentPaywallIfNeeded failed', e);
+    return false;
+  }
+}
+
+/**
+ * Present the Customer Center — a hosted UI for managing the user's
+ * subscription (plan, billing, cancellation, support). Required by
+ * Apple's App Store guidelines for any subscription app, and a much
+ * better UX than rolling your own.
+ *
+ * Add an "Account" / "Manage subscription" button to the Profile screen
+ * that calls this.
+ */
+export async function presentCustomerCenter(): Promise<void> {
+  try {
+    await RevenueCatUI.presentCustomerCenter();
+  } catch (e) {
+    console.warn('[purchases] presentCustomerCenter failed', e);
+  }
+}
+
+// ─── Direct purchase (alt to paywall UI) ───────────────────────────────────
+
+/**
+ * Programmatic purchase. Most apps just use the hosted paywall (see
+ * presentPaywall) — this is for cases where you want a custom UI.
+ */
+export async function purchaseProduct(storeId: string): Promise<PurchaseResult> {
+  try {
+    const offerings = await Purchases.getOfferings();
+    const current = offerings.current;
+    if (!current) return { success: false, errorMessage: 'No current offering' };
+
+    const pkg = current.availablePackages.find(p => p.product.identifier === storeId);
+    if (!pkg) return { success: false, errorMessage: `Product ${storeId} not in current offering` };
+
+    await Purchases.purchasePackage(pkg);
+    return { success: true };
+  } catch (e: any) {
+    if (e?.userCancelled) return { success: false, cancelled: true };
+    return { success: false, errorMessage: e?.message ?? 'Purchase failed' };
+  }
+}
+
+/** Standard "Restore Purchases" handler. Required by Apple. */
 export async function restorePurchases(): Promise<PurchaseResult> {
-  // TODO: Once SDK is installed:
-  //   try {
-  //     const customerInfo = await Purchases.restorePurchases();
-  //     return { success: true };
-  //   } catch (e: any) {
-  //     return { success: false, errorMessage: e.message };
-  //   }
-  return { success: false, errorMessage: 'Purchases SDK not configured yet' };
+  try {
+    await Purchases.restorePurchases();
+    return { success: true };
+  } catch (e: any) {
+    return { success: false, errorMessage: e?.message ?? 'Restore failed' };
+  }
 }
 
-/** Read the user's currently-active entitlements. Used by `lib/entitlements.ts`
- *  to gate premium features. Stub returns empty (everyone is free-tier). */
+// ─── Entitlements ──────────────────────────────────────────────────────────
+
+function mapEntitlements(info: CustomerInfo): ActiveEntitlement[] {
+  return Object.values(info.entitlements.active).map((e) => ({
+    identifier: e.identifier,
+    isActive: e.isActive,
+    willRenew: e.willRenew,
+    periodType: String(e.periodType),
+    expirationDate: e.expirationDate,
+    productIdentifier: e.productIdentifier,
+  }));
+}
+
 export async function getActiveEntitlements(): Promise<ActiveEntitlement[]> {
-  // TODO: Once SDK is installed:
-  //   const customerInfo = await Purchases.getCustomerInfo();
-  //   return Object.values(customerInfo.entitlements.active).map((e) => ({
-  //     identifier: e.identifier,
-  //     isActive: e.isActive,
-  //     willRenew: e.willRenew,
-  //     periodType: e.periodType,
-  //     expirationDate: e.expirationDate,
-  //     productIdentifier: e.productIdentifier,
-  //   }));
-  return [];
+  try {
+    const info = await Purchases.getCustomerInfo();
+    return mapEntitlements(info);
+  } catch (e) {
+    console.warn('[purchases] getCustomerInfo failed', e);
+    return [];
+  }
 }
 
-/** Listener — call once at app boot to keep entitlements in sync when
- *  RevenueCat fires an update (e.g. mid-session refresh after webhook). */
-export function listenEntitlements(_handler: (entitlements: ActiveEntitlement[]) => void): () => void {
-  // TODO: Once SDK is installed:
-  //   const cb = (info: CustomerInfo) => handler(mapEntitlements(info));
-  //   Purchases.addCustomerInfoUpdateListener(cb);
-  //   return () => Purchases.removeCustomerInfoUpdateListener(cb);
-  return () => { /* no-op stub */ };
+/** Quick check: does the user currently have a given entitlement?
+ *  Use 'Rwendo Pro' for the all-access pro tier, or course-specific ids
+ *  once we configure individual courses. */
+export async function hasEntitlement(entitlementId: string): Promise<boolean> {
+  try {
+    const info = await Purchases.getCustomerInfo();
+    return info.entitlements.active[entitlementId] !== undefined;
+  } catch {
+    return false;
+  }
+}
+
+/** Subscribe to entitlement changes. Returns an unsubscribe function. */
+export function listenEntitlements(handler: (entitlements: ActiveEntitlement[]) => void): () => void {
+  const cb = (info: CustomerInfo) => handler(mapEntitlements(info));
+  Purchases.addCustomerInfoUpdateListener(cb);
+  return () => Purchases.removeCustomerInfoUpdateListener(cb);
 }

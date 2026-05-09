@@ -6,6 +6,7 @@ import { SettingsProvider, useSettings, RwenVoiceKey } from '../lib/SettingsCont
 import { AuthProvider, useAuth } from '../lib/AuthContext';
 import { supabase } from '../lib/supabase';
 import { fetchActiveCompanionPresetId } from '../lib/active-companion';
+import { initPurchases, logoutPurchases } from '../lib/purchases';
 import type { SpeakerPackId } from '../types/packs';
 import '../lib/i18n';
 import { setAppLanguage } from '../lib/i18n';
@@ -55,6 +56,12 @@ function ProfileLoader() {
     // Active companion — driven from a separate table for multi-companion
     // support at higher tiers. Defaults to Rwen if no row.
     fetchActiveCompanionPresetId(user.id).then(setActiveCompanionPresetId);
+
+    // Configure RevenueCat with the Supabase user.id as the appUserID so
+    // entitlements + webhook events tie back to the same identity. Idempotent —
+    // safe to call on every signed-in mount. Logs out cleanly handled in
+    // AuthContext.signOut via logoutPurchases().
+    initPurchases(user.id).catch((e) => console.warn('[purchases] init failed', e));
   }, [user?.id]);
 
   return null;

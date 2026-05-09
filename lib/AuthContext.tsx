@@ -85,6 +85,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const signOut = async () => {
+    // Reset RevenueCat to anonymous so the next sign-in starts clean.
+    // Imported lazily to avoid a require cycle through purchases.ts.
+    import('./purchases').then(({ logoutPurchases }) => logoutPurchases().catch(() => {}));
     await supabase.auth.signOut();
     setOnboardingComplete(false);
   };

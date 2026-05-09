@@ -3,6 +3,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import ScreenHeader from '../../components/ScreenHeader';
 import RwenImage from '../../components/rwen/RwenImage';
+import { presentPaywall, presentCustomerCenter, restorePurchases } from '../../lib/purchases';
 import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
 
@@ -14,12 +15,26 @@ const TIER_CURRENT:   Record<TierKey, boolean> = { free: true,  text_ai: false, 
 export default function PlansScreen() {
   const { t } = useTranslation('common');
 
-  const handleUpgrade = (tierName: string) => {
-    Alert.alert(
-      t('plans_screen.alert_title', { name: tierName }),
-      t('plans_screen.alert_body'),
-      [{ text: 'OK' }]
-    );
+  // Tap a tier card → present RevenueCat's hosted paywall. The dashboard
+  // controls which products show inside the paywall — we just trigger it.
+  const handleUpgrade = async (_tierName: string) => {
+    const purchased = await presentPaywall();
+    if (purchased) {
+      Alert.alert(
+        'Welcome to Rwendo Pro',
+        'Your purchase is active. Refresh the app if anything looks locked.',
+      );
+    }
+  };
+
+  const handleRestore = async () => {
+    const r = await restorePurchases();
+    if (r.success) Alert.alert('Restored', 'Any previous purchases on this Apple/Google account are now active.');
+    else Alert.alert('Restore failed', r.errorMessage ?? 'Try again or contact support.');
+  };
+
+  const handleManage = async () => {
+    await presentCustomerCenter();
   };
 
   return (
@@ -87,6 +102,15 @@ export default function PlansScreen() {
             </View>
           );
         })}
+
+        <View style={styles.footerActions}>
+          <Pressable onPress={handleRestore} style={styles.footerBtn}>
+            <Text style={styles.footerBtnText}>Restore purchases</Text>
+          </Pressable>
+          <Pressable onPress={handleManage} style={styles.footerBtn}>
+            <Text style={styles.footerBtnText}>Manage subscription</Text>
+          </Pressable>
+        </View>
 
         <Text style={styles.footnote}>
           {t('plans_screen.footnote')}
@@ -165,4 +189,7 @@ const styles = StyleSheet.create({
   tierBtnText: { color: Colors.gray[700], fontSize: FontSize.md, fontWeight: FontWeight.bold },
   tierBtnTextHighlight: { color: Colors.white },
   footnote: { fontSize: FontSize.xs, color: Colors.gray[400], textAlign: 'center', lineHeight: 18, marginTop: Spacing.md },
+  footerActions: { flexDirection: 'row', gap: Spacing.sm, marginTop: Spacing.lg, justifyContent: 'center' },
+  footerBtn: { paddingVertical: Spacing.sm, paddingHorizontal: Spacing.md },
+  footerBtnText: { color: Colors.secondary, fontWeight: FontWeight.semibold, fontSize: FontSize.sm },
 });
