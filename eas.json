@@ -32,6 +32,17 @@
         "simulator": false
       }
     },
+    "testflight": {
+      "channel": "testflight",
+      "autoIncrement": true,
+      "distribution": "store",
+      "env": {
+        "NPM_CONFIG_LEGACY_PEER_DEPS": "true"
+      },
+      "ios": {
+        "simulator": false
+      }
+    },
     "production": {
       "channel": "production",
       "autoIncrement": true,
