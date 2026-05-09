@@ -62,10 +62,16 @@ import koLearn from '../data/speakers/korean/locale/learn.json';
 import koRwen from '../data/speakers/korean/locale/rwen.json';
 import koAchievements from '../data/speakers/korean/locale/achievements.json';
 
+import ndCommon from '../data/speakers/ndebele/locale/common.json';
+import ndAuth from '../data/speakers/ndebele/locale/auth.json';
+import ndLearn from '../data/speakers/ndebele/locale/learn.json';
+import ndRwen from '../data/speakers/ndebele/locale/rwen.json';
+import ndAchievements from '../data/speakers/ndebele/locale/achievements.json';
+
 // i18n resources are still keyed by ISO code for compatibility with i18next's
 // language conventions. Each speaker pack's `isoCode` field maps from the
 // speaker pack ID to the i18n language key.
-export const SUPPORTED_LANGUAGES = ['en', 'sn', 'fr', 'zh', 'tl', 'hi', 'es', 'pt', 'ja', 'ko'] as const;
+export const SUPPORTED_LANGUAGES = ['en', 'sn', 'nd', 'fr', 'zh', 'tl', 'hi', 'es', 'pt', 'ja', 'ko'] as const;
 export type SupportedLanguage = (typeof SUPPORTED_LANGUAGES)[number];
 
 const NAMESPACES = ['common', 'auth', 'learn', 'rwen', 'achievements'] as const;
@@ -81,6 +87,7 @@ const resources = {
   pt: { common: ptCommon, auth: ptAuth, learn: ptLearn, rwen: ptRwen, achievements: ptAchievements },
   ja: { common: jaCommon, auth: jaAuth, learn: jaLearn, rwen: jaRwen, achievements: jaAchievements },
   ko: { common: koCommon, auth: koAuth, learn: koLearn, rwen: koRwen, achievements: koAchievements },
+  nd: { common: ndCommon, auth: ndAuth, learn: ndLearn, rwen: ndRwen, achievements: ndAchievements },
 };
 
 const deviceLanguage = Localization.getLocales()[0]?.languageCode ?? 'en';
@@ -105,6 +112,7 @@ export function setAppLanguage(lang: string | null | undefined) {
   const iso =
     lang === 'english'    ? 'en' :
     lang === 'shona'      ? 'sn' :
+    lang === 'ndebele'    ? 'nd' :
     lang === 'french'     ? 'fr' :
     lang === 'chinese'    ? 'zh' :
     lang === 'tagalog'    ? 'tl' :

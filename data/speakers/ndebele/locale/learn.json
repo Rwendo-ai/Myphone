@@ -1,0 +1,132 @@
+{
+  "__warnings": [
+    { "key": "lesson.phases",                 "note": "Phase names are pedagogical metaphors. Reviewer free to suggest more natural Ndebele equivalents." },
+    { "key": "lesson.hook.tsika_label",       "note": "Used 'AMASIKO' (customs) — the Ndebele equivalent of the Shona 'TSIKA' label, uppercased for emphasis." },
+    { "key": "lesson.hook.cta",               "note": "'Let's learn' → 'Asifunde'. Reviewer: confirm the conjugation reads as inclusive (us-together) not 'I'." },
+    { "key": "lesson.mission.cta",            "note": "'Hamba kuhle →' is the Ndebele signoff (means 'Go well')." },
+    { "key": "exercises.feedback_correct",    "note": "'✓ Correct!' → '✓ Kulungile!'. Could also be 'Yiqiniso!' — pick the one that feels most encouraging." },
+    { "key": "exercises.fill_blank.wrong / translate.wrong / build_sentence.wrong", "note": "Reveal-the-answer feedback. Translation is literal." },
+    { "key": "exercises.translate.placeholder", "note": "'Type your answer' — used 'Bhala impendulo yakho'. Idiomatic." },
+    { "key": "exercises.build_sentence.placeholder", "note": "'Tap words below to build the sentence' — long instruction. Translation conveys the same meaning." },
+    { "key": "tab.categories",                "note": "Course-hub category labels. 'Izindimi' (languages), 'Izifundo ze-AI', 'Zazi Wena Uqobo' (Know Yourself). Reviewer: confirm these read as category names." },
+    { "key": "tab.buy.*",                     "note": "Reviewer: check noun-class agreement — 'esinye isifundo' (class 7 — should match isifundo)." },
+    { "key": "tab.empty_category.*",          "note": "Coming-soon copy. 'Sizalazisa' = 'we will let you know'. Reviewer: confirm tone matches the playful chameleon brand." }
+  ],
+  "tab": {
+    "daily_xp": "I-XP yoSuku",
+    "units": "Amamoduli",
+    "lesson_count": "Izifundo {{count}}",
+    "unit_progress": "{{completed}}/{{total}} sezifikile",
+    "coming_soon_title": "I-Curriculum ye-{{lang}} iyeza",
+    "coming_soon_sub": "Sakha izifundo khathesi. Buyela esikhathini esifitshane!",
+    "categories_title": "Izifundo",
+    "categories": {
+      "languages": "Izindimi",
+      "ai_courses": "Izifundo ze-AI",
+      "know_yourself": "Zazi Wena Uqobo"
+    },
+    "buy": {
+      "language_course": "+ Thenga esinye isifundo solimi",
+      "ai_course": "+ Thenga esinye isifundo se-AI",
+      "know_yourself_course": "+ Thenga esinye isifundo se-Zazi Wena Uqobo",
+      "alert_title": "Kuyeza",
+      "alert_body": "Isitolo sezifundo sizavulwa kuvuselelo elilandelayo."
+    },
+    "empty_category": {
+      "ai_courses_title": "Izifundo ze-AI ziyeza",
+      "ai_courses_body": "Isifundo sokuqala sizaqalisa esikhathini esifitshane. Sizalazisa nxa sesilungile.",
+      "know_yourself_title": "I-Zazi Wena Uqobo iyeza",
+      "know_yourself_body": "Isifundo sokuqala sizaqalisa esikhathini esifitshane. Sizalazisa nxa sesilungile."
+    }
+  },
+  "screen_header": {
+    "back": "← Buyela emuva"
+  },
+  "unit": {
+    "section_label": "IZIFUNDO",
+    "xp_value": "{{count}} XP"
+  },
+  "lesson": {
+    "not_found": "Isifundo asitholakalanga: {{id}}",
+    "locked": {
+      "subscription_title": "Kuvaliwe — kudingeka ipulani okhokhelwa kuyo",
+      "subscription_body": "Amamoduli ayi-5–10 ngawe-Text AI tier nangaphezulu. Khulisa ukuze uqhubeke loRwen.",
+      "subscription_cta": "Bona amapulani",
+      "course_title": "Kuvaliwe — isifundo asikavulwa",
+      "course_body": "Isifundo lesi ngesohlobo ongakavuli. Khulisa uhlobo ku-account yakho ukuze uqalise.",
+      "course_cta": "Bona okuphakathi"
+    },
+    "phases": {
+      "hook": "Isimo Sezinto",
+      "chunks": "Amagama Amatsha",
+      "pattern": "Iphethini",
+      "practice": "Ukuzilolonga",
+      "dialogue": "Ingxoxo",
+      "recall": "Ukukhumbula",
+      "mission": "Umsebenzi Wakho"
+    },
+    "quit": {
+      "title": "Phuma esifundweni?",
+      "body": "Ukuhamba kwakho kulesisifundo kuzalahleka. Uleqiniso?",
+      "keep_going": "Qhubeka uhamba",
+      "quit": "Phuma"
+    },
+    "hook": {
+      "tsika_label": "AMASIKO — Isimo Samasiko",
+      "cta": "Asifunde →"
+    },
+    "chunks": {
+      "counter": "Ilizwi {{current}} kwa-{{total}}",
+      "literal": "Ngokunjengomtsho: \"{{value}}\"",
+      "see_pattern": "Bona iphethini →",
+      "got_it": "Sengikuqedisisa →"
+    },
+    "pattern": {
+      "start_practice": "Qalisa ukuzilolonga →"
+    },
+    "practice": {
+      "counter": "Isenzo {{current}} kwa-{{total}}"
+    },
+    "dialogue": {
+      "to_recall": "Kuhle — manje okwekhumbula →",
+      "continue": "Qhubeka →"
+    },
+    "recall": {
+      "title": "Ukukhumbula",
+      "counter": "{{current}} kwa-{{total}}"
+    },
+    "mission": {
+      "complete_title": "Isifundo Sifikile Ekupheleni!",
+      "xp_badge": "+{{count}} XP",
+      "score": "{{score}} / {{total}} ezilungileyo",
+      "card_title_prefix": "📍 ",
+      "cta": "Hamba kuhle →"
+    },
+    "phase8": {
+      "unlocked_title": "Zilolonge loRwen",
+      "unlocked_body": "Zama '{{topic}}' kungxoxo. URwen uzasebenzisa lokho okufundileyo.",
+      "unlocked_cta": "Qalisa ingxoxo yemizuzu eyi-2 →",
+      "locked_title": "Zilolonge loRwen — Kuvaliwe",
+      "locked_body": "Yenza ingxoxo yemizuzu eyi-2 nge-'{{topic}}'. URwen uzasebenzisa lokho okufundileyo.",
+      "locked_cta": "Vula nge-Text AI →"
+    }
+  },
+  "exercises": {
+    "check": "Khangela",
+    "feedback_correct": "✓ Kulungile!",
+    "fill_blank": {
+      "wrong": "✗ Impendulo ngu \"{{correct}}\""
+    },
+    "translate": {
+      "placeholder": "Bhala impendulo yakho...",
+      "wrong": "✗ Impendulo eqondileyo: {{correct}}"
+    },
+    "build_sentence": {
+      "placeholder": "Cindezela amagama angaphansi ukuze wakhe umutsho",
+      "wrong": "✗ Eqondileyo: {{correct}}"
+    },
+    "multiple_choice": {
+      "wrong": "✗ Akukho khona"
+    }
+  }
+}

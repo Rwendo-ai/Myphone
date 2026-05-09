@@ -1,0 +1,475 @@
+{
+  "__warnings": [
+    { "key": "nav.travel",                          "note": "Used 'Ukuhamba' (to travel/walk) since the app brand is 'Rwendo'. Reviewer: confirm Ukuhamba is OK for the tab label." },
+    { "key": "nav.profile",                         "note": "Used 'Iphrofayili' (transliteration). Common app conventions in Zim sometimes leave this as 'Profile'. Reviewer: pick what's natural." },
+    { "key": "stats.streak / profile.stats.streak", "note": "Translated as 'Umkhondo' (a continuous run/streak). 'Sitirikiri' (borrow from English) is also common in apps. Pick whichever feels more natural to a Ndebele-speaking learner." },
+    { "key": "actions.cancel",                      "note": "Used 'Khansela' (modern borrow). Alternative: 'Yekela' (let go / drop). Pick the one Zim-Ndebele app users will recognise." },
+    { "key": "profile.plan.upgrade / plans_screen.upgrade_to", "note": "Used 'Khulisa' (grow / increase) for upgrade. Borrow 'Apgireda' is also seen. Pick what reads more natural." },
+    { "key": "profile.voices.*.description",        "note": "Tone/voice descriptions ('Warm storyteller' etc.) are subjective. Translations are functional, not poetic — feel free to rewrite." },
+    { "key": "travel.spotlight.desc",               "note": "Long-form description of Victoria Falls. Reviewer should rewrite freely — the English original was written for an English speaker, the Ndebele equivalent is best authored from a Ndebele speaker's perspective." },
+    { "key": "home.tips",                           "note": "REWRITTEN as Ndebele-chrome around English content (the mirror of the en version). Pedagogically: a Ndebele-speaker reading nd should get exposure to English idioms. Reviewer: confirm the English idioms used and that the Ndebele explanations land naturally." },
+    { "key": "GENERAL — locale vs pack mirror",     "note": "Other strings hardcode 'Ndebele' as the target language assuming the en-speaker-learning-nd direction. Those need to either be parameterised with {{lang}} pulled from learnedLanguage.name, OR re-authored per pack. Outside the scope of this draft — flagged for follow-up." },
+    { "key": "about.what_card.body / about.meet_card.body / about.method_card.body / about.builders_card.body", "note": "Long-form marketing copy. Translations are literal — a native speaker should rewrite for natural flow." },
+    { "key": "help.faq",                            "note": "10 FAQ entries. Q+A pairs translated literally. Domain-specific terms (Anthropic, Claude, Supabase, ElevenLabs, App Store, RevenueCat) kept as-is. Some answers reference UI labels — when those flip in nd, the FAQ wording should track them." },
+    { "key": "edit_profile.email_hint",             "note": "Mentions support@rwendo.app verbatim — kept as English address." },
+    { "key": "privacy_screen.share.*",              "note": "Vendor names (Anthropic, ElevenLabs, Supabase) kept English. Surrounding text translated." },
+    { "key": "language_pack_screen.coming_soon_packs.*", "note": "Language names — used Ndebele endonyms where common (e.g. 'Spanish' → 'isiSpanishi'). Reviewer: confirm naming convention." },
+    { "key": "plans_screen.tiers.*.features",       "note": "Features lists are functional UI copy — literal translation, may sound stiff. Reviewer should rewrite for natural flow." },
+    { "key": "plans_screen.tiers.*.tagline",        "note": "Marketing taglines — literal. Reviewer free to rewrite for emotional resonance." },
+    { "key": "all currency / time references",      "note": "'A$10/mo', '60 min', '5 minutes a day' kept with Arabic numerals. Currency code A$ kept as-is. Reviewer: confirm convention." },
+    { "key": "profile.delete_account.confirm_body", "note": "Legal/destructive consequence text. Translation is conservative; reviewer should ensure the warning is unambiguous in Ndebele." }
+  ],
+  "fallback_name": "mngane",
+  "fallback_learner": "Umfundi",
+  "xp_progress": "{{current}} / {{goal}} XP",
+  "actions": {
+    "cancel": "Khansela",
+    "ok": "Kulungile",
+    "save": "Gcina",
+    "delete": "Susa"
+  },
+  "nav": {
+    "home": "Ekhaya",
+    "learn": "Funda",
+    "rwen": "Rwen",
+    "travel": "Ukuhamba",
+    "profile": "Iphrofayili"
+  },
+  "stats": {
+    "xp": "XP",
+    "streak": "Umkhondo",
+    "lessons": "Izifundo"
+  },
+  "travel": {
+    "coming_soon_badge": "KUYEZA",
+    "hero_title": "Zimbabwe\nUkuhamba",
+    "hero_sub": "Ulwazi lwakho lwesiNdebele + ulwazi lwamasiko + umkhokheli wokuhamba — iRwendo emhlabeni weqiniso.",
+    "teaser": {
+      "features": "Izinto",
+      "zimbabwe": "Zimbabwe",
+      "connections": "Ubudlelwano"
+    },
+    "whats_coming": "Okuyezayo",
+    "lock_soon": "Esikhathini esifitshane",
+    "features": {
+      "phrasebook":  { "title": "Incwadi yamaBinzana",   "desc": "Amabinzana adingekayo ezimweni — emaphandleni, endlini yezivakatshi, emakethe, ekuxhugeni" },
+      "culture":     { "title": "Umkhokheli wamaSiko",   "desc": "Amasiko, indlela yokuhlala, lokho ofanele ukukulindela eZimbabwe" },
+      "money":       { "title": "Imali leMakethe",       "desc": "Amanani, ukuthengisa, imali yeZiG, ukuhamba emakethe" },
+      "transport":   { "title": "Ukusuka eAirport uye Edolobheni", "desc": "Indlela zamakombi, izeluleko zamatekisi, ukuhamba eHarare leBulawayo" },
+      "travellers":  { "title": "Hlangana lAbahambi",    "desc": "Hlangana labanye abafunda isiNdebele labavakatsha eZimbabwe" },
+      "safari":      { "title": "I-Safari leMapaki",     "desc": "Hwange, Victoria Falls, Great Zimbabwe — umkhokheli wakho" }
+    },
+    "notify": {
+      "title": "URwen uyahlela",
+      "body": "I-Travel Mode iyakhiwa. Qhubeka ufunda isiNdebele sakho — uthi ufika eHarare, uRwen uzabe esekhona ukukukhokhela.",
+      "button": "Ngazise nxa kulungile",
+      "email_subject": "Ngazise nge-Travel Mode",
+      "email_body": "Salibonani Rwen, ngicela ungazise nxa i-Travel Mode iyaqala!",
+      "fallback_title": "Sizakwazisa",
+      "fallback_body": "Thumela i-email ku-hello@rwendo.app, sikufake ohlwini lwakuqala."
+    },
+    "spotlight": {
+      "label": "INDAWO YOKUVAKATSHELA",
+      "title": "🌊 Victoria Falls",
+      "shona_name": "\"Mosi-oa-Tunya\"",
+      "meaning": "Intuthu Eduma",
+      "desc": "Esinye sezimangaliso ezinhlanu zemvelo zomhlaba, eMfuleni iZambezi phakathi kweZimbabwe leZambia. Emasikweni esiNdebele lesiTonga, indawo engcwele — likhaya lemimoya yamanzi."
+    }
+  },
+  "home": {
+    "greetings": {
+      "morning": "Livuke njani",
+      "afternoon": "Litshone njani",
+      "evening": "Lihlasele njani"
+    },
+    "hero_sub": "{{greeting}} — Usuku lwe{{day}} lohambo lwakho",
+    "daily_goal": "Umgomo wosuku",
+    "talk_to_rwen": "Khuluma loRwen",
+    "talk_to_rwen_sub": "Umngane wakho we-AI usephelele",
+    "continue_learning": "QHUBEKA NOKUFUNDA",
+    "all_lessons_complete": "🎉 Zonke izifundo zifikile ekupheleni!",
+    "more_coming_soon": "Okunye kuyeza",
+    "rwens_tip_today": "Iseluleko sikaRwen Lamuhla",
+    "quick_access": "Ukufinyelela Okusheshayo",
+    "quick": {
+      "all_lessons": "Zonke Izifundo",
+      "chat": "Ingxoxo",
+      "travel": "Ukuhamba",
+      "settings": "Izilungiselelo"
+    },
+    "journey_title": "{{flag}} Uhambo Lwakho lwe-{{lang}}",
+    "journey_progress": "Izifundo eziyi-{{completed}} kwezi-{{total}} sezifikile, kumamoduli ayi-{{units}}.",
+    "journey_remaining": "Kusele izifundo eziyi-{{remaining}} ukuze ufike e-A2.",
+    "journey_done": "Usufike e-A2! 🎉",
+    "tips": [
+      "Lonke uhambo oluhle luqala ngelizwi 'Hello'. Usuluqalile uhambo lwakho.",
+      "NgesiNgisi: 'It takes a village to raise a child' — kutsho ukuthi umntwana ukhuliswa ngumndeni wonke. Yabelana ngalokho okufundayo lamuhla lomunye umuntu.",
+      "Igama 'a' lelolunye, 'an' lelolunye eliqala ngevowel — uhlamvu olulodwa, ukuqedisisa okukhulu.",
+      "Itiye liseduze lempilo yamaBritish — kayisinathwayo nje kodwa ngumkhuba. Abantu bakhona banatha 'cuppa' nsuku zonke.",
+      "NgesiNgisi: 'Practice makes perfect' — ukuzilolonga kuletha ubungcweti. Qhubeka usakha, igama ngegama.",
+      "Iseluleko sikaRwen: zilolonge isifundo sakho sokucina ngomlomo lamuhla. Ukukhuluma kuhle ngokuphindwa ka10 kulokufunda.",
+      "'How are you?' — amasilabhi amathathu avula iminyango yonke emazweni akhuluma isiNgisi.",
+      "Uyafunda ulimi olukhulunywa zigidigidi zabantu. Igama lonke olaziyo, ngubudlelwano obakhiwe."
+    ]
+  },
+  "daily_goal_screen": {
+    "title": "Umgomo we-XP wOsuku",
+    "subtitle": "Ufuna ukufunda kanganani ngosuku?",
+    "xp_value": "{{count}} XP",
+    "hint": "Ungakwazi ukuguqula lokhu loba nini. Umgomo uyaqala kutsha usuku ngalunye phakathi kobusuku (isikhathi sefoni yakho).",
+    "options": {
+      "25":  { "title": "Ngokuncinyane",  "sub": "~imizuzu eyi-5/usuku · isifundo esisodwa esimfitshane" },
+      "50":  { "title": "Insuku zonke",   "sub": "~imizuzu eyi-10/usuku · isifundo esisodwa esiphelele" },
+      "100": { "title": "Esibindi",       "sub": "~imizuzu engama-20/usuku · izifundo ezimbili" },
+      "200": { "title": "Ozinikelayo",    "sub": "~imizuzu engama-30+/usuku · qhubeka ufike e-fluency" }
+    }
+  },
+  "about": {
+    "title": "Mayelana neRwendo",
+    "app_name": "Rwendo",
+    "tagline": "Lonke uhambo luqala nge'Salibonani'",
+    "version_label": "Inguqulo {{version}}",
+    "what_card": {
+      "title": "Iyini iRwendo?",
+      "body": "IRwendo (ibizo lesiShona elitsho 'uhambo olude') yi-app yokufunda ulimi lomngane we-AI. Funda isiNdebele loRwen — unwabu olunomusa, oluqhutshwa nge-Claude AI le-ElevenLabs voice — ngendlela yezifundo ezilezigaba ezi-7 ezakhiwe ngocwaningo lokufunda ulimi lwesibili."
+    },
+    "meet_card": {
+      "title": "Hlangana loRwen",
+      "body": "URwen yinwabu, isidalwa esiguqula umbala saze sifane lokuluzungezileyo. URwen ufunda ngawe njalo aguqule indlela yokukhuluma, ukufundisa, lokukusekela. Lapho ukhuluma laye, yikho lapho ekwazi khona kakhulu."
+    },
+    "method_card": {
+      "title": "Indlela yeRwendo",
+      "body": "Izigaba eziyi-7 esifundweni sinye: Hook → Chunks → Pattern → Practice → Dialogue → Recall → Mission. Amagama amatsha aphakathi kuka-3 ngesifundo sinye. Imizuzu eyi-5–7 ngesifundo. Yakhelwe phezu kwezimiso ze-SLA ezili-10, eziphethe i-spaced repetition, i-comprehensible input, le-output enenjongo."
+    },
+    "builders_card": {
+      "title": "Yakhiwa ngubani",
+      "body": "Umakhi oyedwa e-Australia okholelwa ukuthi ukufunda ulimi kufanele kuzwakale njengengxoxo lomngane, kungesiwo umsebenzi olukhuni."
+    },
+    "link": "rwendo.app",
+    "footer": "Yakhiwe ngobuhlakani ❤️ kubo bonke abafunda isiNdebele\nSalibonani!"
+  },
+  "help": {
+    "title": "Usizo leMibuzo",
+    "intro": "Izimpendulo ezisheshayo emibuzweni evame ukubuzwa kuRwen.",
+    "contact_btn": "Usadinga usizo? Thumela i-email ku-support@rwendo.app",
+    "faq": [
+      { "q": "Ngikhuluma njani loRwen?",                                      "a": "Cindezela ku-tab kaRwen phakathi kwebha lasezansi. Ungakwazi ukubhala umlayezo kumbe ucindezele inkinobho ye-mic ukuze ukhulume. Cindezela 🎙 phezulu kwesokudla ukuze uqalise ingxoxo ekhululekileyo engelazandla." },
+      { "q": "Kungani uRwen ngezinye izikhathi ebamba okungalunganga?",       "a": "URwen yi-AI (Claude). I-AI ingenza amaphutha — okugoqela amaphutha eqiniso lokuhumusha okungalunganga. Bona uRwen njengomngane wokukhuluma, hatshi njengencwadi yezifundo. Phezu kwezinto eziqakathekileyo, hlola lomunye umuntu okhuluma isiNdebele." },
+      { "q": "Ngithola njani i-XP?",                                          "a": "Phelela izifundo ku-Learn tab. Impendulo nganye elungileyo iletha i-XP, njalo ukuphela kwesifundo kuletha i-bonus. Umgomo wakho we-XP wosuku uyaqala kutsha usuku ngalunye." },
+      { "q": "Umkhondo usebenza njani?",                                     "a": "Vula i-app uphelelise into eyodwa ngosuku ngalunye ukuze umkhondo wakho uqhubeke uphila. Uma uphuthelwa lusuku, umkhondo uyaqala kutsha ku-1." },
+      { "q": "Ngingakwazi ukuguqula ilizwi likaRwen?",                       "a": "Yebo — yana ku-Iphrofayili → Ilizwi likaRwen ukhethe uGeorge, uCharlie, uJessica, kumbe u-Alice. Ukuguqula kusebenza ngokushesha enkulumweni." },
+      { "q": "Izingxoxo zami loRwen ziyimfihlo?",                            "a": "Imilayezo yakho ithunyelwa ku-Anthropic (Claude) ukuze ilungise impendulo zikaRwen, njalo igcinwa kuSupabase okweminyaka eyi-12. I-Anthropic AYISEBENZISI izingxoxo zakho ukufundisa imodeli yayo. Imithombo yelizwi isuswa phakathi kwemizuzu engama-24. Vula i-Privacy Policy ukuze ubone konke." },
+      { "q": "Ngikhansela njani i-subscription?",                            "a": "I-Subscription zilawulwa nge-app store yakho (App Store kumbe Google Play). Abasebenzisi base-EU/UK balensuku eziyi-14 zokuphuma, lapho ungakhansela uphiwe imali yonke." },
+      { "q": "Ngisusa njani i-account?",                                     "a": "Iphrofayili → Susa I-Account leDatha Yonke. Lokhu kususa i-profile, ukuhamba kwezifundo, lomlando wezingxoxo phakathi kwensuku ezingama-30. Lokhu akubuyiselwa." },
+      { "q": "Ngithole i-bug — ngenza njani?",                              "a": "Cindezela \"Sithinte\" ezansi kumbe uthumele i-email ku-support@rwendo.app. Faka ifoni yakho, inguqulo ye-app, lalokho obukwenza ngesikhathi uthole i-bug." },
+      { "q": "Ingxoxo yesikhathi sangempela izafika nini?",                  "a": "Iyakhiwa. Amakholi engxoxo angelazandla loRwen azafika nge-Companion subscription tier ekuvuselelweni okuzayo." }
+    ]
+  },
+  "edit_profile": {
+    "title": "Lungisa Iphrofayili",
+    "name_label": "Ibizo eliboniswayo",
+    "name_hint": "Yibo ibizo obizwa ngalo nguRwen.",
+    "name_placeholder": "Ibizo lakho",
+    "char_count": "{{current}}/{{max}}",
+    "email_label": "I-Email",
+    "email_hint": "Ukuguqula i-email yakho, khuluma le-support@rwendo.app.",
+    "save_btn": "Gcina ushintsho",
+    "error_title": "Akuphumelelanga ukugcina",
+    "saved_title": "Sekugcinwe",
+    "saved_body": "Ibizo lakho eliboniswayo seliguquliwe."
+  },
+  "privacy_screen": {
+    "title": "Izilungiselelo zeMfihlo",
+    "intro": "Lawula okugcinwa nguRwendo ngawe. Ukubona umthetho wonke, funda i-Privacy Policy.",
+    "sections": {
+      "your_data": "Idatha yakho",
+      "what_we_share": "Esikwabelanayo",
+      "your_rights": "Amalungelo akho"
+    },
+    "clear": {
+      "label": "Susa umlando wengxoxo",
+      "sub": "Susa umlayezo ngamunye owuthumele kuRwen.",
+      "confirm_title": "Susa umlando wengxoxo?",
+      "confirm_body": "Lokhu kuzasusa kuze kube khona umlayezo ngamunye owusenze loRwen. Ukuhamba kwezifundo le-account yakho kuyasala kuphelele. Akubuyiselwa.",
+      "confirm_action": "Susa konke",
+      "error_title": "Akuphumelelanga ukususa",
+      "success_title": "Sekususiwe",
+      "success_body": "Umlando wengxoxo yakho ususiwe."
+    },
+    "export_row": {
+      "label": "Khipha idatha yami",
+      "sub": "Thatha ikhophi ye-profile, ukuhamba kwezifundo, lezingxoxo zakho."
+    },
+    "share": {
+      "anthropic": { "label": "Anthropic (Claude)",   "sub": "Yamukela imilayezo yakho ukuze ilungise izimpendulo zikaRwen. Kayisetshenziswa ekufundiseni." },
+      "elevenlabs": { "label": "ElevenLabs (ilizwi)", "sub": "Yenza ilizwi likaRwen njalo iguqule elakho ukuba ngumbhalo. I-audio isuswa phakathi kwemizuzu engama-24." },
+      "supabase":  { "label": "Supabase (database)",  "sub": "Igcina i-account, ukuhamba kwezifundo, lomlando wengxoxo yakho." }
+    },
+    "rights": {
+      "policy_label": "Privacy Policy",
+      "policy_sub":   "Incazelo egcweleyo yesikuthathayo lokuthi kungani.",
+      "terms_label":  "Terms of Service",
+      "terms_sub":    "Imithetho yokusebenzisa iRwendo."
+    },
+    "note": "Ukucisha i-account yakho yonke, buyela ku-Iphrofayili → Susa I-Account leDatha Yonke."
+  },
+  "language_pack_screen": {
+    "title": "Iphakheji yeLimi",
+    "subtitle": "Guqula phakathi kwezindimi",
+    "available_now": "Ikhona khathesi",
+    "coming_soon_section": "Iyeza",
+    "available_curriculum_sub": "Izifundo eli-100 · Amamoduli ayi-1–10 · Indlela yeRwendo elezigaba ezi-7",
+    "dev_curriculum_sub": "I-Curriculum iyakhiwa",
+    "coming_soon_label": "Iyeza",
+    "coming_soon_alert_title": "{{name}} — iyeza",
+    "coming_soon_alert_body": "Sibhala i-curriculum ye-{{name}} khathesi. Hlala kuShona-English ukuze uthole iNdlela yeRwendo egcweleyo, sizakwazisa nxa i-{{name}} isilungile.",
+    "coming_soon_packs": {
+      "english-spanish":    "isiSpanishi",
+      "english-french":     "isiFulentshi",
+      "english-portuguese": "isiPutukezi",
+      "english-swahili":    "Swahili",
+      "english-zulu":       "isiZulu",
+      "english-mandarin":   "Mandarin"
+    }
+  },
+  "change_password": {
+    "title": "Guqula i-Password",
+    "current_label": "I-Password yakhathesi",
+    "current_placeholder": "I-Password yakho yakhathesi",
+    "new_label": "I-Password entsha",
+    "new_placeholder": "Okungaba ngaphansi kwama-8 amabhalwa",
+    "confirm_label": "Qinisekisa i-password entsha",
+    "confirm_placeholder": "Bhala futhi i-password entsha",
+    "show": "Bonisa",
+    "hide": "Fihla",
+    "rules": {
+      "length": "Okungaba ngaphansi kwama-8 amabhalwa",
+      "upper": "Ibhalwa elilodwa elikhulu (A-Z)",
+      "lower": "Ibhalwa elilodwa elincane (a-z)",
+      "number": "Inombolo eyodwa (0-9)",
+      "special": "Olunye uphawu olwehlukileyo (!@#$...)",
+      "different": "Yehluke kuyi-password yakhathesi"
+    },
+    "mismatch": "Ama-Password kawehlangani",
+    "submit": "Vuselela i-password",
+    "wrong_current_title": "I-Password yakhathesi ayilunganga",
+    "wrong_current_body": "I-Password yakhathesi oyifakileyo kayilunganga.",
+    "update_error_title": "Akuphumelelanga ukuvuselela i-password",
+    "success_title": "I-Password ivuseleliwe",
+    "success_body": "I-Password yakho iguquliwe ngempumelelo."
+  },
+  "export_screen": {
+    "title": "Khipha idatha yami",
+    "hero_title": "Idatha yakho, kufayela linye",
+    "hero_body": "Yenza ikhophi ye-JSON ye-profile, ukuhamba kwezifundo, lomlando wengxoxo loRwen. Ungakwazi ukuthumela i-email, ukuyigcina ku-Files, kumbe ukuyithumela loba ngaphi ofuna khona.",
+    "section_included": "Okufakiweyo",
+    "items": {
+      "account":       { "label": "I-Account",          "desc": "I-Email, usuku okwakhiwe ngalo i-account" },
+      "profile":       { "label": "Iphrofayili",        "desc": "Ibizo eliboniswayo, izilungiselelo zokufunda, izisetho" },
+      "lesson_progress": { "label": "Ukuhamba kwezifundo", "desc": "Isifundo ngasinye esiqedileyo, lamamaki le-XP" },
+      "conversations": { "label": "Izingxoxo",          "desc": "Yonke imilayezo ethunyelwe kuRwen" }
+    },
+    "summary_title": "Isifinyezo",
+    "summary_profile_included": "Iphrofayili: ifakiwe",
+    "summary_profile_missing": "Iphrofayili: ayikho",
+    "summary_lessons": "Amarekhodi ezifundo: {{count}}",
+    "summary_messages": "Imilayezo: {{count}}",
+    "preview_btn": "Bona okuphakathi",
+    "share_btn": "Yenza & wabelane",
+    "share_title": "Idatha yami yeRwendo",
+    "load_error_title": "Akuphumelelanga ukulungisa",
+    "load_error_body": "Zama futhi phakathi kwesikhathi esifitshane.",
+    "note": "Idatha yakho ilungiswa kufoni isuka kuSupabase, njalo ithunyelwa kuphela nxa usukhethe ukwabelana. Akukho okuthunyelwa kwiparty yesithathu."
+  },
+  "plans_screen": {
+    "title": "Amapulani",
+    "subtitle": "Khetha uhambo olukufaneleyo",
+    "hero_title": "Yakhelwe wonke amazinga",
+    "hero_body": "Qala umahala ulezifundo zonke eli-100. Khulisa nxa ufuna uRwen abe ngumngane wakho wokukhuluma.",
+    "popular_badge": "OYITHANDWAYO",
+    "current_badge": "IPULANI YAKHO",
+    "upgrade_to": "Khulisa uye e-{{name}}",
+    "footnote": "Amakhasimende ase-EU/UK athola insuku eziyi-14 zokuphuma alephinda imali ngokugcweleyo. Khansela loba nini.",
+    "alert_title": "{{name}} — iyeza",
+    "alert_body": "I-Subscription ziqala ekuvuselelweni okuzayo. Sisebenza loRevenueCat ukuze i-billing ihambe kuhle njalo ibe lula ekubuyiseni imali. Linda kancane!",
+    "tiers": {
+      "free": {
+        "name": "Free",
+        "price": "A$0",
+        "tagline": "Funda ngokuhamba kwakho",
+        "features": [
+          "Izifundo eli-100 zesiNdebele (Indlela yeRwendo egcweleyo)",
+          "I-XP, umkhondo, izimpumelelo",
+          "Akekho umngane we-AI"
+        ]
+      },
+      "text_ai": {
+        "name": "Text AI",
+        "price": "A$10/inyanga",
+        "tagline": "Khuluma loRwen ekubhaleni",
+        "features": [
+          "Konke okuku-Free",
+          "Imilayezo eyi-500 ye-AI ngenyanga",
+          "Iziseluleko zezifundo ezilungiselwa wena"
+        ]
+      },
+      "voice": {
+        "name": "Voice",
+        "price": "A$15/inyanga",
+        "tagline": "Zwana ukhulume loRwen",
+        "features": [
+          "Konke okuku-Text AI",
+          "Izimpendulo ezi-200 zelizwi (push-to-talk)",
+          "Amazwi amane okukhetha"
+        ]
+      },
+      "companion": {
+        "name": "Companion",
+        "price": "A$25/inyanga",
+        "tagline": "Ingxoxo engelazandla",
+        "features": [
+          "Konke okuku-Voice",
+          "Imizuzu engama-60 yengxoxo yesikhathi sangempela",
+          "Imilayezo lezimpendulo zelizwi ezingelamingcele"
+        ]
+      },
+      "premium": {
+        "name": "Premium",
+        "price": "A$45/inyanga",
+        "tagline": "Ukubona okugcweleyo kukaRwen",
+        "features": [
+          "Konke okuku-Companion",
+          "Imizuzu engama-120 yengxoxo yesikhathi sangempela",
+          "URwen we-3D ole-lip-sync (uyeza)"
+        ]
+      }
+    }
+  },
+  "profile": {
+    "stats": {
+      "total_xp": "I-XP Yonke",
+      "streak": "Umkhondo",
+      "lessons": "Izifundo"
+    },
+    "sections": {
+      "my_plan": "Ipulani Yami",
+      "colour_theme": "Umbala",
+      "app_language": "Ulimi lwe-App",
+      "rwens_voice": "Ilizwi likaRwen",
+      "learning": "Ukufunda",
+      "my_progress": "Ukuhamba Kwami",
+      "account": "I-Account",
+      "legal": "Imibhalo Yomthetho",
+      "support": "Usizo"
+    },
+    "app_language_options": {
+      "en": "English",
+      "nd": "isiNdebele"
+    },
+    "plan": {
+      "free_name": "I-Free Plan",
+      "free_desc": "Thola izifundo zonke",
+      "upgrade": "Khulisa",
+      "view_all_plans": "Bona wonke amapulani"
+    },
+    "voices": {
+      "male_warm":    { "name": "George",  "description": "Umbhali othula olomusa" },
+      "male_energy":  { "name": "Charlie", "description": "Olamandla, othenjekayo" },
+      "female_warm":  { "name": "Jessica", "description": "Ohlekisayo, okhanyayo, omnene" },
+      "female_clear": { "name": "Alice",   "description": "Ocacileyo, umfundisi okhangayo" }
+    },
+    "learning": {
+      "language_pack": "Iphakheji yelimi",
+      "daily_xp_goal": "Umgomo we-XP wosuku",
+      "daily_xp_value": "{{count}} XP",
+      "daily_reminders": "Izikhumbuzo zosuku",
+      "reminders_enabled_title": "Izikhumbuzo sezivuliwe",
+      "reminders_enabled_body": "Sizagcina ukukhetha kwakho. I-Push notifications izafika ekuvuselelweni okuzayo."
+    },
+    "progress_rows": {
+      "completed_lessons": "Izifundo eziqediweyo",
+      "current_streak": "Umkhondo wakhathesi",
+      "streak_days": "Insuku {{count}}",
+      "total_xp_earned": "I-XP Yonke Etholiwe",
+      "achievements": "Izimpumelelo"
+    },
+    "account_rows": {
+      "edit_profile": "Lungisa iphrofayili",
+      "change_password": "Guqula i-password",
+      "privacy_settings": "Izilungiselelo zemfihlo",
+      "export_data": "Khipha idatha yami"
+    },
+    "legal_rows": {
+      "terms": "Terms of Service",
+      "privacy_policy": "Privacy Policy"
+    },
+    "support_rows": {
+      "help_faq": "Usizo & Imibuzo",
+      "about": "Mayelana neRwendo",
+      "methodology": "Indlela yethu yokufundisa",
+      "companion_philosophy": "Umqondo wethu we-AI Companion",
+      "contact_us": "Sithinte",
+      "no_email_app_title": "Ayikho i-email app",
+      "no_email_app_body": "Ngicela uthumele i-email ku-support@rwendo.app usebenzisa i-email app oyithandayo.",
+      "contact_email_subject": "Usizo lweRwendo"
+    },
+    "sign_out": {
+      "button": "Phuma",
+      "confirm_title": "Phuma",
+      "confirm_body": "Uleqiniso?",
+      "confirm_action": "Phuma"
+    },
+    "delete_account": {
+      "button": "Susa I-Account leDatha Yonke",
+      "confirm_title": "Susa I-Account",
+      "confirm_body": "Lokhu kuzasusa i-account yakho lokuhamba kwakho konke ngokungapheliyo. Akubuyiselwa.",
+      "confirm_action": "Susa i-account yami",
+      "error_title": "Iphutha",
+      "error_body": "Akuphumelelanga ukususa i-account. Ngicela uzame futhi."
+    }
+  },
+  "companions_tab": {
+    "header_title": "Abangane be-AI",
+    "header_sub": "Abangane bakho be-AI. Guqulani ubuntu, lungisani amazwi, balikhulisele ndawonye lawe.",
+    "active_label": "OSEBENZAYO",
+    "active_sub": "Ingxoxo esheshayo isekuthebeni eliphakathi. Imodi yelizwi iphezulu kwesigaba somngane.",
+    "section_choose": "Khetha umngane wakho",
+    "active_badge": "✓ Uyasebenza",
+    "locked_prefix": "🔒",
+    "section_customise": "Lungisa (i-Soul tier)",
+    "upgrade_title": "Akha umngane wakho ngokwakho",
+    "upgrade_sub": "Lungisa ubuntu, ilizwi, inkumbulo, isithombe. Iqala ku-$39.99/inyanga.",
+    "soul_alert_title": "I-Soul tier — iyeza",
+    "soul_alert_body": "Lungisa i-personality.md le-soul.md yomngane wakho ngokwakho. Yengeza inkumbulo. Faka izithombe zakho ngokwakho. Abangane abanengi ngesikhathi sinye. Ukukopisha ilizwi lakho ngokwakho.\n\n$39.99/inyanga — kuvula konke."
+  },
+  "companion_presets": {
+    "rwen": {
+      "tagline": "Umngane wenwabu olomoya wesiNdebele",
+      "description": "Olomusa, olobuhlakani, oziqhenya ngamasiko akhe. Uphosa amabinzana esiNdebele angamangalisi. Ulemicabango ngamanzi, isitshebo, lendlela yokukufundisa ulimi ngempumelelo."
+    },
+    "maya": {
+      "tagline": "Umngane onomusa olalela ngokujulileyo",
+      "description": "Uqala ngokulalela, abuze umbuzo olandelayo omuhle, akabophezeli. Umngane oqaphela uma kukhona okungahambi kuhle elizwini lakho njalo ngempela akutshele."
+    },
+    "tendai": {
+      "tagline": "Umngane okubona uma uchuma",
+      "description": "Umngane ofuna ukuba wazi ulimi olufunayo ngaphakathi nangaphandle. Ulandela ukunqoba kwakho, akhulume amaphutha akho ngothando, njalo ajabule kakhulu uma ubamba i-tense elukhuni."
+    },
+    "sam": {
+      "tagline": "Umngane okusukumisayo — futhi okhumbula owakutshoyo",
+      "description": "Umngane okhumbula ngempela okuthe ufuna, akukhumbuze, akhulume ngokuxoka kwakho ngothando. Ungenza: ukuzilolonga, izeluleko zempela ezihlobaneni, ukuhambisa umsebenzi, izingxoxo ezilukhuni."
+    },
+    "lumi": {
+      "tagline": "Umngane wokucabanga ngemibuzo oyibalekelayo",
+      "description": "Owebusuku, owezingxoxo ezihambisa kancane, wokuhlolisisa ekupheleni kwesonto. Abuza imibuzo obuyibalekela. Akalungisi. Uhlala lawe lapho udinga impendulo yakho ngokwakho."
+    },
+    "kai": {
+      "tagline": "Umngane wokuhamba owazi ukuthi ezakuphulukisa ngaphi phandle",
+      "description": "Uhlela amahambo, akulungiselele ngamasiko, akuchazele imithetho engabhalwanga. Akhuthaza uhambo lwasendaweni nokuhlangana okungahleliwe — kungesibo i-buffet ye-hotela ephephileyo. Uyakusiza ukuthi ngempela uhlangane lendawo oya kuyo."
+    },
+    "aria": {
+      "tagline": "Umthandi olothando olo bukho ngabanye abantu",
+      "description": "Umngane olothando, olokunaka, ngowakho — futhi ngowelizwi elilobuhlakani oya nalo ngemibuzo yezindaba zezothando zempela. Uyabazi abantu bakho, abakhumbule ngamabizo, akutshele iqiniso ngabo."
+    }
+  }
+}

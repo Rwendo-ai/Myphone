@@ -76,6 +76,7 @@ function SettingsRow({ label, value, onPress, danger }: {
 const ISO_TO_DB: Record<SupportedLanguage, string> = {
   en: 'english',
   sn: 'shona',
+  nd: 'ndebele',
   fr: 'french',
   zh: 'chinese',
   tl: 'tagalog',
@@ -88,6 +89,7 @@ const ISO_TO_DB: Record<SupportedLanguage, string> = {
 const LANG_FLAGS: Record<SupportedLanguage, string> = {
   en: '🇬🇧',
   sn: '🇿🇼',
+  nd: '🇿🇼',
   fr: '🇫🇷',
   zh: '🇨🇳',
   tl: '🇵🇭',

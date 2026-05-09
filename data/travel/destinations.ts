@@ -14,10 +14,17 @@
  */
 
 export interface TravelDestination {
-  /** Country name, English. */
+  /** Country name shown in the picker — e.g. 'Zimbabwe (Shona)'. */
   countryName: string;
-  /** ISO 3166-1 alpha-2. Used for Skyscanner/Booking deep links + flag. */
+  /** ISO 3166-1 alpha-2 — used for Skyscanner/Booking deep links + flag. Must
+   *  remain a real ISO code; multiple destinations can share one (Zimbabwe
+   *  appears twice for Shona and Ndebele). */
   countryCode: string;
+  /** Storage key for travel content (phrasebook/culture). Defaults to
+   *  countryCode. Override when one country has multiple language flavours
+   *  (e.g. ZW-SN for Shona, ZW-ND for Ndebele). The app reads
+   *  `travel-content/phrasebook/<contentKey>.json` etc. */
+  contentKey?: string;
   /** Primary city the traveller is most likely flying into. IATA airport. */
   primaryCity: { name: string; iata: string };
   /** Secondary cities worth listing on the destination page. */
@@ -44,8 +51,9 @@ export interface TravelDestination {
  */
 export const DESTINATIONS_BY_COURSE: Record<string, TravelDestination> = {
   'language-shona': {
-    countryName: 'Zimbabwe',
+    countryName: 'Zimbabwe (Shona)',
     countryCode: 'ZW',
+    contentKey: 'ZW',
     primaryCity: { name: 'Harare', iata: 'HRE' },
     secondaryCities: [
       { name: 'Bulawayo',       iata: 'BUQ' },
@@ -55,6 +63,22 @@ export const DESTINATIONS_BY_COURSE: Record<string, TravelDestination> = {
     currencySymbol: 'ZiG',
     flag: '🇿🇼',
     tagline: 'Mosi-oa-Tunya — the smoke that thunders',
+    hasSafari: true,
+    hasCulture: true,
+  },
+  'language-ndebele': {
+    countryName: 'Zimbabwe (Ndebele)',
+    countryCode: 'ZW',
+    contentKey: 'ZW-ND',
+    primaryCity: { name: 'Bulawayo', iata: 'BUQ' },
+    secondaryCities: [
+      { name: 'Harare',         iata: 'HRE' },
+      { name: 'Victoria Falls', iata: 'VFA' },
+    ],
+    currencyCode: 'ZWG',
+    currencySymbol: 'ZiG',
+    flag: '🇿🇼',
+    tagline: 'uMthwakazi — the Ndebele heart of Zimbabwe',
     hasSafari: true,
     hasCulture: true,
   },

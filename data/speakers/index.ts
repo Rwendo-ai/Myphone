@@ -9,10 +9,12 @@ import spanish from './spanish';
 import portuguese from './portuguese';
 import japanese from './japanese';
 import korean from './korean';
+import ndebele from './ndebele';
 
 export const SPEAKERS: Record<SpeakerPackId, SpeakerPack> = {
   english,
   shona,
+  ndebele,
   french,
   chinese,
   tagalog,
@@ -34,6 +36,6 @@ export function getSpeaker(id: SpeakerPackId | string | null | undefined): Speak
 }
 
 export {
-  english, shona, french, chinese, tagalog,
+  english, shona, ndebele, french, chinese, tagalog,
   hindi, spanish, portuguese, japanese, korean,
 };

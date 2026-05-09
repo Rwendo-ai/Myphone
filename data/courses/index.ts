@@ -9,6 +9,7 @@ import languageSpanish    from './language-spanish';
 import languagePortuguese from './language-portuguese';
 import languageJapanese   from './language-japanese';
 import languageKorean     from './language-korean';
+import languageNdebele    from './language-ndebele';
 import aiCompanion        from './ai-companion';
 
 // Build Yourself umbrella — self-development courses authored by Opus 4.7
@@ -34,6 +35,7 @@ export const COURSES: Record<CoursePackId, CoursePack> = {
   'language-portuguese': languagePortuguese,
   'language-japanese':   languageJapanese,
   'language-korean':     languageKorean,
+  'language-ndebele':    languageNdebele,
 
   // AI Companion course (relationship-style)
   'ai-companion':     aiCompanion,
@@ -70,6 +72,7 @@ export function getCourse(id: CoursePackId | string | null | undefined): CourseP
 export {
   languageShona, languageEnglish, languageFrench, languageChinese, languageTagalog,
   languageHindi, languageSpanish, languagePortuguese, languageJapanese, languageKorean,
+  languageNdebele,
   aiCompanion,
   knowYourself, hardConversationsWork, parentingUnderPressure, moneyAndMeaning,
   griefHonestly, sleepRepaired, lostConfidence, caringAgingParent,

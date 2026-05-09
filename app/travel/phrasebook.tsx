@@ -38,11 +38,12 @@ export default function PhrasebookScreen() {
   useEffect(() => {
     let cancelled = false;
     setPhrasebook('loading');
-    loadPhrasebook(destination.countryCode).then(p => {
+    const key = destination.contentKey ?? destination.countryCode;
+    loadPhrasebook(key).then(p => {
       if (!cancelled) setPhrasebook(p);
     });
     return () => { cancelled = true; };
-  }, [destination.countryCode]);
+  }, [destination.contentKey, destination.countryCode]);
 
   const owned = useMemo(() => {
     if (DEV_UNLOCK_ALL) return true;
@@ -68,9 +69,10 @@ export default function PhrasebookScreen() {
 
   useEffect(() => {
     let cancelled = false;
-    loadAudioManifest(destination.countryCode).then(m => { if (!cancelled) setManifest(m); });
+    const audioKey = destination.contentKey ?? destination.countryCode;
+    loadAudioManifest(audioKey).then(m => { if (!cancelled) setManifest(m); });
     return () => { cancelled = true; stopPhraseAudio(); };
-  }, [destination.countryCode]);
+  }, [destination.contentKey, destination.countryCode]);
 
   const handlePlay = async (phrase: TravelPhrase) => {
     const audioPath = phrase.audioPath ?? getAudioPathForPhrase(manifest, phrase.id);

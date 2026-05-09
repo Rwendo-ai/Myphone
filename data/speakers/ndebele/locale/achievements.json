@@ -1,0 +1,24 @@
+{
+  "__warnings": [
+    { "key": "items.streak_30.description", "note": "'30-day streak. Rwen is proud.' — kept tonally similar in Ndebele. Reviewer free to rewrite." },
+    { "key": "items.module_*.title",        "note": "'Module Master' / 'Halfway There' — descriptive names. Translations are literal; reviewer can pick more evocative Ndebele names." },
+    { "key": "items.lessons_*.title",       "note": "'Quarter Climber' / 'Halfway Tree' — metaphor-heavy English titles. Translation tries to keep the imagery, but a Ndebele-speaking copywriter could do much better." },
+    { "key": "items.graduated.description_fmt", "note": "'Completed all {{total}} lessons.' — uses the {{total}} interpolation. Translation matches structure." }
+  ],
+  "title": "Izimpumelelo",
+  "subtitle": "{{unlocked}} kwa-{{total}} izimpumelelo",
+  "items": {
+    "first_lesson": { "title": "Izinyathelo Zokuqala",   "description": "Uphelelise isifundo sakho sokuqala." },
+    "streak_3":     { "title": "Insuku Ezintathu",        "description": "Insuku ezintathu motsetse." },
+    "streak_7":     { "title": "Iqhawe leViki",           "description": "Ugcinile umkhondo wakho insuku eziyi-7." },
+    "streak_30":    { "title": "Inyanga yeSalibonani",    "description": "Umkhondo wensuku ezingama-30. URwen uyaziqhenya ngani." },
+    "xp_100":       { "title": "Isikhuni esiKhanyayo",    "description": "Uthole i-XP eyi-100." },
+    "xp_500":       { "title": "Inkanyezi Ekhwelayo",     "description": "Uthole i-XP eyi-500." },
+    "xp_1000":      { "title": "Izinkanyezi Ezinengi",    "description": "Uthole i-XP eyi-1,000." },
+    "module_1":     { "title": "Inkosi yeModuli",         "description": "Uphelelise imoduli yakho yokuqala." },
+    "module_5":     { "title": "Phakathi neNdlela",       "description": "Uphelelise amamoduli ayi-5." },
+    "lessons_25":   { "title": "Ingxenye Eyodwa",         "description": "Uphelelise izifundo ezingama-25." },
+    "lessons_50":   { "title": "Isihlahla Esimumayo",     "description": "Uphelelise izifundo ezingama-50." },
+    "graduated":    { "title": "Umfundi weRwendo",        "description_fmt": "Uphelelise izifundo zonke {{total}}." }
+  }
+}

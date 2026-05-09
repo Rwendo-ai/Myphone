@@ -36,10 +36,11 @@ const JURISDICTION_FLAGS: Record<JurisdictionPackId, string> = {
 // app's UI translation language AND the AI persona language. Five packs
 // shipped at v1; adding a sixth = drop a `data/speakers/<id>/` folder and
 // add the id + flag here.
-const LANGUAGE_IDS = ['english', 'shona', 'french', 'chinese', 'tagalog', 'hindi', 'spanish', 'portuguese', 'japanese', 'korean'] as const;
+const LANGUAGE_IDS = ['english', 'shona', 'ndebele', 'french', 'chinese', 'tagalog', 'hindi', 'spanish', 'portuguese', 'japanese', 'korean'] as const;
 const LANGUAGE_FLAGS: Record<string, string> = {
   english:    '🇬🇧',
   shona:      '🇿🇼',
+  ndebele:    '🇿🇼',
   french:     '🇫🇷',
   chinese:    '🇨🇳',
   tagalog:    '🇵🇭',
@@ -54,6 +55,7 @@ const LANGUAGE_FLAGS: Record<string, string> = {
 const LANGUAGE_TO_ISO: Record<string, string> = {
   english:    'en',
   shona:      'sn',
+  ndebele:    'nd',
   french:     'fr',
   chinese:    'zh',
   tagalog:    'tl',

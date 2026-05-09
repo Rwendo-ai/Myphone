@@ -23,6 +23,7 @@ import * as dotenv from 'dotenv';
 import { createClient } from '@supabase/supabase-js';
 
 import ZIMBABWE_PHRASEBOOK from '../data/travel/phrasebook/zimbabwe';
+import ZIMBABWE_NDEBELE_PHRASEBOOK from '../data/travel/phrasebook/zimbabwe-ndebele';
 import UK_PHRASEBOOK from '../data/travel/phrasebook/united-kingdom';
 import FRANCE_PHRASEBOOK from '../data/travel/phrasebook/france';
 import CHINA_PHRASEBOOK from '../data/travel/phrasebook/china';
@@ -34,6 +35,7 @@ import JAPAN_PHRASEBOOK from '../data/travel/phrasebook/japan';
 import KOREA_PHRASEBOOK from '../data/travel/phrasebook/korea';
 
 import ZIMBABWE_GUIDE from '../data/travel/culture/zimbabwe';
+import ZIMBABWE_NDEBELE_GUIDE from '../data/travel/culture/zimbabwe-ndebele';
 import UK_GUIDE from '../data/travel/culture/united-kingdom';
 import FRANCE_GUIDE from '../data/travel/culture/france';
 import CHINA_GUIDE from '../data/travel/culture/china';
@@ -56,6 +58,8 @@ import LANGUAGE_PORTUGUESE_FLIPCARDS from '../data/courses/language-portuguese/f
 import LANGUAGE_HINDI_FLIPCARDS from '../data/courses/language-hindi/flipcards';
 import LANGUAGE_JAPANESE_FLIPCARDS from '../data/courses/language-japanese/flipcards';
 import LANGUAGE_KOREAN_FLIPCARDS from '../data/courses/language-korean/flipcards';
+import LANGUAGE_NDEBELE_FLIPCARDS from '../data/courses/language-ndebele/flipcards';
+import LANGUAGE_ENGLISH_FROM_NDEBELE_FLIPCARDS from '../data/courses/language-english/flipcards-from-ndebele';
 
 dotenv.config({ path: '.env.local' });
 dotenv.config();
@@ -68,13 +72,13 @@ const supabase = createClient(SUPABASE_URL, SERVICE_ROLE_KEY);
 const BUCKET = 'travel-content';
 
 const PHRASEBOOKS = {
-  ZW: ZIMBABWE_PHRASEBOOK, GB: UK_PHRASEBOOK, FR: FRANCE_PHRASEBOOK,
+  ZW: ZIMBABWE_PHRASEBOOK, 'ZW-ND': ZIMBABWE_NDEBELE_PHRASEBOOK, GB: UK_PHRASEBOOK, FR: FRANCE_PHRASEBOOK,
   CN: CHINA_PHRASEBOOK, PH: PHILIPPINES_PHRASEBOOK, ES: SPAIN_PHRASEBOOK,
   PT: PORTUGAL_PHRASEBOOK, IN: INDIA_PHRASEBOOK, JP: JAPAN_PHRASEBOOK, KR: KOREA_PHRASEBOOK,
 };
 
 const GUIDES = {
-  ZW: ZIMBABWE_GUIDE, GB: UK_GUIDE, FR: FRANCE_GUIDE,
+  ZW: ZIMBABWE_GUIDE, 'ZW-ND': ZIMBABWE_NDEBELE_GUIDE, GB: UK_GUIDE, FR: FRANCE_GUIDE,
   CN: CHINA_GUIDE, PH: PHILIPPINES_GUIDE, ES: SPAIN_GUIDE,
   PT: PORTUGAL_GUIDE, IN: INDIA_GUIDE, JP: JAPAN_GUIDE, KR: KOREA_GUIDE,
 };
@@ -90,6 +94,10 @@ const FLIPCARDS = {
   'language-hindi':       LANGUAGE_HINDI_FLIPCARDS,
   'language-japanese':    LANGUAGE_JAPANESE_FLIPCARDS,
   'language-korean':      LANGUAGE_KOREAN_FLIPCARDS,
+  'language-ndebele':     LANGUAGE_NDEBELE_FLIPCARDS,
+  // English-from-Ndebele variant — Ndebele speakers learning English get a
+  // flip-card set with native column in Ndebele instead of Shona.
+  'language-english-from-ndebele': LANGUAGE_ENGLISH_FROM_NDEBELE_FLIPCARDS,
 };
 
 async function ensureBucket(): Promise<void> {

@@ -1,0 +1,32 @@
+{
+  "__warnings": [
+    { "key": "messages.welcome",            "note": "'Salibonani, {{name}}!' stays Ndebele in both locales (greeting verbatim — Salibonani is the standard Ndebele plural greeting). 'What's on your mind today?' translated as 'Yini ekungqondweni yakho lamuhla?'. Reviewer: tone-check." },
+    { "key": "messages.error_generic",      "note": "Starts with 'Ngiyaxolisa' (I am sorry, Ndebele) — kept verbatim. The English 'something went wrong' part flips. Mixed-language is intentional per the design." },
+    { "key": "messages.auto_listen_greeting","note": "'Salibonani!' verbatim. The English 'I'm listening...' flips." },
+    { "key": "header.status_*",             "note": "Status labels include emoji — kept as-is in front, Ndebele behind." },
+    { "key": "input.placeholder_convo_active","note": "'Conversation active — speak or tap ⏹ to stop' — symbol kept, surrounding text translated." }
+  ],
+  "header": {
+    "title": "Rwen",
+    "status_listening": "🎤 Uyalalela...",
+    "status_thinking": "💭 Uyacabanga...",
+    "status_speaking": "🔊 Uyakhuluma...",
+    "status_loading": "Uyacabanga...",
+    "status_idle": "Umngane wesi-{{lang}} · AI"
+  },
+  "banner": {
+    "speak_now": "🎤 Khuluma khathesi...",
+    "rwen_thinking": "💭 URwen uyacabanga...",
+    "rwen_speaking": "🔊 URwen uyakhuluma...",
+    "done_speaking": "Sengiqedile ukukhuluma"
+  },
+  "input": {
+    "placeholder_default": "Thumela umlayezo kuRwen...",
+    "placeholder_convo_active": "Ingxoxo ivuliwe — khuluma kumbe ucindezele ⏹ ukumisa"
+  },
+  "messages": {
+    "welcome": "Salibonani, {{name}}! Yini ekungqondweni yakho lamuhla?",
+    "error_generic": "Ngiyaxolisa — kukhona okungahambanga kuhle. Zama futhi.",
+    "auto_listen_greeting": "Salibonani! Ngiyalalela. Khuluma nxa usulungile."
+  }
+}

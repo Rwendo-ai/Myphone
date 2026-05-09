@@ -16,7 +16,7 @@ const meta: CoursePackMeta = {
   targetLanguageId: 'english',
   // Every speaker EXCEPT english natives. All variants live in Storage
   // with identical lesson IDs across variants.
-  availableForSpeakers: ['shona', 'french', 'chinese', 'tagalog', 'hindi', 'spanish', 'portuguese', 'japanese', 'korean'],
+  availableForSpeakers: ['shona', 'ndebele', 'french', 'chinese', 'tagalog', 'hindi', 'spanish', 'portuguese', 'japanese', 'korean'],
   revenuecatProductId: null,
   isActive: true,
   isComingSoon: false,                 // 100 lessons authored across 4 speaker variants

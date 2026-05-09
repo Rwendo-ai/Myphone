@@ -24,13 +24,14 @@ export default function CultureScreen() {
   useEffect(() => {
     let cancelled = false;
     setGuide('loading');
-    loadCulturalGuide(destination.countryCode).then(g => {
+    const key = destination.contentKey ?? destination.countryCode;
+    loadCulturalGuide(key).then(g => {
       if (cancelled) return;
       setGuide(g);
       if (g) setOpenSection(g.sections[0]?.id ?? '');
     });
     return () => { cancelled = true; };
-  }, [destination.countryCode]);
+  }, [destination.contentKey, destination.countryCode]);
 
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>

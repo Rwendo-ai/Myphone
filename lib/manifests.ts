@@ -8,6 +8,7 @@ import { LESSON_MANIFEST as SPANISH_MANIFEST }          from '../data/courses/la
 import { LESSON_MANIFEST as PORTUGUESE_MANIFEST }       from '../data/courses/language-portuguese/manifest';
 import { LESSON_MANIFEST as JAPANESE_MANIFEST }         from '../data/courses/language-japanese/manifest';
 import { LESSON_MANIFEST as KOREAN_MANIFEST }           from '../data/courses/language-korean/manifest';
+import { LESSON_MANIFEST as NDEBELE_MANIFEST }          from '../data/courses/language-ndebele/manifest';
 import { LESSON_MANIFEST as KNOW_YOURSELF_MANIFEST }    from '../data/courses/know-yourself/manifest';
 import { LESSON_MANIFEST as HARD_CONV_MANIFEST }        from '../data/courses/hard-conversations-work/manifest';
 import { LESSON_MANIFEST as PARENTING_MANIFEST }        from '../data/courses/parenting-under-pressure/manifest';
@@ -69,6 +70,7 @@ export function getLessonManifest(courseId: string | null | undefined): LessonMe
     case 'language-portuguese':       return PORTUGUESE_MANIFEST;
     case 'language-japanese':         return JAPANESE_MANIFEST;
     case 'language-korean':           return KOREAN_MANIFEST;
+    case 'language-ndebele':          return NDEBELE_MANIFEST;
     case 'know-yourself':             return KNOW_YOURSELF_MANIFEST;
     case 'hard-conversations-work':   return HARD_CONV_MANIFEST;
     case 'parenting-under-pressure':  return PARENTING_MANIFEST;

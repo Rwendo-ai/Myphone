@@ -24,6 +24,7 @@ import * as dotenv from 'dotenv';
 import { createClient } from '@supabase/supabase-js';
 
 import ZIMBABWE_PHRASEBOOK from '../data/travel/phrasebook/zimbabwe';
+import ZIMBABWE_NDEBELE_PHRASEBOOK from '../data/travel/phrasebook/zimbabwe-ndebele';
 import UK_PHRASEBOOK from '../data/travel/phrasebook/united-kingdom';
 import FRANCE_PHRASEBOOK from '../data/travel/phrasebook/france';
 import CHINA_PHRASEBOOK from '../data/travel/phrasebook/china';
@@ -56,6 +57,7 @@ const VOICE_BY_COUNTRY: Record<string, { id: string; modelId: string; name: stri
   // varies by language but is recognisable. Swap in native voices once we
   // license per-language voices in Phase 2.
   ZW: { id: 'JBFqnCBsd6RMkjVDRZzb', modelId: 'eleven_multilingual_v2', name: 'George (multilingual)' },
+  'ZW-ND': { id: 'JBFqnCBsd6RMkjVDRZzb', modelId: 'eleven_multilingual_v2', name: 'George (multilingual)' },
   GB: { id: 'JBFqnCBsd6RMkjVDRZzb', modelId: 'eleven_multilingual_v2', name: 'George (multilingual)' },
   FR: { id: 'JBFqnCBsd6RMkjVDRZzb', modelId: 'eleven_multilingual_v2', name: 'George (multilingual)' },
   CN: { id: 'JBFqnCBsd6RMkjVDRZzb', modelId: 'eleven_multilingual_v2', name: 'George (multilingual)' },
@@ -70,6 +72,7 @@ const DEFAULT_VOICE = { id: 'JBFqnCBsd6RMkjVDRZzb', modelId: 'eleven_multilingua
 
 const PHRASEBOOKS: Record<string, PhrasebookCategory[]> = {
   ZW: ZIMBABWE_PHRASEBOOK,
+  'ZW-ND': ZIMBABWE_NDEBELE_PHRASEBOOK,
   GB: UK_PHRASEBOOK,
   FR: FRANCE_PHRASEBOOK,
   CN: CHINA_PHRASEBOOK,

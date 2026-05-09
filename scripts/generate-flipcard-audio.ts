@@ -26,6 +26,8 @@ import LANGUAGE_PORTUGUESE from '../data/courses/language-portuguese/flipcards';
 import LANGUAGE_HINDI from '../data/courses/language-hindi/flipcards';
 import LANGUAGE_JAPANESE from '../data/courses/language-japanese/flipcards';
 import LANGUAGE_KOREAN from '../data/courses/language-korean/flipcards';
+import LANGUAGE_NDEBELE from '../data/courses/language-ndebele/flipcards';
+import LANGUAGE_ENGLISH_FROM_NDEBELE from '../data/courses/language-english/flipcards-from-ndebele';
 import type { FlipCard } from '../types/flipcards';
 
 dotenv.config({ path: '.env.local' });
@@ -50,6 +52,8 @@ const FLIPCARDS_BY_COURSE: Record<string, FlipCard[]> = {
   'language-hindi': LANGUAGE_HINDI,
   'language-japanese': LANGUAGE_JAPANESE,
   'language-korean': LANGUAGE_KOREAN,
+  'language-ndebele': LANGUAGE_NDEBELE,
+  'language-english-from-ndebele': LANGUAGE_ENGLISH_FROM_NDEBELE,
 };
 
 // Multilingual George across the board for v1.
