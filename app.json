@@ -51,11 +51,7 @@
       "expo-font",
       "expo-secure-store",
       "expo-asset",
-      "expo-dev-client",
-      [
-        "react-native-purchases",
-        { "ios": { "useFrameworks": "static" } }
-      ]
+      "expo-dev-client"
     ],
     "assetBundlePatterns": [
       "assets/**"
