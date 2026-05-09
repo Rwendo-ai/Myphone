@@ -63,6 +63,12 @@
         "projectId": "c798bcf3-9999-4874-b60c-75b5598c4674"
       }
     },
-    "owner": "vibe1ai"
+    "owner": "vibe1ai",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/c798bcf3-9999-4874-b60c-75b5598c4674"
+    }
   }
 }
