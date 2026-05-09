@@ -22,7 +22,8 @@
         "NSPhotoLibraryUsageDescription": "Rwendo uses your photo library so you can choose a profile picture.",
         "UIBackgroundModes": [
           "audio"
-        ]
+        ],
+        "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {
