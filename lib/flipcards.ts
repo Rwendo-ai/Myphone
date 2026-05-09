@@ -23,6 +23,7 @@ export const FLIPCARD_COURSES = [
   'language-hindi',
   'language-japanese',
   'language-korean',
+  'language-ndebele',
 ];
 
 /** Async availability check — does this course have flip cards in Storage? */
