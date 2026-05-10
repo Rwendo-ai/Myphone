@@ -1,8 +1,7 @@
 /**
- * One-shot: download a Tagalog and a Shona english-from-X lesson sample
- * + the language-english flipcard JSON, and print the first chunk to
- * confirm whether content is correctly per-speaker or all defaulting to
- * Shona. Delete after diagnosis.
+ * Diagnostic: dump activeRecall section across all 10 speaker variants
+ * of language-english/m01-l01-hello to confirm whether the prompts are
+ * authored correctly (native-language prompt → target-language answer).
  */
 import { createClient } from '@supabase/supabase-js';
 import * as dotenv from 'dotenv';
@@ -14,20 +13,21 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY!,
 );
 
+const SPEAKERS = ['shona', 'ndebele', 'french', 'chinese', 'tagalog', 'hindi', 'japanese', 'korean', 'spanish', 'portuguese'];
+
 (async () => {
-  for (const path of [
-    'lessons/language-english/tagalog/m01-l01-hello.json',
-    'lessons/language-english/shona/m01-l01-hello.json',
-    'flipcards/language-english.json',
-  ]) {
+  for (const sp of SPEAKERS) {
     const { data, error } = await supabase.storage
       .from('course-content')
-      .download(path);
-    if (error || !data) { console.log(`\n=== ${path}\nFAILED: ${error?.message}`); continue; }
-    const text = await new Response(data).text();
-    console.log(`\n=== ${path} (${text.length} bytes)`);
-    // First 800 chars
-    console.log(text.slice(0, 800));
-    console.log('---');
+      .download(`lessons/language-english/${sp}/m01-l01-hello.json`);
+    if (error || !data) { console.log(`${sp}: SKIP (${error?.message})`); continue; }
+    const json = JSON.parse(await new Response(data).text());
+    const ar = json.activeRecall;
+    if (!ar) { console.log(`${sp}: no activeRecall`); continue; }
+    console.log(`\n=== ${sp}`);
+    for (const p of ar.prompts ?? []) {
+      console.log(`  prompt: ${p.prompt}`);
+      console.log(`  correct: ${JSON.stringify(p.correct)}`);
+    }
   }
 })();
