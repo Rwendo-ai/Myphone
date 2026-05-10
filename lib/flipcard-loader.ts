@@ -2,23 +2,19 @@
  * Flip-card content loader. Bucket: `course-content` (private, authed-read).
  *
  * Path scheme:
- *   - Single-speaker courses (Learn Shona / Ndebele / French / etc. — every
- *     course where the user must be an English speaker):
+ *   - Single-speaker courses (Learn Shona / Ndebele / French / etc. —
+ *     every course where the user must be an English speaker):
  *       flipcards/<courseId>.json
- *   - Multi-speaker course (only language-english today — taken by 10
- *     different speakers learning English):
- *       flipcards/language-english-from-<speakerId>.json
+ *   - Multi-speaker course language-english:
+ *       flipcards/language-english-from-<speakerId>.json (preferred)
+ *       flipcards/language-english-from-shona.json       (fallback)
  *
- *   Today only Shona + Ndebele speakers have authored flip-card sets for
- *   language-english. Other speakers (Tagalog/French/Chinese/Hindi/Spanish/
- *   Portuguese/Japanese/Korean) get no flip-card CTA until their variant
- *   is authored.
- *
- * Cache layout on device:
- *   <documentDir>/flipcards/<storageBasename>.json
- *
- * Pre-2026-05-10 these lived in `travel-content`. Moved to `course-content`
- * when flip cards were re-classified as course content.
+ * Today only Shona + Ndebele speakers have authored their own English
+ * flip-card decks. All other speakers (Tagalog/French/Chinese/Hindi/
+ * Japanese/Korean/Spanish/Portuguese) fall back to the Shona deck —
+ * English target words and English hints display correctly, but the
+ * native column shows Shona translations until per-speaker decks are
+ * authored. See JOBS.md.
  */
 
 import * as FileSystem from 'expo-file-system/legacy';
@@ -35,6 +31,12 @@ function flipcardKey(courseId: string, speakerId: string): string {
   return courseId;
 }
 
+/** Fallback basename when the preferred speaker variant doesn't exist. */
+function fallbackKey(courseId: string): string | null {
+  if (courseId === 'language-english') return 'language-english-from-shona';
+  return null;
+}
+
 function cacheRoot(): string {
   return `${FileSystem.documentDirectory}flipcards/`;
 }
@@ -46,11 +48,7 @@ async function ensureDir(dirPath: string): Promise<void> {
   if (!info.exists) await FileSystem.makeDirectoryAsync(dirPath, { intermediates: true });
 }
 
-export async function loadFlipCards(
-  courseId: string,
-  speakerId: string,
-): Promise<FlipCard[] | null> {
-  const key = flipcardKey(courseId, speakerId);
+async function tryLoad(key: string): Promise<FlipCard[] | null> {
   if (memoryCache.has(key)) return memoryCache.get(key)!;
 
   const cachePath = `${cacheRoot()}${key}.json`;
@@ -62,24 +60,35 @@ export async function loadFlipCards(
       memoryCache.set(key, parsed);
       return parsed;
     } catch {
-      // Corrupt cache → fall through to Storage refetch.
+      // Corrupt cache → fall through.
     }
   }
 
-  try {
-    const { data, error } = await supabase.storage
-      .from(BUCKET)
-      .download(`flipcards/${key}.json`);
-    if (error || !data) return null;
-    const text = await new Response(data).text();
-    const parsed = JSON.parse(text) as FlipCard[];
-    await ensureDir(cacheRoot());
-    await FileSystem.writeAsStringAsync(cachePath, text);
-    memoryCache.set(key, parsed);
-    return parsed;
-  } catch {
-    return null;
+  const { data, error } = await supabase.storage
+    .from(BUCKET)
+    .download(`flipcards/${key}.json`);
+  if (error || !data) return null;
+  const text = await new Response(data).text();
+  const parsed = JSON.parse(text) as FlipCard[];
+  await ensureDir(cacheRoot());
+  await FileSystem.writeAsStringAsync(cachePath, text);
+  memoryCache.set(key, parsed);
+  return parsed;
+}
+
+export async function loadFlipCards(
+  courseId: string,
+  speakerId: string,
+): Promise<FlipCard[] | null> {
+  const primary = flipcardKey(courseId, speakerId);
+  const cards = await tryLoad(primary);
+  if (cards) return cards;
+
+  const fallback = fallbackKey(courseId);
+  if (fallback && fallback !== primary) {
+    return tryLoad(fallback);
   }
+  return null;
 }
 
 export async function loadFlipCardsForModule(

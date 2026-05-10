@@ -46,7 +46,7 @@ export default function UnitScreen() {
     const m = lessonId.match(/^m(\d+)-/);
     return m ? Number(m[1]) : null;
   })();
-  const flipCardsAvailable = moduleNum != null && hasFlipCards(courseId, speaker.id);
+  const flipCardsAvailable = moduleNum != null && hasFlipCards(courseId);
 
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>
