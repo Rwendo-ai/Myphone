@@ -1,0 +1,3002 @@
+[
+  {
+    "id": "m01-c01",
+    "module": 1,
+    "target": "Hello",
+    "hint": "Casual greeting; works any time of day."
+  },
+  {
+    "id": "m01-c02",
+    "module": 1,
+    "target": "Hi",
+    "hint": "Very casual; use with friends, peers."
+  },
+  {
+    "id": "m01-c03",
+    "module": 1,
+    "target": "Good morning",
+    "hint": "Use until about 11am."
+  },
+  {
+    "id": "m01-c04",
+    "module": 1,
+    "target": "Good afternoon",
+    "hint": "Roughly noon to 5pm."
+  },
+  {
+    "id": "m01-c05",
+    "module": 1,
+    "target": "Good evening",
+    "hint": "After 5pm; formal."
+  },
+  {
+    "id": "m01-c06",
+    "module": 1,
+    "target": "Good night",
+    "hint": "Said when leaving for the night."
+  },
+  {
+    "id": "m01-c07",
+    "module": 1,
+    "target": "Goodbye",
+    "hint": "Formal farewell."
+  },
+  {
+    "id": "m01-c08",
+    "module": 1,
+    "target": "Bye",
+    "hint": "Casual farewell."
+  },
+  {
+    "id": "m01-c09",
+    "module": 1,
+    "target": "See you later",
+    "hint": "Casual; suggests you will meet again."
+  },
+  {
+    "id": "m01-c10",
+    "module": 1,
+    "target": "How are you?",
+    "hint": "Polite; \"Makadii\" is the formal form."
+  },
+  {
+    "id": "m01-c11",
+    "module": 1,
+    "target": "I am fine",
+    "hint": "Standard reply: \"I am fine, thanks.\""
+  },
+  {
+    "id": "m01-c12",
+    "module": 1,
+    "target": "Thank you",
+    "hint": "Polite; safe in any setting."
+  },
+  {
+    "id": "m01-c13",
+    "module": 1,
+    "target": "Thanks",
+    "hint": "Casual short form of \"thank you\"."
+  },
+  {
+    "id": "m01-c14",
+    "module": 1,
+    "target": "Thank you very much",
+    "hint": "Stronger than just \"thank you\"."
+  },
+  {
+    "id": "m01-c15",
+    "module": 1,
+    "target": "Please",
+    "hint": "Add to any request to be polite."
+  },
+  {
+    "id": "m01-c16",
+    "module": 1,
+    "target": "Yes",
+    "hint": ""
+  },
+  {
+    "id": "m01-c17",
+    "module": 1,
+    "target": "No",
+    "hint": ""
+  },
+  {
+    "id": "m01-c18",
+    "module": 1,
+    "target": "Maybe",
+    "hint": "Means \"perhaps\"; non-committal."
+  },
+  {
+    "id": "m01-c19",
+    "module": 1,
+    "target": "Sorry",
+    "hint": "Apology AND polite \"excuse me\" in UK English."
+  },
+  {
+    "id": "m01-c20",
+    "module": 1,
+    "target": "Excuse me",
+    "hint": "Use to get attention or pass through a crowd."
+  },
+  {
+    "id": "m01-c21",
+    "module": 1,
+    "target": "Pardon?",
+    "hint": "Polite UK way to say \"I did not hear you\"."
+  },
+  {
+    "id": "m01-c22",
+    "module": 1,
+    "target": "You are welcome",
+    "hint": "Reply to \"thank you\"."
+  },
+  {
+    "id": "m01-c23",
+    "module": 1,
+    "target": "No problem",
+    "hint": "Casual reply to \"thank you\" or \"sorry\"."
+  },
+  {
+    "id": "m01-c24",
+    "module": 1,
+    "target": "My name is",
+    "hint": "Followed by your name: \"My name is Tendai\"."
+  },
+  {
+    "id": "m01-c25",
+    "module": 1,
+    "target": "What is your name?",
+    "hint": "Casual form."
+  },
+  {
+    "id": "m01-c26",
+    "module": 1,
+    "target": "Nice to meet you",
+    "hint": "Said on first meeting."
+  },
+  {
+    "id": "m01-c27",
+    "module": 1,
+    "target": "I",
+    "hint": "Subject pronoun: \"I am here.\""
+  },
+  {
+    "id": "m01-c28",
+    "module": 1,
+    "target": "You",
+    "hint": "Singular casual."
+  },
+  {
+    "id": "m01-c29",
+    "module": 1,
+    "target": "You (plural)",
+    "hint": "Use for groups or one elder/respected person."
+  },
+  {
+    "id": "m01-c30",
+    "module": 1,
+    "target": "He",
+    "hint": "For a male person."
+  },
+  {
+    "id": "m01-c31",
+    "module": 1,
+    "target": "She",
+    "hint": "For a female person."
+  },
+  {
+    "id": "m01-c32",
+    "module": 1,
+    "target": "We",
+    "hint": ""
+  },
+  {
+    "id": "m01-c33",
+    "module": 1,
+    "target": "They",
+    "hint": ""
+  },
+  {
+    "id": "m01-c34",
+    "module": 1,
+    "target": "It",
+    "hint": "For things, not people."
+  },
+  {
+    "id": "m01-c35",
+    "module": 1,
+    "target": "My",
+    "hint": "Possessive: \"my book\"."
+  },
+  {
+    "id": "m01-c36",
+    "module": 1,
+    "target": "Your",
+    "hint": "Singular possessive."
+  },
+  {
+    "id": "m01-c37",
+    "module": 1,
+    "target": "Our",
+    "hint": ""
+  },
+  {
+    "id": "m01-c38",
+    "module": 1,
+    "target": "Their",
+    "hint": ""
+  },
+  {
+    "id": "m01-c39",
+    "module": 1,
+    "target": "This",
+    "hint": "Pointing to something near you."
+  },
+  {
+    "id": "m01-c40",
+    "module": 1,
+    "target": "That",
+    "hint": "Pointing to something far from you."
+  },
+  {
+    "id": "m01-c41",
+    "module": 1,
+    "target": "Here",
+    "hint": ""
+  },
+  {
+    "id": "m01-c42",
+    "module": 1,
+    "target": "There",
+    "hint": ""
+  },
+  {
+    "id": "m01-c43",
+    "module": 1,
+    "target": "Welcome",
+    "hint": "Greeting visitors to your home or country."
+  },
+  {
+    "id": "m01-c44",
+    "module": 1,
+    "target": "Take care",
+    "hint": "Said when parting; \"be safe\"."
+  },
+  {
+    "id": "m01-c45",
+    "module": 1,
+    "target": "Have a good day",
+    "hint": "Common UK pleasantry."
+  },
+  {
+    "id": "m01-c46",
+    "module": 1,
+    "target": "Mr",
+    "hint": "Title for an adult man; pronounced \"mister\"."
+  },
+  {
+    "id": "m01-c47",
+    "module": 1,
+    "target": "Mrs",
+    "hint": "Title for a married woman."
+  },
+  {
+    "id": "m01-c48",
+    "module": 1,
+    "target": "Miss",
+    "hint": "Title for unmarried woman; \"Ms\" is now more common."
+  },
+  {
+    "id": "m01-c49",
+    "module": 1,
+    "target": "Sir",
+    "hint": "Polite address for a man whose name you do not know."
+  },
+  {
+    "id": "m01-c50",
+    "module": 1,
+    "target": "Madam",
+    "hint": "Polite address for a woman whose name you do not know."
+  },
+  {
+    "id": "m02-c01",
+    "module": 2,
+    "target": "One",
+    "hint": ""
+  },
+  {
+    "id": "m02-c02",
+    "module": 2,
+    "target": "Two",
+    "hint": ""
+  },
+  {
+    "id": "m02-c03",
+    "module": 2,
+    "target": "Three",
+    "hint": "The \"th\" is not in Shona."
+  },
+  {
+    "id": "m02-c04",
+    "module": 2,
+    "target": "Four",
+    "hint": ""
+  },
+  {
+    "id": "m02-c05",
+    "module": 2,
+    "target": "Five",
+    "hint": ""
+  },
+  {
+    "id": "m02-c06",
+    "module": 2,
+    "target": "Six",
+    "hint": ""
+  },
+  {
+    "id": "m02-c07",
+    "module": 2,
+    "target": "Seven",
+    "hint": ""
+  },
+  {
+    "id": "m02-c08",
+    "module": 2,
+    "target": "Eight",
+    "hint": ""
+  },
+  {
+    "id": "m02-c09",
+    "module": 2,
+    "target": "Nine",
+    "hint": ""
+  },
+  {
+    "id": "m02-c10",
+    "module": 2,
+    "target": "Ten",
+    "hint": ""
+  },
+  {
+    "id": "m02-c11",
+    "module": 2,
+    "target": "Eleven",
+    "hint": ""
+  },
+  {
+    "id": "m02-c12",
+    "module": 2,
+    "target": "Twelve",
+    "hint": ""
+  },
+  {
+    "id": "m02-c13",
+    "module": 2,
+    "target": "Thirteen",
+    "hint": ""
+  },
+  {
+    "id": "m02-c14",
+    "module": 2,
+    "target": "Fourteen",
+    "hint": ""
+  },
+  {
+    "id": "m02-c15",
+    "module": 2,
+    "target": "Fifteen",
+    "hint": ""
+  },
+  {
+    "id": "m02-c16",
+    "module": 2,
+    "target": "Sixteen",
+    "hint": ""
+  },
+  {
+    "id": "m02-c17",
+    "module": 2,
+    "target": "Seventeen",
+    "hint": ""
+  },
+  {
+    "id": "m02-c18",
+    "module": 2,
+    "target": "Eighteen",
+    "hint": ""
+  },
+  {
+    "id": "m02-c19",
+    "module": 2,
+    "target": "Nineteen",
+    "hint": ""
+  },
+  {
+    "id": "m02-c20",
+    "module": 2,
+    "target": "Twenty",
+    "hint": ""
+  },
+  {
+    "id": "m02-c21",
+    "module": 2,
+    "target": "Hundred",
+    "hint": ""
+  },
+  {
+    "id": "m02-c22",
+    "module": 2,
+    "target": "Thousand",
+    "hint": ""
+  },
+  {
+    "id": "m02-c23",
+    "module": 2,
+    "target": "Zero",
+    "hint": "In phone numbers, UK speakers say \"oh\"."
+  },
+  {
+    "id": "m02-c24",
+    "module": 2,
+    "target": "Monday",
+    "hint": ""
+  },
+  {
+    "id": "m02-c25",
+    "module": 2,
+    "target": "Tuesday",
+    "hint": ""
+  },
+  {
+    "id": "m02-c26",
+    "module": 2,
+    "target": "Wednesday",
+    "hint": ""
+  },
+  {
+    "id": "m02-c27",
+    "module": 2,
+    "target": "Thursday",
+    "hint": ""
+  },
+  {
+    "id": "m02-c28",
+    "module": 2,
+    "target": "Friday",
+    "hint": ""
+  },
+  {
+    "id": "m02-c29",
+    "module": 2,
+    "target": "Saturday",
+    "hint": ""
+  },
+  {
+    "id": "m02-c30",
+    "module": 2,
+    "target": "Sunday",
+    "hint": ""
+  },
+  {
+    "id": "m02-c31",
+    "module": 2,
+    "target": "Today",
+    "hint": ""
+  },
+  {
+    "id": "m02-c32",
+    "module": 2,
+    "target": "Tomorrow",
+    "hint": ""
+  },
+  {
+    "id": "m02-c33",
+    "module": 2,
+    "target": "Yesterday",
+    "hint": ""
+  },
+  {
+    "id": "m02-c34",
+    "module": 2,
+    "target": "Morning",
+    "hint": ""
+  },
+  {
+    "id": "m02-c35",
+    "module": 2,
+    "target": "Afternoon",
+    "hint": ""
+  },
+  {
+    "id": "m02-c36",
+    "module": 2,
+    "target": "Evening",
+    "hint": ""
+  },
+  {
+    "id": "m02-c37",
+    "module": 2,
+    "target": "Night",
+    "hint": ""
+  },
+  {
+    "id": "m02-c38",
+    "module": 2,
+    "target": "Hour",
+    "hint": ""
+  },
+  {
+    "id": "m02-c39",
+    "module": 2,
+    "target": "Minute",
+    "hint": ""
+  },
+  {
+    "id": "m02-c40",
+    "module": 2,
+    "target": "Week",
+    "hint": ""
+  },
+  {
+    "id": "m02-c41",
+    "module": 2,
+    "target": "Red",
+    "hint": ""
+  },
+  {
+    "id": "m02-c42",
+    "module": 2,
+    "target": "Blue",
+    "hint": ""
+  },
+  {
+    "id": "m02-c43",
+    "module": 2,
+    "target": "Green",
+    "hint": ""
+  },
+  {
+    "id": "m02-c44",
+    "module": 2,
+    "target": "Yellow",
+    "hint": ""
+  },
+  {
+    "id": "m02-c45",
+    "module": 2,
+    "target": "Black",
+    "hint": ""
+  },
+  {
+    "id": "m02-c46",
+    "module": 2,
+    "target": "White",
+    "hint": ""
+  },
+  {
+    "id": "m02-c47",
+    "module": 2,
+    "target": "Brown",
+    "hint": ""
+  },
+  {
+    "id": "m02-c48",
+    "module": 2,
+    "target": "Orange",
+    "hint": ""
+  },
+  {
+    "id": "m02-c49",
+    "module": 2,
+    "target": "Pink",
+    "hint": ""
+  },
+  {
+    "id": "m02-c50",
+    "module": 2,
+    "target": "Grey",
+    "hint": "UK spelling. US spells it \"gray\"."
+  },
+  {
+    "id": "m03-c01",
+    "module": 3,
+    "target": "Water",
+    "hint": ""
+  },
+  {
+    "id": "m03-c02",
+    "module": 3,
+    "target": "Tea",
+    "hint": "In the UK, \"tea\" can also mean the evening meal."
+  },
+  {
+    "id": "m03-c03",
+    "module": 3,
+    "target": "Coffee",
+    "hint": ""
+  },
+  {
+    "id": "m03-c04",
+    "module": 3,
+    "target": "Milk",
+    "hint": ""
+  },
+  {
+    "id": "m03-c05",
+    "module": 3,
+    "target": "Sugar",
+    "hint": ""
+  },
+  {
+    "id": "m03-c06",
+    "module": 3,
+    "target": "Salt",
+    "hint": ""
+  },
+  {
+    "id": "m03-c07",
+    "module": 3,
+    "target": "Bread",
+    "hint": ""
+  },
+  {
+    "id": "m03-c08",
+    "module": 3,
+    "target": "Butter",
+    "hint": ""
+  },
+  {
+    "id": "m03-c09",
+    "module": 3,
+    "target": "Egg",
+    "hint": ""
+  },
+  {
+    "id": "m03-c10",
+    "module": 3,
+    "target": "Meat",
+    "hint": ""
+  },
+  {
+    "id": "m03-c11",
+    "module": 3,
+    "target": "Beef",
+    "hint": ""
+  },
+  {
+    "id": "m03-c12",
+    "module": 3,
+    "target": "Chicken",
+    "hint": ""
+  },
+  {
+    "id": "m03-c13",
+    "module": 3,
+    "target": "Fish",
+    "hint": ""
+  },
+  {
+    "id": "m03-c14",
+    "module": 3,
+    "target": "Rice",
+    "hint": ""
+  },
+  {
+    "id": "m03-c15",
+    "module": 3,
+    "target": "Maize meal",
+    "hint": "In the UK called \"cornmeal\" or \"polenta\"; US \"cornmeal\"."
+  },
+  {
+    "id": "m03-c16",
+    "module": 3,
+    "target": "Potato",
+    "hint": ""
+  },
+  {
+    "id": "m03-c17",
+    "module": 3,
+    "target": "Chips",
+    "hint": "UK = thick fried potatoes. US says \"fries\"."
+  },
+  {
+    "id": "m03-c18",
+    "module": 3,
+    "target": "Crisps",
+    "hint": "UK word for what Americans call \"chips\" (in a bag)."
+  },
+  {
+    "id": "m03-c19",
+    "module": 3,
+    "target": "Biscuit",
+    "hint": "UK = sweet snack. In US, \"biscuit\" is a savoury bread roll."
+  },
+  {
+    "id": "m03-c20",
+    "module": 3,
+    "target": "Cookie",
+    "hint": "US word; UK uses \"biscuit\" for the same thing."
+  },
+  {
+    "id": "m03-c21",
+    "module": 3,
+    "target": "Cake",
+    "hint": ""
+  },
+  {
+    "id": "m03-c22",
+    "module": 3,
+    "target": "Apple",
+    "hint": ""
+  },
+  {
+    "id": "m03-c23",
+    "module": 3,
+    "target": "Banana",
+    "hint": ""
+  },
+  {
+    "id": "m03-c24",
+    "module": 3,
+    "target": "Orange",
+    "hint": "Same word as the colour."
+  },
+  {
+    "id": "m03-c25",
+    "module": 3,
+    "target": "Mango",
+    "hint": ""
+  },
+  {
+    "id": "m03-c26",
+    "module": 3,
+    "target": "Tomato",
+    "hint": ""
+  },
+  {
+    "id": "m03-c27",
+    "module": 3,
+    "target": "Onion",
+    "hint": ""
+  },
+  {
+    "id": "m03-c28",
+    "module": 3,
+    "target": "Vegetable",
+    "hint": "UK casual: \"veg\"."
+  },
+  {
+    "id": "m03-c29",
+    "module": 3,
+    "target": "Fruit",
+    "hint": ""
+  },
+  {
+    "id": "m03-c30",
+    "module": 3,
+    "target": "Cheese",
+    "hint": ""
+  },
+  {
+    "id": "m03-c31",
+    "module": 3,
+    "target": "Yogurt",
+    "hint": "UK often spells \"yoghurt\"."
+  },
+  {
+    "id": "m03-c32",
+    "module": 3,
+    "target": "Soup",
+    "hint": ""
+  },
+  {
+    "id": "m03-c33",
+    "module": 3,
+    "target": "Sandwich",
+    "hint": "UK casual: \"sarnie\" or \"butty\"."
+  },
+  {
+    "id": "m03-c34",
+    "module": 3,
+    "target": "Breakfast",
+    "hint": ""
+  },
+  {
+    "id": "m03-c35",
+    "module": 3,
+    "target": "Lunch",
+    "hint": "In UK, \"dinner\" can also mean lunch in some regions."
+  },
+  {
+    "id": "m03-c36",
+    "module": 3,
+    "target": "Dinner",
+    "hint": "UK formal evening meal; \"supper\" is lighter and later."
+  },
+  {
+    "id": "m03-c37",
+    "module": 3,
+    "target": "Supper",
+    "hint": "A late or light evening meal."
+  },
+  {
+    "id": "m03-c38",
+    "module": 3,
+    "target": "Beer",
+    "hint": ""
+  },
+  {
+    "id": "m03-c39",
+    "module": 3,
+    "target": "Wine",
+    "hint": ""
+  },
+  {
+    "id": "m03-c40",
+    "module": 3,
+    "target": "Juice",
+    "hint": ""
+  },
+  {
+    "id": "m03-c41",
+    "module": 3,
+    "target": "Soft drink",
+    "hint": "UK: \"fizzy drink\" or \"pop\". US: \"soda\"."
+  },
+  {
+    "id": "m03-c42",
+    "module": 3,
+    "target": "Soda",
+    "hint": "US word for a soft drink. In UK, \"soda\" usually means soda water."
+  },
+  {
+    "id": "m03-c43",
+    "module": 3,
+    "target": "Hungry",
+    "hint": "Adjective: \"I am hungry.\""
+  },
+  {
+    "id": "m03-c44",
+    "module": 3,
+    "target": "Thirsty",
+    "hint": "\"Th\" sound; tongue lightly between teeth."
+  },
+  {
+    "id": "m03-c45",
+    "module": 3,
+    "target": "Delicious",
+    "hint": "Compliment for tasty food."
+  },
+  {
+    "id": "m03-c46",
+    "module": 3,
+    "target": "Spicy",
+    "hint": "Has chilli/heat."
+  },
+  {
+    "id": "m03-c47",
+    "module": 3,
+    "target": "Sweet",
+    "hint": ""
+  },
+  {
+    "id": "m03-c48",
+    "module": 3,
+    "target": "Bitter",
+    "hint": ""
+  },
+  {
+    "id": "m03-c49",
+    "module": 3,
+    "target": "Hot (temperature)",
+    "hint": ""
+  },
+  {
+    "id": "m03-c50",
+    "module": 3,
+    "target": "Cold",
+    "hint": ""
+  },
+  {
+    "id": "m04-c01",
+    "module": 4,
+    "target": "Head",
+    "hint": ""
+  },
+  {
+    "id": "m04-c02",
+    "module": 4,
+    "target": "Hair",
+    "hint": ""
+  },
+  {
+    "id": "m04-c03",
+    "module": 4,
+    "target": "Face",
+    "hint": ""
+  },
+  {
+    "id": "m04-c04",
+    "module": 4,
+    "target": "Eye",
+    "hint": ""
+  },
+  {
+    "id": "m04-c05",
+    "module": 4,
+    "target": "Ear",
+    "hint": ""
+  },
+  {
+    "id": "m04-c06",
+    "module": 4,
+    "target": "Nose",
+    "hint": ""
+  },
+  {
+    "id": "m04-c07",
+    "module": 4,
+    "target": "Mouth",
+    "hint": ""
+  },
+  {
+    "id": "m04-c08",
+    "module": 4,
+    "target": "Tooth",
+    "hint": "Plural is \"teeth\"."
+  },
+  {
+    "id": "m04-c09",
+    "module": 4,
+    "target": "Tongue",
+    "hint": ""
+  },
+  {
+    "id": "m04-c10",
+    "module": 4,
+    "target": "Neck",
+    "hint": ""
+  },
+  {
+    "id": "m04-c11",
+    "module": 4,
+    "target": "Throat",
+    "hint": ""
+  },
+  {
+    "id": "m04-c12",
+    "module": 4,
+    "target": "Shoulder",
+    "hint": ""
+  },
+  {
+    "id": "m04-c13",
+    "module": 4,
+    "target": "Arm",
+    "hint": ""
+  },
+  {
+    "id": "m04-c14",
+    "module": 4,
+    "target": "Hand",
+    "hint": ""
+  },
+  {
+    "id": "m04-c15",
+    "module": 4,
+    "target": "Finger",
+    "hint": ""
+  },
+  {
+    "id": "m04-c16",
+    "module": 4,
+    "target": "Chest",
+    "hint": ""
+  },
+  {
+    "id": "m04-c17",
+    "module": 4,
+    "target": "Back",
+    "hint": ""
+  },
+  {
+    "id": "m04-c18",
+    "module": 4,
+    "target": "Stomach",
+    "hint": "Casual: \"tummy\" or \"belly\"."
+  },
+  {
+    "id": "m04-c19",
+    "module": 4,
+    "target": "Leg",
+    "hint": ""
+  },
+  {
+    "id": "m04-c20",
+    "module": 4,
+    "target": "Knee",
+    "hint": ""
+  },
+  {
+    "id": "m04-c21",
+    "module": 4,
+    "target": "Foot",
+    "hint": "Plural is \"feet\"."
+  },
+  {
+    "id": "m04-c22",
+    "module": 4,
+    "target": "Toe",
+    "hint": ""
+  },
+  {
+    "id": "m04-c23",
+    "module": 4,
+    "target": "Heart",
+    "hint": ""
+  },
+  {
+    "id": "m04-c24",
+    "module": 4,
+    "target": "Skin",
+    "hint": ""
+  },
+  {
+    "id": "m04-c25",
+    "module": 4,
+    "target": "Bone",
+    "hint": ""
+  },
+  {
+    "id": "m04-c26",
+    "module": 4,
+    "target": "Blood",
+    "hint": ""
+  },
+  {
+    "id": "m04-c27",
+    "module": 4,
+    "target": "To eat",
+    "hint": "Verb. \"I eat\", \"she eats\"."
+  },
+  {
+    "id": "m04-c28",
+    "module": 4,
+    "target": "To drink",
+    "hint": ""
+  },
+  {
+    "id": "m04-c29",
+    "module": 4,
+    "target": "To sleep",
+    "hint": ""
+  },
+  {
+    "id": "m04-c30",
+    "module": 4,
+    "target": "To walk",
+    "hint": ""
+  },
+  {
+    "id": "m04-c31",
+    "module": 4,
+    "target": "To run",
+    "hint": ""
+  },
+  {
+    "id": "m04-c32",
+    "module": 4,
+    "target": "To sit",
+    "hint": ""
+  },
+  {
+    "id": "m04-c33",
+    "module": 4,
+    "target": "To stand",
+    "hint": ""
+  },
+  {
+    "id": "m04-c34",
+    "module": 4,
+    "target": "To go",
+    "hint": ""
+  },
+  {
+    "id": "m04-c35",
+    "module": 4,
+    "target": "To come",
+    "hint": ""
+  },
+  {
+    "id": "m04-c36",
+    "module": 4,
+    "target": "To see",
+    "hint": ""
+  },
+  {
+    "id": "m04-c37",
+    "module": 4,
+    "target": "To hear",
+    "hint": ""
+  },
+  {
+    "id": "m04-c38",
+    "module": 4,
+    "target": "To speak",
+    "hint": ""
+  },
+  {
+    "id": "m04-c39",
+    "module": 4,
+    "target": "To say",
+    "hint": ""
+  },
+  {
+    "id": "m04-c40",
+    "module": 4,
+    "target": "To read",
+    "hint": ""
+  },
+  {
+    "id": "m04-c41",
+    "module": 4,
+    "target": "To write",
+    "hint": ""
+  },
+  {
+    "id": "m04-c42",
+    "module": 4,
+    "target": "To work",
+    "hint": ""
+  },
+  {
+    "id": "m04-c43",
+    "module": 4,
+    "target": "To rest",
+    "hint": ""
+  },
+  {
+    "id": "m04-c44",
+    "module": 4,
+    "target": "To buy",
+    "hint": ""
+  },
+  {
+    "id": "m04-c45",
+    "module": 4,
+    "target": "To sell",
+    "hint": ""
+  },
+  {
+    "id": "m04-c46",
+    "module": 4,
+    "target": "To know",
+    "hint": ""
+  },
+  {
+    "id": "m04-c47",
+    "module": 4,
+    "target": "To want",
+    "hint": ""
+  },
+  {
+    "id": "m04-c48",
+    "module": 4,
+    "target": "To need",
+    "hint": ""
+  },
+  {
+    "id": "m04-c49",
+    "module": 4,
+    "target": "To help",
+    "hint": ""
+  },
+  {
+    "id": "m04-c50",
+    "module": 4,
+    "target": "To ask",
+    "hint": ""
+  },
+  {
+    "id": "m05-c01",
+    "module": 5,
+    "target": "Shirt",
+    "hint": ""
+  },
+  {
+    "id": "m05-c02",
+    "module": 5,
+    "target": "T-shirt",
+    "hint": ""
+  },
+  {
+    "id": "m05-c03",
+    "module": 5,
+    "target": "Trousers",
+    "hint": "UK word. US says \"pants\"."
+  },
+  {
+    "id": "m05-c04",
+    "module": 5,
+    "target": "Pants",
+    "hint": "US = trousers. WARNING: in UK, \"pants\" means underwear!"
+  },
+  {
+    "id": "m05-c05",
+    "module": 5,
+    "target": "Jeans",
+    "hint": ""
+  },
+  {
+    "id": "m05-c06",
+    "module": 5,
+    "target": "Dress",
+    "hint": ""
+  },
+  {
+    "id": "m05-c07",
+    "module": 5,
+    "target": "Skirt",
+    "hint": ""
+  },
+  {
+    "id": "m05-c08",
+    "module": 5,
+    "target": "Jumper",
+    "hint": "UK = a knitted top. US says \"sweater\"."
+  },
+  {
+    "id": "m05-c09",
+    "module": 5,
+    "target": "Sweater",
+    "hint": "US word for what UK calls a \"jumper\"."
+  },
+  {
+    "id": "m05-c10",
+    "module": 5,
+    "target": "Coat",
+    "hint": ""
+  },
+  {
+    "id": "m05-c11",
+    "module": 5,
+    "target": "Jacket",
+    "hint": ""
+  },
+  {
+    "id": "m05-c12",
+    "module": 5,
+    "target": "Shoes",
+    "hint": ""
+  },
+  {
+    "id": "m05-c13",
+    "module": 5,
+    "target": "Trainers",
+    "hint": "UK = sports shoes. US says \"sneakers\"."
+  },
+  {
+    "id": "m05-c14",
+    "module": 5,
+    "target": "Sneakers",
+    "hint": "US word; UK calls them \"trainers\"."
+  },
+  {
+    "id": "m05-c15",
+    "module": 5,
+    "target": "Socks",
+    "hint": ""
+  },
+  {
+    "id": "m05-c16",
+    "module": 5,
+    "target": "Hat",
+    "hint": ""
+  },
+  {
+    "id": "m05-c17",
+    "module": 5,
+    "target": "Belt",
+    "hint": ""
+  },
+  {
+    "id": "m05-c18",
+    "module": 5,
+    "target": "Bag",
+    "hint": ""
+  },
+  {
+    "id": "m05-c19",
+    "module": 5,
+    "target": "House",
+    "hint": ""
+  },
+  {
+    "id": "m05-c20",
+    "module": 5,
+    "target": "Flat",
+    "hint": "UK = an apartment. US says \"apartment\"."
+  },
+  {
+    "id": "m05-c21",
+    "module": 5,
+    "target": "Apartment",
+    "hint": "US word; UK calls it a \"flat\"."
+  },
+  {
+    "id": "m05-c22",
+    "module": 5,
+    "target": "Room",
+    "hint": ""
+  },
+  {
+    "id": "m05-c23",
+    "module": 5,
+    "target": "Bedroom",
+    "hint": ""
+  },
+  {
+    "id": "m05-c24",
+    "module": 5,
+    "target": "Kitchen",
+    "hint": ""
+  },
+  {
+    "id": "m05-c25",
+    "module": 5,
+    "target": "Bathroom",
+    "hint": ""
+  },
+  {
+    "id": "m05-c26",
+    "module": 5,
+    "target": "Toilet",
+    "hint": "UK common word. US prefers \"bathroom\" or \"restroom\"."
+  },
+  {
+    "id": "m05-c27",
+    "module": 5,
+    "target": "Door",
+    "hint": ""
+  },
+  {
+    "id": "m05-c28",
+    "module": 5,
+    "target": "Window",
+    "hint": ""
+  },
+  {
+    "id": "m05-c29",
+    "module": 5,
+    "target": "Floor",
+    "hint": ""
+  },
+  {
+    "id": "m05-c30",
+    "module": 5,
+    "target": "Wall",
+    "hint": ""
+  },
+  {
+    "id": "m05-c31",
+    "module": 5,
+    "target": "Ceiling",
+    "hint": ""
+  },
+  {
+    "id": "m05-c32",
+    "module": 5,
+    "target": "Table",
+    "hint": ""
+  },
+  {
+    "id": "m05-c33",
+    "module": 5,
+    "target": "Chair",
+    "hint": ""
+  },
+  {
+    "id": "m05-c34",
+    "module": 5,
+    "target": "Bed",
+    "hint": ""
+  },
+  {
+    "id": "m05-c35",
+    "module": 5,
+    "target": "Sofa",
+    "hint": "UK also says \"settee\" or \"couch\"."
+  },
+  {
+    "id": "m05-c36",
+    "module": 5,
+    "target": "Lamp",
+    "hint": ""
+  },
+  {
+    "id": "m05-c37",
+    "module": 5,
+    "target": "Television",
+    "hint": "Casual: \"TV\" or \"telly\" (UK)."
+  },
+  {
+    "id": "m05-c38",
+    "module": 5,
+    "target": "Phone",
+    "hint": ""
+  },
+  {
+    "id": "m05-c39",
+    "module": 5,
+    "target": "Mobile",
+    "hint": "UK = a mobile phone. US says \"cell\" or \"cellphone\"."
+  },
+  {
+    "id": "m05-c40",
+    "module": 5,
+    "target": "Computer",
+    "hint": ""
+  },
+  {
+    "id": "m05-c41",
+    "module": 5,
+    "target": "Key",
+    "hint": ""
+  },
+  {
+    "id": "m05-c42",
+    "module": 5,
+    "target": "Plate",
+    "hint": ""
+  },
+  {
+    "id": "m05-c43",
+    "module": 5,
+    "target": "Cup",
+    "hint": ""
+  },
+  {
+    "id": "m05-c44",
+    "module": 5,
+    "target": "Glass",
+    "hint": ""
+  },
+  {
+    "id": "m05-c45",
+    "module": 5,
+    "target": "Spoon",
+    "hint": ""
+  },
+  {
+    "id": "m05-c46",
+    "module": 5,
+    "target": "Fork",
+    "hint": ""
+  },
+  {
+    "id": "m05-c47",
+    "module": 5,
+    "target": "Knife",
+    "hint": ""
+  },
+  {
+    "id": "m05-c48",
+    "module": 5,
+    "target": "Book",
+    "hint": ""
+  },
+  {
+    "id": "m05-c49",
+    "module": 5,
+    "target": "Pen",
+    "hint": ""
+  },
+  {
+    "id": "m05-c50",
+    "module": 5,
+    "target": "Money",
+    "hint": ""
+  },
+  {
+    "id": "m06-c01",
+    "module": 6,
+    "target": "Happy",
+    "hint": ""
+  },
+  {
+    "id": "m06-c02",
+    "module": 6,
+    "target": "Sad",
+    "hint": ""
+  },
+  {
+    "id": "m06-c03",
+    "module": 6,
+    "target": "Angry",
+    "hint": ""
+  },
+  {
+    "id": "m06-c04",
+    "module": 6,
+    "target": "Tired",
+    "hint": ""
+  },
+  {
+    "id": "m06-c05",
+    "module": 6,
+    "target": "Excited",
+    "hint": ""
+  },
+  {
+    "id": "m06-c06",
+    "module": 6,
+    "target": "Scared",
+    "hint": ""
+  },
+  {
+    "id": "m06-c07",
+    "module": 6,
+    "target": "Afraid",
+    "hint": "More formal than \"scared\"."
+  },
+  {
+    "id": "m06-c08",
+    "module": 6,
+    "target": "Worried",
+    "hint": ""
+  },
+  {
+    "id": "m06-c09",
+    "module": 6,
+    "target": "Surprised",
+    "hint": ""
+  },
+  {
+    "id": "m06-c10",
+    "module": 6,
+    "target": "Confused",
+    "hint": ""
+  },
+  {
+    "id": "m06-c11",
+    "module": 6,
+    "target": "Bored",
+    "hint": ""
+  },
+  {
+    "id": "m06-c12",
+    "module": 6,
+    "target": "Lonely",
+    "hint": ""
+  },
+  {
+    "id": "m06-c13",
+    "module": 6,
+    "target": "Proud",
+    "hint": "\"Proud of\" is positive; \"proud\" alone can be negative."
+  },
+  {
+    "id": "m06-c14",
+    "module": 6,
+    "target": "Embarrassed",
+    "hint": ""
+  },
+  {
+    "id": "m06-c15",
+    "module": 6,
+    "target": "Grateful",
+    "hint": ""
+  },
+  {
+    "id": "m06-c16",
+    "module": 6,
+    "target": "Calm",
+    "hint": ""
+  },
+  {
+    "id": "m06-c17",
+    "module": 6,
+    "target": "Stressed",
+    "hint": ""
+  },
+  {
+    "id": "m06-c18",
+    "module": 6,
+    "target": "Big",
+    "hint": ""
+  },
+  {
+    "id": "m06-c19",
+    "module": 6,
+    "target": "Small",
+    "hint": ""
+  },
+  {
+    "id": "m06-c20",
+    "module": 6,
+    "target": "Tall",
+    "hint": ""
+  },
+  {
+    "id": "m06-c21",
+    "module": 6,
+    "target": "Short",
+    "hint": ""
+  },
+  {
+    "id": "m06-c22",
+    "module": 6,
+    "target": "Long",
+    "hint": ""
+  },
+  {
+    "id": "m06-c23",
+    "module": 6,
+    "target": "Old",
+    "hint": ""
+  },
+  {
+    "id": "m06-c24",
+    "module": 6,
+    "target": "Young",
+    "hint": ""
+  },
+  {
+    "id": "m06-c25",
+    "module": 6,
+    "target": "New",
+    "hint": ""
+  },
+  {
+    "id": "m06-c26",
+    "module": 6,
+    "target": "Good",
+    "hint": ""
+  },
+  {
+    "id": "m06-c27",
+    "module": 6,
+    "target": "Bad",
+    "hint": ""
+  },
+  {
+    "id": "m06-c28",
+    "module": 6,
+    "target": "Beautiful",
+    "hint": "Used for places, art, women. For men say \"handsome\"."
+  },
+  {
+    "id": "m06-c29",
+    "module": 6,
+    "target": "Handsome",
+    "hint": "Specifically for men."
+  },
+  {
+    "id": "m06-c30",
+    "module": 6,
+    "target": "Ugly",
+    "hint": ""
+  },
+  {
+    "id": "m06-c31",
+    "module": 6,
+    "target": "Nice",
+    "hint": "Casual catch-all; \"she is nice\", \"the meal was nice\"."
+  },
+  {
+    "id": "m06-c32",
+    "module": 6,
+    "target": "Lovely",
+    "hint": "UK favourite — friendlier than \"good\"."
+  },
+  {
+    "id": "m06-c33",
+    "module": 6,
+    "target": "Rich",
+    "hint": ""
+  },
+  {
+    "id": "m06-c34",
+    "module": 6,
+    "target": "Poor",
+    "hint": ""
+  },
+  {
+    "id": "m06-c35",
+    "module": 6,
+    "target": "Strong",
+    "hint": ""
+  },
+  {
+    "id": "m06-c36",
+    "module": 6,
+    "target": "Weak",
+    "hint": ""
+  },
+  {
+    "id": "m06-c37",
+    "module": 6,
+    "target": "Easy",
+    "hint": ""
+  },
+  {
+    "id": "m06-c38",
+    "module": 6,
+    "target": "Hard",
+    "hint": "Means difficult OR not soft."
+  },
+  {
+    "id": "m06-c39",
+    "module": 6,
+    "target": "Difficult",
+    "hint": ""
+  },
+  {
+    "id": "m06-c40",
+    "module": 6,
+    "target": "Fast",
+    "hint": ""
+  },
+  {
+    "id": "m06-c41",
+    "module": 6,
+    "target": "Slow",
+    "hint": ""
+  },
+  {
+    "id": "m06-c42",
+    "module": 6,
+    "target": "Clean",
+    "hint": ""
+  },
+  {
+    "id": "m06-c43",
+    "module": 6,
+    "target": "Dirty",
+    "hint": ""
+  },
+  {
+    "id": "m06-c44",
+    "module": 6,
+    "target": "Full",
+    "hint": ""
+  },
+  {
+    "id": "m06-c45",
+    "module": 6,
+    "target": "Empty",
+    "hint": ""
+  },
+  {
+    "id": "m06-c46",
+    "module": 6,
+    "target": "Heavy",
+    "hint": ""
+  },
+  {
+    "id": "m06-c47",
+    "module": 6,
+    "target": "Light",
+    "hint": "Means \"not heavy\" OR \"not dark\"."
+  },
+  {
+    "id": "m06-c48",
+    "module": 6,
+    "target": "Friendly",
+    "hint": ""
+  },
+  {
+    "id": "m06-c49",
+    "module": 6,
+    "target": "Polite",
+    "hint": ""
+  },
+  {
+    "id": "m06-c50",
+    "module": 6,
+    "target": "Kind",
+    "hint": "Means \"nice\" as a person, NOT the type/sort word."
+  },
+  {
+    "id": "m07-c01",
+    "module": 7,
+    "target": "Sun",
+    "hint": ""
+  },
+  {
+    "id": "m07-c02",
+    "module": 7,
+    "target": "Moon",
+    "hint": ""
+  },
+  {
+    "id": "m07-c03",
+    "module": 7,
+    "target": "Star",
+    "hint": ""
+  },
+  {
+    "id": "m07-c04",
+    "module": 7,
+    "target": "Sky",
+    "hint": ""
+  },
+  {
+    "id": "m07-c05",
+    "module": 7,
+    "target": "Cloud",
+    "hint": ""
+  },
+  {
+    "id": "m07-c06",
+    "module": 7,
+    "target": "Rain",
+    "hint": "UK weather word #1."
+  },
+  {
+    "id": "m07-c07",
+    "module": 7,
+    "target": "Snow",
+    "hint": ""
+  },
+  {
+    "id": "m07-c08",
+    "module": 7,
+    "target": "Wind",
+    "hint": ""
+  },
+  {
+    "id": "m07-c09",
+    "module": 7,
+    "target": "Storm",
+    "hint": ""
+  },
+  {
+    "id": "m07-c10",
+    "module": 7,
+    "target": "Thunder",
+    "hint": ""
+  },
+  {
+    "id": "m07-c11",
+    "module": 7,
+    "target": "Lightning",
+    "hint": ""
+  },
+  {
+    "id": "m07-c12",
+    "module": 7,
+    "target": "Fog",
+    "hint": "Common in UK winters."
+  },
+  {
+    "id": "m07-c13",
+    "module": 7,
+    "target": "Mist",
+    "hint": ""
+  },
+  {
+    "id": "m07-c14",
+    "module": 7,
+    "target": "Sunny",
+    "hint": ""
+  },
+  {
+    "id": "m07-c15",
+    "module": 7,
+    "target": "Cloudy",
+    "hint": ""
+  },
+  {
+    "id": "m07-c16",
+    "module": 7,
+    "target": "Rainy",
+    "hint": ""
+  },
+  {
+    "id": "m07-c17",
+    "module": 7,
+    "target": "Windy",
+    "hint": ""
+  },
+  {
+    "id": "m07-c18",
+    "module": 7,
+    "target": "Warm",
+    "hint": ""
+  },
+  {
+    "id": "m07-c19",
+    "module": 7,
+    "target": "Hot",
+    "hint": ""
+  },
+  {
+    "id": "m07-c20",
+    "module": 7,
+    "target": "Cool",
+    "hint": ""
+  },
+  {
+    "id": "m07-c21",
+    "module": 7,
+    "target": "Freezing",
+    "hint": "Very cold; common UK winter word."
+  },
+  {
+    "id": "m07-c22",
+    "module": 7,
+    "target": "Tree",
+    "hint": ""
+  },
+  {
+    "id": "m07-c23",
+    "module": 7,
+    "target": "Leaf",
+    "hint": ""
+  },
+  {
+    "id": "m07-c24",
+    "module": 7,
+    "target": "Flower",
+    "hint": ""
+  },
+  {
+    "id": "m07-c25",
+    "module": 7,
+    "target": "Grass",
+    "hint": ""
+  },
+  {
+    "id": "m07-c26",
+    "module": 7,
+    "target": "River",
+    "hint": ""
+  },
+  {
+    "id": "m07-c27",
+    "module": 7,
+    "target": "Lake",
+    "hint": ""
+  },
+  {
+    "id": "m07-c28",
+    "module": 7,
+    "target": "Sea",
+    "hint": "UK speakers say \"sea\" or \"seaside\" more than \"ocean\"."
+  },
+  {
+    "id": "m07-c29",
+    "module": 7,
+    "target": "Ocean",
+    "hint": ""
+  },
+  {
+    "id": "m07-c30",
+    "module": 7,
+    "target": "Mountain",
+    "hint": ""
+  },
+  {
+    "id": "m07-c31",
+    "module": 7,
+    "target": "Hill",
+    "hint": ""
+  },
+  {
+    "id": "m07-c32",
+    "module": 7,
+    "target": "Forest",
+    "hint": ""
+  },
+  {
+    "id": "m07-c33",
+    "module": 7,
+    "target": "Field",
+    "hint": ""
+  },
+  {
+    "id": "m07-c34",
+    "module": 7,
+    "target": "Stone",
+    "hint": ""
+  },
+  {
+    "id": "m07-c35",
+    "module": 7,
+    "target": "Sand",
+    "hint": ""
+  },
+  {
+    "id": "m07-c36",
+    "module": 7,
+    "target": "Soil",
+    "hint": ""
+  },
+  {
+    "id": "m07-c37",
+    "module": 7,
+    "target": "Fire",
+    "hint": ""
+  },
+  {
+    "id": "m07-c38",
+    "module": 7,
+    "target": "Animal",
+    "hint": ""
+  },
+  {
+    "id": "m07-c39",
+    "module": 7,
+    "target": "Dog",
+    "hint": ""
+  },
+  {
+    "id": "m07-c40",
+    "module": 7,
+    "target": "Cat",
+    "hint": ""
+  },
+  {
+    "id": "m07-c41",
+    "module": 7,
+    "target": "Cow",
+    "hint": ""
+  },
+  {
+    "id": "m07-c42",
+    "module": 7,
+    "target": "Goat",
+    "hint": ""
+  },
+  {
+    "id": "m07-c43",
+    "module": 7,
+    "target": "Bird",
+    "hint": ""
+  },
+  {
+    "id": "m07-c44",
+    "module": 7,
+    "target": "Insect",
+    "hint": ""
+  },
+  {
+    "id": "m07-c45",
+    "module": 7,
+    "target": "Snake",
+    "hint": ""
+  },
+  {
+    "id": "m07-c46",
+    "module": 7,
+    "target": "Spring (season)",
+    "hint": ""
+  },
+  {
+    "id": "m07-c47",
+    "module": 7,
+    "target": "Summer",
+    "hint": ""
+  },
+  {
+    "id": "m07-c48",
+    "module": 7,
+    "target": "Autumn",
+    "hint": "UK word. US says \"fall\"."
+  },
+  {
+    "id": "m07-c49",
+    "module": 7,
+    "target": "Fall (season)",
+    "hint": "US word; UK calls it \"autumn\"."
+  },
+  {
+    "id": "m07-c50",
+    "module": 7,
+    "target": "Winter",
+    "hint": ""
+  },
+  {
+    "id": "m08-c01",
+    "module": 8,
+    "target": "Airport",
+    "hint": ""
+  },
+  {
+    "id": "m08-c02",
+    "module": 8,
+    "target": "Plane",
+    "hint": ""
+  },
+  {
+    "id": "m08-c03",
+    "module": 8,
+    "target": "Flight",
+    "hint": ""
+  },
+  {
+    "id": "m08-c04",
+    "module": 8,
+    "target": "Boarding pass",
+    "hint": ""
+  },
+  {
+    "id": "m08-c05",
+    "module": 8,
+    "target": "Passport",
+    "hint": ""
+  },
+  {
+    "id": "m08-c06",
+    "module": 8,
+    "target": "Visa",
+    "hint": ""
+  },
+  {
+    "id": "m08-c07",
+    "module": 8,
+    "target": "Customs",
+    "hint": ""
+  },
+  {
+    "id": "m08-c08",
+    "module": 8,
+    "target": "Luggage",
+    "hint": "UK and US both use \"luggage\"."
+  },
+  {
+    "id": "m08-c09",
+    "module": 8,
+    "target": "Suitcase",
+    "hint": ""
+  },
+  {
+    "id": "m08-c10",
+    "module": 8,
+    "target": "Trolley",
+    "hint": "UK = airport luggage cart. US says \"cart\"."
+  },
+  {
+    "id": "m08-c11",
+    "module": 8,
+    "target": "Train",
+    "hint": ""
+  },
+  {
+    "id": "m08-c12",
+    "module": 8,
+    "target": "Underground",
+    "hint": "London Tube. Locals just say \"the Tube\"."
+  },
+  {
+    "id": "m08-c13",
+    "module": 8,
+    "target": "Tube",
+    "hint": "Casual UK word for the London Underground."
+  },
+  {
+    "id": "m08-c14",
+    "module": 8,
+    "target": "Subway",
+    "hint": "US word for the underground train. In UK, \"subway\" = pedestrian underpass!"
+  },
+  {
+    "id": "m08-c15",
+    "module": 8,
+    "target": "Bus",
+    "hint": ""
+  },
+  {
+    "id": "m08-c16",
+    "module": 8,
+    "target": "Bus stop",
+    "hint": ""
+  },
+  {
+    "id": "m08-c17",
+    "module": 8,
+    "target": "Station",
+    "hint": ""
+  },
+  {
+    "id": "m08-c18",
+    "module": 8,
+    "target": "Platform",
+    "hint": ""
+  },
+  {
+    "id": "m08-c19",
+    "module": 8,
+    "target": "Ticket",
+    "hint": ""
+  },
+  {
+    "id": "m08-c20",
+    "module": 8,
+    "target": "Return",
+    "hint": "UK = round-trip ticket. US says \"round-trip\"."
+  },
+  {
+    "id": "m08-c21",
+    "module": 8,
+    "target": "Single",
+    "hint": "UK = one-way ticket. US says \"one-way\"."
+  },
+  {
+    "id": "m08-c22",
+    "module": 8,
+    "target": "Taxi",
+    "hint": ""
+  },
+  {
+    "id": "m08-c23",
+    "module": 8,
+    "target": "Cab",
+    "hint": "US casual for taxi. UK uses \"cab\" too, especially in London (\"black cab\")."
+  },
+  {
+    "id": "m08-c24",
+    "module": 8,
+    "target": "Driver",
+    "hint": ""
+  },
+  {
+    "id": "m08-c25",
+    "module": 8,
+    "target": "Hotel",
+    "hint": ""
+  },
+  {
+    "id": "m08-c26",
+    "module": 8,
+    "target": "Reception",
+    "hint": ""
+  },
+  {
+    "id": "m08-c27",
+    "module": 8,
+    "target": "Booking",
+    "hint": "UK = a reservation. US says \"reservation\" more often."
+  },
+  {
+    "id": "m08-c28",
+    "module": 8,
+    "target": "Reservation",
+    "hint": ""
+  },
+  {
+    "id": "m08-c29",
+    "module": 8,
+    "target": "Check-in",
+    "hint": ""
+  },
+  {
+    "id": "m08-c30",
+    "module": 8,
+    "target": "Check-out",
+    "hint": ""
+  },
+  {
+    "id": "m08-c31",
+    "module": 8,
+    "target": "Queue",
+    "hint": "UK = a line of waiting people. Pronounced like \"Q\"."
+  },
+  {
+    "id": "m08-c32",
+    "module": 8,
+    "target": "Line",
+    "hint": "US word for what UK calls a \"queue\"."
+  },
+  {
+    "id": "m08-c33",
+    "module": 8,
+    "target": "Map",
+    "hint": ""
+  },
+  {
+    "id": "m08-c34",
+    "module": 8,
+    "target": "Address",
+    "hint": ""
+  },
+  {
+    "id": "m08-c35",
+    "module": 8,
+    "target": "Street",
+    "hint": ""
+  },
+  {
+    "id": "m08-c36",
+    "module": 8,
+    "target": "Road",
+    "hint": ""
+  },
+  {
+    "id": "m08-c37",
+    "module": 8,
+    "target": "Motorway",
+    "hint": "UK = high-speed road. US says \"highway\" or \"freeway\"."
+  },
+  {
+    "id": "m08-c38",
+    "module": 8,
+    "target": "Highway",
+    "hint": "US word; UK calls it \"motorway\"."
+  },
+  {
+    "id": "m08-c39",
+    "module": 8,
+    "target": "Petrol",
+    "hint": "UK word. US says \"gas\" or \"gasoline\"."
+  },
+  {
+    "id": "m08-c40",
+    "module": 8,
+    "target": "Gas",
+    "hint": "US word for fuel; in UK, \"gas\" usually means cooking gas."
+  },
+  {
+    "id": "m08-c41",
+    "module": 8,
+    "target": "Car park",
+    "hint": "UK word. US says \"parking lot\"."
+  },
+  {
+    "id": "m08-c42",
+    "module": 8,
+    "target": "Parking lot",
+    "hint": "US word; UK calls it \"car park\"."
+  },
+  {
+    "id": "m08-c43",
+    "module": 8,
+    "target": "Lift",
+    "hint": "UK = elevator. US says \"elevator\"."
+  },
+  {
+    "id": "m08-c44",
+    "module": 8,
+    "target": "Elevator",
+    "hint": "US word; UK calls it a \"lift\"."
+  },
+  {
+    "id": "m08-c45",
+    "module": 8,
+    "target": "Pavement",
+    "hint": "UK = walkway beside a road. US says \"sidewalk\"."
+  },
+  {
+    "id": "m08-c46",
+    "module": 8,
+    "target": "Sidewalk",
+    "hint": "US word; UK calls it \"pavement\"."
+  },
+  {
+    "id": "m08-c47",
+    "module": 8,
+    "target": "Lost",
+    "hint": "Useful: \"I am lost.\""
+  },
+  {
+    "id": "m08-c48",
+    "module": 8,
+    "target": "Help",
+    "hint": "Shout this in an emergency."
+  },
+  {
+    "id": "m08-c49",
+    "module": 8,
+    "target": "Emergency",
+    "hint": ""
+  },
+  {
+    "id": "m08-c50",
+    "module": 8,
+    "target": "Police",
+    "hint": "UK emergency number is 999; US is 911."
+  },
+  {
+    "id": "m09-c01",
+    "module": 9,
+    "target": "Job",
+    "hint": "Casual word for employment."
+  },
+  {
+    "id": "m09-c02",
+    "module": 9,
+    "target": "Work",
+    "hint": ""
+  },
+  {
+    "id": "m09-c03",
+    "module": 9,
+    "target": "Career",
+    "hint": ""
+  },
+  {
+    "id": "m09-c04",
+    "module": 9,
+    "target": "Office",
+    "hint": ""
+  },
+  {
+    "id": "m09-c05",
+    "module": 9,
+    "target": "Boss",
+    "hint": "Casual; \"manager\" or \"supervisor\" is more formal."
+  },
+  {
+    "id": "m09-c06",
+    "module": 9,
+    "target": "Manager",
+    "hint": ""
+  },
+  {
+    "id": "m09-c07",
+    "module": 9,
+    "target": "Colleague",
+    "hint": "Formal UK word. US often says \"co-worker\"."
+  },
+  {
+    "id": "m09-c08",
+    "module": 9,
+    "target": "Co-worker",
+    "hint": "US word; UK uses \"colleague\"."
+  },
+  {
+    "id": "m09-c09",
+    "module": 9,
+    "target": "Employer",
+    "hint": ""
+  },
+  {
+    "id": "m09-c10",
+    "module": 9,
+    "target": "Employee",
+    "hint": ""
+  },
+  {
+    "id": "m09-c11",
+    "module": 9,
+    "target": "Interview",
+    "hint": ""
+  },
+  {
+    "id": "m09-c12",
+    "module": 9,
+    "target": "Application",
+    "hint": ""
+  },
+  {
+    "id": "m09-c13",
+    "module": 9,
+    "target": "CV",
+    "hint": "UK word. US says \"resume\"."
+  },
+  {
+    "id": "m09-c14",
+    "module": 9,
+    "target": "Resume",
+    "hint": "US word; UK calls it a \"CV\"."
+  },
+  {
+    "id": "m09-c15",
+    "module": 9,
+    "target": "Reference",
+    "hint": ""
+  },
+  {
+    "id": "m09-c16",
+    "module": 9,
+    "target": "Contract",
+    "hint": ""
+  },
+  {
+    "id": "m09-c17",
+    "module": 9,
+    "target": "Salary",
+    "hint": "Annual amount; usually paid monthly."
+  },
+  {
+    "id": "m09-c18",
+    "module": 9,
+    "target": "Wage",
+    "hint": "Hourly or weekly pay; common in casual jobs."
+  },
+  {
+    "id": "m09-c19",
+    "module": 9,
+    "target": "Payslip",
+    "hint": "UK word. US sometimes says \"pay stub\"."
+  },
+  {
+    "id": "m09-c20",
+    "module": 9,
+    "target": "Tax",
+    "hint": ""
+  },
+  {
+    "id": "m09-c21",
+    "module": 9,
+    "target": "Income tax",
+    "hint": ""
+  },
+  {
+    "id": "m09-c22",
+    "module": 9,
+    "target": "National Insurance",
+    "hint": "UK only — your NI number is critical for working."
+  },
+  {
+    "id": "m09-c23",
+    "module": 9,
+    "target": "Pension",
+    "hint": ""
+  },
+  {
+    "id": "m09-c24",
+    "module": 9,
+    "target": "Bank",
+    "hint": ""
+  },
+  {
+    "id": "m09-c25",
+    "module": 9,
+    "target": "Bank account",
+    "hint": ""
+  },
+  {
+    "id": "m09-c26",
+    "module": 9,
+    "target": "Card",
+    "hint": ""
+  },
+  {
+    "id": "m09-c27",
+    "module": 9,
+    "target": "Cash",
+    "hint": ""
+  },
+  {
+    "id": "m09-c28",
+    "module": 9,
+    "target": "Cheque",
+    "hint": "UK spelling. US spells it \"check\"."
+  },
+  {
+    "id": "m09-c29",
+    "module": 9,
+    "target": "Bill",
+    "hint": "UK = something you must pay. US \"bill\" can also mean a banknote."
+  },
+  {
+    "id": "m09-c30",
+    "module": 9,
+    "target": "Invoice",
+    "hint": ""
+  },
+  {
+    "id": "m09-c31",
+    "module": 9,
+    "target": "Receipt",
+    "hint": ""
+  },
+  {
+    "id": "m09-c32",
+    "module": 9,
+    "target": "Loan",
+    "hint": ""
+  },
+  {
+    "id": "m09-c33",
+    "module": 9,
+    "target": "Debt",
+    "hint": ""
+  },
+  {
+    "id": "m09-c34",
+    "module": 9,
+    "target": "Savings",
+    "hint": ""
+  },
+  {
+    "id": "m09-c35",
+    "module": 9,
+    "target": "Budget",
+    "hint": ""
+  },
+  {
+    "id": "m09-c36",
+    "module": 9,
+    "target": "Rent",
+    "hint": ""
+  },
+  {
+    "id": "m09-c37",
+    "module": 9,
+    "target": "Mortgage",
+    "hint": ""
+  },
+  {
+    "id": "m09-c38",
+    "module": 9,
+    "target": "Deposit",
+    "hint": ""
+  },
+  {
+    "id": "m09-c39",
+    "module": 9,
+    "target": "Pound",
+    "hint": "UK currency, written as \"£\"."
+  },
+  {
+    "id": "m09-c40",
+    "module": 9,
+    "target": "Dollar",
+    "hint": "US/AU currency, written as \"$\"."
+  },
+  {
+    "id": "m09-c41",
+    "module": 9,
+    "target": "Pence",
+    "hint": "UK = the smaller unit of pound. 100 pence in £1."
+  },
+  {
+    "id": "m09-c42",
+    "module": 9,
+    "target": "Cent",
+    "hint": ""
+  },
+  {
+    "id": "m09-c43",
+    "module": 9,
+    "target": "Meeting",
+    "hint": ""
+  },
+  {
+    "id": "m09-c44",
+    "module": 9,
+    "target": "Email",
+    "hint": ""
+  },
+  {
+    "id": "m09-c45",
+    "module": 9,
+    "target": "Deadline",
+    "hint": ""
+  },
+  {
+    "id": "m09-c46",
+    "module": 9,
+    "target": "Shift",
+    "hint": "A working time slot, e.g. night shift."
+  },
+  {
+    "id": "m09-c47",
+    "module": 9,
+    "target": "Overtime",
+    "hint": "Extra hours; usually paid at higher rate."
+  },
+  {
+    "id": "m09-c48",
+    "module": 9,
+    "target": "Holiday",
+    "hint": "UK = paid time off OR a vacation. US says \"vacation\"."
+  },
+  {
+    "id": "m09-c49",
+    "module": 9,
+    "target": "Vacation",
+    "hint": "US word for what UK calls a \"holiday\"."
+  },
+  {
+    "id": "m09-c50",
+    "module": 9,
+    "target": "Resignation",
+    "hint": ""
+  },
+  {
+    "id": "m10-c01",
+    "module": 10,
+    "target": "And",
+    "hint": ""
+  },
+  {
+    "id": "m10-c02",
+    "module": 10,
+    "target": "But",
+    "hint": ""
+  },
+  {
+    "id": "m10-c03",
+    "module": 10,
+    "target": "Or",
+    "hint": ""
+  },
+  {
+    "id": "m10-c04",
+    "module": 10,
+    "target": "So",
+    "hint": ""
+  },
+  {
+    "id": "m10-c05",
+    "module": 10,
+    "target": "Because",
+    "hint": ""
+  },
+  {
+    "id": "m10-c06",
+    "module": 10,
+    "target": "Although",
+    "hint": "Formal: \"Although it rained, we went out.\""
+  },
+  {
+    "id": "m10-c07",
+    "module": 10,
+    "target": "Even though",
+    "hint": "Stronger than \"although\"."
+  },
+  {
+    "id": "m10-c08",
+    "module": 10,
+    "target": "However",
+    "hint": "Formal connector; usually starts a sentence."
+  },
+  {
+    "id": "m10-c09",
+    "module": 10,
+    "target": "Despite",
+    "hint": "Followed by a noun: \"despite the rain\"."
+  },
+  {
+    "id": "m10-c10",
+    "module": 10,
+    "target": "In spite of",
+    "hint": "Same meaning as \"despite\"; more formal."
+  },
+  {
+    "id": "m10-c11",
+    "module": 10,
+    "target": "On the other hand",
+    "hint": "Used to introduce a contrast."
+  },
+  {
+    "id": "m10-c12",
+    "module": 10,
+    "target": "Therefore",
+    "hint": "Formal \"so\"; common in writing."
+  },
+  {
+    "id": "m10-c13",
+    "module": 10,
+    "target": "Moreover",
+    "hint": "Formal; adds another point."
+  },
+  {
+    "id": "m10-c14",
+    "module": 10,
+    "target": "Furthermore",
+    "hint": "Formal connector for adding ideas."
+  },
+  {
+    "id": "m10-c15",
+    "module": 10,
+    "target": "Nevertheless",
+    "hint": "Formal \"but still\"."
+  },
+  {
+    "id": "m10-c16",
+    "module": 10,
+    "target": "While",
+    "hint": "Means \"during\" OR \"whereas\"."
+  },
+  {
+    "id": "m10-c17",
+    "module": 10,
+    "target": "Whereas",
+    "hint": "Formal contrast: \"I like tea, whereas she likes coffee.\""
+  },
+  {
+    "id": "m10-c18",
+    "module": 10,
+    "target": "If",
+    "hint": ""
+  },
+  {
+    "id": "m10-c19",
+    "module": 10,
+    "target": "Unless",
+    "hint": ""
+  },
+  {
+    "id": "m10-c20",
+    "module": 10,
+    "target": "Until",
+    "hint": ""
+  },
+  {
+    "id": "m10-c21",
+    "module": 10,
+    "target": "Once in a blue moon",
+    "hint": "Idiom: very rarely."
+  },
+  {
+    "id": "m10-c22",
+    "module": 10,
+    "target": "Break a leg",
+    "hint": "Idiom = \"good luck\"; used before a performance or test."
+  },
+  {
+    "id": "m10-c23",
+    "module": 10,
+    "target": "Piece of cake",
+    "hint": "Idiom: very easy to do."
+  },
+  {
+    "id": "m10-c24",
+    "module": 10,
+    "target": "Hit the books",
+    "hint": "Idiom: study hard."
+  },
+  {
+    "id": "m10-c25",
+    "module": 10,
+    "target": "Under the weather",
+    "hint": "Idiom: feeling slightly ill."
+  },
+  {
+    "id": "m10-c26",
+    "module": 10,
+    "target": "Cost an arm and a leg",
+    "hint": "Idiom: very expensive."
+  },
+  {
+    "id": "m10-c27",
+    "module": 10,
+    "target": "Once and for all",
+    "hint": "Idiom: finally and definitively."
+  },
+  {
+    "id": "m10-c28",
+    "module": 10,
+    "target": "Out of the blue",
+    "hint": "Idiom: completely unexpected."
+  },
+  {
+    "id": "m10-c29",
+    "module": 10,
+    "target": "Spill the beans",
+    "hint": "Idiom: reveal a secret."
+  },
+  {
+    "id": "m10-c30",
+    "module": 10,
+    "target": "On the same page",
+    "hint": "Idiom: in agreement; often used at work."
+  },
+  {
+    "id": "m10-c31",
+    "module": 10,
+    "target": "Touch base",
+    "hint": "Workplace idiom: catch up briefly."
+  },
+  {
+    "id": "m10-c32",
+    "module": 10,
+    "target": "Cut to the chase",
+    "hint": "Idiom: get to the point."
+  },
+  {
+    "id": "m10-c33",
+    "module": 10,
+    "target": "Bite the bullet",
+    "hint": "Idiom: do something difficult bravely."
+  },
+  {
+    "id": "m10-c34",
+    "module": 10,
+    "target": "Hit the nail on the head",
+    "hint": "Idiom: be exactly right."
+  },
+  {
+    "id": "m10-c35",
+    "module": 10,
+    "target": "Better safe than sorry",
+    "hint": "Idiom: caution beats regret."
+  },
+  {
+    "id": "m10-c36",
+    "module": 10,
+    "target": "Beat around the bush",
+    "hint": "Idiom: avoid the main point."
+  },
+  {
+    "id": "m10-c37",
+    "module": 10,
+    "target": "Call it a day",
+    "hint": "Idiom: stop work for now."
+  },
+  {
+    "id": "m10-c38",
+    "module": 10,
+    "target": "Fingers crossed",
+    "hint": "Idiom: hoping for good luck."
+  },
+  {
+    "id": "m10-c39",
+    "module": 10,
+    "target": "In a nutshell",
+    "hint": "Idiom: summarised briefly."
+  },
+  {
+    "id": "m10-c40",
+    "module": 10,
+    "target": "Rain check",
+    "hint": "Idiom: postpone an invitation politely."
+  },
+  {
+    "id": "m10-c41",
+    "module": 10,
+    "target": "Put up with",
+    "hint": "Phrasal verb: tolerate."
+  },
+  {
+    "id": "m10-c42",
+    "module": 10,
+    "target": "Look forward to",
+    "hint": "Phrasal verb: be excited about something coming."
+  },
+  {
+    "id": "m10-c43",
+    "module": 10,
+    "target": "Get along with",
+    "hint": "Phrasal verb: have a good relationship."
+  },
+  {
+    "id": "m10-c44",
+    "module": 10,
+    "target": "Run out of",
+    "hint": "Phrasal verb: have no more of something."
+  },
+  {
+    "id": "m10-c45",
+    "module": 10,
+    "target": "Sort out",
+    "hint": "UK favourite phrasal verb: resolve or organise."
+  },
+  {
+    "id": "m10-c46",
+    "module": 10,
+    "target": "Sort of",
+    "hint": "Filler: \"kind of\"; UK casual."
+  },
+  {
+    "id": "m10-c47",
+    "module": 10,
+    "target": "Quite",
+    "hint": "UK = \"very\" or \"fairly\", depending on tone. US uses it less."
+  },
+  {
+    "id": "m10-c48",
+    "module": 10,
+    "target": "Cheers",
+    "hint": "UK casual = \"thanks\" or a toast. Surprises Americans."
+  },
+  {
+    "id": "m10-c49",
+    "module": 10,
+    "target": "Mate",
+    "hint": "UK/AU casual = friend. Avoid in formal settings."
+  },
+  {
+    "id": "m10-c50",
+    "module": 10,
+    "target": "You all right?",
+    "hint": "UK greeting = \"how are you?\", NOT a worry about your health."
+  }
+]

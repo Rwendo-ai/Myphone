@@ -1,0 +1,500 @@
+m01-c01	Hello
+m01-c02	Hi
+m01-c03	Good morning
+m01-c04	Good afternoon
+m01-c05	Good evening
+m01-c06	Good night
+m01-c07	Goodbye
+m01-c08	Bye
+m01-c09	See you later
+m01-c10	How are you?
+m01-c11	I am fine
+m01-c12	Thank you
+m01-c13	Thanks
+m01-c14	Thank you very much
+m01-c15	Please
+m01-c16	Yes
+m01-c17	No
+m01-c18	Maybe
+m01-c19	Sorry
+m01-c20	Excuse me
+m01-c21	Pardon?
+m01-c22	You are welcome
+m01-c23	No problem
+m01-c24	My name is
+m01-c25	What is your name?
+m01-c26	Nice to meet you
+m01-c27	I
+m01-c28	You
+m01-c29	You (plural)
+m01-c30	He
+m01-c31	She
+m01-c32	We
+m01-c33	They
+m01-c34	It
+m01-c35	My
+m01-c36	Your
+m01-c37	Our
+m01-c38	Their
+m01-c39	This
+m01-c40	That
+m01-c41	Here
+m01-c42	There
+m01-c43	Welcome
+m01-c44	Take care
+m01-c45	Have a good day
+m01-c46	Mr
+m01-c47	Mrs
+m01-c48	Miss
+m01-c49	Sir
+m01-c50	Madam
+m02-c01	One
+m02-c02	Two
+m02-c03	Three
+m02-c04	Four
+m02-c05	Five
+m02-c06	Six
+m02-c07	Seven
+m02-c08	Eight
+m02-c09	Nine
+m02-c10	Ten
+m02-c11	Eleven
+m02-c12	Twelve
+m02-c13	Thirteen
+m02-c14	Fourteen
+m02-c15	Fifteen
+m02-c16	Sixteen
+m02-c17	Seventeen
+m02-c18	Eighteen
+m02-c19	Nineteen
+m02-c20	Twenty
+m02-c21	Hundred
+m02-c22	Thousand
+m02-c23	Zero
+m02-c24	Monday
+m02-c25	Tuesday
+m02-c26	Wednesday
+m02-c27	Thursday
+m02-c28	Friday
+m02-c29	Saturday
+m02-c30	Sunday
+m02-c31	Today
+m02-c32	Tomorrow
+m02-c33	Yesterday
+m02-c34	Morning
+m02-c35	Afternoon
+m02-c36	Evening
+m02-c37	Night
+m02-c38	Hour
+m02-c39	Minute
+m02-c40	Week
+m02-c41	Red
+m02-c42	Blue
+m02-c43	Green
+m02-c44	Yellow
+m02-c45	Black
+m02-c46	White
+m02-c47	Brown
+m02-c48	Orange
+m02-c49	Pink
+m02-c50	Grey
+m03-c01	Water
+m03-c02	Tea
+m03-c03	Coffee
+m03-c04	Milk
+m03-c05	Sugar
+m03-c06	Salt
+m03-c07	Bread
+m03-c08	Butter
+m03-c09	Egg
+m03-c10	Meat
+m03-c11	Beef
+m03-c12	Chicken
+m03-c13	Fish
+m03-c14	Rice
+m03-c15	Maize meal
+m03-c16	Potato
+m03-c17	Chips
+m03-c18	Crisps
+m03-c19	Biscuit
+m03-c20	Cookie
+m03-c21	Cake
+m03-c22	Apple
+m03-c23	Banana
+m03-c24	Orange
+m03-c25	Mango
+m03-c26	Tomato
+m03-c27	Onion
+m03-c28	Vegetable
+m03-c29	Fruit
+m03-c30	Cheese
+m03-c31	Yogurt
+m03-c32	Soup
+m03-c33	Sandwich
+m03-c34	Breakfast
+m03-c35	Lunch
+m03-c36	Dinner
+m03-c37	Supper
+m03-c38	Beer
+m03-c39	Wine
+m03-c40	Juice
+m03-c41	Soft drink
+m03-c42	Soda
+m03-c43	Hungry
+m03-c44	Thirsty
+m03-c45	Delicious
+m03-c46	Spicy
+m03-c47	Sweet
+m03-c48	Bitter
+m03-c49	Hot (temperature)
+m03-c50	Cold
+m04-c01	Head
+m04-c02	Hair
+m04-c03	Face
+m04-c04	Eye
+m04-c05	Ear
+m04-c06	Nose
+m04-c07	Mouth
+m04-c08	Tooth
+m04-c09	Tongue
+m04-c10	Neck
+m04-c11	Throat
+m04-c12	Shoulder
+m04-c13	Arm
+m04-c14	Hand
+m04-c15	Finger
+m04-c16	Chest
+m04-c17	Back
+m04-c18	Stomach
+m04-c19	Leg
+m04-c20	Knee
+m04-c21	Foot
+m04-c22	Toe
+m04-c23	Heart
+m04-c24	Skin
+m04-c25	Bone
+m04-c26	Blood
+m04-c27	To eat
+m04-c28	To drink
+m04-c29	To sleep
+m04-c30	To walk
+m04-c31	To run
+m04-c32	To sit
+m04-c33	To stand
+m04-c34	To go
+m04-c35	To come
+m04-c36	To see
+m04-c37	To hear
+m04-c38	To speak
+m04-c39	To say
+m04-c40	To read
+m04-c41	To write
+m04-c42	To work
+m04-c43	To rest
+m04-c44	To buy
+m04-c45	To sell
+m04-c46	To know
+m04-c47	To want
+m04-c48	To need
+m04-c49	To help
+m04-c50	To ask
+m05-c01	Shirt
+m05-c02	T-shirt
+m05-c03	Trousers
+m05-c04	Pants
+m05-c05	Jeans
+m05-c06	Dress
+m05-c07	Skirt
+m05-c08	Jumper
+m05-c09	Sweater
+m05-c10	Coat
+m05-c11	Jacket
+m05-c12	Shoes
+m05-c13	Trainers
+m05-c14	Sneakers
+m05-c15	Socks
+m05-c16	Hat
+m05-c17	Belt
+m05-c18	Bag
+m05-c19	House
+m05-c20	Flat
+m05-c21	Apartment
+m05-c22	Room
+m05-c23	Bedroom
+m05-c24	Kitchen
+m05-c25	Bathroom
+m05-c26	Toilet
+m05-c27	Door
+m05-c28	Window
+m05-c29	Floor
+m05-c30	Wall
+m05-c31	Ceiling
+m05-c32	Table
+m05-c33	Chair
+m05-c34	Bed
+m05-c35	Sofa
+m05-c36	Lamp
+m05-c37	Television
+m05-c38	Phone
+m05-c39	Mobile
+m05-c40	Computer
+m05-c41	Key
+m05-c42	Plate
+m05-c43	Cup
+m05-c44	Glass
+m05-c45	Spoon
+m05-c46	Fork
+m05-c47	Knife
+m05-c48	Book
+m05-c49	Pen
+m05-c50	Money
+m06-c01	Happy
+m06-c02	Sad
+m06-c03	Angry
+m06-c04	Tired
+m06-c05	Excited
+m06-c06	Scared
+m06-c07	Afraid
+m06-c08	Worried
+m06-c09	Surprised
+m06-c10	Confused
+m06-c11	Bored
+m06-c12	Lonely
+m06-c13	Proud
+m06-c14	Embarrassed
+m06-c15	Grateful
+m06-c16	Calm
+m06-c17	Stressed
+m06-c18	Big
+m06-c19	Small
+m06-c20	Tall
+m06-c21	Short
+m06-c22	Long
+m06-c23	Old
+m06-c24	Young
+m06-c25	New
+m06-c26	Good
+m06-c27	Bad
+m06-c28	Beautiful
+m06-c29	Handsome
+m06-c30	Ugly
+m06-c31	Nice
+m06-c32	Lovely
+m06-c33	Rich
+m06-c34	Poor
+m06-c35	Strong
+m06-c36	Weak
+m06-c37	Easy
+m06-c38	Hard
+m06-c39	Difficult
+m06-c40	Fast
+m06-c41	Slow
+m06-c42	Clean
+m06-c43	Dirty
+m06-c44	Full
+m06-c45	Empty
+m06-c46	Heavy
+m06-c47	Light
+m06-c48	Friendly
+m06-c49	Polite
+m06-c50	Kind
+m07-c01	Sun
+m07-c02	Moon
+m07-c03	Star
+m07-c04	Sky
+m07-c05	Cloud
+m07-c06	Rain
+m07-c07	Snow
+m07-c08	Wind
+m07-c09	Storm
+m07-c10	Thunder
+m07-c11	Lightning
+m07-c12	Fog
+m07-c13	Mist
+m07-c14	Sunny
+m07-c15	Cloudy
+m07-c16	Rainy
+m07-c17	Windy
+m07-c18	Warm
+m07-c19	Hot
+m07-c20	Cool
+m07-c21	Freezing
+m07-c22	Tree
+m07-c23	Leaf
+m07-c24	Flower
+m07-c25	Grass
+m07-c26	River
+m07-c27	Lake
+m07-c28	Sea
+m07-c29	Ocean
+m07-c30	Mountain
+m07-c31	Hill
+m07-c32	Forest
+m07-c33	Field
+m07-c34	Stone
+m07-c35	Sand
+m07-c36	Soil
+m07-c37	Fire
+m07-c38	Animal
+m07-c39	Dog
+m07-c40	Cat
+m07-c41	Cow
+m07-c42	Goat
+m07-c43	Bird
+m07-c44	Insect
+m07-c45	Snake
+m07-c46	Spring (season)
+m07-c47	Summer
+m07-c48	Autumn
+m07-c49	Fall (season)
+m07-c50	Winter
+m08-c01	Airport
+m08-c02	Plane
+m08-c03	Flight
+m08-c04	Boarding pass
+m08-c05	Passport
+m08-c06	Visa
+m08-c07	Customs
+m08-c08	Luggage
+m08-c09	Suitcase
+m08-c10	Trolley
+m08-c11	Train
+m08-c12	Underground
+m08-c13	Tube
+m08-c14	Subway
+m08-c15	Bus
+m08-c16	Bus stop
+m08-c17	Station
+m08-c18	Platform
+m08-c19	Ticket
+m08-c20	Return
+m08-c21	Single
+m08-c22	Taxi
+m08-c23	Cab
+m08-c24	Driver
+m08-c25	Hotel
+m08-c26	Reception
+m08-c27	Booking
+m08-c28	Reservation
+m08-c29	Check-in
+m08-c30	Check-out
+m08-c31	Queue
+m08-c32	Line
+m08-c33	Map
+m08-c34	Address
+m08-c35	Street
+m08-c36	Road
+m08-c37	Motorway
+m08-c38	Highway
+m08-c39	Petrol
+m08-c40	Gas
+m08-c41	Car park
+m08-c42	Parking lot
+m08-c43	Lift
+m08-c44	Elevator
+m08-c45	Pavement
+m08-c46	Sidewalk
+m08-c47	Lost
+m08-c48	Help
+m08-c49	Emergency
+m08-c50	Police
+m09-c01	Job
+m09-c02	Work
+m09-c03	Career
+m09-c04	Office
+m09-c05	Boss
+m09-c06	Manager
+m09-c07	Colleague
+m09-c08	Co-worker
+m09-c09	Employer
+m09-c10	Employee
+m09-c11	Interview
+m09-c12	Application
+m09-c13	CV
+m09-c14	Resume
+m09-c15	Reference
+m09-c16	Contract
+m09-c17	Salary
+m09-c18	Wage
+m09-c19	Payslip
+m09-c20	Tax
+m09-c21	Income tax
+m09-c22	National Insurance
+m09-c23	Pension
+m09-c24	Bank
+m09-c25	Bank account
+m09-c26	Card
+m09-c27	Cash
+m09-c28	Cheque
+m09-c29	Bill
+m09-c30	Invoice
+m09-c31	Receipt
+m09-c32	Loan
+m09-c33	Debt
+m09-c34	Savings
+m09-c35	Budget
+m09-c36	Rent
+m09-c37	Mortgage
+m09-c38	Deposit
+m09-c39	Pound
+m09-c40	Dollar
+m09-c41	Pence
+m09-c42	Cent
+m09-c43	Meeting
+m09-c44	Email
+m09-c45	Deadline
+m09-c46	Shift
+m09-c47	Overtime
+m09-c48	Holiday
+m09-c49	Vacation
+m09-c50	Resignation
+m10-c01	And
+m10-c02	But
+m10-c03	Or
+m10-c04	So
+m10-c05	Because
+m10-c06	Although
+m10-c07	Even though
+m10-c08	However
+m10-c09	Despite
+m10-c10	In spite of
+m10-c11	On the other hand
+m10-c12	Therefore
+m10-c13	Moreover
+m10-c14	Furthermore
+m10-c15	Nevertheless
+m10-c16	While
+m10-c17	Whereas
+m10-c18	If
+m10-c19	Unless
+m10-c20	Until
+m10-c21	Once in a blue moon
+m10-c22	Break a leg
+m10-c23	Piece of cake
+m10-c24	Hit the books
+m10-c25	Under the weather
+m10-c26	Cost an arm and a leg
+m10-c27	Once and for all
+m10-c28	Out of the blue
+m10-c29	Spill the beans
+m10-c30	On the same page
+m10-c31	Touch base
+m10-c32	Cut to the chase
+m10-c33	Bite the bullet
+m10-c34	Hit the nail on the head
+m10-c35	Better safe than sorry
+m10-c36	Beat around the bush
+m10-c37	Call it a day
+m10-c38	Fingers crossed
+m10-c39	In a nutshell
+m10-c40	Rain check
+m10-c41	Put up with
+m10-c42	Look forward to
+m10-c43	Get along with
+m10-c44	Run out of
+m10-c45	Sort out
+m10-c46	Sort of
+m10-c47	Quite
+m10-c48	Cheers
+m10-c49	Mate
+m10-c50	You all right?
