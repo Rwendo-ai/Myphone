@@ -16,6 +16,7 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { createAudioPlayer, type AudioPlayer } from 'expo-audio';
 
 import { loadFlipCardsForModule } from '../../../lib/flipcard-loader';
+import { useSettings } from '../../../lib/SettingsContext';
 import { supabase } from '../../../lib/supabase';
 import type { FlipCard } from '../../../types/flipcards';
 import { Colors } from '../../../constants/colors';
@@ -53,6 +54,7 @@ function playAudio(url: string) {
 export default function FlipCardScreen() {
   const { courseId, module } = useLocalSearchParams<{ courseId: string; module: string }>();
   const moduleNum = Number(module);
+  const { speaker } = useSettings();
 
   const [cards, setCards] = useState<FlipCard[] | 'loading'>('loading');
   const [index, setIndex] = useState(0);
@@ -61,7 +63,7 @@ export default function FlipCardScreen() {
 
   useEffect(() => {
     let cancelled = false;
-    loadFlipCardsForModule(courseId, moduleNum).then(c => { if (!cancelled) setCards(c); });
+    loadFlipCardsForModule(courseId, speaker.id, moduleNum).then(c => { if (!cancelled) setCards(c); });
     loadFlipCardManifest(courseId).then(m => { if (!cancelled) setManifest(m); });
     return () => {
       cancelled = true;
@@ -69,7 +71,7 @@ export default function FlipCardScreen() {
       try { activePlayer?.remove(); } catch {}
       activePlayer = null;
     };
-  }, [courseId, moduleNum]);
+  }, [courseId, moduleNum, speaker.id]);
 
   if (cards === 'loading') {
     return (

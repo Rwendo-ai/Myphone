@@ -5,12 +5,14 @@ import { useTranslation } from 'react-i18next';
 import { getUnit, getCourseUnit } from '../../data/lessons';
 import { getLessonManifest, getCourseModuleMeta } from '../../lib/manifests';
 import { hasFlipCards } from '../../lib/flipcards';
+import { useSettings } from '../../lib/SettingsContext';
 import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
 
 export default function UnitScreen() {
   const { t } = useTranslation('learn');
   const { id } = useLocalSearchParams<{ id: string }>();
+  const { speaker } = useSettings();
 
   // Synthesised unit IDs follow `${courseId}::mNN` and resolve from the
   // course's manifest. Legacy IDs (greetings, survival, …) come from
@@ -44,7 +46,7 @@ export default function UnitScreen() {
     const m = lessonId.match(/^m(\d+)-/);
     return m ? Number(m[1]) : null;
   })();
-  const flipCardsAvailable = moduleNum != null && hasFlipCards(courseId);
+  const flipCardsAvailable = moduleNum != null && hasFlipCards(courseId, speaker.id);
 
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>

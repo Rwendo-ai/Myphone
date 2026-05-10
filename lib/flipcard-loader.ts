@@ -1,12 +1,24 @@
 /**
  * Flip-card content loader. Bucket: `course-content` (private, authed-read).
- * Path: `flipcards/<courseId>.json`. Cached on device under
- * `<documentDir>/flipcards/<courseId>.json`.
+ *
+ * Path scheme:
+ *   - Single-speaker courses (Learn Shona / Ndebele / French / etc. — every
+ *     course where the user must be an English speaker):
+ *       flipcards/<courseId>.json
+ *   - Multi-speaker course (only language-english today — taken by 10
+ *     different speakers learning English):
+ *       flipcards/language-english-from-<speakerId>.json
+ *
+ *   Today only Shona + Ndebele speakers have authored flip-card sets for
+ *   language-english. Other speakers (Tagalog/French/Chinese/Hindi/Spanish/
+ *   Portuguese/Japanese/Korean) get no flip-card CTA until their variant
+ *   is authored.
+ *
+ * Cache layout on device:
+ *   <documentDir>/flipcards/<storageBasename>.json
  *
  * Pre-2026-05-10 these lived in `travel-content`. Moved to `course-content`
- * because flip cards are course content (gated by entitlement, downloaded
- * with the rest of a course's lessons), not travel content (the publicly-
- * readable phrasebook / culture / safari guides).
+ * when flip cards were re-classified as course content.
  */
 
 import * as FileSystem from 'expo-file-system/legacy';
@@ -14,6 +26,14 @@ import { supabase } from './supabase';
 import type { FlipCard } from '../types/flipcards';
 
 const BUCKET = 'course-content';
+
+/** Compute the storage basename for a (course, speaker) pair. */
+function flipcardKey(courseId: string, speakerId: string): string {
+  if (courseId === 'language-english') {
+    return `language-english-from-${speakerId}`;
+  }
+  return courseId;
+}
 
 function cacheRoot(): string {
   return `${FileSystem.documentDirectory}flipcards/`;
@@ -26,16 +46,20 @@ async function ensureDir(dirPath: string): Promise<void> {
   if (!info.exists) await FileSystem.makeDirectoryAsync(dirPath, { intermediates: true });
 }
 
-export async function loadFlipCards(courseId: string): Promise<FlipCard[] | null> {
-  if (memoryCache.has(courseId)) return memoryCache.get(courseId)!;
+export async function loadFlipCards(
+  courseId: string,
+  speakerId: string,
+): Promise<FlipCard[] | null> {
+  const key = flipcardKey(courseId, speakerId);
+  if (memoryCache.has(key)) return memoryCache.get(key)!;
 
-  const cachePath = `${cacheRoot()}${courseId}.json`;
+  const cachePath = `${cacheRoot()}${key}.json`;
   const info = await FileSystem.getInfoAsync(cachePath);
   if (info.exists) {
     try {
       const text = await FileSystem.readAsStringAsync(cachePath);
       const parsed = JSON.parse(text) as FlipCard[];
-      memoryCache.set(courseId, parsed);
+      memoryCache.set(key, parsed);
       return parsed;
     } catch {
       // Corrupt cache → fall through to Storage refetch.
@@ -45,13 +69,13 @@ export async function loadFlipCards(courseId: string): Promise<FlipCard[] | null
   try {
     const { data, error } = await supabase.storage
       .from(BUCKET)
-      .download(`flipcards/${courseId}.json`);
+      .download(`flipcards/${key}.json`);
     if (error || !data) return null;
     const text = await new Response(data).text();
     const parsed = JSON.parse(text) as FlipCard[];
     await ensureDir(cacheRoot());
     await FileSystem.writeAsStringAsync(cachePath, text);
-    memoryCache.set(courseId, parsed);
+    memoryCache.set(key, parsed);
     return parsed;
   } catch {
     return null;
@@ -60,9 +84,10 @@ export async function loadFlipCards(courseId: string): Promise<FlipCard[] | null
 
 export async function loadFlipCardsForModule(
   courseId: string,
+  speakerId: string,
   module: number,
 ): Promise<FlipCard[]> {
-  const all = await loadFlipCards(courseId);
+  const all = await loadFlipCards(courseId, speakerId);
   if (!all) return [];
   return all.filter((c) => c.module === module);
 }

@@ -1,20 +1,23 @@
 /**
- * Flip-card registry — DEPRECATED bundled imports.
+ * Flip-card availability registry.
  *
- * The 5,000-entry vocab corpus now lives in Supabase Storage at
- * `travel-content/flipcards/<courseId>.json`. App code should use
- * `loadFlipCards(courseId)` or `loadFlipCardsForModule(courseId, n)` from
- * `lib/travel-content-loader.ts`.
+ * The 5,000+ entry vocab corpora live in Supabase Storage (course-content
+ * bucket). Use `loadFlipCards(courseId, speakerId)` from
+ * `lib/flipcard-loader.ts` to fetch the actual content.
  *
- * Authoring TS files (`data/courses/<courseId>/flipcards.ts`) remain as the
- * upload-script source-of-truth — the unit screen used to read them
- * synchronously to gate the flip-card CTA, but now resolves availability
- * via a quick Storage HEAD instead (see lib/travel-content-loader.ts).
+ * `hasFlipCards(courseId, speakerId)` answers "should I show the flip-card
+ * CTA on this course's unit screen?" — gates per-speaker so non-Shona /
+ * non-Ndebele speakers don't see a CTA that would resolve to wrong-
+ * language content.
+ *
+ * Authoring TS files (`data/courses/<courseId>/flipcards.ts` etc.) remain
+ * the upload-script source-of-truth.
  */
 
-export const FLIPCARD_COURSES = [
+/** Single-speaker courses — only English speakers learn these, so flip
+ *  cards exist as a single set per course. */
+const SINGLE_SPEAKER_FLIPCARD_COURSES = new Set<string>([
   'language-shona',
-  'language-english',
   'language-french',
   'language-chinese',
   'language-tagalog',
@@ -24,9 +27,24 @@ export const FLIPCARD_COURSES = [
   'language-japanese',
   'language-korean',
   'language-ndebele',
-];
+]);
 
-/** Async availability check — does this course have flip cards in Storage? */
-export function hasFlipCards(courseId: string): boolean {
-  return FLIPCARD_COURSES.includes(courseId);
+/** Multi-speaker course (language-english) — flip cards are per-speaker.
+ *  Only the speakers in this set have authored card decks. Add to this
+ *  list when a new speaker variant is uploaded as
+ *  flipcards/language-english-from-<speaker>.json. */
+const ENGLISH_FLIPCARD_SPEAKERS = new Set<string>([
+  'shona',
+  'ndebele',
+]);
+
+export function hasFlipCards(courseId: string, speakerId: string): boolean {
+  if (courseId === 'language-english') {
+    return ENGLISH_FLIPCARD_SPEAKERS.has(speakerId);
+  }
+  return SINGLE_SPEAKER_FLIPCARD_COURSES.has(courseId);
 }
+
+/** Legacy export — kept for one release for any caller still passing only
+ *  courseId. New callers should pass speakerId. */
+export const FLIPCARD_COURSES = [...SINGLE_SPEAKER_FLIPCARD_COURSES, 'language-english'];
