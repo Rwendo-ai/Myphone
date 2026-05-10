@@ -11,10 +11,9 @@ import { SPEAKERS, getSpeaker, english as defaultSpeaker } from '../data/speaker
 import { COURSES, getCourse } from '../data/courses';
 import { getLanguage } from '../data/languages';
 import { JURISDICTIONS, getJurisdiction, AU as defaultJurisdiction } from '../data/jurisdictions';
-import { SubscriptionTier, EntitlementContext } from './entitlements';
+import { SubscriptionTier, EntitlementContext, tierFromEntitlements } from './entitlements';
 import { useEntitlements } from '../hooks/useEntitlements';
 import { useAuth } from './AuthContext';
-import { PRO_ENTITLEMENT_ID } from '../data/products';
 import { Theme, THEMES, DEFAULT_THEME } from '../constants/themes';
 
 /**
@@ -145,22 +144,30 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
   const [activeCourseId,   setActiveCourseId]   = useState<CoursePackId | null>('language-shona');
   const [jurisdictionId,   setJurisdictionId]   = useState<JurisdictionPackId>('AU');
 
-  // entitlements — `tier` is DERIVED from RevenueCat now (live, reactive)
-  // via useEntitlements(). The local setTier setter is a no-op kept for
-  // backwards compatibility — purchases route through the RC SDK.
-  const { hasPro, entitlements: rcEntitlements } = useEntitlements();
+  // entitlements — `tier` is DERIVED from RevenueCat (live, reactive).
+  // Higher tiers include lower tiers; tierFromEntitlements picks the
+  // highest active one. setTier is a no-op stub kept for legacy callers
+  // — purchases route through the RC SDK.
+  const { entitlements: rcEntitlements } = useEntitlements();
   const { user } = useAuth();
-  const tier: SubscriptionTier = hasPro ? 'pro' : 'free';
+  const activeEntitlementIds = useMemo(
+    () => rcEntitlements.filter((e) => e.isActive).map((e) => e.identifier),
+    [rcEntitlements],
+  );
+  const tier: SubscriptionTier = useMemo(
+    () => tierFromEntitlements(activeEntitlementIds),
+    [activeEntitlementIds],
+  );
   const setTier = () => { /* no-op — derive from RC */ };
   const [starterCourseId,  setStarterCourseId]  = useState<CoursePackId | null>('language-shona');
 
-  // ownedCourseIds is now derived: Pro = every course "owned"; Free = only
-  // the starter. Kept on the Settings interface for backwards compat with
-  // callers (learn.tsx, etc.) that still call `ownedCourseIds.includes(id)`.
+  // ownedCourseIds is derived: any paid tier = every course "owned"; Free =
+  // only the starter. Kept on the Settings interface for backwards compat
+  // with callers that still call `ownedCourseIds.includes(id)`.
   const ownedCourseIds: CoursePackId[] = useMemo(() => {
-    if (hasPro) return Object.keys(COURSES) as CoursePackId[];
+    if (tier !== 'free') return Object.keys(COURSES) as CoursePackId[];
     return starterCourseId ? [starterCourseId] : [];
-  }, [hasPro, starterCourseId]);
+  }, [tier, starterCourseId]);
   const setOwnedCourseIds = () => { /* no-op — derived from tier + starter */ };
 
   // v2 legacy state — ProfileLoader writes both old + new fields during migration
@@ -195,11 +202,9 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
       tier,
       starterCourseId,
       userId: user?.id ?? null,
-      entitlements: rcEntitlements
-        .filter((e) => e.isActive)
-        .map((e) => e.identifier),
+      entitlements: activeEntitlementIds,
     }),
-    [tier, starterCourseId, user?.id, rcEntitlements],
+    [tier, starterCourseId, user?.id, activeEntitlementIds],
   );
 
   // ── derive v2 legacy fields from v3 ───────────────────────────────────────

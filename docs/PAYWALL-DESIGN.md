@@ -1,193 +1,244 @@
 # Paywall — RevenueCat Architecture & Product Catalogue
 
 **Started:** 2026-05-09
-**Updated:** 2026-05-10 (pricing model rewritten — see §0)
+**Updated:** 2026-05-10 (v3: 5-tier ladder + token packs)
 **Owner:** Bowen
-**Status:** Design + scaffold + entitlement gating live. RevenueCat
-dashboard config is the remaining manual work.
+**Status:** App-side wiring complete (5-tier entitlement ladder, free-tier
+quotas, lifetime-buyer perks, owner-list bypass). RevenueCat dashboard
+config + IAP product creation in App Store Connect / Play Console is
+the remaining manual work.
 
 ---
 
-## 0. Economic model (locked 2026-05-10)
+## 0. Economic model (locked 2026-05-10 — v3)
 
-The original v1 model priced courses individually (A$14.99 each) plus
-companion subscription tiers. Replaced with **subscription-first** because:
-- Courses cost us nothing per user (we authored them once, Storage is
-  pennies). Pricing them per-unit creates friction without recouping cost.
-- AI usage IS the real cost driver. Pricing should track real cost.
-- Subscription LTV beats one-time purchase 2-3× in the language-learning
-  category (Duolingo / Babbel / Busuu benchmarks).
+The app's revenue model is a **5-tier subscription ladder + consumable
+token packs**, designed around the reality that AI usage has real
+per-message compute cost.
 
-Rules:
-- **Courses are FREE with Pro.** No per-course purchase. We built them.
-- **AI is the cost driver.** Pro caps daily usage; heavy users buy credits.
-- **Travel is FREE forever.** Funnel into Pro, never paywalled.
-- **Free tier = your first chosen course's modules 1-2 (≈20 lessons) + 3 AI
-  text messages per lesson.** Hooks the user before the paywall.
-- **XP discounts on Pro.** Loyalty currency reduces upgrade price (mechanic
-  designed in §3).
+Each tier:
+- Includes every feature of lower tiers
+- Includes a monthly **token allowance** (in dollar-cents-equivalent)
+- After allowance is exhausted, user buys top-up token packs
 
----
+Why a ladder (not a flat Pro plan): users self-select their commitment
+based on which AI modality they want. A user who only types pays $4.
+A user who wants full lipsync video pays $25. Custom-companion power
+users pay $29.99.
 
-## 1. Product catalogue (final)
+Why tokens: AI cost varies wildly by modality (text << voice << lipsync).
+Subscription gives access; tokens cover variable usage. Heavy users pay
+proportionally; light users get a stable bill. Margins target ~35% over
+real AI cost on Apple/Google.
 
-| Product | Type | Price (AUD) | Apple/Google ID | RC Entitlement |
+### Tier table
+
+| Tier | Monthly | Yearly | Token allowance | Features |
 |---|---|---|---|---|
-| Pro — Monthly | subscription | A$9.99/mo | `rwendo_pro_monthly_v1` | `rwendo_pro` |
-| Pro — Yearly | subscription | A$79/yr | `rwendo_pro_yearly_v1` | `rwendo_pro` |
-| Pro — Lifetime | one-time | A$199 | `rwendo_pro_lifetime_v1` | `rwendo_pro` |
-| Credits — 100 | consumable | A$4.99 | `rwendo_credits_100_v1` | `credits_text` |
-| Credits — 300 | consumable | A$9.99 | `rwendo_credits_300_v1` | `credits_text` |
-| Credits — 750 | consumable | A$19.99 | `rwendo_credits_750_v1` | `credits_text` |
+| Free | A$0 | — | — | Rwen only · 10 msgs/day · 2 free starter modules · 3 AI msgs/lesson |
+| Text | A$4 | — | $2/mo | All companions text · all courses · travel |
+| Voice | A$5 | — | $2/mo | + voice-to-voice |
+| Lipsync · Low | A$10 | — | $3/mo | + low-quality lipsync video |
+| Lipsync · High | A$25 | A$199 (33% off) | $10/mo | + high-quality lipsync |
+| Ultra | A$29.99 | A$239 (33% off) | $15/mo | + custom companion soul-edit |
+| Ultra Lifetime | — | — | $15/mo + 15% off all token packs | One-time A$399 |
 
-Source of truth: [`data/products.ts`](../data/products.ts). Each product has
-`storeId` (Apple/Google), `entitlement` (RC), `baseAud`, and `xpReward`.
+### Token packs
 
-**Why three Pro tiers, one entitlement?** Pricing flexibility (monthly is
-the easy entry; yearly is the conversion driver; lifetime creates urgency)
-without code complexity — a single `rwendo_pro` entitlement gates everything
-regardless of how the user paid.
+| Pack | Price | Tokens | Notes |
+|---|---|---|---|
+| Small | A$2.99 | 200 | Light overage |
+| Medium | A$7.49 | 500 | Best value (recommended) |
+| Large | A$14.99 | 1000 | Power users |
 
-**Why three credit packs, one entitlement?** RevenueCat tracks `credits_text`
-as a numeric balance (server-side ledger keyed off webhook events).
-Different SKUs grant different amounts but increment the same balance.
+Token cost is calibrated: ~35% margin over real AI cost on Apple/Google
+(after their 30% cut). Web pricing (post-launch) targets 15% margin —
+selling tokens via web at lower price is the long-term strategy to
+recapture some of Apple's cut. Google flow will redirect to web for
+token purchases per spec.
 
-**Localisation:** RevenueCat handles per-region pricing automatically. The
-AUD numbers are base; App Store / Play Store show the locale equivalent.
+**Lifetime buyers get 15% off every token-pack purchase forever.** The
+discount is applied server-side at webhook time (RC fires the
+purchase event → Edge Function checks `lifetime_buyer` entitlement →
+adjusts credit balance grant upward).
+
+---
+
+## 1. Product catalogue
+
+Source of truth: [`data/products.ts`](../data/products.ts).
+
+### Subscription SKUs
+
+| Product ID | RC Entitlement | Apple/Google Store ID | AUD |
+|---|---|---|---|
+| `tier_text_monthly` | `tier_text` | `rwendo_text_monthly_v1` | $4 |
+| `tier_voice_monthly` | `tier_voice` | `rwendo_voice_monthly_v1` | $5 |
+| `tier_lipsync_low_monthly` | `tier_lipsync_low` | `rwendo_lipsync_low_monthly_v1` | $10 |
+| `tier_lipsync_high_monthly` | `tier_lipsync_high` | `rwendo_lipsync_high_monthly_v1` | $25 |
+| `tier_lipsync_high_yearly` | `tier_lipsync_high` | `rwendo_lipsync_high_yearly_v1` | $199 |
+| `tier_ultra_monthly` | `tier_ultra` | `rwendo_ultra_monthly_v1` | $29.99 |
+| `tier_ultra_yearly` | `tier_ultra` | `rwendo_ultra_yearly_v1` | $239 |
+| `ultra_lifetime` | `tier_ultra` + `lifetime_buyer` | `rwendo_ultra_lifetime_v1` | $399 |
+
+### Token pack SKUs
+
+| Product ID | RC Entitlement | Apple/Google Store ID | AUD |
+|---|---|---|---|
+| `tokens_small` | `ai_credits` | `rwendo_tokens_small_v1` | $2.99 |
+| `tokens_medium` | `ai_credits` | `rwendo_tokens_medium_v1` | $7.49 |
+| `tokens_large` | `ai_credits` | `rwendo_tokens_large_v1` | $14.99 |
+
+### Tier ladder logic
+
+Each tier grants its own entitlement. A user with `tier_lipsync_high`
+can access voice + text features without holding `tier_voice` or
+`tier_text` — the entitlement check works on **rank**, not exact match:
+
+```
+TIER_RANK = { free:0, text:1, voice:2, lipsync_low:3, lipsync_high:4, ultra:5 }
+```
+
+`canUseAiFeature('voice', ctx)` passes if `TIER_RANK[user] >= 2`.
+
+If RC dashboard is configured to "unlock all" via attached products on
+a single offering (recommended), the `tier_*` entitlements stack
+naturally — buying Ultra grants all five tier_* entitlements.
+
+**Alternative if RC offerings can't stack:** server webhook grants the
+top tier's entitlement only; client-side `tierFromEntitlements()`
+picks the highest active one. This is what we have today.
 
 ---
 
 ## 2. Free tier rules (the gate)
 
+All numbers in [`lib/entitlements.ts`](../lib/entitlements.ts):
+
+```ts
+STARTER_FREE_MODULES        = 2    // m01-m02 of starter course free
+FREE_AI_MESSAGES_PER_LESSON = 3    // per-lesson AI quota
+FREE_DAILY_RWEN_MESSAGES    = 10   // companion-screen daily quota
+```
+
 ```
 new user → onboarding → picks first language → starter_course_id set
                                               ↓
-                  ┌──────────────────────────┴───────────────────────────┐
-                  │                                                       │
+                  ┌──────────────────────────┴──────────────────────────┐
+                  │                                                      │
               starter course                                       any other course
-              (free, gated)                                        (Pro required)
-                  │                                                       │
-       ┌──────────┴──────────┐                                       Pro paywall
+              (free, gated)                                        (Tier text+ required)
+                  │                                                      │
+       ┌──────────┴──────────┐                                      Paywall → tier picker
        │                     │
    modules 1-2          modules 3+
-   (FREE)               (Pro required)
+   (FREE)               (Tier text+ required)
        │
-       └─→ 3 AI text messages per lesson (free quota)
+       ├─→ 3 AI msgs per lesson on Phase 8 (free)
+       └─→ 10 Rwen msgs/day on Companion screen (free)
+
+Travel section is FREE for everyone, no paywall.
 ```
 
-Locked in code:
-- [`lib/entitlements.ts`](../lib/entitlements.ts) →
-  `STARTER_FREE_MODULES = 2`
-  `FREE_AI_MESSAGES_PER_LESSON = 3`
-- `canAccessLesson(courseId, lessonId, ctx)` enforces both.
-- `canAccessCourse(courseId, ctx)` — non-starter course = Pro.
-- `canUseAiFeature('text', ctx, msgsUsedInLesson)` — free quota check.
-
 ---
 
-## 3. XP discount mechanic (planned, not yet implemented)
+## 3. RevenueCat dashboard setup checklist
 
-XP earned through engagement (lessons, login, posts, etc.) becomes a
-**purchase-time discount** on Pro tiers. Two reasons:
-- Reward grinding without devaluing purchases (XP earns small amounts: 5
-  per login, 25 per lesson, max 100 lessons/curriculum = ~3500 XP grinding).
-- Push toward yearly/lifetime — bigger XP discount = bigger AUD reduction.
-
-Proposed scale (subject to A/B testing post-launch):
-
-| XP balance | Monthly discount | Yearly discount | Lifetime discount |
-|---|---|---|---|
-| 500 | 10% off first month | 5% off | 3% off |
-| 2,000 | 25% off first month | 15% off | 8% off |
-| 5,000+ | 50% off first month | 25% off | 15% off |
-
-XP is consumed on redemption (see `redeem_xp` RPC). Server-validated.
-
-Out of scope for v1 launch — mechanic exists in `award_xp` schema but the
-discount UI is post-launch.
-
----
-
-## 4. RevenueCat setup checklist (Bowen does this in dashboards)
-
-### 4.1 RevenueCat project ✅
+### 3.1 RC project ✅
 - [x] Account at revenuecat.com
 - [x] Project "Rwendo" created
 - [x] iOS + Android apps registered
-- [x] Test API keys in `.env.local` (`EXPO_PUBLIC_REVENUECAT_IOS_KEY`, `EXPO_PUBLIC_REVENUECAT_ANDROID_KEY`)
+- [x] Test API keys in `.env.local`
 
-### 4.2 App Store Connect (iOS)
-- [x] App record created (ASC App ID: `6767811402`)
-- [ ] Create the 6 product IDs from the catalogue:
-  - `rwendo_pro_monthly_v1` (auto-renewable subscription)
-  - `rwendo_pro_yearly_v1` (auto-renewable subscription, same group)
-  - `rwendo_pro_lifetime_v1` (non-consumable)
-  - `rwendo_credits_100_v1` (consumable)
-  - `rwendo_credits_300_v1` (consumable)
-  - `rwendo_credits_750_v1` (consumable)
-- [ ] Subscription group: "Rwendo Pro" — monthly + yearly variants
+### 3.2 App Store Connect (iOS)
+- [x] App record exists (ASC App ID `6767811402`)
+- [ ] Create the **8** product IDs above (5 monthly subs + 2 yearly subs + 1 lifetime non-consumable)
+- [ ] Create **3** consumable IDs for token packs
+- [ ] Subscription group: "Rwendo Tiers" — every monthly sub in the same group, with monthly + yearly variants where applicable
+- [ ] Submit IAP for review
 - [ ] Sandbox tester account
-- [ ] Apple Small Business Program enrollment (cuts Apple's 30% → 15%)
+- [ ] Apple Small Business Program enrollment (cuts 30% → 15%)
 
-### 4.3 Google Play Console (Android)
-- [ ] App registered (matching `app.rwendo.rwendo` package)
-- [ ] Same 6 product IDs in Play Console → Monetize → Products
-- [ ] Subscription base plans for monthly + yearly
-- [ ] License testers added
+### 3.3 Google Play Console (Android)
+- [ ] App registered (`app.rwendo.rwendo`)
+- [ ] Same 11 product IDs (8 subs + 3 tokens) in Monetize → Products / Subscriptions
+- [ ] Subscription base plans for monthly + yearly where applicable
+- [ ] License testers
 - [ ] Google Play Small Business equivalent
 
-### 4.4 RevenueCat dashboard
+### 3.4 RevenueCat dashboard
 - [ ] Map App Store + Play Store products to RevenueCat products
 - [ ] Create entitlements:
-  - `rwendo_pro` — granted by all three Pro SKUs
-  - `credits_text` — granted by all three credit pack SKUs (consumable
-    balance tracked server-side via webhook)
-- [ ] Build a Paywall in dashboard (this is what `presentPaywall()` shows)
-- [ ] Production API keys → swap `.env.local` test keys before App Store
-  submission
-- [ ] Webhook endpoint → Supabase Edge Function (see §5)
+  - `tier_text`, `tier_voice`, `tier_lipsync_low`, `tier_lipsync_high`, `tier_ultra`
+  - `lifetime_buyer` (granted only by `ultra_lifetime` SKU)
+  - `ai_credits` (granted by all token packs; balance tracked server-side via webhook)
+- [ ] Build a Paywall UI in the dashboard (`presentPaywall()` shows it)
+- [ ] Configure Offerings — group products by tier so the paywall shows the ladder cleanly
+- [ ] Production API keys → swap `.env.local` test keys before App Store submission
+- [ ] Webhook endpoint → Supabase Edge Function (see §4)
 
 ---
 
-## 5. Server-side wiring (Supabase Edge Function)
+## 4. Server-side wiring (Supabase Edge Function)
 
-Webhook flow:
 ```
-RevenueCat webhook → POST /functions/v1/revenuecat-webhook
-                  → verify signature
-                  → INSERT/UPDATE entitlements in DB
-                  → award_xp(purchase_pro_*, etc.)
-                  → for credit purchases: increment user_credits.balance
+RC webhook → POST /functions/v1/revenuecat-webhook
+          → verify signature
+          → for INITIAL_PURCHASE / RENEWAL of tier_*:
+              UPSERT user_entitlements (user_id, tier, expires_at)
+              award_xp(purchase_tier_<key>)
+              grant monthly token allowance for the tier
+          → for LIFETIME purchase:
+              UPSERT user_entitlements with lifetime_buyer=true
+              award_xp(purchase_lifetime)
+          → for token pack purchase:
+              base_credits = product.tokens
+              if user has lifetime_buyer: credits = base_credits * 1.15  // 15% bonus
+              UPDATE user_credits SET balance = balance + credits
+              award_xp(purchase_tokens)
 ```
 
-Function lives at `supabase/functions/revenuecat-webhook/index.ts` (skeleton
-exists, deploy pending). Required tables:
-- `user_entitlements (user_id, entitlement, expires_at, source)`
+Function lives at `supabase/functions/revenuecat-webhook/index.ts`
+(skeleton exists; deploy pending).
+
+Required tables:
+- `user_entitlements (user_id, entitlement, expires_at, source, lifetime_buyer)`
 - `user_credits (user_id, balance, updated_at)`
 
-App reads entitlements live from RC SDK ([`useEntitlements`](../hooks/useEntitlements.ts))
-and falls back to the DB mirror for offline / cold-start.
+App reads entitlements live from RC SDK
+([`useEntitlements`](../hooks/useEntitlements.ts)) and falls back to
+the DB mirror for offline / cold-start.
 
 ---
 
-## 6. App-side wiring (current state)
+## 5. App-side wiring (current state)
 
-✅ Done:
-- `react-native-purchases` + `react-native-purchases-ui` installed
-- `lib/purchases.ts` wrapper with SDK_AVAILABLE guard
-- Init at app boot (`app/_layout.tsx`) with `appUserID = supabase user.id`
-- `hooks/useEntitlements()` reactive hook
-- `lib/entitlements.ts` rewritten for two-tier model (free / pro)
-- `lib/SettingsContext.tsx` derives `tier` from RC live entitlements
-- Owner-list bypass (`OWNER_USER_IDS` in entitlements.ts)
-- Plans screen triggers `presentPaywall()` + Restore + Manage Subscription
+✅ Done (this session):
+- 5-tier product catalogue ([`data/products.ts`](../data/products.ts))
+- `lib/entitlements.ts` rewritten with tier ladder + free-tier quotas
+- `tierFromEntitlements()` derives highest active tier from RC entitlement IDs
+- `useEntitlements()` returns `tier`, `hasFeature(...)`, `isLifetimeBuyer`
+- `SettingsContext.entitlementContext` is fully reactive to RC SDK
+- Owner-list bypass (`OWNER_USER_IDS` array)
+- Companion preset gates map cleanly through `canUseAiFeature()`
 
 ⏳ Next session:
-- Free-tier AI quota tracking (per-lesson counter in AsyncStorage + server
-  enforcement on the AI proxy endpoint)
+- AI message quota tracking (per-lesson + daily Rwen counters in
+  AsyncStorage; server enforcement on the AI proxy endpoint)
 - Cart-in-header UI (red badge for items, yellow ! for low credits)
 - Profile menu top-left repositioning
+- Token-balance UI in the Cart
 - Webhook endpoint deployment + entitlement/credit DB sync
+- Web token-pack pricing variant (15% margin) — separate SKUs
+
+---
+
+## 6. XP discount mechanic (planned, post-launch)
+
+XP earned through engagement becomes a purchase-time discount on tier
+upgrades. Mechanic same as v2 — see [`lib/xp-events.ts`](../lib/xp-events.ts)
+for the event types and amounts. Out of scope for v1 launch — surfaces
+as discount rendered in the Cart UI when that ships.
 
 ---
 
@@ -199,15 +250,15 @@ Hardcoded user IDs in [`lib/entitlements.ts`](../lib/entitlements.ts) →
 2. Look up their `auth.users.id` in Supabase
 3. Add to `OWNER_USER_IDS` array, push OTA
 
-Currently configured: empty (Bowen + 1 trusted dev IDs to be added once
-they've signed in on production).
-
 ---
 
 ## 8. Deprecation history
 
-- **2026-05-09 v1 model:** per-course $14.99 + 3 companion sub tiers
-  ($2.99 / $5.99 / $11.99) + 3 credit types (text / voice / lipsync).
-- **2026-05-10 v2 model:** Pro subscription only (monthly $9.99 / yearly
-  $79 / lifetime $199) + text-only credit packs. Voice/visual avatars
-  deferred until those tiers are authored.
+- **2026-05-09 v1:** per-course $14.99 + 3 companion sub tiers + 3
+  credit types (text / voice / lipsync). Discarded — courses-as-product
+  doesn't match the cost reality (we built them once).
+- **2026-05-10 v2:** Single Pro entitlement (monthly $9.99 / yearly
+  $79 / lifetime $199) + text-only credit packs. Discarded same day —
+  too flat; couldn't price voice + lipsync separately from text.
+- **2026-05-10 v3 (current):** 5-tier ladder + token packs + lifetime
+  perk. Locked.

@@ -38,15 +38,21 @@ export type XpEventType =
   // lessons in the same hour all earn XP)
   | 'lesson_complete'
   // No cap (real-money purchase, server-validated upstream).
-  // XP scale matches docs/PAYWALL-DESIGN.md.
-  | 'purchase_pro_monthly'
-  | 'purchase_pro_yearly'
-  | 'purchase_pro_lifetime'
-  | 'purchase_credits';
+  // Granular event types per tier let analytics segment by upgrade path.
+  // Actual XP per event comes from product.xpReward in data/products.ts —
+  // these defaults are fallback only.
+  | 'purchase_tier_text'
+  | 'purchase_tier_voice'
+  | 'purchase_tier_lipsync_low'
+  | 'purchase_tier_lipsync_high'
+  | 'purchase_tier_ultra'
+  | 'purchase_lifetime'
+  | 'purchase_tokens';
 
-/** Canonical XP amounts per event. Tight scale per user spec — small values
- *  feel earned. Pro purchase XP scales with commitment (lifetime > yearly >
- *  monthly) so XP-discount mechanic rewards bigger buyers proportionally. */
+/** Canonical XP amounts per event. Tight scale per user spec — small
+ *  values feel earned. Purchase XP defaults here are fallback; the actual
+ *  amount awarded comes from data/products.ts product.xpReward at webhook
+ *  time. */
 export const XP_AMOUNTS: Record<XpEventType, number> = {
   login: 5,
   post_create: 10,
@@ -56,11 +62,14 @@ export const XP_AMOUNTS: Record<XpEventType, number> = {
   ai_text_use: 5,
   ai_voice_use: 5,
   ai_lipsync_use: 5,
-  lesson_complete: 25,        // base — actual lesson xp comes from manifest
-  purchase_pro_monthly: 100,
-  purchase_pro_yearly: 1200,
-  purchase_pro_lifetime: 3000,
-  purchase_credits: 50,        // base — actual XP comes from product.xpReward
+  lesson_complete: 25,
+  purchase_tier_text: 50,
+  purchase_tier_voice: 75,
+  purchase_tier_lipsync_low: 150,
+  purchase_tier_lipsync_high: 350,
+  purchase_tier_ultra: 500,
+  purchase_lifetime: 8000,
+  purchase_tokens: 50,
 };
 
 /** Award XP. Returns the user's new total. Server-side caps may silently

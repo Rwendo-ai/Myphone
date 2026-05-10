@@ -50,13 +50,17 @@ export default function CompanionsScreen() {
   const [userDob, setUserDob] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // Two-tier model: 'free' presets always available; everything else
-  // requires Pro. The legacy 5-tier preset values (text_ai/voice/companion/
-  // premium) collapse onto the same Pro gate for v1 — visual avatars get
-  // their own entitlement when those tiers ship.
+  // Map preset's tierGate (legacy 5-value enum) to the v3 tier ladder
+  // feature key. canUseAiFeature then checks whether the user's tier
+  // meets the minimum.
   const tierGateMet = (gate: CompanionPreset['tierGate']): boolean => {
     if (gate === 'free') return true;
-    return canUseAiFeature('text', entitlementContext).allowed;
+    const featureKey =
+      gate === 'voice'     ? 'voice' :
+      gate === 'companion' ? 'lipsync_low' :
+      gate === 'premium'   ? 'lipsync_high' :
+      /* text_ai */          'text';
+    return canUseAiFeature(featureKey, entitlementContext).allowed;
   };
 
   const loadCompanions = React.useCallback(async () => {

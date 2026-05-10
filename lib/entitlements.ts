@@ -1,38 +1,38 @@
 /**
- * Module gating + entitlement checks.
+ * Module gating + entitlement checks. v3 pricing model (2026-05-10).
  *
- * Pricing model (2026-05-10 — locked):
- *   1. The user's STARTER course (first activated language course) is free
- *      for modules 1-2 (≈20 lessons). Modules 3+ require Pro.
- *   2. All non-starter courses require Pro to access at all.
- *   3. AI features are tier-gated and quota-gated:
- *        - Free tier: 3 AI text messages per lesson (lesson-scoped quota)
- *        - Pro: unlimited AI text within a soft daily cap (~50/day)
- *        - Beyond cap: AI credit packs (consumable balance)
- *   4. Owner-list user IDs (hardcoded) bypass everything for life.
- *   5. DEV_UNLOCK_ALL bypasses everything (dev only; stripped from prod).
+ * 5-tier subscription ladder. Each tier includes every feature of lower
+ * tiers. canUseAiFeature checks `userTier >= requiredTier` via TIER_RANK.
  *
- * Entitlement source-of-truth is RevenueCat (live, reactive). For server-
- * side reads (webhook, RPC), Supabase profiles row mirrors the latest RC
- * state — Edge Function syncs them when RC fires a webhook event.
+ * Free-tier rules:
+ *   - 2 free modules of the user's STARTER course (m01-m02)
+ *   - 3 free AI text messages per lesson (lesson-scoped quota)
+ *   - 10 free Rwen messages per day on the Companion screen
+ *   - Travel section is free for everyone
+ *
+ * Owner-list user IDs bypass everything for life. DEV_UNLOCK_ALL same.
+ *
+ * Entitlement source-of-truth is RevenueCat (live, reactive). Server-side
+ * (webhook, RPC) reads from `user_entitlements` mirror updated by the
+ * RC webhook handler.
  */
 
 import { CoursePackId } from '../types/packs';
 import { DEV_UNLOCK_ALL } from '../constants/dev';
-import { PRO_ENTITLEMENT_ID } from '../data/products';
+import {
+  TIER_ENTITLEMENT_IDS,
+  TIER_RANK,
+  FEATURE_MIN_TIER,
+  LIFETIME_BUYER_ENTITLEMENT_ID,
+  type SubscriptionTierKey,
+} from '../data/products';
 
-/** Two-tier model: are you Pro or not. Visual avatar + voice tiers will be
- *  added later as additional entitlements; for v1 the only paid tier is
- *  `rwendo_pro` (text + courses). */
-export type SubscriptionTier = 'free' | 'pro';
+export type SubscriptionTier = SubscriptionTierKey | 'free';
 
-/** Number of free modules in the user's starter course. Modules m01-m02 are
- *  unlocked without Pro; m03+ require Pro. */
+/** Free-tier knobs. */
 export const STARTER_FREE_MODULES = 2;
-
-/** Free-tier AI message quota per lesson. After this, the user sees the
- *  paywall when they try to send another AI message in that lesson. */
 export const FREE_AI_MESSAGES_PER_LESSON = 3;
+export const FREE_DAILY_RWEN_MESSAGES = 10;
 
 /** Owner / lifetime-access user IDs. Hardcoded list bypasses every gate
  *  forever. Add a Supabase user.id here to grant total access. */
@@ -42,16 +42,14 @@ export const OWNER_USER_IDS: string[] = [
 ];
 
 export interface EntitlementContext {
-  /** Tier from RevenueCat (live `rwendo_pro` entitlement → 'pro', else 'free'). */
+  /** Highest tier the user holds (derived from RC live entitlements). */
   tier: SubscriptionTier;
-  /** The course the user activated FIRST (their "starter"). Source: profiles
-   *  .starter_course_id (set on first course pick, never changes). */
+  /** Course the user activated FIRST. Modules 1-2 here are free. */
   starterCourseId: CoursePackId | null;
   /** Supabase user.id — used for owner-list bypass. */
   userId?: string | null;
-  /** Live RC entitlement IDs the user holds. Pass-through from
-   *  useEntitlements() so per-feature checks can do `has('rwendo_pro')`
-   *  without re-deriving from `tier`. */
+  /** All active RC entitlement IDs. Pass-through so feature checks can
+   *  do `entitlements.includes('lifetime_buyer')` etc. without re-deriving. */
   entitlements?: string[];
 }
 
@@ -59,17 +57,37 @@ export type EntitlementResult =
   | { allowed: true }
   | {
       allowed: false;
-      reason: 'pro_required' | 'starter_locked' | 'ai_quota_exhausted';
+      reason: 'tier_required' | 'starter_locked' | 'ai_quota_exhausted';
+      requiredTier?: SubscriptionTier;
     };
 
 function isOwner(ctx: EntitlementContext): boolean {
   return !!ctx.userId && OWNER_USER_IDS.includes(ctx.userId);
 }
 
-function isPro(ctx: EntitlementContext): boolean {
-  if (ctx.tier === 'pro') return true;
-  if (ctx.entitlements?.includes(PRO_ENTITLEMENT_ID)) return true;
-  return false;
+/** Has the user's tier at least the required level? */
+function tierMeets(userTier: SubscriptionTier, required: SubscriptionTier): boolean {
+  return TIER_RANK[userTier] >= TIER_RANK[required];
+}
+
+/** Derive the highest tier from a set of RC entitlement IDs. */
+export function tierFromEntitlements(entitlementIds: string[]): SubscriptionTier {
+  let highest: SubscriptionTier = 'free';
+  for (const [tierKey, entId] of Object.entries(TIER_ENTITLEMENT_IDS)) {
+    if (entitlementIds.includes(entId)) {
+      if (TIER_RANK[tierKey as SubscriptionTierKey] > TIER_RANK[highest]) {
+        highest = tierKey as SubscriptionTierKey;
+      }
+    }
+  }
+  return highest;
+}
+
+/** Lifetime buyers get 15% off all future token-pack purchases. The
+ *  discount is applied server-side on webhook receipt — clients just
+ *  surface the badge. */
+export function isLifetimeBuyer(ctx: EntitlementContext): boolean {
+  return !!ctx.entitlements?.includes(LIFETIME_BUYER_ENTITLEMENT_ID);
 }
 
 /** Parse the module number from a lesson ID like 'm05-l01-baba'. */
@@ -80,66 +98,80 @@ function parseLessonModule(lessonId: string): number {
 
 /**
  * Can the user access this lesson?
- *   - DEV_UNLOCK_ALL or owner → always yes
- *   - Pro → always yes
- *   - Starter course, module 1-2 → yes
- *   - Else → 'pro_required' (or 'starter_locked' if non-starter course)
+ *   - Owner / DEV_UNLOCK_ALL → always yes
+ *   - Any paid tier → yes (all courses unlock at tier_text+)
+ *   - Starter course, modules 1-2 → yes (free)
+ *   - Else → tier_required (or starter_locked for non-starter courses)
  */
 export function canAccessLesson(
   courseId: CoursePackId,
   lessonId: string,
   ctx: EntitlementContext,
 ): EntitlementResult {
-  if (DEV_UNLOCK_ALL || isOwner(ctx) || isPro(ctx)) return { allowed: true };
+  if (DEV_UNLOCK_ALL || isOwner(ctx)) return { allowed: true };
 
+  // Any paid tier unlocks all courses + all lessons.
+  if (tierMeets(ctx.tier, 'text')) return { allowed: true };
+
+  // Free user — only starter, only first 2 modules.
   const isStarter = ctx.starterCourseId === courseId;
   if (!isStarter) {
     return { allowed: false, reason: 'starter_locked' };
   }
   const moduleNum = parseLessonModule(lessonId);
   if (moduleNum <= STARTER_FREE_MODULES) return { allowed: true };
-  return { allowed: false, reason: 'pro_required' };
+  return { allowed: false, reason: 'tier_required', requiredTier: 'text' };
 }
 
 /**
- * Can the user use an AI feature (Phase 8 lesson chat, companion text, voice)?
- * Free tier → quota-checked per lesson. Pro → soft daily cap (enforced server-
- * side; client just lets through). Voice/lipsync require Pro outright in v1.
+ * Can the user use an AI feature?
+ *   text       → tier_text (free users get a per-lesson + per-day quota)
+ *   voice      → tier_voice
+ *   lipsync_low → tier_lipsync_low
+ *   lipsync_high → tier_lipsync_high
+ *   custom_companion → tier_ultra
  *
- * Caller passes `messagesUsedInLesson` (count of AI messages already sent in
- * this lesson session). Quota check is client-side advisory; server enforces
- * the same rule on the AI proxy endpoint to prevent client tampering.
+ * For free-tier text: caller passes `messagesUsedInLesson` (per-lesson
+ * counter) and optionally `dailyRwenMessagesUsed` (companion-screen
+ * counter). Returns tier_required if quota exhausted.
  */
 export function canUseAiFeature(
-  feature: 'text' | 'voice' | 'realtime',
+  feature: 'text' | 'voice' | 'lipsync_low' | 'lipsync_high' | 'custom_companion',
   ctx: EntitlementContext,
-  messagesUsedInLesson: number = 0,
+  quotas?: { messagesUsedInLesson?: number; dailyRwenMessagesUsed?: number },
 ): EntitlementResult {
   if (DEV_UNLOCK_ALL || isOwner(ctx)) return { allowed: true };
 
-  // Voice and realtime are Pro-only in v1. Visual + lipsync tiers come later.
-  if (feature !== 'text') {
-    return isPro(ctx) ? { allowed: true } : { allowed: false, reason: 'pro_required' };
+  const required = FEATURE_MIN_TIER[feature];
+
+  if (tierMeets(ctx.tier, required)) return { allowed: true };
+
+  // Free-tier text gets a quota. Voice / lipsync / custom — no free quota.
+  if (feature === 'text' && ctx.tier === 'free') {
+    const lessonUsed = quotas?.messagesUsedInLesson ?? 0;
+    const dailyUsed = quotas?.dailyRwenMessagesUsed ?? 0;
+    if (
+      lessonUsed < FREE_AI_MESSAGES_PER_LESSON &&
+      dailyUsed < FREE_DAILY_RWEN_MESSAGES
+    ) {
+      return { allowed: true };
+    }
+    return { allowed: false, reason: 'ai_quota_exhausted', requiredTier: 'text' };
   }
 
-  // Text: Pro = always allowed (server enforces 50/day soft cap).
-  if (isPro(ctx)) return { allowed: true };
-
-  // Free tier: 3 messages per lesson.
-  if (messagesUsedInLesson < FREE_AI_MESSAGES_PER_LESSON) return { allowed: true };
-  return { allowed: false, reason: 'ai_quota_exhausted' };
+  return { allowed: false, reason: 'tier_required', requiredTier: required };
 }
 
 /**
- * Can the user access this course at all (Learn tab gating before lesson-
- * level checks)? Pro = all courses. Free = starter only (with module gating
- * inside).
+ * Can the user access this course at all (Learn tab gating)?
+ *   Pro tier → all courses. Free → starter only.
  */
 export function canAccessCourse(
   courseId: CoursePackId,
   ctx: EntitlementContext,
 ): EntitlementResult {
-  if (DEV_UNLOCK_ALL || isOwner(ctx) || isPro(ctx)) return { allowed: true };
+  if (DEV_UNLOCK_ALL || isOwner(ctx)) return { allowed: true };
+  if (tierMeets(ctx.tier, 'text')) return { allowed: true };
   if (ctx.starterCourseId === courseId) return { allowed: true };
-  return { allowed: false, reason: 'pro_required' };
+  return { allowed: false, reason: 'tier_required', requiredTier: 'text' };
 }

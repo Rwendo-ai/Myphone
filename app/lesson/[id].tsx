@@ -79,7 +79,7 @@ export default function LessonScreen() {
   // short-circuits to allowed.
   const entitlement = lessonCourseId
     ? canAccessLesson(lessonCourseId, id, entitlementContext)
-    : { allowed: false as const, reason: 'pro_required' as const };
+    : { allowed: false as const, reason: 'tier_required' as const };
 
   const [phase, setPhase] = useState<Phase>('hook');
   const [chunkIndex, setChunkIndex] = useState(0);
