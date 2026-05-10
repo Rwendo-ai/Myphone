@@ -15,7 +15,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { router, useLocalSearchParams } from 'expo-router';
 import { createAudioPlayer, type AudioPlayer } from 'expo-audio';
 
-import { loadFlipCardsForModule } from '../../../lib/travel-content-loader';
+import { loadFlipCardsForModule } from '../../../lib/flipcard-loader';
 import { supabase } from '../../../lib/supabase';
 import type { FlipCard } from '../../../types/flipcards';
 import { Colors } from '../../../constants/colors';

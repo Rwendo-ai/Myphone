@@ -1,26 +1,35 @@
 /**
  * Canonical product catalogue. Single source of truth for:
- *   - The plans screen UI
+ *   - The plans / paywall screen UI
  *   - lib/purchases.ts (RevenueCat wrapper) — maps these IDs to
  *     RevenueCat product IDs from the dashboard
  *   - Server webhook handler — maps purchase events back to entitlements
  *   - lib/xp-events.ts — purchase XP rewards reference these IDs
  *
+ * Pricing model (locked 2026-05-10):
+ *   - Travel section is FREE for everyone (no paywall).
+ *   - Courses are FREE with any Pro tier — we built them, no marginal cost.
+ *   - Free tier: 2 free modules (20 lessons) of the user's first chosen
+ *     course + 3 free AI text messages per lesson.
+ *   - AI is the real cost driver, so Pro caps daily AI usage and heavy users
+ *     buy credit packs.
+ *
  * Pricing is base AUD. Local pricing per jurisdiction is handled by
  * RevenueCat (which uses the App Store / Play Store equivalent in each
  * region). We don't compute conversions client-side.
  *
- * Spec source: docs/PAYWALL-DESIGN.md (locked 2026-05-09).
+ * Spec source: docs/PAYWALL-DESIGN.md.
  */
 
-export type ProductCategory = 'course' | 'companion_subscription' | 'credit_bundle';
+export type ProductCategory = 'pro_subscription' | 'pro_lifetime' | 'credit_bundle';
 
 export interface Product {
   id: string;
   /** Apple/Google store product ID. Same string used in RevenueCat. */
   storeId: string;
-  /** Internal RevenueCat entitlement granted by this purchase. For
-   *  consumables (courses, credit bundles), the entitlement is one-shot. */
+  /** Internal RevenueCat entitlement granted by this purchase. All Pro
+   *  tiers grant the same `rwendo_pro` entitlement; the difference is
+   *  billing cadence and price. Credit bundles grant `credits_text`. */
   entitlement: string;
   category: ProductCategory;
   displayName: string;
@@ -29,128 +38,133 @@ export interface Product {
    *  by region; RevenueCat handles localisation). Display this only as a
    *  hint until the SDK returns real pricing. */
   baseAud: number;
-  /** XP awarded to the user on successful purchase. See lib/xp-events.ts. */
+  /** XP awarded on successful purchase. See lib/xp-events.ts. */
   xpReward: number;
-  /** For courses, which language pair this unlocks. */
-  courseId?: string;
-  /** For subscriptions, what tier this represents. */
-  tier?: 'text' | 'visual_low' | 'visual_high';
-  /** For credit bundles, how many credits + of what kind. */
-  credits?: { kind: 'text' | 'voice' | 'lipsync'; amount: number };
+  /** For subscriptions, billing period in days for display ("/ month",
+   *  "/ year"). 0 for lifetime. */
+  periodDays?: number;
+  /** For credit bundles, how many text-AI messages this grants. */
+  credits?: number;
+  /** Marketing flag — whether to badge as the recommended option. */
+  recommended?: boolean;
 }
 
-// ─── Courses (one-time purchase per language) ──────────────────────────────
+// ─── Rwendo Pro (the only subscription) ────────────────────────────────────
+//
+// Pro grants:
+//   - All courses unlocked (every language + every Build Yourself track)
+//   - AI text companion in course-companion mode (~50 messages/day soft cap)
+//   - Travel section (already free; just no nag screens)
+//
+// Three billing options, all granting the same `rwendo_pro` entitlement:
+//   - Monthly: A$9.99/mo
+//   - Yearly:  A$79/yr (33% off — the conversion driver)
+//   - Lifetime: A$199 once (cap to first 1000 buyers — urgency)
 
-const COURSES: Product[] = [
-  { id: 'course_shona',      storeId: 'course_shona_v1',      entitlement: 'course_shona',      category: 'course', displayName: 'Learn Shona',        description: 'Full 100-lesson Shona course',        baseAud: 14.99, xpReward: 100, courseId: 'language-shona' },
-  { id: 'course_ndebele',    storeId: 'course_ndebele_v1',    entitlement: 'course_ndebele',    category: 'course', displayName: 'Learn isiNdebele',   description: '110-lesson course with click primer', baseAud: 14.99, xpReward: 100, courseId: 'language-ndebele' },
-  { id: 'course_french',     storeId: 'course_french_v1',     entitlement: 'course_french',     category: 'course', displayName: 'Learn French',       description: 'Full French curriculum',              baseAud: 14.99, xpReward: 100, courseId: 'language-french' },
-  { id: 'course_chinese',    storeId: 'course_chinese_v1',    entitlement: 'course_chinese',    category: 'course', displayName: 'Learn Mandarin',     description: 'Mandarin Chinese with pinyin',        baseAud: 14.99, xpReward: 100, courseId: 'language-chinese' },
-  { id: 'course_tagalog',    storeId: 'course_tagalog_v1',    entitlement: 'course_tagalog',    category: 'course', displayName: 'Learn Tagalog',      description: 'Filipino / Tagalog course',           baseAud: 14.99, xpReward: 100, courseId: 'language-tagalog' },
-  { id: 'course_spanish',    storeId: 'course_spanish_v1',    entitlement: 'course_spanish',    category: 'course', displayName: 'Learn Spanish',      description: 'Castilian Spanish curriculum',        baseAud: 14.99, xpReward: 100, courseId: 'language-spanish' },
-  { id: 'course_portuguese', storeId: 'course_portuguese_v1', entitlement: 'course_portuguese', category: 'course', displayName: 'Learn Portuguese',   description: 'European Portuguese course',          baseAud: 14.99, xpReward: 100, courseId: 'language-portuguese' },
-  { id: 'course_hindi',      storeId: 'course_hindi_v1',      entitlement: 'course_hindi',      category: 'course', displayName: 'Learn Hindi',        description: 'Hindi with Devanagari',               baseAud: 14.99, xpReward: 100, courseId: 'language-hindi' },
-  { id: 'course_japanese',   storeId: 'course_japanese_v1',   entitlement: 'course_japanese',   category: 'course', displayName: 'Learn Japanese',     description: 'Japanese with kana + kanji',          baseAud: 14.99, xpReward: 100, courseId: 'language-japanese' },
-  { id: 'course_korean',     storeId: 'course_korean_v1',     entitlement: 'course_korean',     category: 'course', displayName: 'Learn Korean',       description: 'Korean with Hangul',                  baseAud: 14.99, xpReward: 100, courseId: 'language-korean' },
-  { id: 'course_english',    storeId: 'course_english_v1',    entitlement: 'course_english',    category: 'course', displayName: 'Learn English',      description: 'English for non-native speakers',     baseAud: 14.99, xpReward: 100, courseId: 'language-english' },
-];
-
-// ─── AI Companion Subscriptions ────────────────────────────────────────────
-
-const SUBSCRIPTIONS: Product[] = [
+const PRO_TIERS: Product[] = [
   {
-    id: 'companion_text',
-    storeId: 'companion_text_monthly_v1',
-    entitlement: 'companion_text',
-    category: 'companion_subscription',
-    tier: 'text',
-    displayName: 'Companion — Text',
-    description: 'Unlimited text chat with any companion. 30 messages/day baseline.',
-    baseAud: 2.99,
+    id: 'pro_monthly',
+    storeId: 'rwendo_pro_monthly_v1',
+    entitlement: 'rwendo_pro',
+    category: 'pro_subscription',
+    displayName: 'Pro · Monthly',
+    description: 'All courses · AI companion · 50 msgs/day',
+    baseAud: 9.99,
     xpReward: 100,
+    periodDays: 30,
   },
   {
-    id: 'companion_visual_low',
-    storeId: 'companion_visual_low_monthly_v1',
-    entitlement: 'companion_visual_low',
-    category: 'companion_subscription',
-    tier: 'visual_low',
-    displayName: 'Companion — Visual',
-    description: 'One low-tier visual avatar + 30 text msgs/day + 10 voice min/day.',
-    baseAud: 5.99,
-    xpReward: 250,
+    id: 'pro_yearly',
+    storeId: 'rwendo_pro_yearly_v1',
+    entitlement: 'rwendo_pro',
+    category: 'pro_subscription',
+    displayName: 'Pro · Yearly',
+    description: 'All courses · AI companion · best value (33% off)',
+    baseAud: 79.00,
+    xpReward: 1200,
+    periodDays: 365,
+    recommended: true,
   },
   {
-    id: 'companion_visual_high',
-    storeId: 'companion_visual_high_monthly_v1',
-    entitlement: 'companion_visual_high',
-    category: 'companion_subscription',
-    tier: 'visual_high',
-    displayName: 'Companion — Premium',
-    description: 'High-tier avatar with lipsync. 50 text msgs + 30 voice min + 5 lipsync clips per day.',
-    baseAud: 11.99,
-    xpReward: 500,
+    id: 'pro_lifetime',
+    storeId: 'rwendo_pro_lifetime_v1',
+    entitlement: 'rwendo_pro',
+    category: 'pro_lifetime',
+    displayName: 'Pro · Lifetime',
+    description: 'Pay once. Pro forever. Limited to first 1000 buyers.',
+    baseAud: 199.00,
+    xpReward: 3000,
+    periodDays: 0,
   },
 ];
 
-// ─── AI Credit Bundles (consumables — top up usage) ────────────────────────
+// ─── AI Credit Bundles (consumables) ───────────────────────────────────────
+//
+// For users who exceed Pro's 50/day cap or want unlimited course-companion
+// + free-roam companion conversations. Credits are decremented per AI text
+// message used beyond the daily cap. Voice / lipsync are out of scope for
+// v1 (handled by the visual avatar tiers in a later release).
 
 const CREDIT_BUNDLES: Product[] = [
   {
-    id: 'credit_text_100',
-    storeId: 'credit_text_100_v1',
+    id: 'credits_100',
+    storeId: 'rwendo_credits_100_v1',
     entitlement: 'credits_text',
     category: 'credit_bundle',
-    displayName: '100 Text Credits',
-    description: '100 extra text-AI messages on top of your daily quota.',
-    baseAud: 1.99,
-    xpReward: 30,
-    credits: { kind: 'text', amount: 100 },
-  },
-  {
-    id: 'credit_voice_30min',
-    storeId: 'credit_voice_30min_v1',
-    entitlement: 'credits_voice',
-    category: 'credit_bundle',
-    displayName: '30 Voice Minutes',
-    description: '30 extra voice conversation minutes.',
-    baseAud: 3.99,
+    displayName: '100 AI Credits',
+    description: '100 extra messages — small top-up.',
+    baseAud: 4.99,
     xpReward: 50,
-    credits: { kind: 'voice', amount: 30 },
+    credits: 100,
   },
   {
-    id: 'credit_lipsync_5',
-    storeId: 'credit_lipsync_5_v1',
-    entitlement: 'credits_lipsync',
+    id: 'credits_300',
+    storeId: 'rwendo_credits_300_v1',
+    entitlement: 'credits_text',
     category: 'credit_bundle',
-    displayName: '5 Lipsync Clips',
-    description: '5 lipsync video generations from your companion.',
+    displayName: '300 AI Credits',
+    description: '300 messages — best value bundle.',
     baseAud: 9.99,
-    xpReward: 100,
-    credits: { kind: 'lipsync', amount: 5 },
+    xpReward: 150,
+    credits: 300,
+    recommended: true,
+  },
+  {
+    id: 'credits_750',
+    storeId: 'rwendo_credits_750_v1',
+    entitlement: 'credits_text',
+    category: 'credit_bundle',
+    displayName: '750 AI Credits',
+    description: '750 messages — for heavy users.',
+    baseAud: 19.99,
+    xpReward: 400,
+    credits: 750,
   },
 ];
 
-export const ALL_PRODUCTS: Product[] = [...COURSES, ...SUBSCRIPTIONS, ...CREDIT_BUNDLES];
+export const ALL_PRODUCTS: Product[] = [...PRO_TIERS, ...CREDIT_BUNDLES];
 
 export const PRODUCTS_BY_ID: Record<string, Product> = Object.fromEntries(
-  ALL_PRODUCTS.map(p => [p.id, p]),
+  ALL_PRODUCTS.map((p) => [p.id, p]),
 );
 
 export const PRODUCTS_BY_STORE_ID: Record<string, Product> = Object.fromEntries(
-  ALL_PRODUCTS.map(p => [p.storeId, p]),
+  ALL_PRODUCTS.map((p) => [p.storeId, p]),
 );
+
+/** The RevenueCat entitlement that grants Pro access. Single source of
+ *  truth — used by lib/entitlements.ts and useEntitlements consumers. */
+export const PRO_ENTITLEMENT_ID = 'rwendo_pro';
+
+/** The credits entitlement (consumable balance, server-tracked). */
+export const CREDITS_ENTITLEMENT_ID = 'credits_text';
 
 export function getProduct(id: string): Product | undefined {
   return PRODUCTS_BY_ID[id];
 }
 
-export function getCoursesForSale(): Product[] {
-  return COURSES;
-}
-
-export function getSubscriptionTiers(): Product[] {
-  return SUBSCRIPTIONS;
+export function getProTiers(): Product[] {
+  return PRO_TIERS;
 }
 
 export function getCreditBundles(): Product[] {

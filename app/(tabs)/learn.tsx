@@ -17,6 +17,7 @@ import {
   installCourse,
   uninstallCourse,
 } from '../../lib/lesson-loader';
+import { canAccessCourse } from '../../lib/entitlements';
 
 // Mid-market launch price per language course. Per-jurisdiction localisation
 // lives in `available_packs.prices_by_jurisdiction` (queried once when the
@@ -82,10 +83,8 @@ export default function LearnScreen() {
 
   const isOwned = useCallback(
     (courseId: CoursePackId) =>
-      DEV_UNLOCK_ALL
-      || entitlementContext.starterCourseId === courseId
-      || entitlementContext.ownedCourseIds.includes(courseId),
-    [entitlementContext.starterCourseId, entitlementContext.ownedCourseIds],
+      canAccessCourse(courseId, entitlementContext).allowed,
+    [entitlementContext],
   );
 
   const initialCategory: CourseCategory = useMemo(() => {

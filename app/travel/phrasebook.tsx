@@ -18,6 +18,7 @@ import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/the
 import { loadPhrasebook } from '../../lib/travel-content-loader';
 import type { PhrasebookCategory, TravelPhrase } from '../../data/travel/phrasebook/types';
 import { DEV_UNLOCK_ALL } from '../../constants/dev';
+import { canAccessCourse } from '../../lib/entitlements';
 import {
   loadAudioManifest,
   getAudioPathForPhrase,
@@ -48,8 +49,7 @@ export default function PhrasebookScreen() {
   const owned = useMemo(() => {
     if (DEV_UNLOCK_ALL) return true;
     if (!activeCourseId) return false;
-    return entitlementContext.starterCourseId === activeCourseId
-      || entitlementContext.ownedCourseIds.includes(activeCourseId);
+    return canAccessCourse(activeCourseId, entitlementContext).allowed;
   }, [activeCourseId, entitlementContext]);
 
   const [openCategory, setOpenCategory] = useState<string>('');

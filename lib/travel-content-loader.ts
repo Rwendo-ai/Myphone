@@ -8,7 +8,8 @@
  *   <documentDir>/travel-content/phrasebook/<countryCode>.json
  *   <documentDir>/travel-content/culture/<countryCode>.json
  *   <documentDir>/travel-content/safari/africa-top-10.json
- *   <documentDir>/travel-content/flipcards/<courseId>.json
+ *
+ * Flip cards moved to course-content bucket — see lib/flipcard-loader.ts.
  *
  * Cache-first; falls back to Storage on miss; persists once downloaded.
  * Module-level Map provides a one-tier in-memory cache for the current
@@ -21,7 +22,6 @@ import { supabase } from './supabase';
 import type { PhrasebookCategory } from '../data/travel/phrasebook/types';
 import type { CulturalGuide } from '../data/travel/culture/types';
 import type { SafariPark } from '../data/travel/safari/types';
-import type { FlipCard } from '../types/flipcards';
 
 const BUCKET = 'travel-content';
 
@@ -91,20 +91,6 @@ export async function loadSafariParks(): Promise<SafariPark[] | null> {
     `safari/africa-top-10.json`,
     `${cacheRoot()}safari/africa-top-10.json`,
   );
-}
-
-export async function loadFlipCards(courseId: string): Promise<FlipCard[] | null> {
-  return fetchJson<FlipCard[]>(
-    `flipcards/${courseId}.json`,
-    `${cacheRoot()}flipcards/${courseId}.json`,
-  );
-}
-
-/** Filtered view onto a course's flip cards. */
-export async function loadFlipCardsForModule(courseId: string, module: number): Promise<FlipCard[]> {
-  const all = await loadFlipCards(courseId);
-  if (!all) return [];
-  return all.filter(c => c.module === module);
 }
 
 // ─── Cache management (Profile → Storage panel) ─────────────────────────────

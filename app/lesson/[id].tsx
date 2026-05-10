@@ -79,7 +79,7 @@ export default function LessonScreen() {
   // short-circuits to allowed.
   const entitlement = lessonCourseId
     ? canAccessLesson(lessonCourseId, id, entitlementContext)
-    : { allowed: false as const, reason: 'course_required' as const };
+    : { allowed: false as const, reason: 'pro_required' as const };
 
   const [phase, setPhase] = useState<Phase>('hook');
   const [chunkIndex, setChunkIndex] = useState(0);
@@ -123,25 +123,29 @@ export default function LessonScreen() {
   }
 
   if (!entitlement.allowed) {
+    // Two reasons in the new model: pro_required (this lesson is in a paid
+    // module / non-starter course) or starter_locked (free user trying a
+    // course that isn't their starter).
+    const isStarterLocked = entitlement.reason === 'starter_locked';
     return (
       <SafeAreaView style={[styles.safe, { backgroundColor: Colors.primary }]} edges={['top']}>
         <View style={styles.lockedContainer}>
           <Text style={styles.lockedEmoji}>🔒</Text>
           <Text style={styles.lockedTitle}>
-            {entitlement.reason === 'subscription_required'
-              ? t('lesson.locked.subscription_title')
-              : t('lesson.locked.course_title')}
+            {isStarterLocked
+              ? t('lesson.locked.course_title')
+              : t('lesson.locked.subscription_title')}
           </Text>
           <Text style={styles.lockedBody}>
-            {entitlement.reason === 'subscription_required'
-              ? t('lesson.locked.subscription_body')
-              : t('lesson.locked.course_body')}
+            {isStarterLocked
+              ? t('lesson.locked.course_body')
+              : t('lesson.locked.subscription_body')}
           </Text>
           <Pressable style={styles.lockedCta} onPress={() => router.replace('/profile/plans')}>
             <Text style={styles.lockedCtaText}>
-              {entitlement.reason === 'subscription_required'
-                ? t('lesson.locked.subscription_cta')
-                : t('lesson.locked.course_cta')}
+              {isStarterLocked
+                ? t('lesson.locked.course_cta')
+                : t('lesson.locked.subscription_cta')}
             </Text>
           </Pressable>
           <Pressable style={styles.lockedBack} onPress={() => router.back()}>

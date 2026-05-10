@@ -26,7 +26,7 @@ import { router, useFocusEffect } from 'expo-router';
 import { useAuth } from '../../lib/AuthContext';
 import { useSettings, RWEN_VOICES, type RwenVoiceKey } from '../../lib/SettingsContext';
 import { supabase } from '../../lib/supabase';
-import { canUseAiFeature, type SubscriptionTier } from '../../lib/entitlements';
+import { canUseAiFeature } from '../../lib/entitlements';
 import { PRESET_LIST, type CompanionPreset } from '../../data/companions/presets';
 import { ageGateMet } from '../../lib/active-companion';
 import ProfilePicButton from '../../components/ProfilePicButton';
@@ -50,12 +50,13 @@ export default function CompanionsScreen() {
   const [userDob, setUserDob] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
+  // Two-tier model: 'free' presets always available; everything else
+  // requires Pro. The legacy 5-tier preset values (text_ai/voice/companion/
+  // premium) collapse onto the same Pro gate for v1 — visual avatars get
+  // their own entitlement when those tiers ship.
   const tierGateMet = (gate: CompanionPreset['tierGate']): boolean => {
     if (gate === 'free') return true;
-    return canUseAiFeature(
-      gate === 'voice' ? 'voice' : gate === 'companion' || gate === 'premium' ? 'realtime' : 'text',
-      entitlementContext,
-    ).allowed;
+    return canUseAiFeature('text', entitlementContext).allowed;
   };
 
   const loadCompanions = React.useCallback(async () => {
