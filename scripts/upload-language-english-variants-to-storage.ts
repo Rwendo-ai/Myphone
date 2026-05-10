@@ -35,7 +35,7 @@ if (!SUPABASE_URL || !SERVICE_ROLE_KEY) {
 const supabase = createClient(SUPABASE_URL, SERVICE_ROLE_KEY);
 const BUCKET = 'course-content';
 const COURSE_ID = 'language-english';
-const SPEAKER_IDS = ['french', 'chinese', 'tagalog'];
+const SPEAKER_IDS = (process.argv[2] ? process.argv[2].split(',') : ['french', 'chinese', 'tagalog']);
 
 async function uploadVariant(speakerId: string) {
   const dir = path.join('data', 'courses', COURSE_ID, speakerId, 'curriculum');
