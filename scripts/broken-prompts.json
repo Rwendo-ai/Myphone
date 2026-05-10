@@ -1,0 +1,4805 @@
+{
+  "speakers": {
+    "shona": {
+      "m01-l07-where-from.json": [
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "I'm from Zimbabwe",
+          "scaffold": "(in English)",
+          "correct": [
+            "I'm from Zimbabwe",
+            "i'm from Zimbabwe",
+            "I am from Zimbabwe",
+            "i am from Zimbabwe"
+          ]
+        }
+      ],
+      "m01-l10-conversation.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Hello, my name is Tendai. I'm from Harare.",
+          "scaffold": "(in English)",
+          "correct": [
+            "Hello, my name is Tendai. I'm from Harare.",
+            "Hello, my name is Tendai. I'm from Harare",
+            "Hello my name is Tendai. I'm from Harare."
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Nice to meet you. Goodbye!",
+          "scaffold": "(in English)",
+          "correct": [
+            "Nice to meet you. Goodbye!",
+            "Nice to meet you. Goodbye",
+            "Nice to meet you. Goodbye.",
+            "nice to meet you. goodbye!"
+          ]
+        }
+      ],
+      "m02-l06-yes-no.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Yes, I do",
+          "scaffold": "(in English)",
+          "correct": [
+            "Yes, I do",
+            "Yes, I do.",
+            "yes, I do",
+            "Yes I do."
+          ]
+        }
+      ],
+      "m04-l06-this-that.json": [
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Those houses",
+          "scaffold": "(in English)",
+          "correct": [
+            "Those houses",
+            "those houses"
+          ]
+        }
+      ],
+      "m04-l08-much-many.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "How much time?",
+          "scaffold": "(in English)",
+          "correct": [
+            "How much time?",
+            "How much time",
+            "how much time?",
+            "how much time"
+          ]
+        }
+      ],
+      "m05-l02-siblings.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "My older brother",
+          "scaffold": "(in English)",
+          "correct": [
+            "My older brother",
+            "my older brother"
+          ]
+        }
+      ],
+      "m05-l03-children.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "I have two children",
+          "scaffold": "(in English)",
+          "correct": [
+            "I have two children",
+            "I have two children.",
+            "i have two children"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "My daughter",
+          "scaffold": "(in English)",
+          "correct": [
+            "My daughter",
+            "my daughter"
+          ]
+        }
+      ],
+      "m05-l04-grandparents.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "My grandmother",
+          "scaffold": "(in English)",
+          "correct": [
+            "My grandmother",
+            "my grandmother"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "My grandfather",
+          "scaffold": "(in English)",
+          "correct": [
+            "My grandfather",
+            "my grandfather"
+          ]
+        }
+      ],
+      "m05-l05-aunts-uncles.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "My aunt — my father's sister",
+          "scaffold": "(in English)",
+          "correct": [
+            "My aunt — my father's sister",
+            "My aunt - my father's sister",
+            "My aunt, my father's sister"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "My cousin",
+          "scaffold": "(in English)",
+          "correct": [
+            "My cousin",
+            "my cousin"
+          ]
+        }
+      ],
+      "m05-l06-in-laws.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "My mother-in-law",
+          "scaffold": "(in English)",
+          "correct": [
+            "My mother-in-law",
+            "my mother-in-law"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "My husband",
+          "scaffold": "(in English)",
+          "correct": [
+            "My husband",
+            "my husband"
+          ]
+        }
+      ],
+      "m05-l07-friends.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "My best friend",
+          "scaffold": "(in English)",
+          "correct": [
+            "My best friend",
+            "my best friend"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "She's like family",
+          "scaffold": "(in English)",
+          "correct": [
+            "She's like family",
+            "She is like family",
+            "She's like family.",
+            "She is like family."
+          ]
+        }
+      ],
+      "m05-l08-family-actions.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "I miss my mother",
+          "scaffold": "(in English)",
+          "correct": [
+            "I miss my mother",
+            "I miss my mother.",
+            "i miss my mother"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "I called my brother",
+          "scaffold": "(past tense)",
+          "correct": [
+            "I called my brother",
+            "I called my brother.",
+            "i called my brother"
+          ]
+        }
+      ],
+      "m05-l10-conversation.json": [
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "I miss my brother",
+          "scaffold": "(in English)",
+          "correct": [
+            "I miss my brother",
+            "I miss my brother.",
+            "i miss my brother"
+          ]
+        }
+      ],
+      "m06-l01-numbers-1-10.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Seven",
+          "scaffold": "(in English)",
+          "correct": [
+            "Seven",
+            "seven"
+          ]
+        }
+      ],
+      "m06-l02-numbers-20-100.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Forty-two",
+          "scaffold": "(in English)",
+          "correct": [
+            "Forty-two",
+            "forty-two",
+            "Forty two",
+            "forty two"
+          ]
+        }
+      ],
+      "m06-l03-big-numbers.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Five thousand dollars",
+          "scaffold": "(in English)",
+          "correct": [
+            "Five thousand dollars",
+            "five thousand dollars"
+          ]
+        }
+      ],
+      "m06-l04-time-hours.json": [
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "It's five o'clock",
+          "scaffold": "(in English)",
+          "correct": [
+            "It's five o'clock",
+            "Its five o'clock",
+            "It is five o'clock",
+            "Five o'clock"
+          ]
+        }
+      ],
+      "m06-l06-days-week.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Tomorrow",
+          "scaffold": "(in English)",
+          "correct": [
+            "Tomorrow",
+            "tomorrow"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "On Friday",
+          "scaffold": "(in English)",
+          "correct": [
+            "On Friday",
+            "on Friday"
+          ]
+        }
+      ],
+      "m06-l07-months-seasons.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "In December",
+          "scaffold": "(in English)",
+          "correct": [
+            "In December",
+            "in December"
+          ]
+        }
+      ],
+      "m06-l08-money-prices.json": [
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "It's expensive",
+          "scaffold": "(in English)",
+          "correct": [
+            "It's expensive",
+            "It's expensive.",
+            "It is expensive",
+            "Expensive"
+          ]
+        }
+      ],
+      "m06-l09-shopping-numbers.json": [
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "What's the total?",
+          "scaffold": "(in English)",
+          "correct": [
+            "What's the total?",
+            "What is the total?",
+            "what's the total?",
+            "What's the total"
+          ]
+        }
+      ],
+      "m06-l10-conversation.json": [
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "What's the total with discount?",
+          "scaffold": "(in English)",
+          "correct": [
+            "What's the total with discount?",
+            "What is the total with discount?",
+            "What's the total with the discount?",
+            "What is the total with the discount?"
+          ]
+        }
+      ],
+      "m07-l02-foods.json": [
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "I want rice",
+          "scaffold": "(in English)",
+          "correct": [
+            "I want rice",
+            "I want rice.",
+            "I'd like rice",
+            "I'd like rice.",
+            "i want rice"
+          ]
+        }
+      ],
+      "m07-l04-ordering.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "I'd like the chicken",
+          "scaffold": "(in English)",
+          "correct": [
+            "I'd like the chicken",
+            "I'd like the chicken.",
+            "I would like the chicken",
+            "i'd like the chicken"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Without onions, please",
+          "scaffold": "(in English)",
+          "correct": [
+            "Without onions, please",
+            "Without onions, please.",
+            "No onions, please",
+            "No onions, please.",
+            "without onions, please."
+          ]
+        }
+      ],
+      "m07-l06-cooking.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Boil the water",
+          "scaffold": "(in English)",
+          "correct": [
+            "Boil the water",
+            "Boil the water.",
+            "You boil the water",
+            "boil the water"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Chop the onions",
+          "scaffold": "(in English)",
+          "correct": [
+            "Chop the onions",
+            "Chop the onions.",
+            "You chop the onions",
+            "Cut the onions",
+            "chop the onions"
+          ]
+        }
+      ],
+      "m07-l08-shona-food.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Sadza is a maize meal porridge",
+          "scaffold": "(in English)",
+          "correct": [
+            "Sadza is a maize meal porridge",
+            "Sadza is a maize meal porridge.",
+            "Sadza is maize meal porridge",
+            "sadza is a maize meal porridge."
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Mufushwa is sun-dried vegetables",
+          "scaffold": "(in English)",
+          "correct": [
+            "Mufushwa is sun-dried vegetables",
+            "Mufushwa is sun-dried vegetables.",
+            "Mufushwa is sun-dried greens",
+            "mufushwa is sun-dried vegetables."
+          ]
+        }
+      ],
+      "m07-l09-hosting.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Welcome, please come in",
+          "scaffold": "(in English)",
+          "correct": [
+            "Welcome, please come in",
+            "Welcome please come in",
+            "Welcome, please come in.",
+            "welcome, please come in"
+          ]
+        }
+      ],
+      "m07-l10-conversation.json": [
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Could we have the bill, please?",
+          "scaffold": "(in English)",
+          "correct": [
+            "Could we have the bill, please?",
+            "Could we have the bill please?",
+            "The bill, please.",
+            "Could we have the check, please?",
+            "could we have the bill, please?"
+          ]
+        }
+      ],
+      "m08-l10-conversation.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Yesterday I went home early",
+          "scaffold": "(in English)",
+          "correct": [
+            "Yesterday I went home early",
+            "Yesterday I went home early.",
+            "I went home early yesterday.",
+            "yesterday i went home early."
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Tomorrow I will work from home",
+          "scaffold": "(in English)",
+          "correct": [
+            "Tomorrow I will work from home",
+            "Tomorrow I will work from home.",
+            "Tomorrow I'll work from home.",
+            "I'll work from home tomorrow.",
+            "I'm going to work from home tomorrow.",
+            "tomorrow i will work from home."
+          ]
+        }
+      ],
+      "m09-l06-airport.json": [
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Where is the gate?",
+          "scaffold": "(in English)",
+          "correct": [
+            "Where is the gate?",
+            "Where is the departure gate?",
+            "where is the gate?",
+            "Where is gate ___?"
+          ]
+        },
+        {
+          "path": "chunks[2].native",
+          "english": "Customs",
+          "scaffold": "",
+          "correct": [
+            "Customs"
+          ]
+        }
+      ],
+      "m09-l10-conversation.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Excuse me, where is the Underground?",
+          "scaffold": "(in English)",
+          "correct": [
+            "Excuse me, where is the Underground?",
+            "Excuse me, where is the tube?",
+            "Excuse me, where is the Underground",
+            "excuse me, where is the Underground?"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "I have a reservation",
+          "scaffold": "(in English)",
+          "correct": [
+            "I have a reservation",
+            "I have a reservation.",
+            "I have a booking",
+            "i have a reservation."
+          ]
+        }
+      ],
+      "m10-l01-happy-sad.json": [
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "It made me feel sad",
+          "scaffold": "(in English)",
+          "correct": [
+            "It made me feel sad",
+            "it made me feel sad",
+            "It made me feel sad.",
+            "it made me feel sad."
+          ]
+        }
+      ],
+      "m10-l05-body.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "My head hurts",
+          "scaffold": "(in English)",
+          "correct": [
+            "My head hurts",
+            "my head hurts",
+            "My head hurts.",
+            "my head hurts."
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "It hurts here",
+          "scaffold": "(in English)",
+          "correct": [
+            "It hurts here",
+            "it hurts here",
+            "It hurts here.",
+            "it hurts here."
+          ]
+        }
+      ],
+      "m10-l09-proverbs.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "In Shona we say",
+          "scaffold": "(in English)",
+          "correct": [
+            "In Shona we say",
+            "in shona we say"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "It literally means",
+          "scaffold": "(in English)",
+          "correct": [
+            "It literally means",
+            "it literally means"
+          ]
+        },
+        {
+          "path": "chunks[0].native",
+          "english": "Chara chimwe hachitswanyi inda — One finger can't crush a louse",
+          "scaffold": "",
+          "correct": [
+            "Chara chimwe hachitswanyi inda — One finger can't crush a louse"
+          ]
+        },
+        {
+          "path": "chunks[1].native",
+          "english": "Mwana washe muranda kumwe — A chief's child is a servant elsewhere",
+          "scaffold": "",
+          "correct": [
+            "Mwana washe muranda kumwe — A chief's child is a servant elsewhere"
+          ]
+        },
+        {
+          "path": "chunks[2].native",
+          "english": "Rume rimwe harikombi churu — One man cannot surround an anthill",
+          "scaffold": "",
+          "correct": [
+            "Rume rimwe harikombi churu — One man cannot surround an anthill"
+          ]
+        }
+      ]
+    },
+    "ndebele": {
+      "m02-l01-numbers-1-10.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Three",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "Three",
+            "three",
+            "Three.",
+            "three."
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "How many?",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "How many?",
+            "How many",
+            "how many?",
+            "how many"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[2]",
+          "english": "Ten",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "Ten",
+            "ten",
+            "Ten.",
+            "ten."
+          ]
+        }
+      ],
+      "m02-l02-numbers-11-100.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Thirty",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "Thirty",
+            "thirty",
+            "Thirty.",
+            "thirty."
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Fifteen",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "Fifteen",
+            "fifteen",
+            "Fifteen.",
+            "fifteen."
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[2]",
+          "english": "One hundred",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "One hundred",
+            "one hundred",
+            "Hundred",
+            "hundred",
+            "A hundred",
+            "a hundred"
+          ]
+        }
+      ],
+      "m02-l03-days-of-week.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Wednesday",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "Wednesday",
+            "wednesday",
+            "Wednesday.",
+            "wednesday."
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Saturday",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "Saturday",
+            "saturday",
+            "Saturday.",
+            "saturday."
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[2]",
+          "english": "Thursday",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "Thursday",
+            "thursday",
+            "Thursday.",
+            "thursday."
+          ]
+        }
+      ],
+      "m02-l04-months.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "February",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "February",
+            "february",
+            "February.",
+            "february."
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "August",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "August",
+            "august",
+            "August.",
+            "august."
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[2]",
+          "english": "November",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "November",
+            "november",
+            "November.",
+            "november."
+          ]
+        }
+      ],
+      "m02-l06-today-tomorrow-yesterday.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Today",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "Today",
+            "today",
+            "Today.",
+            "today."
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Tomorrow",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "Tomorrow",
+            "tomorrow",
+            "Tomorrow.",
+            "tomorrow."
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[2]",
+          "english": "Yesterday",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "Yesterday",
+            "yesterday",
+            "Yesterday.",
+            "yesterday."
+          ]
+        }
+      ],
+      "m02-l07-asking-time.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "What time is it?",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "What time is it?",
+            "what time is it?",
+            "What time is it",
+            "what time is it"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "When does the bus come?",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "When does the bus come?",
+            "when does the bus come?",
+            "When does the bus come",
+            "when does the bus come"
+          ]
+        }
+      ],
+      "m02-l08-numbers-money.json": [
+        {
+          "path": "activeRecall.prompts[2]",
+          "english": "How much is it?",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "How much is it?",
+            "how much is it?",
+            "How much is it",
+            "how much is it"
+          ]
+        }
+      ],
+      "m02-l09-numbers-age.json": [
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "How old are you?",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "How old are you?",
+            "how old are you?",
+            "How old are you",
+            "how old are you"
+          ]
+        }
+      ],
+      "m05-l01-mother-father.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Mother",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "Mother",
+            "mother"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[2]",
+          "english": "My father",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "My father",
+            "my father",
+            "My father."
+          ]
+        }
+      ],
+      "m05-l02-children.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Children",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "Children",
+            "children"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Son",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "Son",
+            "son"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[2]",
+          "english": "My daughter",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "My daughter",
+            "my daughter"
+          ]
+        }
+      ],
+      "m05-l03-siblings.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Brother",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "Brother",
+            "brother"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "My older sister",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "My older sister",
+            "my older sister"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[2]",
+          "english": "I have two siblings",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "I have two siblings",
+            "I have two siblings."
+          ]
+        }
+      ],
+      "m05-l04-grandparents.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Grandmother",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "Grandmother",
+            "grandmother"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Grandpa",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "Grandpa",
+            "grandpa"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[2]",
+          "english": "My grandparents",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "My grandparents",
+            "my grandparents"
+          ]
+        }
+      ],
+      "m05-l05-extended-family.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "My uncle on my mother's side",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "My uncle on my mother's side",
+            "my uncle on my mother's side"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "My aunt — my father's sister",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "My aunt — my father's sister",
+            "My aunt - my father's sister",
+            "My aunt, my father's sister"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[2]",
+          "english": "My cousin",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "My cousin",
+            "my cousin"
+          ]
+        }
+      ],
+      "m05-l06-in-laws.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "My mother-in-law",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "My mother-in-law",
+            "my mother-in-law"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "My father-in-law",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "My father-in-law",
+            "my father-in-law"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[2]",
+          "english": "In-laws",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "In-laws",
+            "in-laws"
+          ]
+        }
+      ],
+      "m05-l07-friend-colleague.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Friend",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "Friend",
+            "friend"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Best friend",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "Best friend",
+            "best friend"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[2]",
+          "english": "Colleague",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "Colleague",
+            "colleague"
+          ]
+        }
+      ],
+      "m05-l08-boyfriend-girlfriend.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Boyfriend",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "Boyfriend",
+            "boyfriend"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "My partner",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "My partner",
+            "my partner"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[2]",
+          "english": "Fiancée",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "Fiancée",
+            "fiancée",
+            "Fiancee",
+            "fiancee",
+            "Fiancé",
+            "fiancé"
+          ]
+        }
+      ],
+      "m05-l09-marriage-divorce.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Marriage",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "Marriage",
+            "marriage"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Wedding",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "Wedding",
+            "wedding"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[2]",
+          "english": "I'm married",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "I'm married",
+            "I am married",
+            "i'm married"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[3]",
+          "english": "Divorce",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "Divorce",
+            "divorce"
+          ]
+        }
+      ],
+      "m05-l10-conversation.json": [
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "I miss my brother",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "I miss my brother",
+            "I miss my brother.",
+            "i miss my brother"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[2]",
+          "english": "My uncle on my mother's side",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "My uncle on my mother's side",
+            "my uncle on my mother's side"
+          ]
+        }
+      ],
+      "m07-l01-at-the-airport.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Where's my gate?",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "Where's my gate?",
+            "Where is my gate?",
+            "where's my gate?",
+            "Where's my gate"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Where is baggage claim?",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "Where is baggage claim?",
+            "Where is the baggage claim?",
+            "Where's baggage claim?",
+            "where is baggage claim?"
+          ]
+        }
+      ],
+      "m07-l02-customs-immigration.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "I'm from Zimbabwe.",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "I'm from Zimbabwe.",
+            "I am from Zimbabwe.",
+            "I'm from Zimbabwe",
+            "i'm from zimbabwe."
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "I'm visiting family.",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "I'm visiting family.",
+            "I am visiting family.",
+            "I'm visiting family",
+            "i'm visiting family."
+          ]
+        }
+      ],
+      "m07-l03-underground-subway-trains.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Which line goes to Oxford Circus?",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "Which line goes to Oxford Circus?",
+            "Which line to Oxford Circus?",
+            "What line goes to Oxford Circus?",
+            "which line goes to oxford circus?"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "When's the next train?",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "When's the next train?",
+            "When is the next train?",
+            "When does the next train come?",
+            "when's the next train?"
+          ]
+        }
+      ],
+      "m07-l04-taxi-uber-lyft.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Could you take me to King's Cross, please?",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "Could you take me to King's Cross, please?",
+            "Take me to King's Cross, please.",
+            "King's Cross, please.",
+            "could you take me to king's cross, please?"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Could you stop here, please?",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "Could you stop here, please?",
+            "Stop here, please.",
+            "Could you stop here please?",
+            "could you stop here, please?"
+          ]
+        }
+      ],
+      "m07-l05-hotel-check-in.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "I have a reservation under Mthabisi.",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "I have a reservation under Mthabisi.",
+            "I've got a reservation under Mthabisi.",
+            "I have a reservation under Mthabisi",
+            "i have a reservation under mthabisi."
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Is breakfast included?",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "Is breakfast included?",
+            "Is breakfast included",
+            "Does it include breakfast?",
+            "is breakfast included?"
+          ]
+        }
+      ],
+      "m07-l06-asking-directions.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Excuse me, where is the bus stop?",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "Excuse me, where is the bus stop?",
+            "Excuse me, where's the bus stop?",
+            "Excuse me, where is the bus stop, please?",
+            "excuse me, where is the bus stop?"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "How do I get to the station?",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "How do I get to the station?",
+            "How do I get to the station",
+            "How can I get to the station?",
+            "how do i get to the station?"
+          ]
+        }
+      ],
+      "m07-l07-left-right-straight.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Turn left",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "Turn left",
+            "Turn left.",
+            "turn left"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Go straight on",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "Go straight on",
+            "Go straight on.",
+            "Go straight ahead",
+            "Straight on",
+            "go straight on"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[2]",
+          "english": "It's on your right",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "It's on your right",
+            "It's on your right.",
+            "It is on your right",
+            "it's on your right"
+          ]
+        }
+      ],
+      "m07-l08-queue-line.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Is this the queue?",
+          "scaffold": "(ngesiNgisi UK)",
+          "correct": [
+            "Is this the queue?",
+            "Excuse me, is this the queue?",
+            "Is this the queue",
+            "is this the queue?"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Sorry, I didn't see the queue.",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "Sorry, I didn't see the queue.",
+            "Sorry, I didn't see the line.",
+            "I'm sorry, I didn't see the queue.",
+            "sorry, i didn't see the queue."
+          ]
+        }
+      ],
+      "m07-l09-im-lost.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "I think I'm a bit lost.",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "I think I'm a bit lost.",
+            "I'm a bit lost.",
+            "I think I am a bit lost.",
+            "i think i'm a bit lost."
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Could you help me, please?",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "Could you help me, please?",
+            "Could you help, please?",
+            "Could you help me?",
+            "could you help me, please?"
+          ]
+        }
+      ],
+      "m07-l10-travel-conversation.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "I'm from Zimbabwe, visiting family, two weeks.",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "I'm from Zimbabwe, visiting family, two weeks.",
+            "I'm from Zimbabwe. Visiting family, two weeks.",
+            "I'm from Zimbabwe — visiting family — two weeks.",
+            "i'm from zimbabwe, visiting family, two weeks."
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Could you take me to the hotel, please?",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "Could you take me to the hotel, please?",
+            "Take me to the hotel, please.",
+            "Could you take me to the hotel please?",
+            "could you take me to the hotel, please?"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[2]",
+          "english": "I have a reservation under Mthabisi, three nights.",
+          "scaffold": "(ngesiNgisi)",
+          "correct": [
+            "I have a reservation under Mthabisi, three nights.",
+            "I've got a reservation under Mthabisi, three nights.",
+            "I have a reservation under Mthabisi — three nights.",
+            "i have a reservation under mthabisi, three nights."
+          ]
+        }
+      ]
+    },
+    "french": {
+      "m01-l07-where-from.json": [
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "I'm from France",
+          "scaffold": "(en anglais)",
+          "correct": [
+            "I'm from France",
+            "i'm from France",
+            "I am from France",
+            "i am from France"
+          ]
+        }
+      ],
+      "m01-l10-conversation.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Hello, my name is Camille. I'm from Paris.",
+          "scaffold": "(en anglais)",
+          "correct": [
+            "Hello, my name is Camille. I'm from Paris.",
+            "Hello, my name is Camille. I'm from Paris",
+            "Hello my name is Camille. I'm from Paris."
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Nice to meet you. Goodbye!",
+          "scaffold": "(en anglais)",
+          "correct": [
+            "Nice to meet you. Goodbye!",
+            "Nice to meet you. Goodbye",
+            "Nice to meet you. Goodbye.",
+            "nice to meet you. goodbye!"
+          ]
+        }
+      ],
+      "m06-l01-numbers-1-10.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Seven",
+          "scaffold": "(en anglais)",
+          "correct": [
+            "Seven",
+            "seven"
+          ]
+        }
+      ],
+      "m06-l02-numbers-20-100.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Forty-two",
+          "scaffold": "(en anglais)",
+          "correct": [
+            "Forty-two",
+            "forty-two",
+            "Forty two",
+            "forty two"
+          ]
+        }
+      ],
+      "m06-l03-big-numbers.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Five thousand euros",
+          "scaffold": "(en anglais)",
+          "correct": [
+            "Five thousand euros",
+            "five thousand euros"
+          ]
+        }
+      ],
+      "m06-l04-time-hours.json": [
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "It's five o'clock",
+          "scaffold": "(en anglais)",
+          "correct": [
+            "It's five o'clock",
+            "Its five o'clock",
+            "It is five o'clock",
+            "Five o'clock"
+          ]
+        }
+      ],
+      "m06-l06-days-week.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Tomorrow",
+          "scaffold": "(en anglais)",
+          "correct": [
+            "Tomorrow",
+            "tomorrow"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "On Friday",
+          "scaffold": "(en anglais)",
+          "correct": [
+            "On Friday",
+            "on Friday"
+          ]
+        }
+      ],
+      "m06-l07-months-seasons.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "In December",
+          "scaffold": "(en anglais)",
+          "correct": [
+            "In December",
+            "in December"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Autumn",
+          "scaffold": "(en anglais)",
+          "correct": [
+            "Autumn",
+            "autumn",
+            "Fall",
+            "fall"
+          ]
+        }
+      ],
+      "m06-l08-money-prices.json": [
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "It's expensive",
+          "scaffold": "(en anglais)",
+          "correct": [
+            "It's expensive",
+            "It's expensive.",
+            "It is expensive",
+            "Expensive"
+          ]
+        }
+      ],
+      "m06-l09-shopping-numbers.json": [
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "What's the total?",
+          "scaffold": "(en anglais)",
+          "correct": [
+            "What's the total?",
+            "What is the total?",
+            "what's the total?",
+            "What's the total"
+          ]
+        }
+      ],
+      "m06-l10-conversation.json": [
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "What's the total with discount?",
+          "scaffold": "(en anglais)",
+          "correct": [
+            "What's the total with discount?",
+            "What is the total with discount?",
+            "What's the total with the discount?",
+            "What is the total with the discount?"
+          ]
+        }
+      ],
+      "m07-l02-foods.json": [
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "I'd like rice",
+          "scaffold": "(en anglais)",
+          "correct": [
+            "I'd like rice",
+            "I'd like rice.",
+            "I want rice",
+            "I want rice.",
+            "i'd like rice"
+          ]
+        }
+      ],
+      "m07-l04-ordering.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "I'd like the chicken",
+          "scaffold": "(en anglais)",
+          "correct": [
+            "I'd like the chicken",
+            "I'd like the chicken.",
+            "I would like the chicken",
+            "i'd like the chicken"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Without onions, please",
+          "scaffold": "(en anglais)",
+          "correct": [
+            "Without onions, please",
+            "Without onions, please.",
+            "No onions, please",
+            "No onions, please.",
+            "without onions, please."
+          ]
+        }
+      ],
+      "m07-l06-cooking.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Boil the water",
+          "scaffold": "(en anglais)",
+          "correct": [
+            "Boil the water",
+            "Boil the water.",
+            "You boil the water",
+            "boil the water"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Chop the onions",
+          "scaffold": "(en anglais)",
+          "correct": [
+            "Chop the onions",
+            "Chop the onions.",
+            "You chop the onions",
+            "Cut the onions",
+            "chop the onions"
+          ]
+        }
+      ],
+      "m07-l08-shona-food.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Cassoulet is a bean and meat stew",
+          "scaffold": "(en anglais)",
+          "correct": [
+            "Cassoulet is a bean and meat stew",
+            "Cassoulet is a bean and meat stew.",
+            "Cassoulet is a slow-cooked bean and meat stew",
+            "cassoulet is a bean and meat stew."
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Ratatouille is a Provençal vegetable stew",
+          "scaffold": "(en anglais)",
+          "correct": [
+            "Ratatouille is a Provençal vegetable stew",
+            "Ratatouille is a Provençal vegetable stew.",
+            "Ratatouille is a vegetable stew from Provence",
+            "ratatouille is a provençal vegetable stew."
+          ]
+        }
+      ],
+      "m07-l09-hosting.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Welcome, please come in",
+          "scaffold": "(en anglais)",
+          "correct": [
+            "Welcome, please come in",
+            "Welcome please come in",
+            "Welcome, please come in.",
+            "welcome, please come in"
+          ]
+        }
+      ],
+      "m07-l10-conversation.json": [
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Could we have the bill, please?",
+          "scaffold": "(en anglais)",
+          "correct": [
+            "Could we have the bill, please?",
+            "Could we have the bill please?",
+            "The bill, please.",
+            "Could we have the check, please?",
+            "could we have the bill, please?"
+          ]
+        }
+      ],
+      "m08-l10-conversation.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Yesterday I went home early",
+          "scaffold": "(en anglais)",
+          "correct": [
+            "Yesterday I went home early",
+            "Yesterday I went home early.",
+            "I went home early yesterday.",
+            "yesterday i went home early."
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Tomorrow I will work from home",
+          "scaffold": "(en anglais)",
+          "correct": [
+            "Tomorrow I will work from home",
+            "Tomorrow I will work from home.",
+            "Tomorrow I'll work from home.",
+            "I'll work from home tomorrow.",
+            "I'm going to work from home tomorrow.",
+            "tomorrow i will work from home."
+          ]
+        }
+      ],
+      "m09-l06-airport.json": [
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Where is the gate?",
+          "scaffold": "(en anglais)",
+          "correct": [
+            "Where is the gate?",
+            "Where is the departure gate?",
+            "where is the gate?",
+            "Where is gate ___?"
+          ]
+        }
+      ],
+      "m09-l10-conversation.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Excuse me, where is the Underground?",
+          "scaffold": "(en anglais)",
+          "correct": [
+            "Excuse me, where is the Underground?",
+            "Excuse me, where is the tube?",
+            "Excuse me, where is the Underground",
+            "excuse me, where is the Underground?"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "I have a reservation",
+          "scaffold": "(en anglais)",
+          "correct": [
+            "I have a reservation",
+            "I have a reservation.",
+            "I have a booking",
+            "i have a reservation."
+          ]
+        }
+      ],
+      "m10-l01-happy-sad.json": [
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "It made me feel sad",
+          "scaffold": "(en anglais)",
+          "correct": [
+            "It made me feel sad",
+            "it made me feel sad",
+            "It made me feel sad.",
+            "it made me feel sad."
+          ]
+        }
+      ],
+      "m10-l05-body.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "My head hurts",
+          "scaffold": "(en anglais)",
+          "correct": [
+            "My head hurts",
+            "my head hurts",
+            "My head hurts.",
+            "my head hurts."
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "It hurts here",
+          "scaffold": "(en anglais)",
+          "correct": [
+            "It hurts here",
+            "it hurts here",
+            "It hurts here.",
+            "it hurts here."
+          ]
+        }
+      ],
+      "m10-l09-proverbs.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "In French we say",
+          "scaffold": "(en anglais)",
+          "correct": [
+            "In French we say",
+            "in french we say"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "It literally means",
+          "scaffold": "(en anglais)",
+          "correct": [
+            "It literally means",
+            "it literally means"
+          ]
+        },
+        {
+          "path": "chunks[0].native",
+          "english": "L'habit ne fait pas le moine — The habit doesn't make the monk",
+          "scaffold": "",
+          "correct": [
+            "L'habit ne fait pas le moine — The habit doesn't make the monk"
+          ]
+        },
+        {
+          "path": "chunks[1].native",
+          "english": "Petit à petit, l'oiseau fait son nid — Little by little, the bird builds its nest",
+          "scaffold": "",
+          "correct": [
+            "Petit à petit, l'oiseau fait son nid — Little by little, the bird builds its nest"
+          ]
+        },
+        {
+          "path": "chunks[2].native",
+          "english": "L'appétit vient en mangeant — Appetite comes while eating",
+          "scaffold": "",
+          "correct": [
+            "L'appétit vient en mangeant — Appetite comes while eating"
+          ]
+        }
+      ]
+    },
+    "chinese": {},
+    "tagalog": {
+      "m01-l02-hi-bye.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Hi",
+          "scaffold": "(sa English)",
+          "correct": [
+            "Hi",
+            "hi"
+          ]
+        },
+        {
+          "path": "exercises[4].prompt",
+          "english": "Hi",
+          "scaffold": "",
+          "correct": [
+            "Hi",
+            "hi",
+            "Hi.",
+            "hi."
+          ]
+        },
+        {
+          "path": "chunks[0].native",
+          "english": "Hi",
+          "scaffold": "",
+          "correct": [
+            "Hi"
+          ]
+        }
+      ],
+      "m01-l07-where-from.json": [
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "I'm from the Philippines",
+          "scaffold": "(sa English)",
+          "correct": [
+            "I'm from the Philippines",
+            "i'm from the Philippines",
+            "I am from the Philippines",
+            "i am from the Philippines",
+            "I'm from Philippines"
+          ]
+        }
+      ],
+      "m01-l10-conversation.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Hello, my name is Joy. I'm from Manila.",
+          "scaffold": "(sa English)",
+          "correct": [
+            "Hello, my name is Joy. I'm from Manila.",
+            "Hello, my name is Joy. I'm from Manila",
+            "Hello my name is Joy. I'm from Manila."
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Nice to meet you. Goodbye!",
+          "scaffold": "(sa English)",
+          "correct": [
+            "Nice to meet you. Goodbye!",
+            "Nice to meet you. Goodbye",
+            "Nice to meet you. Goodbye.",
+            "nice to meet you. goodbye!"
+          ]
+        }
+      ],
+      "m02-l06-yes-no.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Yes, I do",
+          "scaffold": "(sa English)",
+          "correct": [
+            "Yes, I do",
+            "Yes, I do.",
+            "yes, I do",
+            "Yes I do."
+          ]
+        }
+      ],
+      "m04-l06-this-that.json": [
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Those houses",
+          "scaffold": "(sa English)",
+          "correct": [
+            "Those houses",
+            "those houses"
+          ]
+        }
+      ],
+      "m04-l08-much-many.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "How much time?",
+          "scaffold": "(sa English)",
+          "correct": [
+            "How much time?",
+            "How much time",
+            "how much time?",
+            "how much time"
+          ]
+        }
+      ],
+      "m05-l02-siblings.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "My older brother",
+          "scaffold": "(sa English)",
+          "correct": [
+            "My older brother",
+            "my older brother"
+          ]
+        }
+      ],
+      "m05-l03-children.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "I have two children",
+          "scaffold": "(sa English)",
+          "correct": [
+            "I have two children",
+            "I have two children.",
+            "i have two children"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "My daughter",
+          "scaffold": "(sa English)",
+          "correct": [
+            "My daughter",
+            "my daughter"
+          ]
+        }
+      ],
+      "m05-l04-grandparents.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "My grandmother",
+          "scaffold": "(sa English)",
+          "correct": [
+            "My grandmother",
+            "my grandmother"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "My grandfather",
+          "scaffold": "(sa English)",
+          "correct": [
+            "My grandfather",
+            "my grandfather"
+          ]
+        }
+      ],
+      "m05-l05-aunts-uncles.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "My aunt — my father's sister",
+          "scaffold": "(sa English)",
+          "correct": [
+            "My aunt — my father's sister",
+            "My aunt - my father's sister",
+            "My aunt, my father's sister"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "My cousin",
+          "scaffold": "(sa English)",
+          "correct": [
+            "My cousin",
+            "my cousin"
+          ]
+        }
+      ],
+      "m05-l06-in-laws.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "My mother-in-law",
+          "scaffold": "(sa English)",
+          "correct": [
+            "My mother-in-law",
+            "my mother-in-law"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "My husband",
+          "scaffold": "(sa English)",
+          "correct": [
+            "My husband",
+            "my husband"
+          ]
+        }
+      ],
+      "m05-l07-friends.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "My best friend",
+          "scaffold": "(sa English)",
+          "correct": [
+            "My best friend",
+            "my best friend"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "She's like family",
+          "scaffold": "(sa English)",
+          "correct": [
+            "She's like family",
+            "She is like family",
+            "She's like family.",
+            "She is like family."
+          ]
+        }
+      ],
+      "m05-l08-family-actions.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "I miss my mother",
+          "scaffold": "(sa English)",
+          "correct": [
+            "I miss my mother",
+            "I miss my mother.",
+            "i miss my mother"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "I called my brother",
+          "scaffold": "(past tense)",
+          "correct": [
+            "I called my brother",
+            "I called my brother.",
+            "i called my brother"
+          ]
+        }
+      ],
+      "m05-l10-conversation.json": [
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "I miss my brother",
+          "scaffold": "(sa English)",
+          "correct": [
+            "I miss my brother",
+            "I miss my brother.",
+            "i miss my brother"
+          ]
+        }
+      ],
+      "m06-l01-numbers-1-10.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Seven",
+          "scaffold": "(sa English)",
+          "correct": [
+            "Seven",
+            "seven"
+          ]
+        }
+      ],
+      "m06-l02-numbers-20-100.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Forty-two",
+          "scaffold": "(sa English)",
+          "correct": [
+            "Forty-two",
+            "forty-two",
+            "Forty two",
+            "forty two"
+          ]
+        }
+      ],
+      "m06-l03-big-numbers.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Five thousand pesos",
+          "scaffold": "(sa English)",
+          "correct": [
+            "Five thousand pesos",
+            "five thousand pesos"
+          ]
+        }
+      ],
+      "m06-l04-time-hours.json": [
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "It's five o'clock",
+          "scaffold": "(sa English)",
+          "correct": [
+            "It's five o'clock",
+            "Its five o'clock",
+            "It is five o'clock",
+            "Five o'clock"
+          ]
+        }
+      ],
+      "m06-l06-days-week.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Tomorrow",
+          "scaffold": "(sa English)",
+          "correct": [
+            "Tomorrow",
+            "tomorrow"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "On Friday",
+          "scaffold": "(sa English)",
+          "correct": [
+            "On Friday",
+            "on Friday"
+          ]
+        }
+      ],
+      "m06-l07-months-seasons.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "In December",
+          "scaffold": "(sa English)",
+          "correct": [
+            "In December",
+            "in December"
+          ]
+        }
+      ],
+      "m06-l08-money-prices.json": [
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "It's expensive",
+          "scaffold": "(sa English)",
+          "correct": [
+            "It's expensive",
+            "It's expensive.",
+            "It is expensive",
+            "Expensive"
+          ]
+        }
+      ],
+      "m06-l09-shopping-numbers.json": [
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "What's the total?",
+          "scaffold": "(sa English)",
+          "correct": [
+            "What's the total?",
+            "What is the total?",
+            "what's the total?",
+            "What's the total"
+          ]
+        }
+      ],
+      "m06-l10-conversation.json": [
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "What's the total with discount?",
+          "scaffold": "(sa English)",
+          "correct": [
+            "What's the total with discount?",
+            "What is the total with discount?",
+            "What's the total with the discount?",
+            "What is the total with the discount?"
+          ]
+        }
+      ],
+      "m07-l02-foods.json": [
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "I want rice",
+          "scaffold": "(sa English)",
+          "correct": [
+            "I want rice",
+            "I want rice.",
+            "I'd like rice",
+            "I'd like rice.",
+            "i want rice"
+          ]
+        }
+      ],
+      "m07-l04-ordering.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "I'd like the chicken",
+          "scaffold": "(sa English)",
+          "correct": [
+            "I'd like the chicken",
+            "I'd like the chicken.",
+            "I would like the chicken",
+            "i'd like the chicken"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Without onions, please",
+          "scaffold": "(sa English)",
+          "correct": [
+            "Without onions, please",
+            "Without onions, please.",
+            "No onions, please",
+            "No onions, please.",
+            "without onions, please."
+          ]
+        }
+      ],
+      "m07-l06-cooking.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Boil the water",
+          "scaffold": "(sa English)",
+          "correct": [
+            "Boil the water",
+            "Boil the water.",
+            "You boil the water",
+            "boil the water"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Chop the onions",
+          "scaffold": "(sa English)",
+          "correct": [
+            "Chop the onions",
+            "Chop the onions.",
+            "You chop the onions",
+            "Cut the onions",
+            "chop the onions"
+          ]
+        }
+      ],
+      "m07-l08-shona-food.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Adobo is meat in soy sauce and vinegar",
+          "scaffold": "(sa English)",
+          "correct": [
+            "Adobo is meat in soy sauce and vinegar",
+            "Adobo is meat in soy sauce and vinegar.",
+            "Adobo is meat cooked in soy sauce and vinegar",
+            "adobo is meat in soy sauce and vinegar."
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Sinigang is a sour tamarind soup",
+          "scaffold": "(sa English)",
+          "correct": [
+            "Sinigang is a sour tamarind soup",
+            "Sinigang is a sour tamarind soup.",
+            "Sinigang is a sour soup with tamarind",
+            "sinigang is a sour tamarind soup."
+          ]
+        }
+      ],
+      "m07-l09-hosting.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Welcome, please come in",
+          "scaffold": "(sa English)",
+          "correct": [
+            "Welcome, please come in",
+            "Welcome please come in",
+            "Welcome, please come in.",
+            "welcome, please come in"
+          ]
+        }
+      ],
+      "m07-l10-conversation.json": [
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Could we have the bill, please?",
+          "scaffold": "(sa English)",
+          "correct": [
+            "Could we have the bill, please?",
+            "Could we have the bill please?",
+            "The bill, please.",
+            "Could we have the check, please?",
+            "could we have the bill, please?"
+          ]
+        }
+      ],
+      "m08-l10-conversation.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Yesterday I went home early",
+          "scaffold": "(sa English)",
+          "correct": [
+            "Yesterday I went home early",
+            "Yesterday I went home early.",
+            "I went home early yesterday.",
+            "yesterday i went home early."
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Tomorrow I will work from home",
+          "scaffold": "(sa English)",
+          "correct": [
+            "Tomorrow I will work from home",
+            "Tomorrow I will work from home.",
+            "Tomorrow I'll work from home.",
+            "I'll work from home tomorrow.",
+            "I'm going to work from home tomorrow.",
+            "tomorrow i will work from home."
+          ]
+        }
+      ],
+      "m09-l06-airport.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Boarding pass",
+          "scaffold": "(sa English)",
+          "correct": [
+            "Boarding pass",
+            "boarding pass",
+            "My boarding pass"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Where is the gate?",
+          "scaffold": "(sa English)",
+          "correct": [
+            "Where is the gate?",
+            "Where is the departure gate?",
+            "where is the gate?",
+            "Where is gate ___?"
+          ]
+        },
+        {
+          "path": "chunks[0].native",
+          "english": "Boarding pass",
+          "scaffold": "",
+          "correct": [
+            "Boarding pass"
+          ]
+        }
+      ],
+      "m09-l10-conversation.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Excuse me, where is the Underground?",
+          "scaffold": "(sa English)",
+          "correct": [
+            "Excuse me, where is the Underground?",
+            "Excuse me, where is the tube?",
+            "Excuse me, where is the Underground",
+            "excuse me, where is the Underground?"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "I have a reservation",
+          "scaffold": "(sa English)",
+          "correct": [
+            "I have a reservation",
+            "I have a reservation.",
+            "I have a booking",
+            "i have a reservation."
+          ]
+        }
+      ],
+      "m10-l01-happy-sad.json": [
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "It made me feel sad",
+          "scaffold": "(sa English)",
+          "correct": [
+            "It made me feel sad",
+            "it made me feel sad",
+            "It made me feel sad.",
+            "it made me feel sad."
+          ]
+        }
+      ],
+      "m10-l05-body.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "My head hurts",
+          "scaffold": "(sa English)",
+          "correct": [
+            "My head hurts",
+            "my head hurts",
+            "My head hurts.",
+            "my head hurts."
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "It hurts here",
+          "scaffold": "(sa English)",
+          "correct": [
+            "It hurts here",
+            "it hurts here",
+            "It hurts here.",
+            "it hurts here."
+          ]
+        }
+      ],
+      "m10-l09-proverbs.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "In Filipino we say",
+          "scaffold": "(sa English)",
+          "correct": [
+            "In Filipino we say",
+            "in filipino we say"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "It literally means",
+          "scaffold": "(sa English)",
+          "correct": [
+            "It literally means",
+            "it literally means"
+          ]
+        },
+        {
+          "path": "chunks[0].native",
+          "english": "Kapag may tiyaga, may nilaga — Where there's patience, there's stew",
+          "scaffold": "",
+          "correct": [
+            "Kapag may tiyaga, may nilaga — Where there's patience, there's stew"
+          ]
+        },
+        {
+          "path": "chunks[1].native",
+          "english": "Ang hindi lumingon sa pinanggalingan, hindi makakarating sa paroroonan — One who does not look back to where they came from will not reach their destination",
+          "scaffold": "",
+          "correct": [
+            "Ang hindi lumingon sa pinanggalingan, hindi makakarating sa paroroonan — One who does not look back to where they came from will not reach their destination"
+          ]
+        },
+        {
+          "path": "chunks[2].native",
+          "english": "Walang matigas na tinapay sa mainit na kape — No bread is too hard for hot coffee",
+          "scaffold": "",
+          "correct": [
+            "Walang matigas na tinapay sa mainit na kape — No bread is too hard for hot coffee"
+          ]
+        }
+      ]
+    },
+    "hindi": {
+      "m01-l10-conversation.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Hello, my name is Aman. I'm from Delhi.",
+          "scaffold": "(अंग्रेज़ी में)",
+          "correct": [
+            "Hello, my name is Aman. I'm from Delhi.",
+            "Hello, my name is Aman. I'm from Delhi",
+            "Hello my name is Aman. I'm from Delhi."
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Nice to meet you. Goodbye!",
+          "scaffold": "(अंग्रेज़ी में)",
+          "correct": [
+            "Nice to meet you. Goodbye!",
+            "Nice to meet you. Goodbye",
+            "Nice to meet you. Goodbye.",
+            "nice to meet you. goodbye!"
+          ]
+        }
+      ],
+      "m02-l06-yes-no.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Yes, I do",
+          "scaffold": "(in English)",
+          "correct": [
+            "Yes, I do",
+            "Yes, I do.",
+            "yes, I do",
+            "Yes I do."
+          ]
+        }
+      ],
+      "m04-l06-this-that.json": [
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Those houses",
+          "scaffold": "(English mein)",
+          "correct": [
+            "Those houses",
+            "those houses"
+          ]
+        }
+      ],
+      "m04-l08-much-many.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "How much time?",
+          "scaffold": "(English mein)",
+          "correct": [
+            "How much time?",
+            "How much time",
+            "how much time?",
+            "how much time"
+          ]
+        }
+      ],
+      "m05-l02-siblings.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "My older brother",
+          "scaffold": "(अंग्रेज़ी में)",
+          "correct": [
+            "My older brother",
+            "my older brother"
+          ]
+        }
+      ],
+      "m05-l03-children.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "I have two children",
+          "scaffold": "(अंग्रेज़ी में)",
+          "correct": [
+            "I have two children",
+            "I have two children.",
+            "i have two children"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "My daughter",
+          "scaffold": "(अंग्रेज़ी में)",
+          "correct": [
+            "My daughter",
+            "my daughter"
+          ]
+        }
+      ],
+      "m05-l04-grandparents.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "My grandmother",
+          "scaffold": "(अंग्रेज़ी में)",
+          "correct": [
+            "My grandmother",
+            "my grandmother"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "My grandfather",
+          "scaffold": "(अंग्रेज़ी में)",
+          "correct": [
+            "My grandfather",
+            "my grandfather"
+          ]
+        }
+      ],
+      "m05-l05-aunts-uncles.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "My aunt — my father's sister",
+          "scaffold": "(अंग्रेज़ी में)",
+          "correct": [
+            "My aunt — my father's sister",
+            "My aunt - my father's sister",
+            "My aunt, my father's sister"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "My cousin",
+          "scaffold": "(अंग्रेज़ी में)",
+          "correct": [
+            "My cousin",
+            "my cousin"
+          ]
+        }
+      ],
+      "m05-l06-in-laws.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "My mother-in-law",
+          "scaffold": "(अंग्रेज़ी में)",
+          "correct": [
+            "My mother-in-law",
+            "my mother-in-law"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "My husband",
+          "scaffold": "(अंग्रेज़ी में)",
+          "correct": [
+            "My husband",
+            "my husband"
+          ]
+        }
+      ],
+      "m05-l07-friends.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "My best friend",
+          "scaffold": "(अंग्रेज़ी में)",
+          "correct": [
+            "My best friend",
+            "my best friend"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "She's like family",
+          "scaffold": "(अंग्रेज़ी में)",
+          "correct": [
+            "She's like family",
+            "She is like family",
+            "She's like family.",
+            "She is like family."
+          ]
+        }
+      ],
+      "m05-l08-family-actions.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "I miss my mother",
+          "scaffold": "(अंग्रेज़ी में)",
+          "correct": [
+            "I miss my mother",
+            "I miss my mother.",
+            "i miss my mother"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "I called my brother",
+          "scaffold": "(past tense)",
+          "correct": [
+            "I called my brother",
+            "I called my brother.",
+            "i called my brother"
+          ]
+        }
+      ],
+      "m05-l10-conversation.json": [
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "I miss my brother",
+          "scaffold": "(अंग्रेज़ी में)",
+          "correct": [
+            "I miss my brother",
+            "I miss my brother.",
+            "i miss my brother"
+          ]
+        }
+      ],
+      "m06-l01-numbers-1-10.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Seven",
+          "scaffold": "(अंग्रेज़ी में)",
+          "correct": [
+            "Seven",
+            "seven"
+          ]
+        }
+      ],
+      "m06-l02-numbers-20-100.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Forty-two",
+          "scaffold": "(अंग्रेज़ी में)",
+          "correct": [
+            "Forty-two",
+            "forty-two",
+            "Forty two",
+            "forty two"
+          ]
+        }
+      ],
+      "m06-l03-big-numbers.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Five thousand rupees",
+          "scaffold": "(अंग्रेज़ी में)",
+          "correct": [
+            "Five thousand rupees",
+            "five thousand rupees"
+          ]
+        }
+      ],
+      "m06-l04-time-hours.json": [
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "It's five o'clock",
+          "scaffold": "(अंग्रेज़ी में)",
+          "correct": [
+            "It's five o'clock",
+            "Its five o'clock",
+            "It is five o'clock",
+            "Five o'clock"
+          ]
+        }
+      ],
+      "m06-l06-days-week.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Tomorrow",
+          "scaffold": "(अंग्रेज़ी में)",
+          "correct": [
+            "Tomorrow",
+            "tomorrow"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "On Friday",
+          "scaffold": "(अंग्रेज़ी में)",
+          "correct": [
+            "On Friday",
+            "on Friday"
+          ]
+        }
+      ],
+      "m06-l07-months-seasons.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "In December",
+          "scaffold": "(अंग्रेज़ी में)",
+          "correct": [
+            "In December",
+            "in December"
+          ]
+        }
+      ],
+      "m06-l08-money-prices.json": [
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "It's expensive",
+          "scaffold": "(अंग्रेज़ी में)",
+          "correct": [
+            "It's expensive",
+            "It's expensive.",
+            "It is expensive",
+            "Expensive"
+          ]
+        }
+      ],
+      "m06-l09-shopping-numbers.json": [
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "What's the total?",
+          "scaffold": "(अंग्रेज़ी में)",
+          "correct": [
+            "What's the total?",
+            "What is the total?",
+            "what's the total?",
+            "What's the total"
+          ]
+        }
+      ],
+      "m06-l10-conversation.json": [
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "What's the total with discount?",
+          "scaffold": "(अंग्रेज़ी में)",
+          "correct": [
+            "What's the total with discount?",
+            "What is the total with discount?",
+            "What's the total with the discount?",
+            "What is the total with the discount?"
+          ]
+        }
+      ],
+      "m07-l02-foods.json": [
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "I want rice",
+          "scaffold": "(अंग्रेज़ी में)",
+          "correct": [
+            "I want rice",
+            "I want rice.",
+            "I'd like rice",
+            "I'd like rice.",
+            "i want rice"
+          ]
+        }
+      ],
+      "m07-l04-ordering.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "I'd like the chicken",
+          "scaffold": "(अंग्रेज़ी में)",
+          "correct": [
+            "I'd like the chicken",
+            "I'd like the chicken.",
+            "I would like the chicken",
+            "i'd like the chicken"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Without onions, please",
+          "scaffold": "(अंग्रेज़ी में)",
+          "correct": [
+            "Without onions, please",
+            "Without onions, please.",
+            "No onions, please",
+            "No onions, please.",
+            "without onions, please."
+          ]
+        }
+      ],
+      "m07-l06-cooking.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Boil the water",
+          "scaffold": "(अंग्रेज़ी में)",
+          "correct": [
+            "Boil the water",
+            "Boil the water.",
+            "You boil the water",
+            "boil the water"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Chop the onions",
+          "scaffold": "(अंग्रेज़ी में)",
+          "correct": [
+            "Chop the onions",
+            "Chop the onions.",
+            "You chop the onions",
+            "Cut the onions",
+            "chop the onions"
+          ]
+        }
+      ],
+      "m07-l08-shona-food.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Thali is a metal plate with many small bowls",
+          "scaffold": "(अंग्रेज़ी में)",
+          "correct": [
+            "Thali is a metal plate with many small bowls",
+            "Thali is a metal plate with many small bowls.",
+            "Thali is a plate with many small bowls",
+            "thali is a metal plate with many small bowls."
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Roti is a flatbread",
+          "scaffold": "(अंग्रेज़ी में)",
+          "correct": [
+            "Roti is a flatbread",
+            "Roti is a flatbread.",
+            "Roti is an Indian flatbread",
+            "roti is a flatbread."
+          ]
+        }
+      ],
+      "m07-l09-hosting.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Welcome, please come in",
+          "scaffold": "(अंग्रेज़ी में)",
+          "correct": [
+            "Welcome, please come in",
+            "Welcome please come in",
+            "Welcome, please come in.",
+            "welcome, please come in"
+          ]
+        }
+      ],
+      "m07-l10-conversation.json": [
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Could we have the bill, please?",
+          "scaffold": "(अंग्रेज़ी में)",
+          "correct": [
+            "Could we have the bill, please?",
+            "Could we have the bill please?",
+            "The bill, please.",
+            "Could we have the check, please?",
+            "could we have the bill, please?"
+          ]
+        }
+      ],
+      "m08-l10-conversation.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Yesterday I went home early",
+          "scaffold": "(अंग्रेज़ी में)",
+          "correct": [
+            "Yesterday I went home early",
+            "Yesterday I went home early.",
+            "I went home early yesterday.",
+            "yesterday i went home early."
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Tomorrow I will work from home",
+          "scaffold": "(अंग्रेज़ी में)",
+          "correct": [
+            "Tomorrow I will work from home",
+            "Tomorrow I will work from home.",
+            "Tomorrow I'll work from home.",
+            "I'll work from home tomorrow.",
+            "I'm going to work from home tomorrow.",
+            "tomorrow i will work from home."
+          ]
+        }
+      ],
+      "m09-l06-airport.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Boarding pass",
+          "scaffold": "(अंग्रेज़ी में)",
+          "correct": [
+            "Boarding pass",
+            "boarding pass",
+            "My boarding pass"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Where is the gate?",
+          "scaffold": "(अंग्रेज़ी में)",
+          "correct": [
+            "Where is the gate?",
+            "Where is the departure gate?",
+            "where is the gate?",
+            "Where is gate ___?"
+          ]
+        },
+        {
+          "path": "chunks[0].native",
+          "english": "Boarding pass",
+          "scaffold": "",
+          "correct": [
+            "Boarding pass"
+          ]
+        },
+        {
+          "path": "chunks[2].native",
+          "english": "Customs",
+          "scaffold": "",
+          "correct": [
+            "Customs"
+          ]
+        }
+      ],
+      "m09-l10-conversation.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Excuse me, where is the Underground?",
+          "scaffold": "(अंग्रेज़ी में)",
+          "correct": [
+            "Excuse me, where is the Underground?",
+            "Excuse me, where is the tube?",
+            "Excuse me, where is the Underground",
+            "excuse me, where is the Underground?"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "I have a reservation",
+          "scaffold": "(अंग्रेज़ी में)",
+          "correct": [
+            "I have a reservation",
+            "I have a reservation.",
+            "I have a booking",
+            "i have a reservation."
+          ]
+        }
+      ],
+      "m10-l01-happy-sad.json": [
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "It made me feel sad",
+          "scaffold": "(अंग्रेज़ी में)",
+          "correct": [
+            "It made me feel sad",
+            "it made me feel sad",
+            "It made me feel sad.",
+            "it made me feel sad."
+          ]
+        }
+      ],
+      "m10-l05-body.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "My head hurts",
+          "scaffold": "(अंग्रेज़ी में)",
+          "correct": [
+            "My head hurts",
+            "my head hurts",
+            "My head hurts.",
+            "my head hurts."
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "It hurts here",
+          "scaffold": "(अंग्रेज़ी में)",
+          "correct": [
+            "It hurts here",
+            "it hurts here",
+            "It hurts here.",
+            "it hurts here."
+          ]
+        }
+      ],
+      "m10-l09-proverbs.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "In Hindi we say",
+          "scaffold": "(अंग्रेज़ी में)",
+          "correct": [
+            "In Hindi we say",
+            "in hindi we say"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "It literally means",
+          "scaffold": "(अंग्रेज़ी में)",
+          "correct": [
+            "It literally means",
+            "it literally means"
+          ]
+        }
+      ]
+    },
+    "japanese": {},
+    "korean": {
+      "m02-l10-conversation.json": [
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "I don't understand",
+          "scaffold": "(영어로)",
+          "correct": [
+            "I don't understand",
+            "I do not understand"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[2]",
+          "english": "Thank you so much",
+          "scaffold": "(영어로)",
+          "correct": [
+            "Thank you so much",
+            "thank you so much"
+          ]
+        }
+      ],
+      "m03-l03-job.json": [
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "I'm an engineer",
+          "scaffold": "(영어로)",
+          "correct": [
+            "I'm an engineer",
+            "I am an engineer"
+          ]
+        }
+      ],
+      "m03-l04-family-status.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "I'm married",
+          "scaffold": "(영어로)",
+          "correct": [
+            "I'm married",
+            "I am married"
+          ]
+        }
+      ],
+      "m03-l07-where-i-live.json": [
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "I grew up in Busan",
+          "scaffold": "(영어로)",
+          "correct": [
+            "I grew up in Busan",
+            "i grew up in Busan"
+          ]
+        }
+      ],
+      "m03-l10-conversation.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "I'm Jiwon, an engineer from Seoul",
+          "scaffold": "(영어로)",
+          "correct": [
+            "I'm Jiwon, an engineer from Seoul",
+            "I'm Jiwon, an engineer from Seoul.",
+            "I am Jiwon, an engineer from Seoul"
+          ]
+        }
+      ],
+      "m04-l02-the.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "In the morning",
+          "scaffold": "(영어로)",
+          "correct": [
+            "In the morning",
+            "in the morning"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "The Han River",
+          "scaffold": "(영어로)",
+          "correct": [
+            "The Han River",
+            "the Han River"
+          ]
+        }
+      ],
+      "m04-l03-no-article.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Children love music",
+          "scaffold": "(영어로)",
+          "correct": [
+            "Children love music",
+            "children love music"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Love is everything",
+          "scaffold": "(영어로)",
+          "correct": [
+            "Love is everything",
+            "love is everything"
+          ]
+        }
+      ],
+      "m04-l04-plurals-regular.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Two cats",
+          "scaffold": "(영어로)",
+          "correct": [
+            "Two cats",
+            "two cats"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Many friends",
+          "scaffold": "(영어로)",
+          "correct": [
+            "Many friends",
+            "many friends"
+          ]
+        }
+      ],
+      "m04-l05-plurals-irregular.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Children",
+          "scaffold": "(영어로)",
+          "correct": [
+            "Children",
+            "children"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "People",
+          "scaffold": "(영어로)",
+          "correct": [
+            "People",
+            "people"
+          ]
+        }
+      ],
+      "m04-l08-much-many.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "How much?",
+          "scaffold": "(영어로)",
+          "correct": [
+            "How much?",
+            "how much?"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "How many?",
+          "scaffold": "(영어로)",
+          "correct": [
+            "How many?",
+            "how many?"
+          ]
+        }
+      ],
+      "m04-l09-articles-mixed.json": [
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Children love music",
+          "scaffold": "(영어로)",
+          "correct": [
+            "Children love music",
+            "children love music"
+          ]
+        }
+      ],
+      "m04-l10-conversation.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "a cup of coffee and an apple",
+          "scaffold": "(영어로)",
+          "correct": [
+            "a cup of coffee and an apple",
+            "A cup of coffee and an apple"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "These children are mine",
+          "scaffold": "(영어로)",
+          "correct": [
+            "These children are mine",
+            "these children are mine"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[2]",
+          "english": "The meeting took three hours",
+          "scaffold": "(영어로)",
+          "correct": [
+            "The meeting took three hours",
+            "the meeting took three hours"
+          ]
+        }
+      ],
+      "m05-l06-in-laws.json": [
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "My husband",
+          "scaffold": "(영어로)",
+          "correct": [
+            "My husband",
+            "my husband"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[2]",
+          "english": "My wife",
+          "scaffold": "(영어로)",
+          "correct": [
+            "My wife",
+            "my wife"
+          ]
+        }
+      ],
+      "m05-l08-family-actions.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "I miss my mom",
+          "scaffold": "(영어로)",
+          "correct": [
+            "I miss my mom",
+            "I miss my mother"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "I call my parents",
+          "scaffold": "(영어로)",
+          "correct": [
+            "I call my parents",
+            "i call my parents"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[2]",
+          "english": "I visit my family",
+          "scaffold": "(영어로)",
+          "correct": [
+            "I visit my family",
+            "i visit my family"
+          ]
+        }
+      ],
+      "m05-l09-family-stories.json": [
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Used to",
+          "scaffold": "(영어로)",
+          "correct": [
+            "Used to",
+            "used to"
+          ]
+        }
+      ],
+      "m05-l10-conversation.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "I have a big family",
+          "scaffold": "(영어로)",
+          "correct": [
+            "I have a big family",
+            "i have a big family"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "I visit them every month",
+          "scaffold": "(영어로)",
+          "correct": [
+            "I visit them every month",
+            "i visit them every month"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[2]",
+          "english": "I miss my brother",
+          "scaffold": "(영어로)",
+          "correct": [
+            "I miss my brother",
+            "i miss my brother"
+          ]
+        }
+      ],
+      "m06-l06-days-week.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Monday",
+          "scaffold": "(영어로)",
+          "correct": [
+            "Monday",
+            "monday"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Today",
+          "scaffold": "(영어로)",
+          "correct": [
+            "Today",
+            "today"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[2]",
+          "english": "Tomorrow",
+          "scaffold": "(영어로)",
+          "correct": [
+            "Tomorrow",
+            "tomorrow"
+          ]
+        }
+      ],
+      "m06-l07-months-seasons.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "In January",
+          "scaffold": "(영어로)",
+          "correct": [
+            "In January",
+            "in January"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Summer",
+          "scaffold": "(영어로)",
+          "correct": [
+            "Summer",
+            "summer"
+          ]
+        }
+      ],
+      "m06-l09-shopping-numbers.json": [
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Total",
+          "scaffold": "(영어로)",
+          "correct": [
+            "Total",
+            "total"
+          ]
+        }
+      ],
+      "m06-l10-conversation.json": [
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "The total is fifty dollars",
+          "scaffold": "(영어로)",
+          "correct": [
+            "The total is fifty dollars",
+            "the total is fifty dollars"
+          ]
+        }
+      ],
+      "m07-l07-tea-drinks.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "A cup of tea",
+          "scaffold": "(영어로)",
+          "correct": [
+            "A cup of tea",
+            "a cup of tea"
+          ]
+        }
+      ],
+      "m07-l08-shona-food.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Kimchi is fermented cabbage",
+          "scaffold": "(영어로)",
+          "correct": [
+            "Kimchi is fermented cabbage",
+            "kimchi is fermented cabbage"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Bibimbap is mixed rice",
+          "scaffold": "(영어로)",
+          "correct": [
+            "Bibimbap is mixed rice",
+            "bibimbap is mixed rice"
+          ]
+        }
+      ],
+      "m07-l10-conversation.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "A table for two, please",
+          "scaffold": "(영어로)",
+          "correct": [
+            "A table for two, please",
+            "A table for two please"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "I'd like the chicken",
+          "scaffold": "(영어로)",
+          "correct": [
+            "I'd like the chicken",
+            "I would like the chicken"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[2]",
+          "english": "The bill, please",
+          "scaffold": "(영어로)",
+          "correct": [
+            "The bill, please",
+            "The check, please"
+          ]
+        }
+      ],
+      "m08-l01-be-have.json": [
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "I have a friend",
+          "scaffold": "(영어로)",
+          "correct": [
+            "I have a friend",
+            "i have a friend"
+          ]
+        }
+      ],
+      "m08-l03-go-come.json": [
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "I'm coming!",
+          "scaffold": "(영어로)",
+          "correct": [
+            "I'm coming!",
+            "I'm coming",
+            "I am coming"
+          ]
+        }
+      ],
+      "m08-l04-want-need.json": [
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "I need help",
+          "scaffold": "(영어로)",
+          "correct": [
+            "I need help",
+            "i need help"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[2]",
+          "english": "I'd like tea",
+          "scaffold": "(영어로)",
+          "correct": [
+            "I'd like tea",
+            "I would like tea"
+          ]
+        }
+      ],
+      "m08-l07-evening-routine.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "I come home",
+          "scaffold": "(영어로)",
+          "correct": [
+            "I come home",
+            "i come home"
+          ]
+        }
+      ],
+      "m08-l08-yesterday.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Yesterday I went",
+          "scaffold": "(영어로)",
+          "correct": [
+            "Yesterday I went",
+            "yesterday I went"
+          ]
+        }
+      ],
+      "m08-l09-tomorrow.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "I'll call you",
+          "scaffold": "(영어로)",
+          "correct": [
+            "I'll call you",
+            "I will call you"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "I'm going to study",
+          "scaffold": "(영어로)",
+          "correct": [
+            "I'm going to study",
+            "I am going to study"
+          ]
+        }
+      ],
+      "m08-l10-conversation.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "I wake up at 6",
+          "scaffold": "(현재, 영어로)",
+          "correct": [
+            "I wake up at 6",
+            "I wake up at six"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Yesterday I went home",
+          "scaffold": "(과거, 영어로)",
+          "correct": [
+            "Yesterday I went home",
+            "yesterday I went home"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[2]",
+          "english": "Tomorrow I will work late",
+          "scaffold": "(미래, 영어로)",
+          "correct": [
+            "Tomorrow I will work late",
+            "Tomorrow I'll work late"
+          ]
+        }
+      ],
+      "m09-l01-where-is.json": [
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Where are the toilets?",
+          "scaffold": "(영어로)",
+          "correct": [
+            "Where are the toilets?",
+            "where are the toilets?"
+          ]
+        }
+      ],
+      "m09-l10-conversation.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "I just arrived",
+          "scaffold": "(영어로)",
+          "correct": [
+            "I just arrived",
+            "i just arrived"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[2]",
+          "english": "I have a reservation",
+          "scaffold": "(영어로)",
+          "correct": [
+            "I have a reservation",
+            "i have a reservation"
+          ]
+        }
+      ],
+      "m10-l09-proverbs.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "A journey of a thousand miles",
+          "scaffold": "(영어로)",
+          "correct": [
+            "A journey of a thousand miles",
+            "a journey of a thousand miles"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Kind words bring kind words",
+          "scaffold": "(영어로)",
+          "correct": [
+            "Kind words bring kind words",
+            "kind words bring kind words"
+          ]
+        }
+      ]
+    },
+    "spanish": {
+      "m01-l07-where-from.json": [
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "I'm from Colombia",
+          "scaffold": "(en inglés)",
+          "correct": [
+            "I'm from Colombia",
+            "i'm from Colombia",
+            "I am from Colombia",
+            "i am from Colombia"
+          ]
+        }
+      ],
+      "m01-l10-conversation.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Hello, my name is Diego. I'm from Bogotá.",
+          "scaffold": "(en inglés)",
+          "correct": [
+            "Hello, my name is Diego. I'm from Bogotá.",
+            "Hello, my name is Diego. I'm from Bogotá",
+            "Hello my name is Diego. I'm from Bogotá.",
+            "Hello, my name is Diego. I'm from Bogota."
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Nice to meet you. Goodbye!",
+          "scaffold": "(en inglés)",
+          "correct": [
+            "Nice to meet you. Goodbye!",
+            "Nice to meet you. Goodbye",
+            "Nice to meet you. Goodbye.",
+            "nice to meet you. goodbye!"
+          ]
+        }
+      ],
+      "m02-l06-yes-no.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Yes, I am",
+          "scaffold": "(en inglés)",
+          "correct": [
+            "Yes, I am",
+            "Yes I am",
+            "yes, i am",
+            "Yes, I am."
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "No, I don't",
+          "scaffold": "(en inglés)",
+          "correct": [
+            "No, I don't",
+            "No I don't",
+            "no, i don't",
+            "No, I don't."
+          ]
+        },
+        {
+          "path": "chunks[1].native",
+          "english": "No",
+          "scaffold": "",
+          "correct": [
+            "No"
+          ]
+        }
+      ],
+      "m02-l08-how-much.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "How much is it?",
+          "scaffold": "(en inglés)",
+          "correct": [
+            "How much is it?",
+            "how much is it?",
+            "How much is it",
+            "how much is it"
+          ]
+        }
+      ],
+      "m03-l04-family-status.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "I'm married",
+          "scaffold": "(en inglés)",
+          "correct": [
+            "I'm married",
+            "I am married",
+            "i'm married",
+            "I'm married."
+          ]
+        }
+      ],
+      "m03-l05-hobbies.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "I like reading",
+          "scaffold": "(en inglés)",
+          "correct": [
+            "I like reading",
+            "I like reading.",
+            "i like reading",
+            "I like to read"
+          ]
+        }
+      ],
+      "m03-l10-conversation.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Hi, I'm Diego. I'm a teacher from Lima.",
+          "scaffold": "(en inglés)",
+          "correct": [
+            "Hi, I'm Diego. I'm a teacher from Lima.",
+            "Hi I'm Diego. I'm a teacher from Lima.",
+            "hi, i'm diego. i'm a teacher from lima."
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Pleasure to meet you. Let's keep in touch.",
+          "scaffold": "(en inglés)",
+          "correct": [
+            "Pleasure to meet you. Let's keep in touch.",
+            "Pleasure to meet you. Let's keep in touch",
+            "pleasure to meet you. let's keep in touch."
+          ]
+        }
+      ],
+      "m04-l01-a-an.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "A coffee",
+          "scaffold": "(en inglés)",
+          "correct": [
+            "A coffee",
+            "a coffee",
+            "A coffee."
+          ]
+        }
+      ],
+      "m04-l03-no-article.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "I like music",
+          "scaffold": "(en inglés, sin artículo)",
+          "correct": [
+            "I like music",
+            "I like music.",
+            "i like music"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Children are important",
+          "scaffold": "(en inglés)",
+          "correct": [
+            "Children are important",
+            "Children are important.",
+            "children are important"
+          ]
+        }
+      ],
+      "m04-l04-plurals-regular.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Two books",
+          "scaffold": "(en inglés, plural)",
+          "correct": [
+            "Two books",
+            "two books",
+            "2 books"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Three friends",
+          "scaffold": "(en inglés)",
+          "correct": [
+            "Three friends",
+            "three friends",
+            "3 friends"
+          ]
+        }
+      ],
+      "m04-l05-plurals-irregular.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Children",
+          "scaffold": "(plural de child)",
+          "correct": [
+            "Children",
+            "children",
+            "Children."
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "People",
+          "scaffold": "(plural de person)",
+          "correct": [
+            "People",
+            "people",
+            "People."
+          ]
+        }
+      ],
+      "m04-l06-this-that.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "These shoes",
+          "scaffold": "(en inglés)",
+          "correct": [
+            "These shoes",
+            "these shoes",
+            "These shoes."
+          ]
+        }
+      ],
+      "m04-l07-some-any.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "I have some bread",
+          "scaffold": "(en inglés)",
+          "correct": [
+            "I have some bread",
+            "I have some bread.",
+            "i have some bread"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Do you have any sugar?",
+          "scaffold": "(en inglés)",
+          "correct": [
+            "Do you have any sugar?",
+            "do you have any sugar?",
+            "Do you have any sugar"
+          ]
+        }
+      ],
+      "m04-l08-much-many.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "How much time?",
+          "scaffold": "(en inglés)",
+          "correct": [
+            "How much time?",
+            "how much time?",
+            "How much time"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "How many friends?",
+          "scaffold": "(en inglés)",
+          "correct": [
+            "How many friends?",
+            "how many friends?",
+            "How many friends"
+          ]
+        }
+      ],
+      "m04-l09-articles-mixed.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "I have a dog. The dog is big.",
+          "scaffold": "(en inglés)",
+          "correct": [
+            "I have a dog. The dog is big.",
+            "i have a dog. the dog is big."
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Music is universal",
+          "scaffold": "(en inglés)",
+          "correct": [
+            "Music is universal",
+            "Music is universal.",
+            "music is universal"
+          ]
+        }
+      ],
+      "m04-l10-conversation.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "I have a cup of coffee",
+          "scaffold": "(en inglés)",
+          "correct": [
+            "I have a cup of coffee",
+            "I have a cup of coffee.",
+            "i have a cup of coffee"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "The children love music",
+          "scaffold": "(en inglés)",
+          "correct": [
+            "The children love music",
+            "The children love music.",
+            "the children love music"
+          ]
+        }
+      ],
+      "m05-l01-mother-father.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "My mother",
+          "scaffold": "(en inglés)",
+          "correct": [
+            "My mother",
+            "My mom",
+            "my mother",
+            "my mom"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "My father",
+          "scaffold": "(en inglés)",
+          "correct": [
+            "My father",
+            "My dad",
+            "my father",
+            "my dad"
+          ]
+        }
+      ],
+      "m05-l02-siblings.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "My older brother",
+          "scaffold": "(en inglés)",
+          "correct": [
+            "My older brother",
+            "my older brother",
+            "My older brother."
+          ]
+        }
+      ],
+      "m05-l03-children.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "I have two children",
+          "scaffold": "(en inglés)",
+          "correct": [
+            "I have two children",
+            "I have two children.",
+            "2 children"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "A son and a daughter",
+          "scaffold": "(en inglés)",
+          "correct": [
+            "A son and a daughter",
+            "a son and a daughter",
+            "A son and a daughter."
+          ]
+        }
+      ],
+      "m05-l04-grandparents.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "My grandmother",
+          "scaffold": "(en inglés)",
+          "correct": [
+            "My grandmother",
+            "My grandma",
+            "my grandmother",
+            "my grandma"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "My grandchildren",
+          "scaffold": "(en inglés)",
+          "correct": [
+            "My grandchildren",
+            "my grandchildren",
+            "My grandchildren."
+          ]
+        }
+      ],
+      "m05-l05-aunts-uncles.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "My aunt",
+          "scaffold": "(en inglés)",
+          "correct": [
+            "My aunt",
+            "my aunt",
+            "My aunt."
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "My cousin",
+          "scaffold": "(en inglés)",
+          "correct": [
+            "My cousin",
+            "my cousin",
+            "My cousin."
+          ]
+        }
+      ],
+      "m05-l06-in-laws.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "My mother-in-law",
+          "scaffold": "(en inglés)",
+          "correct": [
+            "My mother-in-law",
+            "my mother-in-law",
+            "My mother in law"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "My in-laws",
+          "scaffold": "(en inglés)",
+          "correct": [
+            "My in-laws",
+            "my in-laws",
+            "My in-laws."
+          ]
+        }
+      ],
+      "m05-l07-friends.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "My best friend",
+          "scaffold": "(en inglés)",
+          "correct": [
+            "My best friend",
+            "my best friend",
+            "My best friend."
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "I've missed you",
+          "scaffold": "(en inglés)",
+          "correct": [
+            "I've missed you",
+            "I've missed you.",
+            "I have missed you",
+            "I missed you"
+          ]
+        }
+      ],
+      "m05-l08-family-actions.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "I call my mom",
+          "scaffold": "(en inglés)",
+          "correct": [
+            "I call my mom",
+            "I call my mother",
+            "I call my mom."
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "I miss my family",
+          "scaffold": "(en inglés)",
+          "correct": [
+            "I miss my family",
+            "I miss my family.",
+            "i miss my family"
+          ]
+        }
+      ],
+      "m05-l10-conversation.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "I have a big family",
+          "scaffold": "(en inglés)",
+          "correct": [
+            "I have a big family",
+            "I have a big family.",
+            "i have a big family"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "My parents, my siblings, my cousins",
+          "scaffold": "(en inglés)",
+          "correct": [
+            "My parents, my siblings, my cousins",
+            "my parents, my siblings, my cousins",
+            "My parents, my siblings, my cousins."
+          ]
+        }
+      ],
+      "m06-l01-numbers-1-10.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Seven",
+          "scaffold": "(en inglés)",
+          "correct": [
+            "Seven",
+            "seven"
+          ]
+        }
+      ],
+      "m06-l02-numbers-20-100.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Forty",
+          "scaffold": "(en inglés)",
+          "correct": [
+            "Forty",
+            "forty"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Eighty",
+          "scaffold": "(en inglés)",
+          "correct": [
+            "Eighty",
+            "eighty"
+          ]
+        }
+      ],
+      "m06-l09-shopping-numbers.json": [
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Total",
+          "scaffold": "(en inglés)",
+          "correct": [
+            "Total",
+            "total"
+          ]
+        },
+        {
+          "path": "exercises[2].prompt",
+          "english": "Total",
+          "scaffold": "",
+          "correct": [
+            "Total",
+            "total"
+          ]
+        }
+      ]
+    },
+    "portuguese": {
+      "m01-l07-where-from.json": [
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "I'm from Brazil",
+          "scaffold": "(em inglês)",
+          "correct": [
+            "I'm from Brazil",
+            "i'm from Brazil",
+            "I am from Brazil",
+            "i am from Brazil"
+          ]
+        }
+      ],
+      "m01-l10-conversation.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Hello, my name is Camila. I'm from São Paulo.",
+          "scaffold": "(em inglês)",
+          "correct": [
+            "Hello, my name is Camila. I'm from São Paulo.",
+            "Hello, my name is Camila. I'm from São Paulo",
+            "Hello my name is Camila. I'm from São Paulo."
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Nice to meet you. Goodbye!",
+          "scaffold": "(em inglês)",
+          "correct": [
+            "Nice to meet you. Goodbye!",
+            "Nice to meet you. Goodbye",
+            "Nice to meet you. Goodbye.",
+            "nice to meet you. goodbye!"
+          ]
+        }
+      ],
+      "m02-l06-yes-no.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Yes, I do",
+          "scaffold": "(em inglês)",
+          "correct": [
+            "Yes, I do",
+            "Yes, I do.",
+            "yes, I do",
+            "Yes I do."
+          ]
+        }
+      ],
+      "m04-l06-this-that.json": [
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Those houses",
+          "scaffold": "(em inglês)",
+          "correct": [
+            "Those houses",
+            "those houses"
+          ]
+        }
+      ],
+      "m04-l08-much-many.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "How much time?",
+          "scaffold": "(em inglês)",
+          "correct": [
+            "How much time?",
+            "How much time",
+            "how much time?",
+            "how much time"
+          ]
+        }
+      ],
+      "m05-l02-siblings.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "My older brother",
+          "scaffold": "(em inglês)",
+          "correct": [
+            "My older brother",
+            "my older brother"
+          ]
+        }
+      ],
+      "m05-l03-children.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "I have two children",
+          "scaffold": "(em inglês)",
+          "correct": [
+            "I have two children",
+            "I have two children.",
+            "i have two children"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "My daughter",
+          "scaffold": "(em inglês)",
+          "correct": [
+            "My daughter",
+            "my daughter"
+          ]
+        }
+      ],
+      "m05-l04-grandparents.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "My grandmother",
+          "scaffold": "(em inglês)",
+          "correct": [
+            "My grandmother",
+            "my grandmother"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "My grandfather",
+          "scaffold": "(em inglês)",
+          "correct": [
+            "My grandfather",
+            "my grandfather"
+          ]
+        }
+      ],
+      "m05-l05-aunts-uncles.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "My aunt — my father's sister",
+          "scaffold": "(em inglês)",
+          "correct": [
+            "My aunt — my father's sister",
+            "My aunt - my father's sister",
+            "My aunt, my father's sister"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "My cousin",
+          "scaffold": "(em inglês)",
+          "correct": [
+            "My cousin",
+            "my cousin"
+          ]
+        }
+      ],
+      "m05-l06-in-laws.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "My mother-in-law",
+          "scaffold": "(em inglês)",
+          "correct": [
+            "My mother-in-law",
+            "my mother-in-law"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "My husband",
+          "scaffold": "(em inglês)",
+          "correct": [
+            "My husband",
+            "my husband"
+          ]
+        }
+      ],
+      "m05-l07-friends.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "My best friend",
+          "scaffold": "(em inglês)",
+          "correct": [
+            "My best friend",
+            "my best friend"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "She's like family",
+          "scaffold": "(em inglês)",
+          "correct": [
+            "She's like family",
+            "She is like family",
+            "She's like family.",
+            "She is like family."
+          ]
+        }
+      ],
+      "m05-l08-family-actions.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "I miss my mother",
+          "scaffold": "(em inglês)",
+          "correct": [
+            "I miss my mother",
+            "I miss my mother.",
+            "i miss my mother"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "I called my brother",
+          "scaffold": "(passado)",
+          "correct": [
+            "I called my brother",
+            "I called my brother.",
+            "i called my brother"
+          ]
+        }
+      ],
+      "m05-l10-conversation.json": [
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "I miss my brother",
+          "scaffold": "(em inglês)",
+          "correct": [
+            "I miss my brother",
+            "I miss my brother.",
+            "i miss my brother"
+          ]
+        }
+      ],
+      "m06-l01-numbers-1-10.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Three",
+          "scaffold": "(em inglês)",
+          "correct": [
+            "Three",
+            "three"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Ten",
+          "scaffold": "(em inglês)",
+          "correct": [
+            "Ten",
+            "ten"
+          ]
+        }
+      ],
+      "m06-l02-numbers-20-100.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Twenty-five",
+          "scaffold": "(em inglês)",
+          "correct": [
+            "Twenty-five",
+            "twenty-five"
+          ]
+        }
+      ],
+      "m06-l03-big-numbers.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Two thousand",
+          "scaffold": "(em inglês)",
+          "correct": [
+            "Two thousand",
+            "two thousand"
+          ]
+        }
+      ],
+      "m06-l06-days-week.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Monday",
+          "scaffold": "(em inglês)",
+          "correct": [
+            "Monday",
+            "monday"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Tomorrow",
+          "scaffold": "(em inglês)",
+          "correct": [
+            "Tomorrow",
+            "tomorrow"
+          ]
+        }
+      ],
+      "m06-l07-months-seasons.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "In March",
+          "scaffold": "(em inglês)",
+          "correct": [
+            "In March",
+            "in March"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Summer",
+          "scaffold": "(em inglês)",
+          "correct": [
+            "Summer",
+            "summer"
+          ]
+        }
+      ],
+      "m06-l08-money-prices.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "How much?",
+          "scaffold": "(em inglês)",
+          "correct": [
+            "How much?",
+            "How much",
+            "how much?"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "It's expensive",
+          "scaffold": "(em inglês)",
+          "correct": [
+            "It's expensive",
+            "It is expensive",
+            "it's expensive"
+          ]
+        }
+      ],
+      "m06-l09-shopping-numbers.json": [
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "What's the total?",
+          "scaffold": "(em inglês)",
+          "correct": [
+            "What's the total?",
+            "What is the total?",
+            "what's the total?"
+          ]
+        }
+      ],
+      "m06-l10-conversation.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "On Friday at six P.M.",
+          "scaffold": "(em inglês)",
+          "correct": [
+            "On Friday at six P.M.",
+            "on Friday at six P.M.",
+            "On Friday at 6 P.M."
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "The total is fifty dollars",
+          "scaffold": "(em inglês)",
+          "correct": [
+            "The total is fifty dollars",
+            "The total is fifty dollars.",
+            "the total is fifty dollars"
+          ]
+        }
+      ],
+      "m07-l06-cooking.json": [
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Boil the water",
+          "scaffold": "(em inglês)",
+          "correct": [
+            "Boil the water",
+            "boil the water"
+          ]
+        }
+      ],
+      "m07-l08-shona-food.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Feijoada",
+          "scaffold": "(em inglês)",
+          "correct": [
+            "Feijoada",
+            "feijoada"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Pão de queijo is cheese bread",
+          "scaffold": "(em inglês)",
+          "correct": [
+            "Pão de queijo is cheese bread",
+            "Pão de queijo is a cheese bread"
+          ]
+        }
+      ],
+      "m07-l10-conversation.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "I'd like the chicken",
+          "scaffold": "(em inglês)",
+          "correct": [
+            "I'd like the chicken",
+            "I would like the chicken"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "The bill, please",
+          "scaffold": "(em inglês)",
+          "correct": [
+            "The bill, please",
+            "The check, please",
+            "the bill, please"
+          ]
+        }
+      ],
+      "m08-l01-be-have.json": [
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "She has a sister",
+          "scaffold": "(em inglês)",
+          "correct": [
+            "She has a sister",
+            "She has a sister."
+          ]
+        }
+      ],
+      "m08-l04-want-need.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "I'd like",
+          "scaffold": "(em inglês)",
+          "correct": [
+            "I'd like",
+            "I would like"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "I need",
+          "scaffold": "(em inglês)",
+          "correct": [
+            "I need",
+            "i need"
+          ]
+        }
+      ],
+      "m08-l08-yesterday.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Yesterday I went",
+          "scaffold": "(em inglês)",
+          "correct": [
+            "Yesterday I went",
+            "I went yesterday"
+          ]
+        }
+      ],
+      "m08-l09-tomorrow.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "I will call you",
+          "scaffold": "(em inglês)",
+          "correct": [
+            "I will call you",
+            "I'll call you"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "I'm going to study",
+          "scaffold": "(em inglês)",
+          "correct": [
+            "I'm going to study",
+            "I am going to study"
+          ]
+        }
+      ],
+      "m08-l10-conversation.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Yesterday I went",
+          "scaffold": "(em inglês)",
+          "correct": [
+            "Yesterday I went",
+            "I went yesterday"
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Tomorrow I will",
+          "scaffold": "(em inglês)",
+          "correct": [
+            "Tomorrow I will",
+            "Tomorrow I'll"
+          ]
+        }
+      ],
+      "m09-l03-distance.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "How far is it?",
+          "scaffold": "(em inglês)",
+          "correct": [
+            "How far is it?",
+            "Is it far?"
+          ]
+        }
+      ],
+      "m09-l04-transport.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "I take the bus",
+          "scaffold": "(em inglês)",
+          "correct": [
+            "I take the bus",
+            "I take the bus."
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "I'll take a taxi",
+          "scaffold": "(em inglês)",
+          "correct": [
+            "I'll take a taxi",
+            "I will take a taxi"
+          ]
+        }
+      ],
+      "m09-l05-buying-ticket.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "One ticket to Lisbon",
+          "scaffold": "(em inglês)",
+          "correct": [
+            "One ticket to Lisbon",
+            "One ticket to Lisbon, please"
+          ]
+        }
+      ],
+      "m09-l10-conversation.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "Excuse me, where is",
+          "scaffold": "(em inglês)",
+          "correct": [
+            "Excuse me, where is",
+            "Excuse me, where is..."
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "Could you write it down?",
+          "scaffold": "(em inglês)",
+          "correct": [
+            "Could you write it down?",
+            "Could you write it down"
+          ]
+        }
+      ],
+      "m10-l01-happy-sad.json": [
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "It made me feel sad",
+          "scaffold": "(em inglês)",
+          "correct": [
+            "It made me feel sad",
+            "It made me feel sad."
+          ]
+        }
+      ],
+      "m10-l02-angry-frustrated.json": [
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "I'm a bit annoyed",
+          "scaffold": "(em inglês)",
+          "correct": [
+            "I'm a bit annoyed",
+            "I am a bit annoyed"
+          ]
+        }
+      ],
+      "m10-l05-body.json": [
+        {
+          "path": "activeRecall.prompts[0]",
+          "english": "My head hurts",
+          "scaffold": "(em inglês)",
+          "correct": [
+            "My head hurts",
+            "My head hurts."
+          ]
+        },
+        {
+          "path": "activeRecall.prompts[1]",
+          "english": "It hurts here",
+          "scaffold": "(em inglês)",
+          "correct": [
+            "It hurts here",
+            "It hurts here."
+          ]
+        }
+      ]
+    }
+  }
+}

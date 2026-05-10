@@ -1,7 +1,6 @@
 /**
- * Diagnostic: dump activeRecall section across all 10 speaker variants
- * of language-english/m01-l01-hello to confirm whether the prompts are
- * authored correctly (native-language prompt → target-language answer).
+ * Diagnostic: dump Tagalog m01-l01-hello CURRENT state from storage,
+ * highlighting any English-where-Tagalog-should-be content.
  */
 import { createClient } from '@supabase/supabase-js';
 import * as dotenv from 'dotenv';
@@ -13,21 +12,26 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY!,
 );
 
-const SPEAKERS = ['shona', 'ndebele', 'french', 'chinese', 'tagalog', 'hindi', 'japanese', 'korean', 'spanish', 'portuguese'];
-
 (async () => {
-  for (const sp of SPEAKERS) {
-    const { data, error } = await supabase.storage
-      .from('course-content')
-      .download(`lessons/language-english/${sp}/m01-l01-hello.json`);
-    if (error || !data) { console.log(`${sp}: SKIP (${error?.message})`); continue; }
-    const json = JSON.parse(await new Response(data).text());
-    const ar = json.activeRecall;
-    if (!ar) { console.log(`${sp}: no activeRecall`); continue; }
-    console.log(`\n=== ${sp}`);
-    for (const p of ar.prompts ?? []) {
-      console.log(`  prompt: ${p.prompt}`);
-      console.log(`  correct: ${JSON.stringify(p.correct)}`);
+  const { data, error } = await supabase.storage
+    .from('course-content')
+    .download('lessons/language-english/tagalog/m01-l01-hello.json');
+  if (error || !data) { console.error(error); process.exit(1); }
+  const json = JSON.parse(await new Response(data).text());
+
+  // Print the sections most likely to have buttons / labels / mission text
+  console.log('=== title');
+  console.log(json.title);
+  console.log('\n=== activeRecall');
+  console.log(JSON.stringify(json.activeRecall, null, 2));
+  console.log('\n=== mission');
+  console.log(JSON.stringify(json.mission, null, 2));
+  console.log('\n=== phase8');
+  console.log(JSON.stringify(json.phase8, null, 2));
+  console.log('\n=== exercises (translate type prompts)');
+  for (const ex of json.exercises ?? []) {
+    if (ex.type === 'translate') {
+      console.log(`  prompt: ${ex.prompt}  →  correct: ${JSON.stringify(ex.correct)}`);
     }
   }
 })();
