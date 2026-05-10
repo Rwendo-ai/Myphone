@@ -1,7 +1,7 @@
 import type { LessonData } from '../../../../../types/lesson';
 
 const lesson: LessonData = {
-  id: 'm01-l02',
+  id: 'm01-l02-hi-bye',
   module: 1,
   lesson: 2,
   title: 'Yes / No / Maybe — Yes politeness',

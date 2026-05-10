@@ -1,7 +1,7 @@
 import type { LessonData } from '../../../../../types/lesson';
 
 const lesson: LessonData = {
-  id: 'm06-l03',
+  id: 'm06-l03-big-numbers',
   module: 6,
   lesson: 3,
   title: 'At the doctor — booking an appointment',

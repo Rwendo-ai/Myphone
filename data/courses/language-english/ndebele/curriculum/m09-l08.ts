@@ -1,7 +1,7 @@
 import type { LessonData } from '../../../../../types/lesson';
 
 const lesson: LessonData = {
-  id: 'm09-l08',
+  id: 'm09-l08-emergency-travel',
   module: 9,
   lesson: 8,
   title: 'Office vocabulary — hot-desking, remote work',

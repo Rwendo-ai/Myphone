@@ -1,7 +1,7 @@
 import type { LessonData } from '../../../../../types/lesson';
 
 const lesson: LessonData = {
-  id: 'm10-l02',
+  id: 'm10-l02-angry-frustrated',
   module: 10,
   lesson: 2,
   title: 'Conditionals — if, unless, whenever',

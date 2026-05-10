@@ -1,7 +1,7 @@
 import type { LessonData } from '../../../../../types/lesson';
 
 const lesson: LessonData = {
-  id: 'm01-l09',
+  id: 'm01-l09-goodbye',
   module: 1,
   lesson: 9,
   title: 'Saying goodbye — Bye, Take care, See you',

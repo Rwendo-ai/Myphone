@@ -1,6 +1,7 @@
 import { Language } from '../../types/language';
 import english from './english';
 import shona from './shona';
+import ndebele from './ndebele';
 import french from './french';
 import chinese from './chinese';
 import tagalog from './tagalog';
@@ -13,6 +14,7 @@ import korean from './korean';
 export const LANGUAGES: Record<string, Language> = {
   english,
   shona,
+  ndebele,
   french,
   chinese,
   tagalog,
@@ -27,4 +29,4 @@ export function getLanguage(id: string): Language {
   return LANGUAGES[id] ?? english;
 }
 
-export { english, shona, french, chinese, tagalog, hindi, spanish, portuguese, japanese, korean };
+export { english, shona, ndebele, french, chinese, tagalog, hindi, spanish, portuguese, japanese, korean };

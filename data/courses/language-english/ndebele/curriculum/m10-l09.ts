@@ -1,7 +1,7 @@
 import type { LessonData } from '../../../../../types/lesson';
 
 const lesson: LessonData = {
-  id: 'm10-l09',
+  id: 'm10-l09-proverbs',
   module: 10,
   lesson: 9,
   title: 'Reading the room — when to be quiet, when to speak up',

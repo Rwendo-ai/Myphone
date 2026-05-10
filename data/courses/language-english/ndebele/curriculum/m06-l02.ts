@@ -1,7 +1,7 @@
 import type { LessonData } from '../../../../../types/lesson';
 
 const lesson: LessonData = {
-  id: 'm06-l02',
+  id: 'm06-l02-numbers-20-100',
   module: 6,
   lesson: 2,
   title: 'Headache, stomachache, sore throat',

@@ -1,7 +1,7 @@
 import type { LessonData } from '../../../../../types/lesson';
 
 const lesson: LessonData = {
-  id: 'm06-l05',
+  id: 'm06-l05-time-minutes',
   module: 6,
   lesson: 5,
   title: 'Pharmacy / Chemist — UK chemist vs US drugstore',

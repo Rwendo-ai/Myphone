@@ -1,7 +1,7 @@
 import type { LessonData } from '../../../../../types/lesson';
 
 const lesson: LessonData = {
-  id: 'm09-l04',
+  id: 'm09-l04-transport',
   module: 9,
   lesson: 4,
   title: 'At work — colleague, boss, manager',

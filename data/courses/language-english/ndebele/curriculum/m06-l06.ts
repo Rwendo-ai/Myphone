@@ -1,7 +1,7 @@
 import type { LessonData } from '../../../../../types/lesson';
 
 const lesson: LessonData = {
-  id: 'm06-l06',
+  id: 'm06-l06-days-week',
   module: 6,
   lesson: 6,
   title: 'NHS basics (UK) / Insurance (US) — vocabulary',

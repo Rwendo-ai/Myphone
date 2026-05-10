@@ -1,7 +1,7 @@
 import type { LessonData } from '../../../../../types/lesson';
 
 const lesson: LessonData = {
-  id: 'm09-l01',
+  id: 'm09-l01-where-is',
   module: 9,
   lesson: 1,
   title: "What do you do? — profession",

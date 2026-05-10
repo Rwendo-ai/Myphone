@@ -1,7 +1,7 @@
 import type { LessonData } from '../../../../../types/lesson';
 
 const lesson: LessonData = {
-  id: 'm06-l09',
+  id: 'm06-l09-shopping-numbers',
   module: 6,
   lesson: 9,
   title: 'Wellness — exercise, sleep, diet',

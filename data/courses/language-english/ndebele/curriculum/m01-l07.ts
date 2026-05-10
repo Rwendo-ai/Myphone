@@ -1,7 +1,7 @@
 import type { LessonData } from '../../../../../types/lesson';
 
 const lesson: LessonData = {
-  id: 'm01-l07',
+  id: 'm01-l07-where-from',
   module: 1,
   lesson: 7,
   title: 'Time-of-day greetings — Good morning/afternoon/evening',

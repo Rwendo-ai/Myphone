@@ -1,7 +1,7 @@
 import type { LessonData } from '../../../../../types/lesson';
 
 const lesson: LessonData = {
-  id: 'm10-l05',
+  id: 'm10-l05-body',
   module: 10,
   lesson: 5,
   title: "Disagreeing politely — \"I'm not sure I agree\", \"Maybe, but...\"",

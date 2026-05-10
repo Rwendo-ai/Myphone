@@ -1,7 +1,7 @@
 import type { LessonData } from '../../../../../types/lesson';
 
 const lesson: LessonData = {
-  id: 'm06-l07',
+  id: 'm06-l07-months-seasons',
   module: 6,
   lesson: 7,
   title: 'Emergency — 999 (UK), 911 (US), A&E',

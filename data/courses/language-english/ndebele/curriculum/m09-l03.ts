@@ -1,7 +1,7 @@
 import type { LessonData } from '../../../../../types/lesson';
 
 const lesson: LessonData = {
-  id: 'm09-l03',
+  id: 'm09-l03-distance',
   module: 9,
   lesson: 3,
   title: 'Job interview — strengths & weaknesses',

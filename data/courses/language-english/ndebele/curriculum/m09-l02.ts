@@ -1,7 +1,7 @@
 import type { LessonData } from '../../../../../types/lesson';
 
 const lesson: LessonData = {
-  id: 'm09-l02',
+  id: 'm09-l02-directions',
   module: 9,
   lesson: 2,
   title: 'CV (UK) vs Resume (US)',

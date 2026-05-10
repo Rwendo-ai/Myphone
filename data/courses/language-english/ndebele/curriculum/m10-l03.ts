@@ -1,7 +1,7 @@
 import type { LessonData } from '../../../../../types/lesson';
 
 const lesson: LessonData = {
-  id: 'm10-l03',
+  id: 'm10-l03-fear-worry',
   module: 10,
   lesson: 3,
   title: 'Asking deep questions — "What do you think?"',

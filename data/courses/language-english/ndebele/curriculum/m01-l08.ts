@@ -1,7 +1,7 @@
 import type { LessonData } from '../../../../../types/lesson';
 
 const lesson: LessonData = {
-  id: 'm01-l08',
+  id: 'm01-l08-how-are-you-formal',
   module: 1,
   lesson: 8,
   title: 'Meeting elders / formality — Mr/Mrs/Sir/Madam',

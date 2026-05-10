@@ -1,7 +1,7 @@
 import type { LessonData } from '../../../../../types/lesson';
 
 const lesson: LessonData = {
-  id: 'm10-l07',
+  id: 'm10-l07-past-stories',
   module: 10,
   lesson: 7,
   title: 'US idioms — "Hit the nail on the head", "Touch base"',

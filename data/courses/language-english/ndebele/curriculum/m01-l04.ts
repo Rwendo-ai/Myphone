@@ -1,7 +1,7 @@
 import type { LessonData } from '../../../../../types/lesson';
 
 const lesson: LessonData = {
-  id: 'm01-l04',
+  id: 'm01-l04-good-afternoon',
   module: 1,
   lesson: 4,
   title: 'How are you? — and the trap of "you alright?"',

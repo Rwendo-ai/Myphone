@@ -1,7 +1,7 @@
 import type { LessonData } from '../../../../../types/lesson';
 
 const lesson: LessonData = {
-  id: 'm10-l08',
+  id: 'm10-l08-hope-future',
   module: 10,
   lesson: 8,
   title: 'Phrasal verbs — "look up", "give in", "put off"',

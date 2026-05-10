@@ -1,7 +1,7 @@
 import type { LessonData } from '../../../../../types/lesson';
 
 const lesson: LessonData = {
-  id: 'm09-l06',
+  id: 'm09-l06-airport',
   module: 9,
   lesson: 6,
   title: 'Workplace politeness — "Would you mind..."',

@@ -1,7 +1,7 @@
 import type { LessonData } from '../../../../../types/lesson';
 
 const lesson: LessonData = {
-  id: 'm01-l06',
+  id: 'm01-l06-name',
   module: 1,
   lesson: 6,
   title: 'Where are you from? — small talk culture',

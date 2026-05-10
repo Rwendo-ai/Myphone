@@ -1,7 +1,7 @@
 import type { LessonData } from '../../../../../types/lesson';
 
 const lesson: LessonData = {
-  id: 'm06-l08',
+  id: 'm06-l08-money-prices',
   module: 6,
   lesson: 8,
   title: 'Mental health vocabulary — anxious, depressed, stressed',

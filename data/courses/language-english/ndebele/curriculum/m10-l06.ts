@@ -1,7 +1,7 @@
 import type { LessonData } from '../../../../../types/lesson';
 
 const lesson: LessonData = {
-  id: 'm10-l06',
+  id: 'm10-l06-doctor',
   module: 10,
   lesson: 6,
   title: "UK idioms — \"It's a piece of cake\", \"Bob's your uncle\"",

@@ -1,7 +1,7 @@
 import type { LessonData } from '../../../../../types/lesson';
 
 const lesson: LessonData = {
-  id: 'm06-l04',
+  id: 'm06-l04-time-hours',
   module: 6,
   lesson: 4,
   title: 'Symptoms — describing pain (dull, sharp, throbbing)',

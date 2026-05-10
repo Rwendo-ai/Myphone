@@ -1,7 +1,7 @@
 import type { LessonData } from '../../../../../types/lesson';
 
 const lesson: LessonData = {
-  id: 'm10-l01',
+  id: 'm10-l01-happy-sad',
   module: 10,
   lesson: 1,
   title: 'Conjunctions — although, however, despite, on the other hand',
