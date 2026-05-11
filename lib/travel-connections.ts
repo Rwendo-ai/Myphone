@@ -56,6 +56,8 @@ export interface FeedPost extends TravellerPost {
   commentCount: number;
   /** Whether the viewer has liked this post. */
   likedByMe: boolean;
+  /** Whether the viewer is currently following this post's author. */
+  followedByMe: boolean;
 }
 
 export interface PostComment {
@@ -151,7 +153,7 @@ export async function getFeed(opts: {
   // Hydrate author profiles in a single follow-up query.
   const authorIds = Array.from(new Set(posts.map(p => p.author_id)));
   const postIds = posts.map(p => p.id);
-  const [authorsResult, likesResult, commentsResult, viewerLikesResult] = await Promise.all([
+  const [authorsResult, likesResult, commentsResult, viewerLikesResult, viewerFollowsResult] = await Promise.all([
     supabase
       .from('traveller_profiles')
       .select('user_id, display_name, handle, photo_url, age, gender, current_country_code, is_public')
@@ -161,6 +163,9 @@ export async function getFeed(opts: {
     opts.viewerId
       ? supabase.from('traveller_post_likes').select('post_id').eq('user_id', opts.viewerId).in('post_id', postIds)
       : Promise.resolve({ data: [] as { post_id: string }[] }),
+    opts.viewerId
+      ? supabase.from('traveller_follows').select('followed_id').eq('follower_id', opts.viewerId).in('followed_id', authorIds)
+      : Promise.resolve({ data: [] as { followed_id: string }[] }),
   ]);
 
   const byId = new Map<string, NonNullable<FeedPost['author']>>();
@@ -182,6 +187,9 @@ export async function getFeed(opts: {
   const commentCounts = new Map<string, number>();
   (commentsResult.data ?? []).forEach(r => commentCounts.set(r.post_id, (commentCounts.get(r.post_id) ?? 0) + 1));
   const likedByMe = new Set<string>((viewerLikesResult.data ?? []).map((r: { post_id: string }) => r.post_id));
+  const followedAuthors = new Set<string>(
+    (viewerFollowsResult.data ?? []).map((r: { followed_id: string }) => r.followed_id),
+  );
 
   return (posts as TravellerPost[]).map(p => ({
     ...p,
@@ -189,6 +197,7 @@ export async function getFeed(opts: {
     likeCount: likeCounts.get(p.id) ?? 0,
     commentCount: commentCounts.get(p.id) ?? 0,
     likedByMe: likedByMe.has(p.id),
+    followedByMe: followedAuthors.has(p.author_id),
   }));
 }
 

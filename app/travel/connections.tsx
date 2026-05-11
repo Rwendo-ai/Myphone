@@ -34,6 +34,8 @@ import {
   filterFeedByPrefs,
   likePost,
   unlikePost,
+  followUser,
+  unfollowUser,
   type FeedPost,
   type TravellerProfile,
   type MatchPrefs,
@@ -75,10 +77,14 @@ export default function ConnectionsScreen() {
 
       const profile = await getMyProfile(user.id);
       if (!profile) { setState({ kind: 'no_profile' }); return; }
+      // Discover is now an OPEN feed — show every public traveller's posts
+      // regardless of destination. Following narrows to people the viewer
+      // already follows (any destination). match-prefs filtering still
+      // applies on Discover so users who toggled age/gender similarity
+      // get those filters honoured.
       const [prefs, feed] = await Promise.all([
         getMyMatchPrefs(user.id),
         getFeed({
-          destinationCountryCode: destination.countryCode,
           limit: 50,
           viewerId: user.id,
           followingOnly: feedTab === 'following',
@@ -109,6 +115,30 @@ export default function ConnectionsScreen() {
     try {
       if (post.likedByMe) await unlikePost(post.id, user.id);
       else await likePost(post.id, user.id);
+    } catch (e) {
+      // Roll back on error
+      load();
+    }
+  }, [user, load]);
+
+  const toggleFollow = useCallback(async (post: FeedPost) => {
+    if (!user || post.author_id === user.id) return;
+    // Optimistic local update across every post in the feed authored by
+    // the same person — following one card flips the badge on all their
+    // other posts visible in the feed.
+    setState(prev => {
+      if (prev.kind !== 'ready') return prev;
+      const next = !post.followedByMe;
+      return {
+        ...prev,
+        feed: prev.feed.map(p =>
+          p.author_id === post.author_id ? { ...p, followedByMe: next } : p,
+        ),
+      };
+    });
+    try {
+      if (post.followedByMe) await unfollowUser(user.id, post.author_id);
+      else await followUser(user.id, post.author_id);
     } catch (e) {
       // Roll back on error
       load();
@@ -197,9 +227,9 @@ export default function ConnectionsScreen() {
             refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={Colors.white} />}
           >
             <View style={styles.intro}>
-              <Text style={styles.flag}>{destination.flag}</Text>
-              <Text style={styles.country}>Heading to {destination.countryName}?</Text>
-              <Text style={styles.sub}>{state.feed.length} {state.feed.length === 1 ? 'post' : 'posts'}</Text>
+              <Text style={styles.flag}>🌍</Text>
+              <Text style={styles.country}>Traveller community</Text>
+              <Text style={styles.sub}>{state.feed.length} {state.feed.length === 1 ? 'post' : 'posts'} from everyone</Text>
             </View>
 
             <View style={styles.tabRow}>
@@ -221,11 +251,19 @@ export default function ConnectionsScreen() {
                 <Text style={styles.emptyBody}>
                   {feedTab === 'following'
                     ? 'No posts from travellers you follow yet. Hop over to Discover to find people to follow.'
-                    : `No posts yet for ${destination.countryName}. Be the first to share — others coming through will see it.`}
+                    : 'No posts in the community feed yet. Be the first to share — others will see it from anywhere in the world.'}
                 </Text>
               </View>
             ) : (
-              state.feed.map(p => <PostCard key={p.id} post={p} onLike={toggleLike} />)
+              state.feed.map(p => (
+                <PostCard
+                  key={p.id}
+                  post={p}
+                  viewerId={user?.id ?? null}
+                  onLike={toggleLike}
+                  onFollow={toggleFollow}
+                />
+              ))
             )}
           </ScrollView>
 
@@ -242,10 +280,16 @@ export default function ConnectionsScreen() {
   );
 }
 
-function PostCard({ post, onLike }: { post: FeedPost; onLike: (p: FeedPost) => void }) {
+function PostCard({ post, viewerId, onLike, onFollow }: {
+  post: FeedPost;
+  viewerId: string | null;
+  onLike: (p: FeedPost) => void;
+  onFollow: (p: FeedPost) => void;
+}) {
   const created = new Date(post.created_at);
   const ago = relativeTime(created);
   const author = post.author;
+  const isOwnPost = viewerId === post.author_id;
   return (
     <Pressable style={styles.postCard} onPress={() => router.push({ pathname: '/travel/post/[id]' as any, params: { id: post.id } })}>
       <Pressable
@@ -261,6 +305,17 @@ function PostCard({ post, onLike }: { post: FeedPost; onLike: (p: FeedPost) => v
             {author?.handle ? `@${author.handle} · ` : ''}{ago}{post.travel_dates ? ` · ${post.travel_dates}` : ''}
           </Text>
         </View>
+        {!isOwnPost && (
+          <Pressable
+            style={[styles.followBtn, post.followedByMe && styles.followBtnFollowing]}
+            onPress={(e) => { e.stopPropagation?.(); onFollow(post); }}
+            hitSlop={6}
+          >
+            <Text style={[styles.followBtnText, post.followedByMe && styles.followBtnTextFollowing]}>
+              {post.followedByMe ? 'Following' : 'Follow'}
+            </Text>
+          </Pressable>
+        )}
       </Pressable>
       <PostBodyText body={post.body} />
       {post.image_path && (
@@ -438,6 +493,10 @@ const styles = StyleSheet.create({
 
   postCard: { marginHorizontal: Spacing.md, marginBottom: Spacing.sm, padding: Spacing.md, backgroundColor: 'rgba(255,255,255,0.06)', borderRadius: BorderRadius.lg, gap: Spacing.sm },
   postHeader: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm },
+  followBtn: { paddingHorizontal: Spacing.md, paddingVertical: 6, borderRadius: BorderRadius.full, backgroundColor: Colors.xp },
+  followBtnFollowing: { backgroundColor: 'rgba(255,255,255,0.12)', borderWidth: 1, borderColor: 'rgba(255,255,255,0.25)' },
+  followBtnText: { color: Colors.white, fontSize: FontSize.xs, fontWeight: FontWeight.bold },
+  followBtnTextFollowing: { color: 'rgba(255,255,255,0.85)' },
   avatar: { width: 36, height: 36, borderRadius: 18, backgroundColor: Colors.xp, alignItems: 'center', justifyContent: 'center' },
   avatarText: { color: Colors.white, fontSize: FontSize.md, fontWeight: FontWeight.bold },
   postAuthor: { color: Colors.white, fontSize: FontSize.sm, fontWeight: FontWeight.bold },

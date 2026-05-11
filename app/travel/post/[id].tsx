@@ -68,6 +68,7 @@ export default function PostDetailScreen() {
         likeCount: likesResult.count ?? 0,
         commentCount: comments.length,
         likedByMe: !!viewerLikeResult.data,
+        followedByMe: false,
       });
       setComments(comments);
     } finally {
