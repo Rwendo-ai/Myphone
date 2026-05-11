@@ -33,6 +33,8 @@ import PORTUGAL_PHRASEBOOK from '../data/travel/phrasebook/portugal';
 import INDIA_PHRASEBOOK from '../data/travel/phrasebook/india';
 import JAPAN_PHRASEBOOK from '../data/travel/phrasebook/japan';
 import KOREA_PHRASEBOOK from '../data/travel/phrasebook/korea';
+import AUSTRALIA_PHRASEBOOK from '../data/travel/phrasebook/australia';
+import USA_PHRASEBOOK from '../data/travel/phrasebook/united-states';
 
 import ZIMBABWE_GUIDE from '../data/travel/culture/zimbabwe';
 import ZIMBABWE_NDEBELE_GUIDE from '../data/travel/culture/zimbabwe-ndebele';
@@ -45,21 +47,18 @@ import PORTUGAL_GUIDE from '../data/travel/culture/portugal';
 import INDIA_GUIDE from '../data/travel/culture/india';
 import JAPAN_GUIDE from '../data/travel/culture/japan';
 import KOREA_GUIDE from '../data/travel/culture/korea';
+import AUSTRALIA_GUIDE from '../data/travel/culture/australia';
+import USA_GUIDE from '../data/travel/culture/united-states';
 
 import AFRICA_TOP_10 from '../data/travel/safari/africa-top-10';
+import AUSTRALIA_TOP_10 from '../data/travel/safari/australia-top-10';
+import USA_TOP_10 from '../data/travel/safari/usa-top-10';
 
-import LANGUAGE_SHONA_FLIPCARDS from '../data/courses/language-shona/flipcards';
-import LANGUAGE_ENGLISH_FLIPCARDS from '../data/courses/language-english/flipcards';
-import LANGUAGE_FRENCH_FLIPCARDS from '../data/courses/language-french/flipcards';
-import LANGUAGE_CHINESE_FLIPCARDS from '../data/courses/language-chinese/flipcards';
-import LANGUAGE_TAGALOG_FLIPCARDS from '../data/courses/language-tagalog/flipcards';
-import LANGUAGE_SPANISH_FLIPCARDS from '../data/courses/language-spanish/flipcards';
-import LANGUAGE_PORTUGUESE_FLIPCARDS from '../data/courses/language-portuguese/flipcards';
-import LANGUAGE_HINDI_FLIPCARDS from '../data/courses/language-hindi/flipcards';
-import LANGUAGE_JAPANESE_FLIPCARDS from '../data/courses/language-japanese/flipcards';
-import LANGUAGE_KOREAN_FLIPCARDS from '../data/courses/language-korean/flipcards';
-import LANGUAGE_NDEBELE_FLIPCARDS from '../data/courses/language-ndebele/flipcards';
-import LANGUAGE_ENGLISH_FROM_NDEBELE_FLIPCARDS from '../data/courses/language-english/flipcards-from-ndebele';
+// Flipcards used to be uploaded by this script to travel-content/flipcards/
+// but they've since moved to the course-content bucket + a per-speaker
+// keying scheme (flipcards/language-english-from-<speaker>.json). Use
+// scripts/generate-and-upload-english-flipcards.ts for the per-speaker
+// English decks; single-speaker course decks use their own upload paths.
 
 dotenv.config({ path: '.env.local' });
 dotenv.config();
@@ -75,29 +74,14 @@ const PHRASEBOOKS = {
   ZW: ZIMBABWE_PHRASEBOOK, 'ZW-ND': ZIMBABWE_NDEBELE_PHRASEBOOK, GB: UK_PHRASEBOOK, FR: FRANCE_PHRASEBOOK,
   CN: CHINA_PHRASEBOOK, PH: PHILIPPINES_PHRASEBOOK, ES: SPAIN_PHRASEBOOK,
   PT: PORTUGAL_PHRASEBOOK, IN: INDIA_PHRASEBOOK, JP: JAPAN_PHRASEBOOK, KR: KOREA_PHRASEBOOK,
+  AU: AUSTRALIA_PHRASEBOOK, US: USA_PHRASEBOOK,
 };
 
 const GUIDES = {
   ZW: ZIMBABWE_GUIDE, 'ZW-ND': ZIMBABWE_NDEBELE_GUIDE, GB: UK_GUIDE, FR: FRANCE_GUIDE,
   CN: CHINA_GUIDE, PH: PHILIPPINES_GUIDE, ES: SPAIN_GUIDE,
   PT: PORTUGAL_GUIDE, IN: INDIA_GUIDE, JP: JAPAN_GUIDE, KR: KOREA_GUIDE,
-};
-
-const FLIPCARDS = {
-  'language-shona':       LANGUAGE_SHONA_FLIPCARDS,
-  'language-english':     LANGUAGE_ENGLISH_FLIPCARDS,
-  'language-french':      LANGUAGE_FRENCH_FLIPCARDS,
-  'language-chinese':     LANGUAGE_CHINESE_FLIPCARDS,
-  'language-tagalog':     LANGUAGE_TAGALOG_FLIPCARDS,
-  'language-spanish':     LANGUAGE_SPANISH_FLIPCARDS,
-  'language-portuguese':  LANGUAGE_PORTUGUESE_FLIPCARDS,
-  'language-hindi':       LANGUAGE_HINDI_FLIPCARDS,
-  'language-japanese':    LANGUAGE_JAPANESE_FLIPCARDS,
-  'language-korean':      LANGUAGE_KOREAN_FLIPCARDS,
-  'language-ndebele':     LANGUAGE_NDEBELE_FLIPCARDS,
-  // English-from-Ndebele variant — Ndebele speakers learning English get a
-  // flip-card set with native column in Ndebele instead of Shona.
-  'language-english-from-ndebele': LANGUAGE_ENGLISH_FROM_NDEBELE_FLIPCARDS,
+  AU: AUSTRALIA_GUIDE, US: USA_GUIDE,
 };
 
 async function ensureBucket(): Promise<void> {
@@ -148,11 +132,17 @@ async function uploadCategory<T>(name: string, dict: Record<string, T>, pathFor:
   }
   if (target === 'all' || target === 'safari') {
     console.log(`\n=== safari ===`);
-    const bytes = await uploadJson('safari/africa-top-10.json', AFRICA_TOP_10);
-    console.log(`  africa-top-10  ✓ ${bytes.toLocaleString()} bytes`);
+    for (const [name, payload] of [
+      ['africa-top-10', AFRICA_TOP_10],
+      ['australia-top-10', AUSTRALIA_TOP_10],
+      ['usa-top-10', USA_TOP_10],
+    ] as const) {
+      const bytes = await uploadJson(`safari/${name}.json`, payload);
+      console.log(`  ${name.padEnd(20)} ✓ ${bytes.toLocaleString()} bytes`);
+    }
   }
-  if (target === 'all' || target === 'flipcards') {
-    await uploadCategory('flipcards', FLIPCARDS, k => `flipcards/${k}.json`);
+  if (target === 'flipcards') {
+    console.log('\nFlipcards moved to course-content bucket. Run scripts/generate-and-upload-english-flipcards.ts instead.');
   }
 
   console.log('\nDone.');

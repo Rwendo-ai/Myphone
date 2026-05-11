@@ -86,10 +86,23 @@ export async function loadCulturalGuide(countryCode: string): Promise<CulturalGu
   );
 }
 
-export async function loadSafariParks(): Promise<SafariPark[] | null> {
+/** Choose the regional iconic-places file for a destination country.
+ *  Africa countries share `africa-top-10.json` (the original safari set);
+ *  Australia and USA each have their own. Returns the basename without
+ *  extension so we can reuse it for cache paths too. */
+function safariRegionFor(countryCode: string | null | undefined): string {
+  if (countryCode === 'AU') return 'australia-top-10';
+  if (countryCode === 'US') return 'usa-top-10';
+  return 'africa-top-10';
+}
+
+export async function loadSafariParks(
+  destinationCountryCode?: string,
+): Promise<SafariPark[] | null> {
+  const region = safariRegionFor(destinationCountryCode);
   return fetchJson<SafariPark[]>(
-    `safari/africa-top-10.json`,
-    `${cacheRoot()}safari/africa-top-10.json`,
+    `safari/${region}.json`,
+    `${cacheRoot()}safari/${region}.json`,
   );
 }
 

@@ -217,6 +217,49 @@ export const DESTINATIONS_BY_COURSE: Record<string, TravelDestination> = {
     hasSafari: false,
     hasCulture: true,
   },
+
+  // ───────────────────────────────────────────────────────────────────────
+  // English-speaking destinations (not tied to a language course). These
+  // keys are NOT CoursePackIds, so the course→destination lookup in
+  // getDestinationForCourse() ignores them. The picker dropdown includes
+  // them via listAllDestinations() which enumerates Object.values().
+  // ───────────────────────────────────────────────────────────────────────
+  'destination-australia': {
+    countryName: 'Australia',
+    countryCode: 'AU',
+    primaryCity: { name: 'Sydney', iata: 'SYD' },
+    secondaryCities: [
+      { name: 'Melbourne', iata: 'MEL' },
+      { name: 'Brisbane',  iata: 'BNE' },
+      { name: 'Perth',     iata: 'PER' },
+      { name: 'Cairns',    iata: 'CNS' },
+      { name: 'Adelaide',  iata: 'ADL' },
+    ],
+    currencyCode: 'AUD',
+    currencySymbol: 'A$',
+    flag: '🇦🇺',
+    tagline: 'Beaches, bush, and the world\'s longest reef',
+    hasSafari: true,
+    hasCulture: true,
+  },
+  'destination-usa': {
+    countryName: 'United States',
+    countryCode: 'US',
+    primaryCity: { name: 'New York', iata: 'JFK' },
+    secondaryCities: [
+      { name: 'Los Angeles',   iata: 'LAX' },
+      { name: 'San Francisco', iata: 'SFO' },
+      { name: 'Chicago',       iata: 'ORD' },
+      { name: 'Las Vegas',     iata: 'LAS' },
+      { name: 'Miami',         iata: 'MIA' },
+    ],
+    currencyCode: 'USD',
+    currencySymbol: 'US$',
+    flag: '🇺🇸',
+    tagline: 'Fifty states, fifty countries — pick a coast',
+    hasSafari: true,
+    hasCulture: true,
+  },
 };
 
 /** Default destination when the user has no active language course. */

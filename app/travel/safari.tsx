@@ -26,13 +26,13 @@ export default function SafariScreen() {
 
   useEffect(() => {
     let cancelled = false;
-    loadSafariParks().then(p => {
+    loadSafariParks(destination.countryCode).then(p => {
       if (cancelled) return;
       setAllParks(p);
       if (p && p.length > 0) setSelectedId(p[0].id);
     });
     return () => { cancelled = true; };
-  }, []);
+  }, [destination.countryCode]);
 
   const localParks = Array.isArray(allParks) ? allParks.filter(p => p.countryCode === destination.countryCode) : [];
   const showingLocal = localParks.length > 0;
