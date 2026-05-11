@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { getUnit, getCourseUnit } from '../../data/lessons';
 import { getLessonManifest, getCourseModuleMeta } from '../../lib/manifests';
 import { hasFlipCards } from '../../lib/flipcards';
+import { hasReinforcementCards } from '../../lib/reinforcement-card-loader';
 import { useSettings } from '../../lib/SettingsContext';
 import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
@@ -47,6 +48,7 @@ export default function UnitScreen() {
     return m ? Number(m[1]) : null;
   })();
   const flipCardsAvailable = moduleNum != null && hasFlipCards(courseId);
+  const reinforcementCardsAvailable = moduleNum != null && hasReinforcementCards(courseId, moduleNum);
 
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>
@@ -90,6 +92,23 @@ export default function UnitScreen() {
             <View style={{ flex: 1 }}>
               <Text style={styles.flipCardCtaTitle}>Flip cards · 50 words</Text>
               <Text style={styles.flipCardCtaSub}>Tap to flip · audio for every word</Text>
+            </View>
+            <Text style={styles.flipCardCtaArrow}>→</Text>
+          </Pressable>
+        )}
+
+        {reinforcementCardsAvailable && (
+          <Pressable
+            style={styles.flipCardCta}
+            onPress={() => router.push({
+              pathname: '/cards/[courseId]/[module]' as any,
+              params: { courseId, module: String(moduleNum) },
+            })}
+          >
+            <Text style={styles.flipCardCtaEmoji}>📇</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.flipCardCtaTitle}>Reinforcement cards</Text>
+              <Text style={styles.flipCardCtaSub}>End-of-module insights to sit with</Text>
             </View>
             <Text style={styles.flipCardCtaArrow}>→</Text>
           </Pressable>

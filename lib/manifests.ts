@@ -28,7 +28,16 @@ export type { LessonMeta };
 // authored, add their entries here.
 const SELF_DEV_MODULE_META: Record<string, Record<number, ModuleMeta>> = {
   'know-yourself': {
-    1: { title: 'Awareness Foundations', description: 'Becoming the observer of your inner world', emoji: '👁️' },
+    1:  { title: 'Attention as the Foundation',         description: 'Becoming the one who notices, not just thinks',       emoji: '🪟' },
+    2:  { title: 'The Body You Live In',                description: 'Read your body for information, not as your enemy',   emoji: '🫀' },
+    3:  { title: 'Feelings, Honestly',                  description: 'A working vocabulary for what you actually feel',     emoji: '🌊' },
+    4:  { title: 'The Stories You Tell Yourself',       description: 'Catch the thought before it becomes a verdict',      emoji: '📖' },
+    5:  { title: 'What You Actually Want',              description: 'Values you would defend in a hard conversation',     emoji: '🧭' },
+    6:  { title: 'Other People',                        description: 'Attachment, projection, and the room you bring',      emoji: '🫂' },
+    7:  { title: 'Saying What You Mean',                description: 'NVC, repair, asking, saying no',                      emoji: '🗣️' },
+    8:  { title: 'The Habits That Carry You',           description: 'Tiny, identity-based, kind to yourself',              emoji: '🌱' },
+    9:  { title: 'Time, Attention, and What You Choose', description: 'The medium every other skill lives inside',          emoji: '⏳' },
+    10: { title: 'The Examined Life',                    description: 'Mortality, meaning, and the long view',              emoji: '🌌' },
   },
   'hard-conversations-work': {
     1: { title: 'Foundations', description: 'Setting up the conversations no one teaches you', emoji: '💬' },
