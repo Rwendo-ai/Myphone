@@ -19,11 +19,6 @@ import {
 } from '../../lib/lesson-loader';
 import { canAccessCourse } from '../../lib/entitlements';
 
-// Mid-market launch price per language course. Per-jurisdiction localisation
-// lives in `available_packs.prices_by_jurisdiction` (queried once when the
-// purchase flow is wired). RevenueCat will eventually be the source of truth.
-const COURSE_PRICE_AUD = 14.99;
-
 function formatBytes(b: number): string {
   if (b < 1024) return `${b} B`;
   if (b < 1024 * 1024) return `${(b / 1024).toFixed(0)} KB`;
@@ -161,9 +156,12 @@ export default function LearnScreen() {
 
   const handleBuyCourse = (course: CoursePack) => {
     Alert.alert(
-      `Buy ${course.meta.displayName}`,
-      `Unlock all 100 lessons of ${course.meta.displayName} for $${COURSE_PRICE_AUD.toFixed(2)} AUD.\n\nIn-app purchases are coming soon — we'll let you know when this is live.`,
-      [{ text: 'OK', style: 'default' }],
+      `Unlock ${course.meta.displayName}`,
+      `All courses are included with any Rwendo Pro plan (from A$4/month). Tap the cart icon to see plans.`,
+      [
+        { text: 'Not now', style: 'cancel' },
+        { text: 'See Pro plans', onPress: () => router.push('/cart') },
+      ],
     );
   };
 
@@ -351,8 +349,7 @@ export default function LearnScreen() {
                     <Text style={[styles.coursePillLabel, styles.lockedDim]}>
                       {course.meta.displayName}
                     </Text>
-                    <Text style={styles.coursePillPrice}>${COURSE_PRICE_AUD.toFixed(2)}</Text>
-                    <Text style={styles.coursePillLock}>🔒</Text>
+                    <Text style={styles.coursePillLock}>🔒 Pro</Text>
                   </Pressable>
                 ))}
               </>

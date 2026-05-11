@@ -242,8 +242,11 @@ export default function CompanionsScreen() {
               onPress={() =>
                 Alert.alert(
                   t('companions_tab.soul_alert_title'),
-                  t('companions_tab.soul_alert_body'),
-                  [{ text: 'OK' }],
+                  'Custom companion (edit-soul) is unlocked with the Ultra tier (A$29.99/mo or A$239/year). Tap See plans to choose a plan.',
+                  [
+                    { text: 'Not now', style: 'cancel' },
+                    { text: 'See plans', onPress: () => router.push('/cart') },
+                  ],
                 )
               }
             >
