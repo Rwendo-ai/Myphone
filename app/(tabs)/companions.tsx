@@ -29,7 +29,7 @@ import { supabase } from '../../lib/supabase';
 import { canUseAiFeature } from '../../lib/entitlements';
 import { PRESET_LIST, type CompanionPreset } from '../../data/companions/presets';
 import { ageGateMet } from '../../lib/active-companion';
-import ProfilePicButton from '../../components/ProfilePicButton';
+import ScreenHeaderBar from '../../components/ScreenHeaderBar';
 import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
 
@@ -168,9 +168,7 @@ export default function CompanionsScreen() {
 
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>
-      <View style={styles.profileBtnFloat} pointerEvents="box-none">
-        <ProfilePicButton variant="light" />
-      </View>
+      <ScreenHeaderBar variant="light" />
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
           <Text style={styles.headerTitle}>{t('companions_tab.header_title')}</Text>
@@ -268,16 +266,10 @@ export default function CompanionsScreen() {
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: Colors.primary },
   container: { flex: 1, backgroundColor: Colors.accent },
-  profileBtnFloat: {
-    position: 'absolute',
-    top: Spacing.sm,
-    right: Spacing.md,
-    zIndex: 10,
-  },
   header: {
     backgroundColor: Colors.primary,
     padding: Spacing.lg,
-    paddingTop: Spacing.lg,
+    paddingTop: Spacing.xxl,
     paddingBottom: Spacing.xl,
   },
   headerTitle: { fontSize: FontSize.xxl, fontWeight: FontWeight.bold, color: Colors.white },

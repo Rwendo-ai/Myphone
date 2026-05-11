@@ -4,7 +4,7 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import RwenImage from '../../components/rwen/RwenImage';
-import ProfilePicButton from '../../components/ProfilePicButton';
+import ScreenHeaderBar from '../../components/ScreenHeaderBar';
 import { useAuth } from '../../lib/AuthContext';
 import { useSettings } from '../../lib/SettingsContext';
 import { useProgress } from '../../hooks/useProgress';
@@ -285,6 +285,7 @@ export default function CompanionScreen() {
       {companionIntro.show && (
         <IntroBubble id="companion.text_vs_voice" onDismiss={companionIntro.markSeen} />
       )}
+      <ScreenHeaderBar variant="light" />
 
       {/* Header */}
       <View style={[styles.header, { backgroundColor: theme.gradient[0] }]}>
@@ -329,8 +330,6 @@ export default function CompanionScreen() {
         >
           <Text style={styles.headerClearIcon}>⌫</Text>
         </Pressable>
-
-        <ProfilePicButton variant="light" />
       </View>
 
       <KeyboardAvoidingView
@@ -503,7 +502,8 @@ const styles = StyleSheet.create({
   flex:   { flex: 1 },
   header: {
     flexDirection: 'row', alignItems: 'center',
-    gap: Spacing.md, paddingHorizontal: Spacing.lg, paddingVertical: Spacing.md,
+    gap: Spacing.md, paddingHorizontal: Spacing.lg,
+    paddingTop: Spacing.xxl, paddingBottom: Spacing.md,
   },
   headerText:  { flex: 1 },
   headerTitle: { fontSize: FontSize.lg, fontWeight: FontWeight.bold, color: Colors.white },

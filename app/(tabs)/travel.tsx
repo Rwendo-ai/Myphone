@@ -21,7 +21,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 
-import ProfilePicButton from '../../components/ProfilePicButton';
+import ScreenHeaderBar from '../../components/ScreenHeaderBar';
 import { useSettings } from '../../lib/SettingsContext';
 import { useAuth } from '../../lib/AuthContext';
 import { supabase } from '../../lib/supabase';
@@ -124,9 +124,7 @@ export default function TravelScreen() {
       {countryPickerIntro.show && (
         <IntroBubble id="travel.country_picker" onDismiss={countryPickerIntro.markSeen} />
       )}
-      <View style={styles.profileBtnFloat} pointerEvents="box-none">
-        <ProfilePicButton variant="light" />
-      </View>
+      <ScreenHeaderBar variant="light" />
       <ScrollView showsVerticalScrollIndicator={false}>
         <LinearGradient colors={['#1A3C6E', '#0D2140']} style={styles.hero}>
           <View style={styles.heroBadgeRow}>
@@ -224,9 +222,8 @@ export default function TravelScreen() {
 
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: Colors.primary },
-  profileBtnFloat: { position: 'absolute', top: Spacing.sm, right: Spacing.md, zIndex: 10 },
 
-  hero: { padding: Spacing.lg, paddingTop: Spacing.xl, paddingBottom: Spacing.xl },
+  hero: { padding: Spacing.lg, paddingTop: Spacing.xxl, paddingBottom: Spacing.xl },
   heroBadgeRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: Spacing.md },
   modeBadge: {
     alignSelf: 'flex-start',
