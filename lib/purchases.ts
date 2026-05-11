@@ -33,6 +33,17 @@ import RevenueCatUI, { PAYWALL_RESULT } from 'react-native-purchases-ui';
 // function bail gracefully instead of crashing.
 const SDK_AVAILABLE = Purchases != null && typeof Purchases.setLogLevel === 'function';
 
+// Test-API-key guard. RevenueCat throws a blocking "test key in production"
+// dialog when it detects a key prefixed with `test_` in a release/preview
+// distribution. The dialog has an OK button that exits the app. Until
+// production keys are swapped in from the RC dashboard, we skip configure()
+// entirely if a test key is detected. Purchase flows fall back to the
+// "Coming soon" alert in the cart screen; all entitlement gating still
+// runs (free tier + owner bypass list).
+function isTestKey(key: string): boolean {
+  return key.startsWith('test_');
+}
+
 // ─── Public types ──────────────────────────────────────────────────────────
 
 export interface ActiveEntitlement {
@@ -96,6 +107,15 @@ export async function initPurchases(userId: string | null): Promise<void> {
   if (__DEV__) Purchases.setLogLevel(LOG_LEVEL.VERBOSE);
 
   const apiKey = Platform.OS === 'ios' ? iosKey : androidKey;
+
+  // Test keys trigger a blocking dialog in release/preview builds. Skip
+  // configure() entirely until production keys are wired from the RC
+  // dashboard. The app stays functional; purchase flows show "Coming
+  // soon" via the paywall fallback in lib/purchases.presentPaywall().
+  if (isTestKey(apiKey)) {
+    console.warn('[purchases] test API key detected — skipping configure() to avoid blocking dialog. Swap to production keys before App Store / Play Store launch.');
+    return;
+  }
 
   if (!initialised) {
     Purchases.configure({ apiKey, appUserID: userId ?? undefined });
