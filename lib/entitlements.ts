@@ -35,10 +35,13 @@ export const FREE_AI_MESSAGES_PER_LESSON = 3;
 export const FREE_DAILY_RWEN_MESSAGES = 10;
 
 /** Owner / lifetime-access user IDs. Hardcoded list bypasses every gate
- *  forever. Add a Supabase user.id here to grant total access. */
+ *  forever — Pro tier check, free-tier quotas, AI message limits, lesson
+ *  locks, paywalls, every canAccess* call returns allowed. Add a Supabase
+ *  auth.users.id here to grant total access. */
 export const OWNER_USER_IDS: string[] = [
-  // Bowen — fill in real Supabase user.id once he's signed in.
-  // 'TODO: bowen-user-id',
+  'd3737a86-5f37-4f0b-9b0a-11ea3f6ba80e',
+  'bbf622c9-1d62-4ebf-b6d0-56c30d7cc16d',
+  '4b868d72-51a4-4c4e-85d7-11d704c79201',
 ];
 
 export interface EntitlementContext {
