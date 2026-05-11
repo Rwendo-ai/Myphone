@@ -39,9 +39,13 @@ export const FREE_DAILY_RWEN_MESSAGES = 10;
  *  locks, paywalls, every canAccess* call returns allowed. Add a Supabase
  *  auth.users.id here to grant total access. */
 export const OWNER_USER_IDS: string[] = [
-  'd3737a86-5f37-4f0b-9b0a-11ea3f6ba80e',
-  'bbf622c9-1d62-4ebf-b6d0-56c30d7cc16d',
-  '4b868d72-51a4-4c4e-85d7-11d704c79201',
+  // Owner (Bowen) — primary accounts
+  '60f2f862-a58e-4afc-ae1d-d2bcd39ae5b4', // bowencooney@gmail.com
+  '47f6148a-0131-48d3-beac-f56ea7f08727', // aussi3bs@gmail.com
+  // Trusted testers
+  'd3737a86-5f37-4f0b-9b0a-11ea3f6ba80e', // charmiephotos1@gmail.com (Charmie)
+  'bbf622c9-1d62-4ebf-b6d0-56c30d7cc16d', // johnsonmakoti@hotmail.co.uk
+  '4b868d72-51a4-4c4e-85d7-11d704c79201', // jmakoti35@gmail.com
 ];
 
 export interface EntitlementContext {
