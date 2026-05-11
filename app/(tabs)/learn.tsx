@@ -10,7 +10,7 @@ import { useProgress } from '../../hooks/useProgress';
 import { useDailyXpGoal } from '../../lib/preferences';
 import { CoursePack, CoursePackId } from '../../types/packs';
 import { DEV_UNLOCK_ALL } from '../../constants/dev';
-import ProfilePicButton from '../../components/ProfilePicButton';
+import ScreenHeaderBar from '../../components/ScreenHeaderBar';
 import {
   isCourseInstalled,
   courseDiskBytes,
@@ -233,6 +233,7 @@ export default function LearnScreen() {
 
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>
+      <ScreenHeaderBar variant="light" />
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
           <View>
@@ -244,7 +245,6 @@ export default function LearnScreen() {
               <Text style={styles.streakEmoji}>🔥</Text>
               <Text style={styles.streakText}>{streakDays}</Text>
             </View>
-            <ProfilePicButton variant="light" />
           </View>
         </View>
 
@@ -446,7 +446,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: Colors.primary,
     paddingHorizontal: Spacing.lg,
-    paddingVertical: Spacing.lg,
+    paddingTop: Spacing.xxl,
+    paddingBottom: Spacing.lg,
   },
   greeting: { fontSize: FontSize.sm, color: 'rgba(255,255,255,0.7)', fontWeight: FontWeight.medium },
   headerTitle: { fontSize: FontSize.xl, fontWeight: FontWeight.bold, color: Colors.white },
