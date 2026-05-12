@@ -60,8 +60,9 @@ Just author.**
 The dashboard work is gated on the user. But these client-side pieces
 can land now:
 
-- **Deploy the RevenueCat webhook Edge Function**. Skeleton exists at
-  `supabase/functions/revenuecat-webhook/`. It needs to:
+- **Create + deploy the RevenueCat webhook Edge Function** at
+  `supabase/functions/revenuecat-webhook/index.ts` (does not exist yet —
+  write it from scratch). It needs to:
   - Verify signature
   - On INITIAL_PURCHASE / RENEWAL of `tier_*`: upsert
     `user_entitlements (user_id, tier, expires_at, lifetime_buyer)`
