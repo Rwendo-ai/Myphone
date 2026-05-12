@@ -105,8 +105,8 @@ export function hasReinforcementCards(courseId: string, module: number): boolean
 }
 
 /** Latest Knowing Yourself reinforcement-card module authored + uploaded.
- *  Bump as Modules 3-10 ship. */
-const KY_LATEST_MODULE = 2;
+ *  All 10 units shipped 2026-05-12 — 12 cards per module, 120 total. */
+const KY_LATEST_MODULE = 10;
 
 export async function clearReinforcementCardCache(): Promise<void> {
   const root = `${FileSystem.documentDirectory}reinforcement-cards/`;
