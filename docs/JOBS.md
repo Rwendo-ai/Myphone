@@ -3,7 +3,7 @@
 Living punch list. Edit as you tick things off. Distinct from `STATUS-*` docs
 which are point-in-time snapshots — this one is the running checklist.
 
-**Last touched:** 2026-05-12
+**Last touched:** 2026-05-13
 **Legend:** ✅ done · 🟡 in progress · 🔴 blocked on you · ⏳ next up · ⚪ later
 
 ---
@@ -38,9 +38,12 @@ which are point-in-time snapshots — this one is the running checklist.
 
 ---
 
+## ✅ Recently completed (2026-05-13)
+
+- ✅ **Knowing Yourself Modules 3-10 lesson bodies** — all 80 remaining lessons authored, uploaded to storage, and version-tagged in the manifest. Course is now 100/100 lessons. Editorial follows CHRISTIAN-FOUNDATION-SPEC end-to-end (dignity-based self-kindness; no Buddhist scaffolding; sources named honestly). Anchored on CBT/ACT/NVC/IFS/EFT/Stoic/Bowlby/Bonanno/Frankl/Brown/Clear/Fogg/Gottman/Gilbert/Csikszentmihalyi/Burkeman/Newport.
+
 ## 🟡 In progress
 
-- 🟡 **Knowing Yourself Modules 3-10 lesson bodies** — 90 lessons remaining. Module 2 done as the pattern reference; the curriculum plan has all titles + skill outcomes. Multi-session content task; reinforcement cards already shipped so end-of-unit decks work even before bodies land.
 - 🟡 **Translation Edge Function** — designed in `docs/REINFORCEMENT-CARDS-TRANSLATION.md`; deployment pending. Loader already speaker-aware (falls back to English when per-speaker file missing).
 
 ---
@@ -75,8 +78,7 @@ which are point-in-time snapshots — this one is the running checklist.
 ## ⏳ Next session priorities (code + content work)
 
 ### Build Yourself completion
-- ⏳ **Knowing Yourself Module 3** — Feelings, Honestly. 10 full lesson bodies (titles + reinforcement cards already in place)
-- ⏳ **Knowing Yourself Modules 4-10** — 70 more lesson bodies. Sequence: 4 (Stories) → 5 (Values) → 6 (Other People) → 7 (Communication) → 8 (Habits) → 9 (Time) → 10 (Examined Life). Each module is ~1 conversation turn of focused authoring.
+- ✅ All 10 Knowing Yourself units now have full lesson bodies (M01-M02 + M03-M10 authored 2026-05-13). 100 lessons total.
 
 ### Paywall integration finish
 - ⏳ Deploy `supabase/functions/revenuecat-webhook/index.ts` — receives RC webhooks, grants entitlements in DB, fires `award_xp` for purchase events, applies the 15% lifetime-buyer token-pack bonus
