@@ -1,6 +1,6 @@
 # Rwendo — Documentation Index
 *All project documentation in one place*
-*Last updated: 2026-04-30*
+*Last updated: 2026-05-12*
 
 ---
 
@@ -8,7 +8,17 @@
 When adding a new .md file:
 - [ ] Add it to this index with a one-line description
 - [ ] Add "UPDATE INSTRUCTIONS" section at top of the new file
-- [ ] Update PROJECT_OVERVIEW.md if it affects build status
+- [ ] Update JOBS.md (the rolling punch list) if it changes the to-do list
+
+---
+
+## Start here
+
+| File | What it's for |
+|---|---|
+| [PROJECT-PROMPT.md](./PROJECT-PROMPT.md) | **The briefing.** Paste into a new AI session to onboard them. Covers tech stack, pricing, current state, where to start work next. |
+| [JOBS.md](./JOBS.md) | **The action doc.** Rolling punch list — done / in-progress / blocked / next / later. |
+| [STATUS-2026-05-12.md](./STATUS-2026-05-12.md) | Latest dated snapshot. |
 
 ---
 
@@ -18,14 +28,38 @@ When adding a new .md file:
 |---|---|---|
 | [PROJECT_OVERVIEW.md](../PROJECT_OVERVIEW.md) | Build status, tech stack, done/todo list | 2026-05-01 |
 | [PRODUCT-DESIGN.md](./PRODUCT-DESIGN.md) | Three-pack architecture (speaker × course × jurisdiction), pricing, roadmap | 2026-05-01 |
+| [PAYWALL-DESIGN.md](./PAYWALL-DESIGN.md) | v3 5-tier pricing ladder + token packs + lifetime SKU | 2026-05-10 |
+| [REINFORCEMENT-CARDS-TRANSLATION.md](./REINFORCEMENT-CARDS-TRANSLATION.md) | End-of-module card schema + runtime translation pipeline | 2026-05-11 |
 | [LEGAL-REQUIREMENTS.md](./LEGAL-REQUIREMENTS.md) | Full legal research (Apple, Google, GDPR, COPPA, BIPA, AU) | 2026-04-30 |
 | [DATABASE-DESIGN.md](./DATABASE-DESIGN.md) | Database schema (v3), tables, functions, migration plan | 2026-04-30 |
 | [PHASE-H-REVENUECAT.md](./PHASE-H-REVENUECAT.md) | Phase H deployment plan — what to do when accounts are ready | 2026-05-01 |
-| [PACK-AUTHORING-SPEAKER.md](./PACK-AUTHORING-SPEAKER.md) | Self-contained recipe for authoring a new speaker pack (UI/AI/voice/tips) | 2026-04-30 |
-| [PACK-AUTHORING-COURSE.md](./PACK-AUTHORING-COURSE.md) | Self-contained recipe for authoring a new course pack (language/ai-companion/travel) | 2026-04-30 |
-| [PACK-AUTHORING-JURISDICTION.md](./PACK-AUTHORING-JURISDICTION.md) | Self-contained recipe for authoring a new jurisdiction pack (legal/currency/age/crisis) | 2026-04-30 |
-| [supabase-migrations/005-three-pack-architecture.sql](./supabase-migrations/005-three-pack-architecture.sql) | v3 schema migration — **needs run in Supabase SQL Editor** | 2026-04-30 |
+| [PACK-AUTHORING-SPEAKER.md](./PACK-AUTHORING-SPEAKER.md) | Self-contained recipe for authoring a new speaker pack | 2026-04-30 |
+| [PACK-AUTHORING-COURSE.md](./PACK-AUTHORING-COURSE.md) | Self-contained recipe for authoring a new course pack | 2026-04-30 |
+| [PACK-AUTHORING-JURISDICTION.md](./PACK-AUTHORING-JURISDICTION.md) | Self-contained recipe for authoring a new jurisdiction pack | 2026-04-30 |
+| [supabase-migrations/005-three-pack-architecture.sql](./supabase-migrations/005-three-pack-architecture.sql) | v3 schema migration | 2026-04-30 |
 | [supabase/functions/README.md](../supabase/functions/README.md) | Edge function deployment instructions | 2026-05-01 |
+
+---
+
+## Curriculum
+
+The 8 Build Yourself track plans + master scaffold live in `docs/curriculum/`:
+
+| File | Description |
+|---|---|
+| [curriculum/MASTER-SCAFFOLD.md](./curriculum/MASTER-SCAFFOLD.md) | 400-lesson language-course master scaffold |
+| [curriculum/KNOWING-YOURSELF-CURRICULUM-PLAN.md](./curriculum/KNOWING-YOURSELF-CURRICULUM-PLAN.md) | 100-lesson Build Yourself plan (10 units) — only track with multi-unit scope |
+| [curriculum/TRACK-HARD-CONVERSATIONS-WORK-PLAN.md](./curriculum/TRACK-HARD-CONVERSATIONS-WORK-PLAN.md) | 8-lesson single-unit plan |
+| [curriculum/TRACK-PARENTING-UNDER-PRESSURE-PLAN.md](./curriculum/TRACK-PARENTING-UNDER-PRESSURE-PLAN.md) | 12-lesson single-unit plan |
+| [curriculum/TRACK-MONEY-AND-MEANING-PLAN.md](./curriculum/TRACK-MONEY-AND-MEANING-PLAN.md) | 10-lesson single-unit plan |
+| [curriculum/TRACK-GRIEF-HONESTLY-PLAN.md](./curriculum/TRACK-GRIEF-HONESTLY-PLAN.md) | 10-lesson single-unit plan |
+| [curriculum/TRACK-SLEEP-REPAIRED-PLAN.md](./curriculum/TRACK-SLEEP-REPAIRED-PLAN.md) | 8-lesson single-unit plan |
+| [curriculum/TRACK-LOST-CONFIDENCE-PLAN.md](./curriculum/TRACK-LOST-CONFIDENCE-PLAN.md) | 8-lesson single-unit plan |
+| [curriculum/TRACK-CARING-AGING-PARENT-PLAN.md](./curriculum/TRACK-CARING-AGING-PARENT-PLAN.md) | 10-lesson single-unit plan |
+| [curriculum/CHRISTIAN-FOUNDATION-SPEC.md](./curriculum/CHRISTIAN-FOUNDATION-SPEC.md) | Editorial spec — read before authoring any Build Yourself lesson |
+| [curriculum/LEARNING_METHODOLOGY.md](./curriculum/LEARNING_METHODOLOGY.md) | The 10 pedagogical pillars |
+| [curriculum/lesson-template.md](./curriculum/lesson-template.md) | Lesson authoring template |
+| [curriculum/AUTHORING-PROGRESS.md](./curriculum/AUTHORING-PROGRESS.md) | Status tracker for the authoring run |
 
 ---
 
