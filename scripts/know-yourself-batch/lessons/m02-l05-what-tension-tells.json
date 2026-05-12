@@ -1,0 +1,56 @@
+{
+  "id": "m02-l05-what-tension-tells", "module": 2, "lesson": 5, "title": "What Tension Is Trying to Tell You", "estimatedMinutes": 6, "xpReward": 25,
+  "hook": { "rwenLine": "Chronic tension is not a flaw to fix — it's information you haven't listened to yet. Today we treat the body as a messenger.", "culturalNote": "Bessel van der Kolk on the body keeping the score: emotional content that isn't processed verbally tends to express itself somatically. The tight shoulder is often a story you haven't told yet." },
+  "chunks": [
+    { "id": "messenger", "target": "The body as messenger", "native": "Tension carries information about what you've been carrying — emotionally, relationally, practically", "literal": "Somatic experiencing (Levine); van der Kolk on trauma and the body", "emoji": "📨", "phonetic": "Listen before you stretch.", "audioRef": null },
+    { "id": "the-question", "target": "The question to ask", "native": "Not 'how do I get rid of this tension?' — but 'what is this tension about?'", "literal": "Internal Family Systems (Schwartz) — parts carry burdens", "emoji": "❓", "phonetic": "The answer is usually closer than you think.", "audioRef": null },
+    { "id": "ranges", "target": "Common stories tension tells", "native": "Shoulders carry responsibility. Jaw carries swallowed words. Stomach carries fear. Lower back carries the loads you should have set down.", "literal": "Pattern observations from somatic clinicians — useful heuristics, not diagnostic claims", "emoji": "🧭", "phonetic": "Heuristics, not certainties.", "audioRef": null }
+  ],
+  "pattern": { "name": "Ask the tension what it's about.", "explanation": "Pick the tightest spot. Put your attention there. Don't try to release it. Ask: 'what are you about?' Wait. Often the answer comes — a person, a decision, an unsaid thing. Sometimes it doesn't. Either way you've listened, which the tension wasn't getting before.", "examples": [
+    { "target": "Tight shoulders all week", "native": "What you've been responsible for that nobody else is sharing" },
+    { "target": "Clenched jaw at night", "native": "Something you wanted to say today and didn't" },
+    { "target": "Knot in the stomach before Mondays", "native": "Something about the week ahead you've been avoiding looking at" }
+  ] },
+  "exercises": [
+    { "type": "match_pairs", "instruction": "Common patterns (heuristics)", "pairs": [
+      { "left": "Tight shoulders", "right": "Carrying more than your share" },
+      { "left": "Clenched jaw", "right": "Words you didn't say" },
+      { "left": "Stomach knot", "right": "Avoided fear or decision" }
+    ] },
+    { "type": "multiple_choice", "instruction": "Right approach?", "question": "Your jaw is clenched. Best move?", "options": [
+      { "text": "Stretch and force release", "correct": false },
+      { "text": "Put attention there and ask what it's about. Wait.", "correct": true },
+      { "text": "Ignore it — it'll go away", "correct": false }
+    ], "explanation": "Forced release is temporary. Listening to what the body is carrying often lets it set the load down on its own." },
+    { "type": "translate", "instruction": "Translate from complaint to question", "prompt": "My neck hurts again.", "correct": ["What has my neck been carrying this week?", "What's the story underneath?", "What am I bracing against?"] },
+    { "type": "fill_blank", "instruction": "Complete", "sentence": "Don't ask how to get rid of the tension. Ask what it's _____ .", "options": ["about", "for", "against"], "correct": "about" },
+    { "type": "build_sentence", "instruction": "Order", "words": ["The", "body", "is", "a", "messenger", "not", "an", "enemy"], "correct": ["The", "body", "is", "a", "messenger", "not", "an", "enemy"], "translation": "Listen before you fight." },
+    { "type": "multiple_choice", "instruction": "What if no answer comes?", "question": "You ask your tight shoulders what they're about. Nothing comes. What do you do?", "options": [
+      { "text": "Decide the question doesn't work", "correct": false },
+      { "text": "Try again tomorrow. Sometimes the answer needs time. The listening itself is the practice.", "correct": true },
+      { "text": "Force an answer", "correct": false }
+    ], "explanation": "The listening is the work. Sometimes the answer surfaces hours later. Sometimes a few days. The body has been talking for a while; you're just starting to listen." }
+  ],
+  "rwenDialogue": {
+    "intro": "Pick the tightest spot right now. Where is it?",
+    "lines": [
+      { "speaker": "rwen", "rwenLine": "Now put your attention on it for thirty seconds. Don't try to relax it. Just notice. Ask: 'what is this about?'", "rwenAnimation": "calm" },
+      { "speaker": "user", "userChoices": [
+        { "target": "Shoulders — work. I've been doing two people's jobs.", "native": "An answer.", "correct": true, "feedback": "There it is. The shoulders weren't wrong. The question now is what to do with what you heard." },
+        { "target": "Jaw — the conversation I keep not having with my sister.", "native": "An answer.", "correct": true, "feedback": "Useful. The jaw has been holding what your mouth hasn't said. That's data." },
+        { "target": "Nothing came.", "native": "Common.", "correct": true, "feedback": "Fine. The listening is the practice. Try again tomorrow." }
+      ] },
+      { "speaker": "rwen", "rwenLine": "The body has been talking. We're learning to hear it.", "rwenAnimation": "nodding" }
+    ]
+  },
+  "activeRecall": {
+    "instruction": "From memory.",
+    "prompts": [
+      { "prompt": "The question to ask tension?", "correct": ["What is this about?", "What's it about?", "What is this tension about?"] },
+      { "prompt": "What does the jaw often carry?", "correct": ["Words you didn't say", "Unsaid words", "Swallowed words"] }
+    ]
+  },
+  "mission": { "title": "Today's mission", "task": "Find your tightest spot today. Put attention there for one minute. Ask: 'what are you about?' Write down whatever surfaces — even if it's nothing. Especially if it's nothing.", "rwenSignoff": "Tension is information you haven't yet heard." },
+  "phase8": { "scenario": "User has identified their tightest spot and asked the question. Rwen helps them sit with whatever surfaced — or with the absence.", "rwenRole": "Calm, patient companion. Not interpreting; helping the user listen.", "successCriteria": "User has named the spot, the question they asked, and what (if anything) surfaced.", "estimatedMinutes": 3, "bonusXp": 5 },
+  "version": 1
+}

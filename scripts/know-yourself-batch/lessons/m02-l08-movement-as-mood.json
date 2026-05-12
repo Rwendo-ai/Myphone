@@ -1,0 +1,56 @@
+{
+  "id": "m02-l08-movement-as-mood", "module": 2, "lesson": 8, "title": "Movement as a Mood Tool", "estimatedMinutes": 5, "xpReward": 25,
+  "hook": { "rwenLine": "Exercise as fitness is one frame. Movement as a mood regulator is a different one — same activity, completely different bar. Today's bar is low enough you'll meet it.", "culturalNote": "Meta-analyses of exercise for depression and anxiety (Schuck et al.; Cooney et al.) show effects comparable to first-line medication for mild-to-moderate cases. The dose is much smaller than the fitness world implies — 15-20 minutes of walking moves the needle." },
+  "chunks": [
+    { "id": "low-bar", "target": "The low bar", "native": "Twenty minutes of walking. Three times a week. That's the mood-effect dose.", "literal": "Movement as antidepressant: meta-analytic effect size ~0.5, comparable to SSRI for mild-moderate depression", "emoji": "🚶", "phonetic": "Not fitness. Function.", "audioRef": null },
+    { "id": "state-shift", "target": "State shift", "native": "Movement is the most reliable way to shift from shut-down toward regulated", "literal": "Polyvagal: rhythmic movement activates the vagus nerve and shifts autonomic state", "emoji": "🚲", "phonetic": "If shut-down, walk. If activated, walk fast.", "audioRef": null },
+    { "id": "outside-bonus", "target": "The outside bonus", "native": "Same movement outside has measurably bigger mood effects than the same movement indoors", "literal": "Green exercise research (Pretty, Barton); attention restoration theory (Kaplan)", "emoji": "🌳", "phonetic": "If you can be outside, be outside.", "audioRef": null }
+  ],
+  "pattern": { "name": "Movement before you feel like it.", "explanation": "Don't wait until you feel like moving — that's backward. Move first, the mood follows. The body and mind are loop, not a sequence. A reluctant 10-minute walk often produces 2 hours of better mood. The cost-benefit is absurd. The trick is to start before motivation arrives.", "examples": [
+    { "target": "Sunday afternoon dip",            "native": "Walk around the block. That's it. Don't aim higher." },
+    { "target": "Tense between meetings",          "native": "Stand up. Walk to the kitchen. Sit back down regulated." },
+    { "target": "Can't concentrate at 11am",        "native": "Five minutes outside. The afternoon will be different." }
+  ] },
+  "exercises": [
+    { "type": "match_pairs", "instruction": "Match state to movement", "pairs": [
+      { "left": "Shut-down", "right": "Slow walk — get going somehow" },
+      { "left": "Activated", "right": "Brisk walk or push-ups — burn the energy" },
+      { "left": "Foggy", "right": "Five minutes outside" }
+    ] },
+    { "type": "multiple_choice", "instruction": "What's the minimum dose?", "question": "What's the lowest movement that reliably shifts mood?", "options": [
+      { "text": "An hour at the gym", "correct": false },
+      { "text": "Twenty minutes of walking, three times a week", "correct": true },
+      { "text": "Daily 10K runs", "correct": false }
+    ], "explanation": "The mood effect comes from much less than the fitness world implies. 20 minutes of walking, three times a week, is enough. Anything beyond that is bonus." },
+    { "type": "translate", "instruction": "Wait or move?", "prompt": "I don't feel like walking right now.", "correct": ["Move first; motivation follows.", "Walk first. Mood comes after.", "Don't wait to feel like it."] },
+    { "type": "fill_blank", "instruction": "Complete", "sentence": "Don't wait until you feel like it. Move first. The _____ follows.", "options": ["mood", "weather", "energy"], "correct": "mood" },
+    { "type": "build_sentence", "instruction": "Order", "words": ["Movement", "is", "a", "mood", "tool,", "not", "a", "performance"], "correct": ["Movement", "is", "a", "mood", "tool,", "not", "a", "performance"], "translation": "Function, not fitness." },
+    { "type": "multiple_choice", "instruction": "Outside vs inside?", "question": "Does it matter where you walk?", "options": [
+      { "text": "No — movement is movement", "correct": false },
+      { "text": "Outside has measurably bigger mood effects than the same movement indoors", "correct": true },
+      { "text": "Inside is better for safety", "correct": false }
+    ], "explanation": "Green exercise research consistently shows added effect from being outdoors, even briefly. A 10-minute walk in a park beats 30 minutes on a treadmill for mood." }
+  ],
+  "rwenDialogue": {
+    "intro": "If you walked for ten minutes today — when's the most likely time?",
+    "lines": [
+      { "speaker": "rwen", "rwenLine": "Realistic time slot for a ten-minute walk?", "rwenAnimation": "calm" },
+      { "speaker": "user", "userChoices": [
+        { "target": "After lunch.", "native": "Often the easiest slot.", "correct": true, "feedback": "Also a great time for the afternoon dip. Set a recurring 12.30pm reminder." },
+        { "target": "Right after the work day ends.", "native": "Transition walk — a great use.", "correct": true, "feedback": "Excellent for resetting the nervous system before the evening starts." },
+        { "target": "I genuinely don't have ten minutes.", "native": "Honest, sometimes true.", "correct": true, "feedback": "Five then. Around the block. Or stand up and stretch every hour. Don't let perfect kill any version of it." }
+      ] },
+      { "speaker": "rwen", "rwenLine": "Pick the slot. Set a reminder. The point is the movement, not the optimisation.", "rwenAnimation": "nodding" }
+    ]
+  },
+  "activeRecall": {
+    "instruction": "From memory.",
+    "prompts": [
+      { "prompt": "Minimum dose for mood effect?", "correct": ["20 minutes walking, 3x per week", "Twenty minutes three times a week", "20 min walking 3x weekly"] },
+      { "prompt": "When to start?", "correct": ["Before you feel like it", "Move first, mood follows", "Without waiting for motivation"] }
+    ]
+  },
+  "mission": { "title": "Today's mission", "task": "Walk for at least ten minutes today. Outside if possible. Don't wait until you feel like it. Notice what your mood looks like 30 minutes after.", "rwenSignoff": "The body and mind are a loop, not a sequence. Move, the rest follows." },
+  "phase8": { "scenario": "User has just been on a walk (or is about to be). Rwen helps them notice the mood-state before vs after, or commit to a specific time.", "rwenRole": "Encouraging without forcing. The user knows what they need.", "successCriteria": "User has named time + duration + whether outside is possible.", "estimatedMinutes": 2, "bonusXp": 5 },
+  "version": 1
+}

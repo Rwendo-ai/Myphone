@@ -1,0 +1,63 @@
+{
+  "id": "m02-l10-body-like-friend", "module": 2, "lesson": 10, "title": "Reading Your Body Like a Friend", "estimatedMinutes": 8, "xpReward": 50,
+  "hook": { "rwenLine": "End of the unit. You've practised interoception, the body scan, naming nervous-system states, long exhales, listening to tension, HALT, sleep, movement, and co-regulation. Today we put it all together. The body becomes a friend you check in with — not a vehicle, not a problem.", "culturalNote": "The integration matters more than any single technique. People who can locate themselves in their bodies, name their state, and intervene appropriately have a different baseline than people who can't. This is the actual outcome of Unit 2." },
+  "chunks": [
+    { "id": "the-check-in", "target": "The friend's check-in", "native": "A 60-second sweep: where am I in my body? What state am I in? What does my body need?", "literal": "Integration practice from somatic psychology — combining interoception + state-naming + need-identification", "emoji": "🤲", "phonetic": "Three questions. One minute.", "audioRef": null },
+    { "id": "kindness", "target": "Kindness as method", "native": "Treating the body the way you would treat a friend who told you what it told you — not contempt, not lecturing", "literal": "Self-compassion research (Neff, Gilbert) — kinder internal stance produces better outcomes", "emoji": "💛", "phonetic": "How would you speak to a friend in this state?", "audioRef": null },
+    { "id": "the-baseline", "target": "Your new baseline", "native": "Doing this once a day for two weeks shifts your default relationship to your body — measurably, not theoretically", "literal": "Habit research (Lally et al.) — 21+ days to shift a default; sustained shift after 8-12 weeks", "emoji": "📊", "phonetic": "The data backs you.", "audioRef": null }
+  ],
+  "pattern": { "name": "Three questions. Once a day. Like a friend.", "explanation": "Ask three questions in this order: Where am I in my body right now? (interoception) What state am I in — regulated, activated, shut-down? (state-naming) What does my body actually need? (intervention). Answer kindly. The whole thing takes 60 seconds. Doing this once a day for two weeks is the entire skill outcome of Unit 2.", "examples": [
+    { "target": "Q1: Where am I?",     "native": "Shoulders tight. Breath shallow. Stomach okay." },
+    { "target": "Q2: What state?",      "native": "Activated. Edge of overwhelm." },
+    { "target": "Q3: What does it need?", "native": "Long exhales. Five minutes outside. Eat something." }
+  ] },
+  "exercises": [
+    { "type": "match_pairs", "instruction": "Match question to its purpose", "pairs": [
+      { "left": "Where am I in my body?", "right": "Interoception — locate yourself" },
+      { "left": "What state am I in?", "right": "Naming — regulated, activated, shut-down" },
+      { "left": "What does my body need?", "right": "Intervention — pick the right tool" }
+    ] },
+    { "type": "multiple_choice", "instruction": "What completes the practice?", "question": "After answering the three questions — what makes it stick?", "options": [
+      { "text": "Forcing yourself to act on every answer", "correct": false },
+      { "text": "Treating your own body the way you'd treat a friend who told you the same thing", "correct": true },
+      { "text": "Writing it down in a journal every time", "correct": false }
+    ], "explanation": "Kindness as method. Contempt and lecturing don't shift behaviour long-term. Treating your body with the warmth you'd extend to a friend does." },
+    { "type": "translate", "instruction": "The three questions", "prompt": "What are the three questions of the daily check-in?", "correct": ["Where am I in my body? What state am I in? What does my body need?", "Where am I, what state, what need", "Body location, state, need"] },
+    { "type": "fill_blank", "instruction": "Complete", "sentence": "Treat your body the way you'd treat a _____ who told you what it told you.", "options": ["friend", "stranger", "doctor"], "correct": "friend" },
+    { "type": "build_sentence", "instruction": "Order", "words": ["Three", "questions.", "Once", "a", "day.", "Like", "a", "friend."], "correct": ["Three", "questions.", "Once", "a", "day.", "Like", "a", "friend."], "translation": "The whole protocol." },
+    { "type": "multiple_choice", "instruction": "What's the timeline?", "question": "How long until daily check-in becomes a new baseline?", "options": [
+      { "text": "One day", "correct": false },
+      { "text": "About two weeks to feel different; 8-12 weeks to feel like the default", "correct": true },
+      { "text": "Years", "correct": false }
+    ], "explanation": "Habit research is clear: about three weeks to feel the shift, two-to-three months for it to be your default. The work compounds." }
+  ],
+  "rwenDialogue": {
+    "intro": "Let's do the full three-question check together, right now. Slowly.",
+    "lines": [
+      { "speaker": "rwen", "rwenLine": "Question 1: Where are you in your body right now? Three pieces of specific data.", "rwenAnimation": "calm" },
+      { "speaker": "user", "userChoices": [
+        { "target": "Shoulders tense, breath shallow, jaw soft.", "native": "Three pieces of data.", "correct": true, "feedback": "Good. Now question 2." },
+        { "target": "I feel a bit anxious.", "native": "That's a state, not body data.", "correct": false, "feedback": "That's already question 2 — body first. Try: what does your stomach feel like? Your hands? Your shoulders?" }
+      ] },
+      { "speaker": "rwen", "rwenLine": "Question 2: What state are you in? Regulated, activated, or shut-down?", "rwenAnimation": "calm" },
+      { "speaker": "user", "userChoices": [
+        { "target": "Activated.", "native": "Named.", "correct": true, "feedback": "Good. Now question 3 — the kindest question." }
+      ] },
+      { "speaker": "rwen", "rwenLine": "Question 3: If your body were a friend who told you what it just told you — what would you say it needs?", "rwenAnimation": "calm" },
+      { "speaker": "user", "userChoices": [
+        { "target": "A five-minute walk outside, water, and a moment to not be doing anything.", "native": "Concrete. Kind. Actionable.", "correct": true, "feedback": "Beautiful. That's the entire skill of Unit 2 in 60 seconds. You're done. Now do it tomorrow." }
+      ] }
+    ]
+  },
+  "activeRecall": {
+    "instruction": "From memory — the three questions in order.",
+    "prompts": [
+      { "prompt": "Q1?", "correct": ["Where am I in my body?", "Where am I in my body right now?"] },
+      { "prompt": "Q2?", "correct": ["What state am I in?", "Regulated, activated, or shut-down?"] },
+      { "prompt": "Q3?", "correct": ["What does my body need?", "What does my body actually need?"] }
+    ]
+  },
+  "mission": { "title": "Today's mission — and a 14-day commitment", "task": "Run the three-question check today. Then commit to doing it once a day for fourteen days. Pick a trigger (after the alarm, while the kettle boils, before lunch) so you don't have to remember to remember.", "rwenSignoff": "End of Unit 2. You can now find yourself in your own body — and you know what to do when you've found yourself." },
+  "phase8": { "scenario": "User has finished Unit 2. Rwen runs a brief debrief: what was the most useful lesson? Where did the practice land hardest? What's the one piece they'll keep doing past today?", "rwenRole": "Warm, integrative. Not testing — celebrating that they finished the unit.", "successCriteria": "User names one lesson they'll keep, one moment they'll use the check-in.", "estimatedMinutes": 4, "bonusXp": 10 },
+  "version": 1
+}

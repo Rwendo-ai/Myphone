@@ -1,0 +1,119 @@
+{
+  "id": "m02-l02-body-scan",
+  "module": 2,
+  "lesson": 2,
+  "title": "The Body Scan, Without Mysticism",
+  "estimatedMinutes": 6,
+  "xpReward": 25,
+  "hook": {
+    "rwenLine": "A body scan is not a meditation. It's a survey. You move attention from your feet to your head, three seconds at a time, and notice what's there. That's all. No emptying, no clearing — just an honest look at the territory you live in.",
+    "culturalNote": "The body scan is the load-bearing technique of trauma-informed somatic work. Bessel van der Kolk's research on the body keeping the score points to a simple fact: nervous-system literacy starts with knowing what your nervous system feels like."
+  },
+  "chunks": [
+    { "id": "scan",     "target": "Body scan",        "native": "A slow, deliberate sweep of attention from feet to head, noticing what is present",                 "literal": "Jon Kabat-Zinn (technique); Bessel van der Kolk (trauma context); secular framing",                    "emoji": "🧭", "phonetic": "Survey, not silence.",                              "audioRef": null },
+    { "id": "noticing", "target": "Just noticing",    "native": "Bringing attention to a body part without trying to change it",                                       "literal": "ACT acceptance — turning toward rather than away from sensation",                                       "emoji": "👁️", "phonetic": "Not fixing. Not relaxing. Noticing.",                "audioRef": null },
+    { "id": "weather",  "target": "Body weather",     "native": "The fact that your body's state changes constantly — tight, loose, warm, cold, heavy, light",          "literal": "Stoic 'all things flow' applied to bodily sensation; impermanence as observation, not philosophy",       "emoji": "🌤️", "phonetic": "What's there now wasn't there an hour ago.",        "audioRef": null }
+  ],
+  "pattern": {
+    "name": "Survey the territory before you try to change it.",
+    "explanation": "Before you can regulate your nervous system you have to know what its current state actually is. The body scan is a five-minute survey: feet, calves, knees, thighs, hips, belly, lower back, upper back, chest, shoulders, arms, hands, neck, jaw, face, scalp. Three seconds each. No agenda except noticing. The state changes during the scan — that's the whole experience. You don't have to fix anything.",
+    "examples": [
+      { "target": "Feet on the floor",          "native": "Cold? Warm? Pressing down evenly? Heels heavier than toes?" },
+      { "target": "Shoulders",                  "native": "Up around your ears? Falling forward? One higher than the other?" },
+      { "target": "Jaw",                        "native": "Clenched? Lips pressed together? Teeth touching or apart?" }
+    ]
+  },
+  "exercises": [
+    {
+      "type": "match_pairs",
+      "instruction": "Match body part to what you'd notice",
+      "pairs": [
+        { "left": "Feet",      "right": "Pressure on the floor, warmth, weight" },
+        { "left": "Shoulders", "right": "Height, tension, forward/back position" },
+        { "left": "Jaw",       "right": "Clench, lips, teeth touching" }
+      ]
+    },
+    {
+      "type": "multiple_choice",
+      "instruction": "What's the goal of a body scan?",
+      "question": "You're scanning and your shoulders are tight. What do you do?",
+      "options": [
+        { "text": "Force them to relax",                                                          "correct": false },
+        { "text": "Notice that they're tight. Move on. Maybe come back later.",                  "correct": true },
+        { "text": "Stop the scan because something's wrong",                                      "correct": false }
+      ],
+      "explanation": "The scan is about noticing, not fixing. Naming 'shoulders tight' often releases some of the tension on its own — and even if it doesn't, you've got useful data."
+    },
+    {
+      "type": "translate",
+      "instruction": "Translate from instruction to body data",
+      "prompt": "Notice your jaw.",
+      "correct": [
+        "My jaw is clenched.",
+        "My teeth are touching.",
+        "My jaw is loose, mouth slightly open.",
+        "My lips are pressed together."
+      ]
+    },
+    {
+      "type": "fill_blank",
+      "instruction": "Complete",
+      "sentence": "A body scan is a _____ , not a meditation.",
+      "options": ["survey", "ritual", "performance"],
+      "correct": "survey"
+    },
+    {
+      "type": "build_sentence",
+      "instruction": "Order the principle",
+      "words": ["Survey", "the", "territory", "before", "you", "change", "it"],
+      "correct": ["Survey", "the", "territory", "before", "you", "change", "it"],
+      "translation": "You can't regulate what you haven't located."
+    },
+    {
+      "type": "multiple_choice",
+      "instruction": "How long is enough for one scan?",
+      "question": "You've got two minutes between meetings. Worth doing a scan?",
+      "options": [
+        { "text": "No — body scans need 20 minutes",                                              "correct": false },
+        { "text": "Yes. Two minutes is enough. Three seconds per body region, top to bottom.",   "correct": true },
+        { "text": "Only if you can also light a candle",                                         "correct": false }
+      ],
+      "explanation": "Body scans scale. 90 seconds, three minutes, five minutes — any deliberate sweep is more interoception practice than no sweep."
+    }
+  ],
+  "rwenDialogue": {
+    "intro": "Let me walk you through a fast one. Two minutes. Feet to head. Just notice.",
+    "lines": [
+      { "speaker": "rwen", "rwenLine": "Start with your feet. Three seconds. What's there? Cold? Warm? Pressure on the heels or the toes?", "rwenAnimation": "calm" },
+      {
+        "speaker": "user",
+        "userChoices": [
+          { "target": "Feet are cold. More weight on my left heel.", "native": "Specific body data — exactly the move.", "correct": true,  "feedback": "Yes. Two specifics in five seconds. Move on." },
+          { "target": "I can't feel them.",                              "native": "Common at first.",                       "correct": true,  "feedback": "Honest. Wiggle them once. Try again in three seconds." },
+          { "target": "Why are we doing this?",                          "native": "The autopilot mind protesting.",         "correct": false, "feedback": "Fair question. We're doing this so you can tell the difference between 'I'm fine' and what your body is actually saying. Come back to the feet." }
+        ]
+      },
+      { "speaker": "rwen", "rwenLine": "Good. Move up. Calves. Knees. Hips. Three seconds each. The whole scan takes two minutes. The data you collect — that's the win.", "rwenAnimation": "nodding" }
+    ]
+  },
+  "activeRecall": {
+    "instruction": "Without looking back.",
+    "prompts": [
+      { "prompt": "What's the goal of the scan?",      "correct": ["Notice without fixing", "Survey without changing", "Collect body data"] },
+      { "prompt": "How long for one body region?",     "correct": ["Three seconds", "About three seconds", "A few seconds"] }
+    ]
+  },
+  "mission": {
+    "title": "Today's mission",
+    "task": "Once today — ideally before bed or before a meeting — do a two-minute body scan. Feet to head. Three seconds each. No agenda. Just notice.",
+    "rwenSignoff": "You can't regulate what you haven't located. Tomorrow we work on what to do with what you found."
+  },
+  "phase8": {
+    "scenario": "User has just completed their first solo body scan. Rwen debriefs — what did they notice? Where was tension? Where was ease?",
+    "rwenRole": "A calm, curious companion who treats the user's findings as interesting data, not pathology.",
+    "successCriteria": "User has named at least four specific body regions and what was there. Bonus if they noticed something change during the scan.",
+    "estimatedMinutes": 3,
+    "bonusXp": 5
+  },
+  "version": 1
+}

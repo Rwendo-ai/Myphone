@@ -97,10 +97,16 @@ const COURSES_WITH_CARDS = new Set<string>([
 
 export function hasReinforcementCards(courseId: string, module: number): boolean {
   if (!COURSES_WITH_CARDS.has(courseId)) return false;
-  // Today only Module 1 is authored across all 8 tracks. Knowing Yourself
-  // adds Module 2-10 incrementally.
+  // Module 1 authored across all 8 tracks. Knowing Yourself extends with
+  // additional modules as they're authored — keep this set in sync with
+  // what's in storage at reinforcement-cards/<courseId>/m<NN>.json.
+  if (courseId === 'know-yourself') return module >= 1 && module <= KY_LATEST_MODULE;
   return module === 1;
 }
+
+/** Latest Knowing Yourself reinforcement-card module authored + uploaded.
+ *  Bump as Modules 3-10 ship. */
+const KY_LATEST_MODULE = 2;
 
 export async function clearReinforcementCardCache(): Promise<void> {
   const root = `${FileSystem.documentDirectory}reinforcement-cards/`;

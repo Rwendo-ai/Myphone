@@ -1,0 +1,56 @@
+{
+  "id": "m02-l07-sleep-not-optional", "module": 2, "lesson": 7, "title": "Sleep Is Not Optional", "estimatedMinutes": 6, "xpReward": 25,
+  "hook": { "rwenLine": "Sleep is the most under-rated lever you have. Cognitive function, emotional regulation, immune health, weight, mood — every single one degrades sharply with sustained sleep loss. The good news: you can take it back, and the body forgives quickly.", "culturalNote": "Matthew Walker (Why We Sleep), Russell Foster (Life Time): chronic 6-hour-per-night sleep is now well-documented as a serious cognitive and emotional impairment. Eight hours is not a virtue. It's a biological floor." },
+  "chunks": [
+    { "id": "the-cost", "target": "The cost of sleep loss", "native": "Two weeks of 6-hour nights = cognitive function equivalent to legally drunk", "literal": "Van Dongen et al. (2003) — Sleep Deprivation and Cognitive Performance", "emoji": "🧠", "phonetic": "The body keeps a tab. You pay either way.", "audioRef": null },
+    { "id": "fixed-wake", "target": "Fixed wake time", "native": "The single highest-leverage move — wake at the same time every day including weekends", "literal": "CBT-I core protocol; supported by every sleep-medicine clinic", "emoji": "⏰", "phonetic": "The body anchors off the wake, not the sleep.", "audioRef": null },
+    { "id": "morning-light", "target": "Morning light", "native": "Sunlight on your face within an hour of waking sets the timer for sleep 14-16 hours later", "literal": "Circadian biology (Foster, Czeisler); cloudy days still work", "emoji": "☀️", "phonetic": "Outside, not through a window.", "audioRef": null }
+  ],
+  "pattern": { "name": "Fix the wake. Fix the light. The rest follows.", "explanation": "If you can only do two things for sleep: 1) wake at the same time every day, no matter how badly you slept; 2) get sunlight on your face within an hour of waking. These two anchor your circadian rhythm. Bedtime mostly takes care of itself when wake and light are stable.", "examples": [
+    { "target": "Slept badly Tuesday night",        "native": "Wake at the same time Wednesday. Do NOT sleep in." },
+    { "target": "Working from home",                 "native": "Walk outside for five minutes within an hour of getting up — even on Zoom-only days." },
+    { "target": "Travelling east-to-west",           "native": "Get morning light at the destination. The timer resets within 2-3 days." }
+  ] },
+  "exercises": [
+    { "type": "match_pairs", "instruction": "Match lever to effect", "pairs": [
+      { "left": "Fixed wake time", "right": "Anchors your circadian rhythm" },
+      { "left": "Morning sunlight", "right": "Sets melatonin onset 14-16 hours later" },
+      { "left": "Sleeping in after a bad night", "right": "Extends the broken pattern" }
+    ] },
+    { "type": "multiple_choice", "instruction": "Best move after a bad night?", "question": "You slept 4 hours last night. What's the best thing to do today?", "options": [
+      { "text": "Sleep in 2 hours longer to catch up", "correct": false },
+      { "text": "Wake at your normal time. Get sunlight. Don't nap after 3pm. Be in bed at the usual time.", "correct": true },
+      { "text": "Have a long nap at 2pm", "correct": false }
+    ], "explanation": "Sleeping in delays the next night by the same amount. The fastest recovery from a bad night is to keep the rhythm and let homeostatic sleep pressure build for tonight." },
+    { "type": "translate", "instruction": "The two highest-leverage moves?", "prompt": "If you can only do two things for sleep, what are they?", "correct": ["Fixed wake time + morning sunlight", "Wake at the same time and get morning light", "Same wake time daily and sunlight in the morning"] },
+    { "type": "fill_blank", "instruction": "Complete", "sentence": "The body anchors off the _____ , not the bedtime.", "options": ["wake", "meal", "exercise"], "correct": "wake" },
+    { "type": "build_sentence", "instruction": "Order", "words": ["Fix", "the", "wake.", "Fix", "the", "light."], "correct": ["Fix", "the", "wake.", "Fix", "the", "light."], "translation": "The two-move sleep protocol." },
+    { "type": "multiple_choice", "instruction": "Caffeine half-life?", "question": "What does the 5-7 hour half-life of caffeine mean for sleep?", "options": [
+      { "text": "Coffee after 2pm still affects sleep that night", "correct": true },
+      { "text": "You can have coffee any time", "correct": false },
+      { "text": "Only espresso affects sleep", "correct": false }
+    ], "explanation": "A 3pm coffee is still half-active in your system at 9pm. Even if you fall asleep, sleep quality drops. Test it: 7 days no caffeine after noon, notice how you wake up." }
+  ],
+  "rwenDialogue": {
+    "intro": "What's the one change tonight or tomorrow that's most likely to land?",
+    "lines": [
+      { "speaker": "rwen", "rwenLine": "Pick one: fixed wake tomorrow, morning light tomorrow, or no caffeine after 2pm today. Which is realistic?", "rwenAnimation": "calm" },
+      { "speaker": "user", "userChoices": [
+        { "target": "Morning light. I'll walk outside for five minutes after waking.", "native": "High-leverage, low-friction.", "correct": true, "feedback": "Excellent. Do it tomorrow. Don't skip on rainy days — the light is still there." },
+        { "target": "Fixed wake. I'm going to set the alarm for the same time on weekends too.", "native": "The biggest single move.", "correct": true, "feedback": "Hardest first time. Within two weeks the body anchors and you'll fall asleep more easily at night." },
+        { "target": "No caffeine after 2pm.", "native": "Often the most-resisted move.", "correct": true, "feedback": "Most people fight this one. Try it for seven days. Then judge." }
+      ] },
+      { "speaker": "rwen", "rwenLine": "Pick one. Don't try all three. The one you actually do matters more than the perfect plan.", "rwenAnimation": "nodding" }
+    ]
+  },
+  "activeRecall": {
+    "instruction": "From memory.",
+    "prompts": [
+      { "prompt": "Two highest-leverage sleep moves?", "correct": ["Fixed wake time and morning light", "Fixed wake + sunlight", "Same wake time daily, sunlight in the morning"] },
+      { "prompt": "Best response to a bad night?", "correct": ["Wake at the usual time", "Don't sleep in", "Maintain the rhythm"] }
+    ]
+  },
+  "mission": { "title": "Today's mission", "task": "Pick ONE: (a) wake at your target time tomorrow no matter when you fall asleep, OR (b) walk outside for five minutes within an hour of waking, OR (c) no caffeine after 2pm today. Do that one thing. Notice how you sleep.", "rwenSignoff": "Sleep is not a luxury. It's the operating system everything else runs on." },
+  "phase8": { "scenario": "User has picked their one sleep change. Rwen helps them anchor it concretely — what time, what alarm, what reminder.", "rwenRole": "Practical, no judgement, helps them make it tiny enough to actually do.", "successCriteria": "User has named the change, the time, and how they'll trigger it tomorrow.", "estimatedMinutes": 2, "bonusXp": 5 },
+  "version": 1
+}
