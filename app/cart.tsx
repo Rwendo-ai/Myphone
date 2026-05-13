@@ -91,11 +91,9 @@ export default function CartScreen() {
           <Text style={styles.heroSub}>
             Pay-as-you-go credit for talking with your companions. One balance, used across text, voice, and lipsync.
           </Text>
-          <View style={styles.tokensGrid}>
-            {tokenPacks.map((p) => (
-              <TokenCard key={p.id} product={p} onPress={() => handleBuy(p)} disabled={busy} />
-            ))}
-          </View>
+          {tokenPacks.map((p) => (
+            <TokenRow key={p.id} product={p} onPress={() => handleBuy(p)} disabled={busy} />
+          ))}
           <Text style={styles.heroFootnote}>
             Bigger packs include bonus tokens. Tokens never expire.
           </Text>
@@ -136,23 +134,39 @@ function formatTierLabel(tier: string): string {
   }
 }
 
-function TokenCard({ product, onPress, disabled }: { product: Product; onPress: () => void; disabled: boolean }) {
+function TokenRow({ product, onPress, disabled }: { product: Product; onPress: () => void; disabled: boolean }) {
+  // Pull a short bonus/description blurb (skip the first sentence which is
+  // just the token count; use the second if present, else fall back).
+  const parts = product.description.split('.').map((s) => s.trim()).filter(Boolean);
+  const blurb = parts.length > 1 ? parts[1] : parts[0];
+
   return (
     <Pressable
       style={({ pressed }) => [
-        styles.tokenCard,
-        product.recommended && styles.tokenCardRecommended,
-        pressed && !disabled && styles.tokenCardPressed,
+        styles.tokenRow,
+        product.recommended && styles.tokenRowRecommended,
+        pressed && !disabled && styles.tokenRowPressed,
       ]}
       onPress={onPress}
       disabled={disabled}
     >
-      {product.recommended && <Text style={styles.tokenRecommendedTag}>Best value</Text>}
-      <Text style={styles.tokenAmount}>{product.tokens?.toLocaleString()}</Text>
-      <Text style={styles.tokenAmountLabel}>tokens</Text>
-      <View style={styles.tokenDivider} />
-      <Text style={styles.tokenPrice}>A${product.baseAud.toFixed(0)}</Text>
-      <Text style={styles.tokenSub}>{product.description.split('.')[0]}.</Text>
+      {product.recommended && (
+        <View style={styles.tokenRowBadge}>
+          <Text style={styles.tokenRowBadgeText}>BEST VALUE</Text>
+        </View>
+      )}
+      <View style={styles.tokenRowLeft}>
+        <Text style={styles.tokenRowPrice} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.7}>
+          A${product.baseAud.toFixed(0)}
+        </Text>
+        <Text style={styles.tokenRowBlurb} numberOfLines={2}>{blurb}</Text>
+      </View>
+      <View style={styles.tokenRowRight}>
+        <Text style={styles.tokenRowTokens} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.7}>
+          {product.tokens?.toLocaleString()}
+        </Text>
+        <Text style={styles.tokenRowTokensLabel}>tokens</Text>
+      </View>
     </Pressable>
   );
 }
@@ -236,36 +250,39 @@ const styles = StyleSheet.create({
   heroTitle: { color: Colors.white, fontSize: FontSize.xxl, fontWeight: FontWeight.bold },
   heroSub: { color: Colors.white, opacity: 0.85, fontSize: FontSize.sm, marginTop: Spacing.xs, marginBottom: Spacing.lg },
   heroFootnote: { color: Colors.white, opacity: 0.7, fontSize: FontSize.xs, marginTop: Spacing.md, textAlign: 'center' },
-  tokensGrid: {
-    flexDirection: 'row',
-    gap: Spacing.sm,
-  },
-  tokenCard: {
-    flex: 1,
+  tokenRow: {
     backgroundColor: Colors.white,
     borderRadius: BorderRadius.md,
-    padding: Spacing.md,
+    paddingVertical: Spacing.md,
+    paddingHorizontal: Spacing.md,
+    marginBottom: Spacing.sm,
+    flexDirection: 'row',
     alignItems: 'center',
-    minHeight: 170,
     shadowColor: Colors.black,
     shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.06,
+    shadowOpacity: 0.08,
     shadowRadius: 3,
+    elevation: 2,
+    position: 'relative',
   },
-  tokenCardRecommended: { borderWidth: 2, borderColor: '#F4B400' },
-  tokenCardPressed: { opacity: 0.75 },
-  tokenRecommendedTag: {
-    color: '#F4B400',
-    fontSize: 10,
-    fontWeight: FontWeight.bold,
-    letterSpacing: 1,
-    marginBottom: 2,
+  tokenRowRecommended: { borderWidth: 2, borderColor: '#F4B400' },
+  tokenRowPressed: { opacity: 0.75 },
+  tokenRowBadge: {
+    position: 'absolute',
+    top: -10,
+    left: Spacing.md,
+    backgroundColor: '#F4B400',
+    borderRadius: 4,
+    paddingHorizontal: 8,
+    paddingVertical: 2,
   },
-  tokenAmount: { color: Colors.primary, fontSize: 26, fontWeight: FontWeight.bold, marginTop: 2 },
-  tokenAmountLabel: { color: Colors.gray[500], fontSize: FontSize.xs, textTransform: 'uppercase', letterSpacing: 1 },
-  tokenDivider: { width: 30, height: 1, backgroundColor: Colors.gray[200], marginVertical: Spacing.sm },
-  tokenPrice: { color: Colors.gray[800], fontSize: FontSize.xl, fontWeight: FontWeight.bold },
-  tokenSub: { color: Colors.gray[500], fontSize: 11, marginTop: Spacing.xs, textAlign: 'center' },
+  tokenRowBadgeText: { color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1 },
+  tokenRowLeft: { flex: 1, paddingRight: Spacing.md },
+  tokenRowPrice: { color: Colors.gray[800], fontSize: 28, fontWeight: FontWeight.bold },
+  tokenRowBlurb: { color: Colors.gray[600], fontSize: FontSize.sm, marginTop: 2 },
+  tokenRowRight: { alignItems: 'flex-end', minWidth: 100 },
+  tokenRowTokens: { color: Colors.primary, fontSize: 22, fontWeight: FontWeight.bold },
+  tokenRowTokensLabel: { color: Colors.gray[500], fontSize: 10, textTransform: 'uppercase', letterSpacing: 1, marginTop: 2 },
 
   sectionTitle: { color: Colors.gray[800], fontSize: FontSize.lg, fontWeight: FontWeight.bold, marginTop: Spacing.md, marginBottom: Spacing.xs },
   sectionSub: { color: Colors.gray[500], fontSize: FontSize.sm, marginBottom: Spacing.md },
