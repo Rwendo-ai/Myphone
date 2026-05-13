@@ -24,6 +24,8 @@ import {
 } from '../../lib/dictionary';
 import { getLessonNote, saveLessonNote } from '../../lib/notes';
 import { canUseAiFeature, type EntitlementContext } from '../../lib/entitlements';
+import { sendMessage, type ChatMessage } from '../../lib/claude';
+import { useSettings } from '../../lib/SettingsContext';
 
 type Tab = 'dictionary' | 'notes' | 'tutor';
 
@@ -65,7 +67,7 @@ export default function LessonToolsSheet({
               <NotesTab userId={userId} courseId={courseId} lessonId={lesson.id} />
             )}
             {tab === 'tutor' && (
-              <TutorTab entitlementContext={entitlementContext} lesson={lesson} />
+              <TutorTab entitlementContext={entitlementContext} lesson={lesson} userId={userId} />
             )}
           </View>
         </Pressable>
@@ -411,9 +413,11 @@ function NotesTab({
 function TutorTab({
   entitlementContext,
   lesson,
+  userId,
 }: {
   entitlementContext: EntitlementContext;
   lesson: LessonData;
+  userId: string;
 }) {
   const aiAccess = canUseAiFeature('text', entitlementContext);
 
@@ -430,12 +434,11 @@ function TutorTab({
     );
   }
 
-  // Tier OK. Render the placeholder AI chat scaffold.
-  // Full Claude wiring lands when the AI integration is fixed — see STATUS-2026-05-01.md.
-  return <TutorChatScaffold lesson={lesson} />;
+  return <TutorChat lesson={lesson} userId={userId} />;
 }
 
-function TutorChatScaffold({ lesson }: { lesson: LessonData }) {
+function TutorChat({ lesson, userId }: { lesson: LessonData; userId: string }) {
+  const { speaker, learnedLanguage, activeCompanionPresetId } = useSettings();
   const [messages, setMessages] = useState<{ role: 'user' | 'rwen'; text: string }[]>([
     {
       role: 'rwen',
@@ -445,24 +448,48 @@ function TutorChatScaffold({ lesson }: { lesson: LessonData }) {
   const [draft, setDraft] = useState('');
   const [thinking, setThinking] = useState(false);
 
-  const send = () => {
+  // Build a compact lesson context string for Claude — the chunks and pattern
+  // are what the tutor most often needs to ground its replies in.
+  const lessonContext = useMemo(() => {
+    const chunkLines = lesson.chunks
+      .map((c) => `- ${c.target}: ${c.native}`)
+      .join('\n');
+    return `Lesson "${lesson.title}". Chunks:\n${chunkLines}\nPattern: ${lesson.pattern.name} — ${lesson.pattern.explanation}`;
+  }, [lesson]);
+
+  const send = async () => {
     const text = draft.trim();
-    if (!text) return;
-    setMessages((prev) => [...prev, { role: 'user', text }]);
+    if (!text || thinking) return;
+    const userText = text;
+    setMessages((prev) => [...prev, { role: 'user', text: userText }]);
     setDraft('');
     setThinking(true);
-    // TODO: wire to lib/claude.ts — currently the AI integration is being repaired.
-    // Once fixed, replace this placeholder reply with the streamed Claude response.
-    setTimeout(() => {
+    try {
+      const history: ChatMessage[] = messages.map((m) => ({
+        role: m.role === 'user' ? 'user' : 'assistant',
+        content: m.text,
+      }));
+      const reply = await sendMessage(
+        userId,
+        userText,
+        history,
+        speaker,
+        learnedLanguage?.name ?? 'English',
+        lessonContext,
+        activeCompanionPresetId ?? null,
+      );
+      setMessages((prev) => [...prev, { role: 'rwen', text: reply }]);
+    } catch (e: any) {
       setMessages((prev) => [
         ...prev,
         {
           role: 'rwen',
-          text: "I'm being repaired right now — the AI tutor will be back online once the team finishes fixing the chat. Your question is held in this conversation, and will go away when you close the sheet.",
+          text: "Sorry — I couldn't reach my brain just then. Try once more in a moment.",
         },
       ]);
+    } finally {
       setThinking(false);
-    }, 600);
+    }
   };
 
   return (

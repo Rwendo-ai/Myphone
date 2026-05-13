@@ -5,36 +5,45 @@
  *   - Server webhook handler (purchase events → entitlements + credits)
  *   - lib/xp-events.ts (purchase XP rewards)
  *
- * Pricing model (locked 2026-05-10 — v3):
+ * Pricing model (v4, locked 2026-05-13):
  *
- * 5-tier subscription ladder. Each tier INCLUDES every feature of lower
- * tiers + a monthly token allowance for AI usage.
+ * 5-tier subscription ladder + token packs. Each tier INCLUDES every
+ * feature of lower tiers + a monthly token allowance for AI usage.
  *
  *   Free          1 companion (Rwen) · 10 msgs/day · 2 free starter modules
  *                 · 3 AI msgs/lesson
  *   Text   $4/mo  All companions, text-only · all courses + travel
- *                 · $2 tokens/mo
+ *                 · $2 tokens/mo allowance
  *   Voice  $5/mo  Above + voice-to-voice · $2 tokens/mo
  *   Lipsync Low   $10/mo  Above + low-quality lipsync · $3 tokens/mo
  *   Lipsync High  $25/mo  Above + high-quality lipsync · $10 tokens/mo
  *                         (also has yearly option)
- *   Ultra  $29.99/mo  Above + custom companion (edit soul) · ~$15 tokens/mo
+ *   Ultra  $29.99/mo  Above + custom companion (edit soul) · $15 tokens/mo
  *                     (also has yearly option)
- *   Ultra Lifetime $399  All Ultra forever + 15% off all token packs
  *
- * Tokens (consumable balance, server-tracked):
- *   1 token ≈ 1 text message; voice + lipsync consume more per use.
- *   When a tier's monthly allowance runs out, user buys top-up packs.
- *   Pack pricing targets ~35% margin over real AI cost on Apple/Google.
+ * Tokens are the unified consumable currency for AI usage. Different
+ * features cost different numbers of tokens per use (text < voice <
+ * lipsync-low < lipsync-high). The per-feature cost table lives at
+ * `lib/ai-cost.ts` (client) and mirrors the `ai_feature_cost` Supabase
+ * table (server-authoritative, so we can adjust without re-deploying).
+ *
+ * A user on any tier can use any feature their tier permits — tokens
+ * are deducted from a single balance at the per-feature rate. Top-up
+ * packs are the only way to buy more tokens.
  *
  * Currency is base AUD; RevenueCat localises per region.
  *
  * Spec: docs/PAYWALL-DESIGN.md.
+ *
+ * v3 → v4 changes (2026-05-13):
+ *   - Removed lifetime SKU (user direction: "I don't want lifetime option for now").
+ *   - Token packs repriced to $10 / $50 / $100 (was $2.99 / $7.49 / $14.99)
+ *     with bulk discounts on the larger packs.
+ *   - Token packs are the primary purchase surface in the cart UI now.
  */
 
 export type ProductCategory =
   | 'tier_subscription'
-  | 'lifetime_purchase'
   | 'token_pack';
 
 /** The five paid tiers, in ascending order. The numeric rank lets
@@ -60,9 +69,8 @@ export interface Product {
   /** Apple/Google store product ID. Same string used in RevenueCat. */
   storeId: string;
   /** RevenueCat entitlement granted. Subscription tiers grant
-   *  `tier_<key>`. Lifetime grants `tier_ultra` + `lifetime_buyer`.
-   *  Token packs grant `ai_credits` (a numeric balance, not a boolean
-   *  flag — server-tracked via webhook). */
+   *  `tier_<key>`. Token packs grant `ai_credits` (a numeric balance,
+   *  not a boolean flag — server-tracked via webhook). */
   entitlement: string;
   category: ProductCategory;
   displayName: string;
@@ -73,7 +81,7 @@ export interface Product {
   xpReward: number;
   /** For tiers, which tier this represents. */
   tier?: SubscriptionTierKey;
-  /** Billing period in days. 30 = monthly, 365 = yearly, 0 = lifetime. */
+  /** Billing period in days. 30 = monthly, 365 = yearly. */
   periodDays?: number;
   /** Monthly token allowance for subscription tiers (in dollar-equivalent
    *  cents — server converts to actual token count using current AI prices). */
@@ -83,6 +91,59 @@ export interface Product {
   /** Marketing flag. */
   recommended?: boolean;
 }
+
+// ─── Token packs (consumables) — the primary purchase surface ──────────────
+//
+// Tokens are the unified currency for AI usage across all features (text,
+// voice, lipsync low, lipsync high). The per-feature cost is defined in
+// `lib/ai-cost.ts` and on the server in the `ai_feature_cost` table.
+//
+// Pricing targets ~30-40% margin over real Apple/Google cost (which takes
+// 30% before our cut). Larger packs include a bonus on top of the base rate
+// to reward bulk purchase — this is also the most profitable per transaction
+// because the fixed payment-processing cost is the same regardless of size.
+//
+// Base rate: 100 tokens per A$1.
+//   $10  →  1,000 tokens   (base rate, entry point)
+//   $50  →  5,500 tokens   (10% bonus, recommended)
+//   $100 → 12,000 tokens   (20% bonus, power users)
+
+const TOKEN_PACKS: Product[] = [
+  {
+    id: 'tokens_10',
+    storeId: 'rwendo_tokens_10_v1',
+    entitlement: 'ai_credits',
+    category: 'token_pack',
+    displayName: '$10 of Tokens',
+    description: '1,000 tokens. Entry pack — a week of moderate AI use.',
+    baseAud: 10.00,
+    xpReward: 100,
+    tokens: 1000,
+  },
+  {
+    id: 'tokens_50',
+    storeId: 'rwendo_tokens_50_v1',
+    entitlement: 'ai_credits',
+    category: 'token_pack',
+    displayName: '$50 of Tokens',
+    description: '5,500 tokens — 10% bonus. Best value for regular users.',
+    baseAud: 50.00,
+    xpReward: 600,
+    tokens: 5500,
+    recommended: true,
+  },
+  {
+    id: 'tokens_100',
+    storeId: 'rwendo_tokens_100_v1',
+    entitlement: 'ai_credits',
+    category: 'token_pack',
+    displayName: '$100 of Tokens',
+    description: '12,000 tokens — 20% bonus. For power users and creators.',
+    baseAud: 100.00,
+    xpReward: 1500,
+    tokens: 12000,
+  },
+];
 
 // ─── Tier subscriptions (monthly) ──────────────────────────────────────────
 
@@ -120,7 +181,7 @@ const TIER_MONTHLY: Product[] = [
     category: 'tier_subscription',
     tier: 'lipsync_low',
     displayName: 'Lipsync · Low',
-    description: 'Low-quality lipsync · voice · text · $3 tokens/mo',
+    description: 'Low-quality lipsync video · voice · text · $3 tokens/mo',
     baseAud: 10.00,
     xpReward: 150,
     periodDays: 30,
@@ -187,82 +248,15 @@ const TIER_YEARLY: Product[] = [
     xpReward: 5000,
     periodDays: 365,
     monthlyTokenAllowanceCents: 1500,
-    recommended: true,
-  },
-];
-
-// ─── Lifetime (one only) ───────────────────────────────────────────────────
-//
-// Ultra forever + 15% off every future token pack purchase. The 15%
-// discount is enforced server-side at purchase time (RC webhook checks
-// for `lifetime_buyer` entitlement and adjusts credits granted upward).
-
-const LIFETIME: Product[] = [
-  {
-    id: 'ultra_lifetime',
-    storeId: 'rwendo_ultra_lifetime_v1',
-    entitlement: 'tier_ultra',
-    category: 'lifetime_purchase',
-    tier: 'ultra',
-    displayName: 'Ultra · Lifetime',
-    description: 'Pay once. Ultra forever. 15% off every future token pack.',
-    baseAud: 399.00,
-    xpReward: 8000,
-    periodDays: 0,
-    monthlyTokenAllowanceCents: 1500,
-  },
-];
-
-// ─── Token packs (consumables) ─────────────────────────────────────────────
-//
-// Top-up beyond a tier's monthly allowance. Apple/Google pricing targets
-// ~35% margin over real AI cost. Web pricing (when added post-launch) at
-// 15% margin per spec — those are different SKUs in a future commit.
-
-const TOKEN_PACKS: Product[] = [
-  {
-    id: 'tokens_small',
-    storeId: 'rwendo_tokens_small_v1',
-    entitlement: 'ai_credits',
-    category: 'token_pack',
-    displayName: '$2 of Tokens',
-    description: 'Small top-up — covers a typical day of heavy use.',
-    baseAud: 2.99,
-    xpReward: 30,
-    tokens: 200,
-  },
-  {
-    id: 'tokens_medium',
-    storeId: 'rwendo_tokens_medium_v1',
-    entitlement: 'ai_credits',
-    category: 'token_pack',
-    displayName: '$5 of Tokens',
-    description: 'Best value — a couple weeks of heavy use.',
-    baseAud: 7.49,
-    xpReward: 80,
-    tokens: 500,
-    recommended: true,
-  },
-  {
-    id: 'tokens_large',
-    storeId: 'rwendo_tokens_large_v1',
-    entitlement: 'ai_credits',
-    category: 'token_pack',
-    displayName: '$10 of Tokens',
-    description: 'Bulk pack — for power users and creators.',
-    baseAud: 14.99,
-    xpReward: 175,
-    tokens: 1000,
   },
 ];
 
 // ─── Aggregates / lookups ──────────────────────────────────────────────────
 
 export const ALL_PRODUCTS: Product[] = [
+  ...TOKEN_PACKS,
   ...TIER_MONTHLY,
   ...TIER_YEARLY,
-  ...LIFETIME,
-  ...TOKEN_PACKS,
 ];
 
 export const PRODUCTS_BY_ID: Record<string, Product> = Object.fromEntries(
@@ -292,10 +286,6 @@ export const FEATURE_MIN_TIER: Record<'text' | 'voice' | 'lipsync_low' | 'lipsyn
   custom_companion: 'ultra',
 };
 
-/** Lifetime-buyer flag. Granted by the lifetime SKU; gives 15% off all
- *  future token pack purchases (server adjusts credits at webhook time). */
-export const LIFETIME_BUYER_ENTITLEMENT_ID = 'lifetime_buyer';
-
 /** AI credits balance entitlement. Server tracks the numeric balance in
  *  `user_credits.balance`; this entitlement just signals "user has tokens". */
 export const CREDITS_ENTITLEMENT_ID = 'ai_credits';
@@ -314,10 +304,6 @@ export function getMonthlyTiers(): Product[] {
 
 export function getYearlyTiers(): Product[] {
   return TIER_YEARLY;
-}
-
-export function getLifetimeProducts(): Product[] {
-  return LIFETIME;
 }
 
 export function getTokenPacks(): Product[] {

@@ -23,7 +23,6 @@ import {
   TIER_ENTITLEMENT_IDS,
   TIER_RANK,
   FEATURE_MIN_TIER,
-  LIFETIME_BUYER_ENTITLEMENT_ID,
   type SubscriptionTierKey,
 } from '../data/products';
 
@@ -55,8 +54,7 @@ export interface EntitlementContext {
   starterCourseId: CoursePackId | null;
   /** Supabase user.id — used for owner-list bypass. */
   userId?: string | null;
-  /** All active RC entitlement IDs. Pass-through so feature checks can
-   *  do `entitlements.includes('lifetime_buyer')` etc. without re-deriving. */
+  /** All active RC entitlement IDs. Pass-through for feature checks. */
   entitlements?: string[];
 }
 
@@ -88,13 +86,6 @@ export function tierFromEntitlements(entitlementIds: string[]): SubscriptionTier
     }
   }
   return highest;
-}
-
-/** Lifetime buyers get 15% off all future token-pack purchases. The
- *  discount is applied server-side on webhook receipt — clients just
- *  surface the badge. */
-export function isLifetimeBuyer(ctx: EntitlementContext): boolean {
-  return !!ctx.entitlements?.includes(LIFETIME_BUYER_ENTITLEMENT_ID);
 }
 
 /** Parse the module number from a lesson ID like 'm05-l01-baba'. */

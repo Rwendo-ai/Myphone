@@ -8,7 +8,6 @@ import { presentPaywall } from '../lib/purchases';
 import {
   getMonthlyTiers,
   getYearlyTiers,
-  getLifetimeProducts,
   getTokenPacks,
   type Product,
 } from '../data/products';
@@ -18,19 +17,23 @@ import { Spacing, FontSize, FontWeight, BorderRadius } from '../constants/theme'
 /**
  * Cart screen — single surface for every paid action in the app.
  *
- * What's in here:
- *   - Your current plan + token balance (top card)
- *   - Pro tiers (monthly Text → Voice → Lipsync Low → Lipsync High → Ultra,
- *     plus yearly options on the top two, plus the Lifetime SKU)
- *   - AI token packs (small / medium / large)
+ * Layout order (v4, 2026-05-13):
+ *   1. Current plan + token balance card
+ *   2. AI Tokens — top + centre (this is the primary purchase surface)
+ *   3. Pro tiers (monthly) — for users who want a subscription baseline
+ *   4. Yearly variants for the top two tiers
  *
- * Tapping any product calls RevenueCat's hosted paywall (presentPaywall)
- * which handles the actual purchase flow. Once IAP products are wired up
- * in App Store Connect + Play Console + RevenueCat dashboard, this screen
- * will surface live store-localised pricing instead of the AUD base price.
+ * Tokens are first because they are how casual users buy AI usage without
+ * committing to a subscription, and how tier subscribers top up beyond
+ * their monthly allowance.
+ *
+ * Tapping any product calls RevenueCat's hosted paywall which handles the
+ * actual purchase flow. Once IAP products are wired up in App Store
+ * Connect + Play Console + RevenueCat dashboard, this screen will surface
+ * live store-localised pricing instead of the AUD base price.
  */
 export default function CartScreen() {
-  const { tier, hasPaidTier, isLifetimeBuyer } = useEntitlements();
+  const { tier, hasPaidTier, balance } = useEntitlements();
   const [busy, setBusy] = useState(false);
 
   const handleBuy = async (product: Product) => {
@@ -39,7 +42,6 @@ export default function CartScreen() {
     try {
       const ok = await presentPaywall();
       if (!ok) {
-        // Paywall not configured yet OR user cancelled — show friendly hint.
         Alert.alert(
           'Coming soon',
           'In-app purchases are being finalised with the App Store. Check back shortly.',
@@ -50,10 +52,9 @@ export default function CartScreen() {
     }
   };
 
+  const tokenPacks = getTokenPacks();
   const tierProducts = getMonthlyTiers();
   const yearlyProducts = getYearlyTiers();
-  const lifetimeProducts = getLifetimeProducts();
-  const tokenPacks = getTokenPacks();
 
   return (
     <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
@@ -67,51 +68,54 @@ export default function CartScreen() {
       <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
         {/* Current state card */}
         <View style={styles.statusCard}>
-          <Text style={styles.statusLabel}>Your plan</Text>
-          <Text style={styles.statusValue}>{tier === 'free' ? 'Free' : `Pro · ${formatTierLabel(tier)}`}</Text>
-          {isLifetimeBuyer && (
-            <Text style={styles.lifetimeBadge}>★ Lifetime · 15% off all token packs</Text>
-          )}
+          <View style={styles.statusRow}>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.statusLabel}>Your plan</Text>
+              <Text style={styles.statusValue}>{tier === 'free' ? 'Free' : `Pro · ${formatTierLabel(tier)}`}</Text>
+            </View>
+            <View style={styles.balancePill}>
+              <Text style={styles.balanceLabel}>Tokens</Text>
+              <Text style={styles.balanceValue}>{balance.toLocaleString()}</Text>
+            </View>
+          </View>
           {!hasPaidTier && (
             <Text style={styles.statusHint}>
-              Unlock all courses, the AI companion, and your first $2 of tokens — from A$4/month.
+              Top up tokens any time. Subscribe to unlock voice, lipsync, and the full companion experience.
             </Text>
           )}
         </View>
 
-        {/* Pro tiers — monthly */}
+        {/* ─── AI Tokens — primary purchase surface ─── */}
+        <View style={styles.heroSection}>
+          <Text style={styles.heroTitle}>AI Tokens</Text>
+          <Text style={styles.heroSub}>
+            Pay-as-you-go credit for talking with your companions. One balance, used across text, voice, and lipsync.
+          </Text>
+          <View style={styles.tokensGrid}>
+            {tokenPacks.map((p) => (
+              <TokenCard key={p.id} product={p} onPress={() => handleBuy(p)} disabled={busy} />
+            ))}
+          </View>
+          <Text style={styles.heroFootnote}>
+            Bigger packs include bonus tokens. Tokens never expire.
+          </Text>
+        </View>
+
+        {/* ─── Pro tiers — monthly ─── */}
         <Text style={styles.sectionTitle}>Pro · Monthly</Text>
         <Text style={styles.sectionSub}>
-          Pick the tier that matches how you want to use the AI companion. Every tier includes all courses + travel.
+          Unlock voice and video features. Every tier comes with a monthly token allowance and includes all courses.
         </Text>
         {tierProducts.map((p) => (
           <ProductRow key={p.id} product={p} onPress={() => handleBuy(p)} disabled={busy} />
         ))}
 
-        {/* Yearly variants */}
+        {/* ─── Yearly variants ─── */}
         <Text style={[styles.sectionTitle, { marginTop: Spacing.xl }]}>Pro · Yearly</Text>
         <Text style={styles.sectionSub}>
-          Yearly billing — about 33% off the monthly equivalent. Available on the top two tiers.
+          About 33% off the monthly equivalent. Available on the top two tiers.
         </Text>
         {yearlyProducts.map((p) => (
-          <ProductRow key={p.id} product={p} onPress={() => handleBuy(p)} disabled={busy} />
-        ))}
-
-        {/* Lifetime */}
-        <Text style={[styles.sectionTitle, { marginTop: Spacing.xl }]}>Lifetime</Text>
-        <Text style={styles.sectionSub}>
-          Pay once. Ultra forever. Lifetime buyers also get 15% off every future token pack.
-        </Text>
-        {lifetimeProducts.map((p) => (
-          <ProductRow key={p.id} product={p} onPress={() => handleBuy(p)} disabled={busy} />
-        ))}
-
-        {/* Token packs */}
-        <Text style={[styles.sectionTitle, { marginTop: Spacing.xl }]}>AI Token Packs</Text>
-        <Text style={styles.sectionSub}>
-          Top-up for heavy AI usage. Each tier comes with a monthly token allowance; packs add to that balance.
-        </Text>
-        {tokenPacks.map((p) => (
           <ProductRow key={p.id} product={p} onPress={() => handleBuy(p)} disabled={busy} />
         ))}
 
@@ -130,6 +134,27 @@ function formatTierLabel(tier: string): string {
     case 'ultra':        return 'Ultra';
     default:             return tier;
   }
+}
+
+function TokenCard({ product, onPress, disabled }: { product: Product; onPress: () => void; disabled: boolean }) {
+  return (
+    <Pressable
+      style={({ pressed }) => [
+        styles.tokenCard,
+        product.recommended && styles.tokenCardRecommended,
+        pressed && !disabled && styles.tokenCardPressed,
+      ]}
+      onPress={onPress}
+      disabled={disabled}
+    >
+      {product.recommended && <Text style={styles.tokenRecommendedTag}>Best value</Text>}
+      <Text style={styles.tokenAmount}>{product.tokens?.toLocaleString()}</Text>
+      <Text style={styles.tokenAmountLabel}>tokens</Text>
+      <View style={styles.tokenDivider} />
+      <Text style={styles.tokenPrice}>A${product.baseAud.toFixed(0)}</Text>
+      <Text style={styles.tokenSub}>{product.description.split('.')[0]}.</Text>
+    </Pressable>
+  );
 }
 
 function ProductRow({ product, onPress, disabled }: { product: Product; onPress: () => void; disabled: boolean }) {
@@ -153,7 +178,6 @@ function ProductRow({ product, onPress, disabled }: { product: Product; onPress:
           <Text style={styles.priceText}>A${product.baseAud.toFixed(2)}</Text>
           {product.periodDays === 30 && <Text style={styles.priceSub}>/ month</Text>}
           {product.periodDays === 365 && <Text style={styles.priceSub}>/ year</Text>}
-          {product.periodDays === 0 && product.category === 'lifetime_purchase' && <Text style={styles.priceSub}>once</Text>}
         </View>
       </View>
     </Pressable>
@@ -177,17 +201,72 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.white,
     borderRadius: BorderRadius.lg,
     padding: Spacing.lg,
-    marginBottom: Spacing.xl,
+    marginBottom: Spacing.lg,
     shadowColor: Colors.black,
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.05,
     shadowRadius: 4,
     elevation: 1,
   },
+  statusRow: { flexDirection: 'row', alignItems: 'center' },
   statusLabel: { color: Colors.gray[500], fontSize: FontSize.xs, fontWeight: FontWeight.bold, letterSpacing: 1 },
   statusValue: { color: Colors.gray[800], fontSize: FontSize.xl, fontWeight: FontWeight.bold, marginTop: Spacing.xs },
   statusHint: { color: Colors.gray[600], fontSize: FontSize.sm, marginTop: Spacing.sm },
-  lifetimeBadge: { color: '#F4B400', fontSize: FontSize.sm, fontWeight: FontWeight.bold, marginTop: Spacing.xs },
+  balancePill: {
+    backgroundColor: Colors.primary,
+    borderRadius: BorderRadius.md,
+    paddingHorizontal: Spacing.md,
+    paddingVertical: Spacing.sm,
+    alignItems: 'center',
+  },
+  balanceLabel: { color: Colors.white, opacity: 0.8, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1 },
+  balanceValue: { color: Colors.white, fontSize: FontSize.lg, fontWeight: FontWeight.bold, marginTop: 2 },
+
+  heroSection: {
+    backgroundColor: Colors.primary,
+    borderRadius: BorderRadius.lg,
+    padding: Spacing.lg,
+    marginBottom: Spacing.xl,
+    shadowColor: Colors.black,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.12,
+    shadowRadius: 6,
+    elevation: 3,
+  },
+  heroTitle: { color: Colors.white, fontSize: FontSize.xxl, fontWeight: FontWeight.bold },
+  heroSub: { color: Colors.white, opacity: 0.85, fontSize: FontSize.sm, marginTop: Spacing.xs, marginBottom: Spacing.lg },
+  heroFootnote: { color: Colors.white, opacity: 0.7, fontSize: FontSize.xs, marginTop: Spacing.md, textAlign: 'center' },
+  tokensGrid: {
+    flexDirection: 'row',
+    gap: Spacing.sm,
+  },
+  tokenCard: {
+    flex: 1,
+    backgroundColor: Colors.white,
+    borderRadius: BorderRadius.md,
+    padding: Spacing.md,
+    alignItems: 'center',
+    minHeight: 170,
+    shadowColor: Colors.black,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.06,
+    shadowRadius: 3,
+  },
+  tokenCardRecommended: { borderWidth: 2, borderColor: '#F4B400' },
+  tokenCardPressed: { opacity: 0.75 },
+  tokenRecommendedTag: {
+    color: '#F4B400',
+    fontSize: 10,
+    fontWeight: FontWeight.bold,
+    letterSpacing: 1,
+    marginBottom: 2,
+  },
+  tokenAmount: { color: Colors.primary, fontSize: 26, fontWeight: FontWeight.bold, marginTop: 2 },
+  tokenAmountLabel: { color: Colors.gray[500], fontSize: FontSize.xs, textTransform: 'uppercase', letterSpacing: 1 },
+  tokenDivider: { width: 30, height: 1, backgroundColor: Colors.gray[200], marginVertical: Spacing.sm },
+  tokenPrice: { color: Colors.gray[800], fontSize: FontSize.xl, fontWeight: FontWeight.bold },
+  tokenSub: { color: Colors.gray[500], fontSize: 11, marginTop: Spacing.xs, textAlign: 'center' },
+
   sectionTitle: { color: Colors.gray[800], fontSize: FontSize.lg, fontWeight: FontWeight.bold, marginTop: Spacing.md, marginBottom: Spacing.xs },
   sectionSub: { color: Colors.gray[500], fontSize: FontSize.sm, marginBottom: Spacing.md },
   row: {
