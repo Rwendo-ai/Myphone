@@ -4,6 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { SettingsProvider, useSettings, RwenVoiceKey } from '../lib/SettingsContext';
 import { AuthProvider, useAuth } from '../lib/AuthContext';
+import { CartProvider } from '../lib/CartContext';
 import { supabase } from '../lib/supabase';
 import { fetchActiveCompanionPresetId } from '../lib/active-companion';
 import { initPurchases, logoutPurchases } from '../lib/purchases';
@@ -102,12 +103,14 @@ export default function RootLayout() {
   return (
     <AuthProvider>
       <SettingsProvider>
-        <SafeAreaProvider>
-          <StatusBar style="light" />
-          <ProfileLoader />
-          <NavigationGuard />
-          <Stack screenOptions={{ headerShown: false }} />
-        </SafeAreaProvider>
+        <CartProvider>
+          <SafeAreaProvider>
+            <StatusBar style="light" />
+            <ProfileLoader />
+            <NavigationGuard />
+            <Stack screenOptions={{ headerShown: false }} />
+          </SafeAreaProvider>
+        </CartProvider>
       </SettingsProvider>
     </AuthProvider>
   );

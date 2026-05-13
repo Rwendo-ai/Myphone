@@ -1,60 +1,60 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { View, Text, StyleSheet, ScrollView, Pressable, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 
 import { useEntitlements } from '../hooks/useEntitlements';
+import { useCart } from '../lib/CartContext';
 import { presentPaywall } from '../lib/purchases';
-import {
-  getMonthlyTiers,
-  getYearlyTiers,
-  getTokenPacks,
-  type Product,
-} from '../data/products';
+import { getTokenPacks, type Product } from '../data/products';
 import { Colors } from '../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../constants/theme';
 
 /**
- * Cart screen — single surface for every paid action in the app.
+ * Cart screen — single surface for every paid action.
  *
- * Layout order (v4, 2026-05-13):
- *   1. Current plan + token balance card
- *   2. AI Tokens — top + centre (this is the primary purchase surface)
- *   3. Pro tiers (monthly) — for users who want a subscription baseline
- *   4. Yearly variants for the top two tiers
+ * Two-tab layout (v5, 2026-05-14):
+ *   • Items — line items the user has added but not yet purchased,
+ *             with a quick add-tokens strip at the top + subtotal +
+ *             checkout button. Default tab when cart has items.
+ *   • Shop  — the product browse surface. "Add companion tokens"
+ *             heading with three compact squares (1,000/$10,
+ *             5,500/$50, 12,000/$100). Default tab when cart is empty.
  *
- * Tokens are first because they are how casual users buy AI usage without
- * committing to a subscription, and how tier subscribers top up beyond
- * their monthly allowance.
- *
- * Tapping any product calls RevenueCat's hosted paywall which handles the
- * actual purchase flow. Once IAP products are wired up in App Store
- * Connect + Play Console + RevenueCat dashboard, this screen will surface
- * live store-localised pricing instead of the AUD base price.
+ * Future: a Companions section will appear in the Shop tab once the
+ * unlock catalogue is wired (currently companions are gated by tier;
+ * v6 switches to $5 one-off purchase or 5,000 XP redemption per
+ * companion).
  */
+type Tab = 'items' | 'shop';
+
 export default function CartScreen() {
   const { tier, hasPaidTier, balance } = useEntitlements();
+  const cart = useCart();
+
+  // Open to Items if the cart has anything; otherwise Shop.
+  const [tab, setTab] = useState<Tab>(cart.count > 0 ? 'items' : 'shop');
   const [busy, setBusy] = useState(false);
 
-  const handleBuy = async (product: Product) => {
-    if (busy) return;
+  const tokenPacks = useMemo(() => getTokenPacks(), []);
+
+  const handleCheckout = async () => {
+    if (busy || cart.count === 0) return;
     setBusy(true);
     try {
       const ok = await presentPaywall();
       if (!ok) {
         Alert.alert(
           'Coming soon',
-          'In-app purchases are being finalised with the App Store. Check back shortly.',
+          'In-app purchases are being finalised with the App Store. Your cart is saved — check back shortly.',
         );
+      } else {
+        cart.clear();
       }
     } finally {
       setBusy(false);
     }
   };
-
-  const tokenPacks = getTokenPacks();
-  const tierProducts = getMonthlyTiers();
-  const yearlyProducts = getYearlyTiers();
 
   return (
     <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
@@ -65,8 +65,18 @@ export default function CartScreen() {
         <Text style={styles.title}>Cart</Text>
       </View>
 
+      {/* Tab switcher */}
+      <View style={styles.tabBar}>
+        <TabButton
+          label={`Items${cart.count > 0 ? ` (${cart.count})` : ''}`}
+          active={tab === 'items'}
+          onPress={() => setTab('items')}
+        />
+        <TabButton label="Shop" active={tab === 'shop'} onPress={() => setTab('shop')} />
+      </View>
+
       <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
-        {/* Current state card */}
+        {/* Status card — shown on both tabs */}
         <View style={styles.statusCard}>
           <View style={styles.statusRow}>
             <View style={{ flex: 1 }}>
@@ -78,50 +88,222 @@ export default function CartScreen() {
               <Text style={styles.balanceValue}>{balance.toLocaleString()}</Text>
             </View>
           </View>
-          {!hasPaidTier && (
+          {!hasPaidTier && cart.count === 0 && (
             <Text style={styles.statusHint}>
-              Top up tokens any time. Subscribe to unlock voice, lipsync, and the full companion experience.
+              Pay-as-you-go tokens for talking with your companions. One balance, used across text, voice, and lipsync.
             </Text>
           )}
         </View>
 
-        {/* ─── AI Tokens — primary purchase surface ─── */}
-        <View style={styles.heroSection}>
-          <Text style={styles.heroTitle}>AI Tokens</Text>
-          <Text style={styles.heroSub}>
-            Pay-as-you-go credit for talking with your companions. One balance, used across text, voice, and lipsync.
-          </Text>
-          {tokenPacks.map((p) => (
-            <TokenRow key={p.id} product={p} onPress={() => handleBuy(p)} disabled={busy} />
-          ))}
-          <Text style={styles.heroFootnote}>
-            Bigger packs include bonus tokens. Tokens never expire.
-          </Text>
-        </View>
-
-        {/* ─── Pro tiers — monthly ─── */}
-        <Text style={styles.sectionTitle}>Pro · Monthly</Text>
-        <Text style={styles.sectionSub}>
-          Unlock voice and video features. Every tier comes with a monthly token allowance and includes all courses.
-        </Text>
-        {tierProducts.map((p) => (
-          <ProductRow key={p.id} product={p} onPress={() => handleBuy(p)} disabled={busy} />
-        ))}
-
-        {/* ─── Yearly variants ─── */}
-        <Text style={[styles.sectionTitle, { marginTop: Spacing.xl }]}>Pro · Yearly</Text>
-        <Text style={styles.sectionSub}>
-          About 33% off the monthly equivalent. Available on the top two tiers.
-        </Text>
-        {yearlyProducts.map((p) => (
-          <ProductRow key={p.id} product={p} onPress={() => handleBuy(p)} disabled={busy} />
-        ))}
+        {tab === 'items' ? (
+          <ItemsTab cart={cart} tokenPacks={tokenPacks} onCheckout={handleCheckout} busy={busy} />
+        ) : (
+          <ShopTab tokenPacks={tokenPacks} />
+        )}
 
         <View style={{ height: Spacing.xxl }} />
       </ScrollView>
     </SafeAreaView>
   );
 }
+
+function TabButton({ label, active, onPress }: { label: string; active: boolean; onPress: () => void }) {
+  return (
+    <Pressable onPress={onPress} style={[styles.tabBtn, active && styles.tabBtnActive]}>
+      <Text style={[styles.tabBtnText, active && styles.tabBtnTextActive]}>{label}</Text>
+    </Pressable>
+  );
+}
+
+// ─── Shop tab ──────────────────────────────────────────────────────────────
+
+function ShopTab({ tokenPacks }: { tokenPacks: Product[] }) {
+  const cart = useCart();
+  return (
+    <View>
+      <Text style={styles.sectionTitle}>Add companion tokens</Text>
+      <Text style={styles.sectionSub}>
+        Tap a pack to add it to your cart. Tokens never expire.
+      </Text>
+      <View style={styles.squareGrid}>
+        {tokenPacks.map((p) => (
+          <TokenSquare
+            key={p.id}
+            product={p}
+            inCart={cart.has(p.id)}
+            onPress={() => cart.add(p.id)}
+          />
+        ))}
+      </View>
+    </View>
+  );
+}
+
+function TokenSquare({
+  product,
+  inCart,
+  onPress,
+}: {
+  product: Product;
+  inCart: boolean;
+  onPress: () => void;
+}) {
+  return (
+    <Pressable
+      style={({ pressed }) => [
+        styles.square,
+        product.recommended && styles.squareRecommended,
+        inCart && styles.squareInCart,
+        pressed && styles.squarePressed,
+      ]}
+      onPress={onPress}
+    >
+      {product.recommended && <Text style={styles.squareBadge}>BEST</Text>}
+      <Text
+        style={styles.squareTokens}
+        numberOfLines={1}
+        adjustsFontSizeToFit
+        minimumFontScale={0.6}
+      >
+        {product.tokens?.toLocaleString()}
+      </Text>
+      <Text style={styles.squareTokensLabel}>tokens</Text>
+      <View style={styles.squareDivider} />
+      <Text
+        style={styles.squarePrice}
+        numberOfLines={1}
+        adjustsFontSizeToFit
+        minimumFontScale={0.7}
+      >
+        A${product.baseAud.toFixed(0)}
+      </Text>
+      {inCart ? <Text style={styles.squareInCartLabel}>In cart ✓</Text> : <Text style={styles.squareAddLabel}>Tap to add</Text>}
+    </Pressable>
+  );
+}
+
+// ─── Items tab ─────────────────────────────────────────────────────────────
+
+function ItemsTab({
+  cart,
+  tokenPacks,
+  onCheckout,
+  busy,
+}: {
+  cart: ReturnType<typeof useCart>;
+  tokenPacks: Product[];
+  onCheckout: () => void;
+  busy: boolean;
+}) {
+  const lines = cart.getLines();
+
+  if (lines.length === 0) {
+    return (
+      <View style={styles.emptyState}>
+        <Text style={styles.emptyEmoji}>🛒</Text>
+        <Text style={styles.emptyTitle}>Your cart is empty</Text>
+        <Text style={styles.emptySub}>
+          Switch to Shop to browse token packs and companion unlocks.
+        </Text>
+      </View>
+    );
+  }
+
+  return (
+    <View>
+      {/* Quick-add tokens strip — even when reviewing the cart you can add more */}
+      <Text style={styles.sectionTitle}>Add companion tokens</Text>
+      <View style={styles.squareGrid}>
+        {tokenPacks.map((p) => (
+          <TokenSquare
+            key={p.id}
+            product={p}
+            inCart={cart.has(p.id)}
+            onPress={() => cart.add(p.id)}
+          />
+        ))}
+      </View>
+
+      {/* Line items */}
+      <Text style={[styles.sectionTitle, { marginTop: Spacing.xl }]}>In your cart</Text>
+      {lines.map(({ product, quantity }) => (
+        <LineRow
+          key={product.id}
+          product={product}
+          quantity={quantity}
+          onMinus={() => cart.setQty(product.id, quantity - 1)}
+          onPlus={() => cart.setQty(product.id, quantity + 1)}
+          onRemove={() => cart.remove(product.id)}
+        />
+      ))}
+
+      {/* Subtotal + checkout */}
+      <View style={styles.subtotalCard}>
+        <View style={styles.subtotalRow}>
+          <Text style={styles.subtotalLabel}>Subtotal</Text>
+          <Text style={styles.subtotalValue}>A${cart.subtotalAud.toFixed(2)}</Text>
+        </View>
+        <Pressable
+          style={({ pressed }) => [
+            styles.checkoutBtn,
+            (busy || cart.count === 0) && styles.checkoutBtnDisabled,
+            pressed && !busy && styles.checkoutBtnPressed,
+          ]}
+          onPress={onCheckout}
+          disabled={busy || cart.count === 0}
+        >
+          <Text style={styles.checkoutBtnText}>{busy ? 'Loading…' : 'Checkout'}</Text>
+        </Pressable>
+        <Pressable onPress={() => cart.clear()} hitSlop={8}>
+          <Text style={styles.clearLink}>Clear cart</Text>
+        </Pressable>
+      </View>
+    </View>
+  );
+}
+
+function LineRow({
+  product,
+  quantity,
+  onMinus,
+  onPlus,
+  onRemove,
+}: {
+  product: Product;
+  quantity: number;
+  onMinus: () => void;
+  onPlus: () => void;
+  onRemove: () => void;
+}) {
+  const lineTotal = product.baseAud * quantity;
+  return (
+    <View style={styles.lineRow}>
+      <View style={{ flex: 1 }}>
+        <Text style={styles.lineTitle}>{product.displayName}</Text>
+        {product.tokens && (
+          <Text style={styles.lineSub}>{(product.tokens * quantity).toLocaleString()} tokens</Text>
+        )}
+      </View>
+      <View style={styles.qtyControl}>
+        <Pressable onPress={onMinus} hitSlop={6} style={styles.qtyBtn}>
+          <Text style={styles.qtyBtnText}>−</Text>
+        </Pressable>
+        <Text style={styles.qtyValue}>{quantity}</Text>
+        <Pressable onPress={onPlus} hitSlop={6} style={styles.qtyBtn}>
+          <Text style={styles.qtyBtnText}>+</Text>
+        </Pressable>
+      </View>
+      <View style={styles.linePrice}>
+        <Text style={styles.linePriceText}>A${lineTotal.toFixed(2)}</Text>
+        <Pressable onPress={onRemove} hitSlop={6}>
+          <Text style={styles.lineRemove}>Remove</Text>
+        </Pressable>
+      </View>
+    </View>
+  );
+}
+
+// ─── Helpers ───────────────────────────────────────────────────────────────
 
 function formatTierLabel(tier: string): string {
   switch (tier) {
@@ -134,69 +316,7 @@ function formatTierLabel(tier: string): string {
   }
 }
 
-function TokenRow({ product, onPress, disabled }: { product: Product; onPress: () => void; disabled: boolean }) {
-  // Pull a short bonus/description blurb (skip the first sentence which is
-  // just the token count; use the second if present, else fall back).
-  const parts = product.description.split('.').map((s) => s.trim()).filter(Boolean);
-  const blurb = parts.length > 1 ? parts[1] : parts[0];
-
-  return (
-    <Pressable
-      style={({ pressed }) => [
-        styles.tokenRow,
-        product.recommended && styles.tokenRowRecommended,
-        pressed && !disabled && styles.tokenRowPressed,
-      ]}
-      onPress={onPress}
-      disabled={disabled}
-    >
-      {product.recommended && (
-        <View style={styles.tokenRowBadge}>
-          <Text style={styles.tokenRowBadgeText}>BEST VALUE</Text>
-        </View>
-      )}
-      <View style={styles.tokenRowLeft}>
-        <Text style={styles.tokenRowPrice} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.7}>
-          A${product.baseAud.toFixed(0)}
-        </Text>
-        <Text style={styles.tokenRowBlurb} numberOfLines={2}>{blurb}</Text>
-      </View>
-      <View style={styles.tokenRowRight}>
-        <Text style={styles.tokenRowTokens} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.7}>
-          {product.tokens?.toLocaleString()}
-        </Text>
-        <Text style={styles.tokenRowTokensLabel}>tokens</Text>
-      </View>
-    </Pressable>
-  );
-}
-
-function ProductRow({ product, onPress, disabled }: { product: Product; onPress: () => void; disabled: boolean }) {
-  return (
-    <Pressable
-      style={({ pressed }) => [
-        styles.row,
-        product.recommended && styles.rowRecommended,
-        pressed && !disabled && styles.rowPressed,
-      ]}
-      onPress={onPress}
-      disabled={disabled}
-    >
-      {product.recommended && <Text style={styles.recommendedTag}>Recommended</Text>}
-      <View style={styles.rowMain}>
-        <View style={{ flex: 1 }}>
-          <Text style={styles.rowTitle}>{product.displayName}</Text>
-          <Text style={styles.rowSub}>{product.description}</Text>
-        </View>
-        <View style={styles.rowPrice}>
-          <Text style={styles.priceText}>A${product.baseAud.toFixed(2)}</Text>
-          {product.periodDays === 30 && <Text style={styles.priceSub}>/ month</Text>}
-          {product.periodDays === 365 && <Text style={styles.priceSub}>/ year</Text>}
-        </View>
-      </View>
-    </Pressable>
-  );
-}
+// ─── Styles ────────────────────────────────────────────────────────────────
 
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: Colors.accent },
@@ -210,7 +330,26 @@ const styles = StyleSheet.create({
   backBtn: { padding: Spacing.sm, marginRight: Spacing.sm },
   backText: { color: Colors.white, fontSize: FontSize.xxl },
   title: { color: Colors.white, fontSize: FontSize.xl, fontWeight: FontWeight.bold },
+
+  tabBar: {
+    flexDirection: 'row',
+    backgroundColor: Colors.white,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.gray[200],
+  },
+  tabBtn: {
+    flex: 1,
+    paddingVertical: Spacing.md,
+    alignItems: 'center',
+    borderBottomWidth: 3,
+    borderBottomColor: 'transparent',
+  },
+  tabBtnActive: { borderBottomColor: Colors.primary },
+  tabBtnText: { color: Colors.gray[500], fontSize: FontSize.md, fontWeight: FontWeight.bold },
+  tabBtnTextActive: { color: Colors.primary },
+
   scrollContent: { padding: Spacing.lg },
+
   statusCard: {
     backgroundColor: Colors.white,
     borderRadius: BorderRadius.lg,
@@ -236,80 +375,109 @@ const styles = StyleSheet.create({
   balanceLabel: { color: Colors.white, opacity: 0.8, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1 },
   balanceValue: { color: Colors.white, fontSize: FontSize.lg, fontWeight: FontWeight.bold, marginTop: 2 },
 
-  heroSection: {
-    backgroundColor: Colors.primary,
-    borderRadius: BorderRadius.lg,
-    padding: Spacing.lg,
-    marginBottom: Spacing.xl,
-    shadowColor: Colors.black,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.12,
-    shadowRadius: 6,
-    elevation: 3,
-  },
-  heroTitle: { color: Colors.white, fontSize: FontSize.xxl, fontWeight: FontWeight.bold },
-  heroSub: { color: Colors.white, opacity: 0.85, fontSize: FontSize.sm, marginTop: Spacing.xs, marginBottom: Spacing.lg },
-  heroFootnote: { color: Colors.white, opacity: 0.7, fontSize: FontSize.xs, marginTop: Spacing.md, textAlign: 'center' },
-  tokenRow: {
+  sectionTitle: { color: Colors.gray[800], fontSize: FontSize.lg, fontWeight: FontWeight.bold, marginBottom: Spacing.xs },
+  sectionSub: { color: Colors.gray[500], fontSize: FontSize.sm, marginBottom: Spacing.md },
+
+  squareGrid: { flexDirection: 'row', gap: Spacing.sm, justifyContent: 'space-between' },
+  square: {
+    flex: 1,
     backgroundColor: Colors.white,
     borderRadius: BorderRadius.md,
     paddingVertical: Spacing.md,
-    paddingHorizontal: Spacing.md,
+    paddingHorizontal: Spacing.sm,
+    alignItems: 'center',
+    minHeight: 130,
+    borderWidth: 1,
+    borderColor: Colors.gray[200],
+    shadowColor: Colors.black,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.06,
+    shadowRadius: 3,
+  },
+  squareRecommended: { borderColor: '#F4B400', borderWidth: 2 },
+  squareInCart: { backgroundColor: '#EDF7EF', borderColor: '#3DA864', borderWidth: 2 },
+  squarePressed: { opacity: 0.75 },
+  squareBadge: {
+    position: 'absolute',
+    top: -8,
+    backgroundColor: '#F4B400',
+    color: Colors.white,
+    fontSize: 9,
+    fontWeight: FontWeight.bold,
+    letterSpacing: 1,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 4,
+    overflow: 'hidden',
+  },
+  squareTokens: { color: Colors.primary, fontSize: 22, fontWeight: FontWeight.bold, marginTop: 4 },
+  squareTokensLabel: { color: Colors.gray[500], fontSize: 9, textTransform: 'uppercase', letterSpacing: 1, marginTop: 1 },
+  squareDivider: { width: 24, height: 1, backgroundColor: Colors.gray[200], marginVertical: Spacing.sm },
+  squarePrice: { color: Colors.gray[800], fontSize: 22, fontWeight: FontWeight.bold },
+  squareAddLabel: { color: Colors.gray[500], fontSize: 10, marginTop: 4 },
+  squareInCartLabel: { color: '#3DA864', fontSize: 10, fontWeight: FontWeight.bold, marginTop: 4 },
+
+  emptyState: { alignItems: 'center', paddingVertical: Spacing.xxl },
+  emptyEmoji: { fontSize: 56, marginBottom: Spacing.md },
+  emptyTitle: { color: Colors.gray[800], fontSize: FontSize.lg, fontWeight: FontWeight.bold },
+  emptySub: { color: Colors.gray[500], fontSize: FontSize.sm, marginTop: Spacing.xs, textAlign: 'center', paddingHorizontal: Spacing.lg },
+
+  lineRow: {
+    backgroundColor: Colors.white,
+    borderRadius: BorderRadius.md,
+    padding: Spacing.md,
     marginBottom: Spacing.sm,
     flexDirection: 'row',
     alignItems: 'center',
-    shadowColor: Colors.black,
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.08,
-    shadowRadius: 3,
-    elevation: 2,
-    position: 'relative',
-  },
-  tokenRowRecommended: { borderWidth: 2, borderColor: '#F4B400' },
-  tokenRowPressed: { opacity: 0.75 },
-  tokenRowBadge: {
-    position: 'absolute',
-    top: -10,
-    left: Spacing.md,
-    backgroundColor: '#F4B400',
-    borderRadius: 4,
-    paddingHorizontal: 8,
-    paddingVertical: 2,
-  },
-  tokenRowBadgeText: { color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1 },
-  tokenRowLeft: { flex: 1, paddingRight: Spacing.md },
-  tokenRowPrice: { color: Colors.gray[800], fontSize: 28, fontWeight: FontWeight.bold },
-  tokenRowBlurb: { color: Colors.gray[600], fontSize: FontSize.sm, marginTop: 2 },
-  tokenRowRight: { alignItems: 'flex-end', minWidth: 100 },
-  tokenRowTokens: { color: Colors.primary, fontSize: 22, fontWeight: FontWeight.bold },
-  tokenRowTokensLabel: { color: Colors.gray[500], fontSize: 10, textTransform: 'uppercase', letterSpacing: 1, marginTop: 2 },
-
-  sectionTitle: { color: Colors.gray[800], fontSize: FontSize.lg, fontWeight: FontWeight.bold, marginTop: Spacing.md, marginBottom: Spacing.xs },
-  sectionSub: { color: Colors.gray[500], fontSize: FontSize.sm, marginBottom: Spacing.md },
-  row: {
-    backgroundColor: Colors.white,
-    borderRadius: BorderRadius.lg,
-    padding: Spacing.md,
-    marginBottom: Spacing.sm,
+    gap: Spacing.sm,
     shadowColor: Colors.black,
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.05,
-    shadowRadius: 3,
-    elevation: 1,
+    shadowRadius: 2,
   },
-  rowRecommended: { borderWidth: 2, borderColor: Colors.primary },
-  rowPressed: { opacity: 0.7 },
-  recommendedTag: {
-    color: Colors.primary,
-    fontSize: FontSize.xs,
-    fontWeight: FontWeight.bold,
-    letterSpacing: 1,
-    marginBottom: Spacing.xs,
+  lineTitle: { color: Colors.gray[800], fontSize: FontSize.md, fontWeight: FontWeight.bold },
+  lineSub: { color: Colors.gray[500], fontSize: FontSize.xs, marginTop: 2 },
+  qtyControl: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: Colors.gray[100],
+    borderRadius: BorderRadius.sm,
+    paddingHorizontal: 4,
+    paddingVertical: 2,
   },
-  rowMain: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md },
-  rowTitle: { color: Colors.gray[800], fontSize: FontSize.md, fontWeight: FontWeight.bold },
-  rowSub: { color: Colors.gray[600], fontSize: FontSize.sm, marginTop: 2 },
-  rowPrice: { alignItems: 'flex-end' },
-  priceText: { color: Colors.gray[800], fontSize: FontSize.lg, fontWeight: FontWeight.bold },
-  priceSub: { color: Colors.gray[500], fontSize: FontSize.xs, marginTop: 2 },
+  qtyBtn: { paddingHorizontal: 8, paddingVertical: 2 },
+  qtyBtnText: { color: Colors.primary, fontSize: FontSize.lg, fontWeight: FontWeight.bold },
+  qtyValue: { color: Colors.gray[800], fontSize: FontSize.md, fontWeight: FontWeight.bold, minWidth: 18, textAlign: 'center' },
+  linePrice: { alignItems: 'flex-end' },
+  linePriceText: { color: Colors.gray[800], fontSize: FontSize.md, fontWeight: FontWeight.bold },
+  lineRemove: { color: Colors.gray[500], fontSize: FontSize.xs, marginTop: 2 },
+
+  subtotalCard: {
+    backgroundColor: Colors.white,
+    borderRadius: BorderRadius.lg,
+    padding: Spacing.lg,
+    marginTop: Spacing.lg,
+    shadowColor: Colors.black,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+  },
+  subtotalRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: Spacing.md,
+  },
+  subtotalLabel: { color: Colors.gray[600], fontSize: FontSize.md, fontWeight: FontWeight.bold },
+  subtotalValue: { color: Colors.gray[800], fontSize: FontSize.xxl, fontWeight: FontWeight.bold },
+  checkoutBtn: {
+    backgroundColor: Colors.primary,
+    borderRadius: BorderRadius.md,
+    paddingVertical: Spacing.md,
+    alignItems: 'center',
+  },
+  checkoutBtnDisabled: { opacity: 0.5 },
+  checkoutBtnPressed: { opacity: 0.85 },
+  checkoutBtnText: { color: Colors.white, fontSize: FontSize.md, fontWeight: FontWeight.bold },
+  clearLink: { color: Colors.gray[500], fontSize: FontSize.sm, textAlign: 'center', marginTop: Spacing.md },
 });
