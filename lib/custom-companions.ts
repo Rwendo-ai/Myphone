@@ -59,6 +59,16 @@ export interface CustomCompanionDraft {
   voice_id: string | null;
   system_prompt: string | null;
   status: 'draft' | 'paid' | 'archived';
+  /** Custom user-uploaded photo URL (Supabase Storage) — used by the
+   *  Simli engine for Custom-tier lipsync. Null if the user opted for
+   *  the emoji+colour avatar instead. */
+  avatar_image_url?: string | null;
+  /** Optional pre-generated idling MP4 — populated by a later flow if
+   *  we offer Lipsync Plus on custom companions. */
+  idling_video_url?: string | null;
+  /** Simli Face ID — populated by the photo-processing Edge Function
+   *  (Replicate-backed) once a real photo is uploaded. */
+  simli_face_id?: string | null;
 }
 
 /** Curated stock voices for the wizard. ElevenLabs voice IDs, with a

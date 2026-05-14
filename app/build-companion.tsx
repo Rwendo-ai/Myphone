@@ -15,7 +15,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import {
   View, Text, StyleSheet, ScrollView, Pressable, TextInput,
-  ActivityIndicator, Alert, KeyboardAvoidingView, Platform,
+  ActivityIndicator, Alert, KeyboardAvoidingView, Platform, Image,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
@@ -28,6 +28,7 @@ import {
   RELATIONSHIP_TYPES, TOPIC_OPTIONS, AVATAR_OPTIONS, STOCK_VOICES,
   type CustomCompanionDraft, type RelationshipType, type Personality,
 } from '../lib/custom-companions';
+import { pickAndUploadCompanionPhoto } from '../lib/companion-photo';
 import { Colors } from '../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../constants/theme';
 
@@ -145,7 +146,19 @@ export default function BuildCompanionScreen() {
           {step === 'name'         && <NameStep name={draft.name} tagline={draft.tagline} relationship={draft.relationship_type} onChange={(name, tagline) => persist({ name, tagline })} onNext={goNext} />}
           {step === 'personality'  && <PersonalityStep value={draft.personality} onChange={(v) => persist({ personality: v })} onNext={goNext} />}
           {step === 'topics'       && <TopicsStep value={draft.topics} onChange={(v) => persist({ topics: v })} onNext={goNext} />}
-          {step === 'avatar'       && <AvatarStep emoji={draft.emoji} color={draft.avatar_color} onChange={(emoji, avatar_color) => persist({ emoji, avatar_color })} onNext={goNext} />}
+          {step === 'avatar'       && (
+            <AvatarStep
+              draftId={draftId}
+              userId={user?.id ?? null}
+              emoji={draft.emoji}
+              color={draft.avatar_color}
+              photoUrl={draft.avatar_image_url ?? null}
+              onChangeEmoji={(emoji, avatar_color) => persist({ emoji, avatar_color, avatar_image_url: null })}
+              onPhotoUploaded={(url) => persist({ avatar_image_url: url })}
+              onPhotoCleared={() => persist({ avatar_image_url: null })}
+              onNext={goNext}
+            />
+          )}
           {step === 'voice'        && <VoiceStep value={draft.voice_id} onChange={(voice_id) => persist({ voice_id })} onNext={goNext} />}
           {step === 'preview'      && <PreviewStep draft={draft} onNext={goNext} />}
           {step === 'confirm'      && <ConfirmStep draft={draft} busy={busy} onConfirm={finalise} />}
@@ -349,19 +362,83 @@ function TopicsStep({
 }
 
 function AvatarStep({
-  emoji, color, onChange, onNext,
-}: { emoji: string; color: string; onChange: (emoji: string, color: string) => void; onNext: () => void }) {
+  draftId, userId, emoji, color, photoUrl,
+  onChangeEmoji, onPhotoUploaded, onPhotoCleared, onNext,
+}: {
+  draftId: string | null;
+  userId: string | null;
+  emoji: string;
+  color: string;
+  photoUrl: string | null;
+  onChangeEmoji: (emoji: string, color: string) => void;
+  onPhotoUploaded: (url: string) => void;
+  onPhotoCleared: () => void;
+  onNext: () => void;
+}) {
+  const [uploading, setUploading] = useState(false);
+
+  const pickPhoto = async () => {
+    if (!userId || !draftId || uploading) {
+      // The draft row is created on the first persist() call (back on
+      // welcome step). If somehow we got here without one, ask the user
+      // to skip and try again.
+      Alert.alert('One moment', 'Your draft is still being created. Try again in a second.');
+      return;
+    }
+    setUploading(true);
+    try {
+      const result = await pickAndUploadCompanionPhoto(userId, draftId);
+      if (result) onPhotoUploaded(result.url);
+    } catch (e: any) {
+      Alert.alert('Upload failed', e?.message ?? 'Couldn\'t upload that photo. Try another.');
+    } finally {
+      setUploading(false);
+    }
+  };
+
   return (
     <View style={styles.block}>
       <Text style={styles.stepTitle}>How do they look?</Text>
-      <Text style={styles.stepSub}>Pick an emoji + colour for now. (Generated portraits and uploaded photos coming next.)</Text>
+      <Text style={styles.stepSub}>
+        Pick an emoji + colour, OR upload a photo. The photo is used for Custom Lipsync (5 tokens/min when chatting in video).
+      </Text>
+
+      {/* Photo upload card */}
+      {photoUrl ? (
+        <View style={styles.photoCard}>
+          <Image source={{ uri: photoUrl }} style={styles.photoPreview} />
+          <View style={{ flex: 1 }}>
+            <Text style={styles.cardLabel}>Your photo</Text>
+            <Text style={styles.cardDesc}>This will drive Custom Lipsync.</Text>
+            <View style={{ flexDirection: 'row', gap: Spacing.sm, marginTop: Spacing.sm }}>
+              <Pressable onPress={pickPhoto} hitSlop={6}><Text style={styles.photoActionLink}>Change</Text></Pressable>
+              <Pressable onPress={onPhotoCleared} hitSlop={6}><Text style={styles.photoActionLinkRemove}>Remove</Text></Pressable>
+            </View>
+          </View>
+        </View>
+      ) : (
+        <Pressable
+          onPress={pickPhoto}
+          style={({ pressed }) => [styles.photoCta, pressed && { opacity: 0.85 }, uploading && { opacity: 0.6 }]}
+          disabled={uploading}
+        >
+          {uploading ? <ActivityIndicator color={Colors.primary} /> : <Text style={styles.photoCtaEmoji}>📷</Text>}
+          <View style={{ flex: 1 }}>
+            <Text style={styles.photoCtaTitle}>{uploading ? 'Uploading…' : 'Upload a photo'}</Text>
+            <Text style={styles.photoCtaSub}>For Custom Lipsync video chat. Or skip and pick an emoji below.</Text>
+          </View>
+        </Pressable>
+      )}
+
+      {/* Emoji + colour grid (always available) */}
+      <Text style={[styles.stepSub2, { marginTop: Spacing.lg }]}>{photoUrl ? 'Or pick an emoji+colour avatar instead:' : 'Emoji + colour'}</Text>
       <View style={styles.avatarGrid}>
         {AVATAR_OPTIONS.map((opt) => {
-          const selected = opt.emoji === emoji && opt.color === color;
+          const selected = !photoUrl && opt.emoji === emoji && opt.color === color;
           return (
             <Pressable
               key={opt.emoji + opt.color}
-              onPress={() => onChange(opt.emoji, opt.color)}
+              onPress={() => onChangeEmoji(opt.emoji, opt.color)}
               style={[styles.avatarTile, { backgroundColor: opt.color }, selected && styles.avatarTileSelected]}
             >
               <Text style={styles.avatarTileEmoji}>{opt.emoji}</Text>
@@ -554,6 +631,24 @@ const styles = StyleSheet.create({
   chipSelected: { backgroundColor: Colors.primary, borderColor: Colors.primary },
   chipText: { color: Colors.gray[700], fontSize: FontSize.sm },
   chipTextSelected: { color: Colors.white, fontWeight: FontWeight.bold },
+
+  photoCta: {
+    flexDirection: 'row', alignItems: 'center', gap: Spacing.md,
+    backgroundColor: '#F2F6FC', borderRadius: BorderRadius.md,
+    padding: Spacing.md, borderWidth: 2, borderStyle: 'dashed', borderColor: Colors.primary,
+  },
+  photoCtaEmoji: { fontSize: 28 },
+  photoCtaTitle: { color: Colors.gray[800], fontSize: FontSize.md, fontWeight: FontWeight.bold },
+  photoCtaSub: { color: Colors.gray[600], fontSize: FontSize.xs, marginTop: 2 },
+
+  photoCard: {
+    flexDirection: 'row', alignItems: 'center', gap: Spacing.md,
+    backgroundColor: Colors.white, borderRadius: BorderRadius.md,
+    padding: Spacing.md, borderWidth: 2, borderColor: '#3DA864',
+  },
+  photoPreview: { width: 72, height: 72, borderRadius: 36, backgroundColor: Colors.gray[200] },
+  photoActionLink: { color: Colors.primary, fontSize: FontSize.sm, fontWeight: FontWeight.bold },
+  photoActionLinkRemove: { color: '#C0392B', fontSize: FontSize.sm, fontWeight: FontWeight.bold },
 
   avatarGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm },
   avatarTile: { width: 64, height: 64, borderRadius: 32, alignItems: 'center', justifyContent: 'center', borderWidth: 3, borderColor: 'transparent' },

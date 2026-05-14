@@ -12,21 +12,30 @@
  * lipsync_high; renamed to match customer-facing terminology.
  */
 
-export type AiFeatureKey = 'text' | 'voice' | 'lipsync' | 'lipsync_plus';
+export type AiFeatureKey = 'text' | 'voice' | 'lipsync' | 'lipsync_plus' | 'lipsync_custom';
 
-/** Token cost per use. Voice/lipsync costs are per-minute estimates. */
+/** Token cost per use. Voice/lipsync costs are per-minute estimates.
+ *
+ * NOTE: lipsync values match the Google design-plan placeholders. Real
+ * Simli (~$0.40/min) and Sync Labs (~$0.70/min) costs make these too
+ * low to break even — realistic launch values are closer to:
+ *   lipsync: 50, lipsync_plus: 100, lipsync_custom: 55.
+ * Revisit before launch. See docs/LIPSYNC-INTEGRATION.md.
+ */
 export const AI_FEATURE_COST: Record<AiFeatureKey, number> = {
-  text:         1,
-  voice:        5,
-  lipsync:      20,
-  lipsync_plus: 50,
+  text:           1,
+  voice:          5,
+  lipsync:        3,   // Simli engine, archetype image
+  lipsync_plus:   10,  // Sync Labs engine, archetype 6s idling video
+  lipsync_custom: 5,   // Simli engine, user-uploaded photo (custom companion)
 };
 
 export const AI_FEATURE_LABEL: Record<AiFeatureKey, string> = {
-  text:         'Text',
-  voice:        'Voice',
-  lipsync:      'Lipsync',
-  lipsync_plus: 'Lipsync Plus',
+  text:           'Text',
+  voice:          'Voice',
+  lipsync:        'Lipsync',
+  lipsync_plus:   'Lipsync Plus',
+  lipsync_custom: 'Lipsync (Custom)',
 };
 
 /** UX helper — return e.g. "5 tokens / min" for voice. */
