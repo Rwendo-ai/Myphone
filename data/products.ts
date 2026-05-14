@@ -46,7 +46,8 @@ export type ProductCategory =
   | 'tier_subscription'
   | 'token_pack'
   | 'course_subscription'
-  | 'companion_unlock';
+  | 'companion_unlock'
+  | 'companion_build';
 
 /** The five paid tiers, in ascending order. The numeric rank lets
  *  entitlement checks do `userTier >= requiredTier`. */
@@ -338,6 +339,39 @@ const COMPANION_CATALOG: Array<{ companionId: string; displayName: string; emoji
   { companionId: 'zeke',   displayName: 'Zeke · Crypto (13+)', emoji: '⛓️' },
 ];
 
+// ─── Build a Companion ($39.99 one-time) ───────────────────────────────────
+//
+// One product, purchased N times by power users. Each purchase unlocks
+// ONE custom companion they built via the build wizard (custom_companions
+// table, status='paid' on RC webhook receipt).
+//
+// What's included in the $39.99 (v1):
+//   - Custom name, tagline, emoji, avatar colour
+//   - Personality wizard (5 sliders + free-text)
+//   - Topic strengths multi-select
+//   - Stock voice picker (~12 curated ElevenLabs voices)
+//   - AI-composed system prompt (Claude composes from wizard answers)
+//   - Persistent ownership — companion stays in their roster forever
+//
+// Coming in v2 (separate work):
+//   - ElevenLabs Voice Design (generated voice from text description)
+//   - AI-generated avatar portrait (text-to-image)
+//   - Live chat preview in-wizard
+//   - Agent-style tool use (web search, memory)
+
+const COMPANION_BUILD_PRODUCT: Product = {
+  id:           'companion_build_v1',
+  storeId:      'rwendo_companion_build_v1',
+  entitlement:  'companion_build',     // not unique-per-build; RC delivers an
+                                       // event per purchase and the webhook
+                                       // marks the matching draft as paid.
+  category:     'companion_build',
+  displayName:  'Build a Companion',
+  description:  '$39.99 one-time. Design a custom AI companion — name, personality, voice, look. Yours forever.',
+  baseAud:      39.99,
+  xpReward:     500,
+};
+
 const COMPANION_UNLOCKS: Product[] = COMPANION_CATALOG.map(({ companionId, displayName, emoji }) => ({
   id:           `companion_${companionId}`,
   storeId:      `rwendo_companion_${companionId}_v1`,
@@ -356,6 +390,7 @@ export const ALL_PRODUCTS: Product[] = [
   ...TOKEN_PACKS,
   ...COURSE_SUBSCRIPTIONS,
   ...COMPANION_UNLOCKS,
+  COMPANION_BUILD_PRODUCT,
   // Legacy subscription tiers — defined but no longer surfaced in any UI.
   // The full tier-removal refactor (canUseAiFeature → token-balance check)
   // happens in a follow-up turn.
@@ -428,4 +463,8 @@ export function getCompanionUnlocks(): Product[] {
 
 export function getCompanionUnlock(companionId: string): Product | undefined {
   return COMPANION_UNLOCKS.find((p) => p.companionId === companionId);
+}
+
+export function getCompanionBuildProduct(): Product {
+  return COMPANION_BUILD_PRODUCT;
 }

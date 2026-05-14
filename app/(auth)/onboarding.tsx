@@ -9,16 +9,18 @@ import { useSettings, RWEN_VOICES, RwenVoiceKey } from '../../lib/SettingsContex
 import { supabase } from '../../lib/supabase';
 import { JURISDICTION_IDS, getJurisdiction } from '../../data/jurisdictions';
 import { COURSES } from '../../data/courses';
+import { PRESET_LIST } from '../../data/companions/presets';
+import { ageGateMet } from '../../lib/active-companion';
 import { JurisdictionPackId } from '../../types/packs';
 import { setAppLanguage as setI18nLanguage, type SupportedLanguage } from '../../lib/i18n';
 import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
 
 type AppPath = 'learn' | 'companion' | 'travel';
-type Step = 'language'|'jurisdiction'|'gender'|'age'|'age_blocked'|'path'|'learn_target'|'learn_ability'|'learn_reasons'|'learn_time'|'learn_challenge'|'learn_connection'|'companion_type'|'companion_topics'|'travel_destination'|'travel_when'|'travel_purpose'|'voice'|'complete';
+type Step = 'language'|'jurisdiction'|'gender'|'age'|'age_blocked'|'path'|'learn_target'|'learn_ability'|'learn_reasons'|'learn_time'|'learn_challenge'|'learn_connection'|'companion_type'|'companion_topics'|'companion_pick'|'travel_destination'|'travel_when'|'travel_purpose'|'voice'|'complete';
 
 const LEARN_STEPS: Step[]     = ['language','jurisdiction','gender','age','path','learn_target','learn_ability','learn_reasons','learn_time','learn_challenge','learn_connection','voice','complete'];
-const COMPANION_STEPS: Step[] = ['language','jurisdiction','gender','age','path','companion_type','companion_topics','voice','complete'];
+const COMPANION_STEPS: Step[] = ['language','jurisdiction','gender','age','path','companion_type','companion_topics','companion_pick','voice','complete'];
 const TRAVEL_STEPS: Step[]    = ['language','jurisdiction','gender','age','path','travel_destination','travel_when','travel_purpose','voice','complete'];
 const BASE_STEPS: Step[]      = ['language','jurisdiction','gender','age','path'];
 
@@ -188,6 +190,9 @@ export default function OnboardingScreen() {
   const [connection,      setConnection]      = useState('');
   const [companionType,   setCompanionType]   = useState('');
   const [compTopics,      setCompTopics]      = useState<string[]>([]);
+  // Specific named-companion pick during the companion path. Saved as the
+  // user's active companion on completeOnboarding. Empty until they choose.
+  const [pickedCompanion, setPickedCompanion] = useState<string>('');
   const [travelDest,      setTravelDest]      = useState('');
   const [travelWhen,      setTravelWhen]      = useState('');
   const [travelPurposes,  setTravelPurposes]  = useState<string[]>([]);
@@ -289,13 +294,34 @@ export default function OnboardingScreen() {
         { onConflict: 'user_id,pack_id' }
       );
 
+      // Persist the picked companion (companion path only). Same shape
+      // the (tabs)/companions.tsx picker uses — flip all others off,
+      // insert the new one as active.
+      if (path === 'companion' && pickedCompanion) {
+        const preset = PRESET_LIST.find((p) => p.id === pickedCompanion);
+        if (preset) {
+          await supabase.from('companions').update({ is_active: false }).eq('user_id', user.id);
+          await supabase.from('companions').insert({
+            user_id:           user.id,
+            preset_id:         preset.id,
+            name:              preset.name,
+            relationship_type: preset.relationshipType,
+            voice_id:          preset.defaultVoiceId,
+            avatar_id:         preset.defaultAvatarId,
+            system_prompt:     '',
+            is_active:         true,
+            trust_score:       0,
+          });
+        }
+      }
+
       setOnboardingComplete(true);
       router.replace(path === 'companion' ? '/(tabs)/companion' : '/(tabs)');
     } catch (e) {
       console.error('Onboarding save error:', e);
       setSaving(false);
     }
-  }, [user, appLanguage, jurisdictionId, gender, birthYear, birthMonth, birthDay, path, targetCourseId, ability, reasons, timeCommit, challenge, connection, companionType, compTopics, voiceKey]);
+  }, [user, appLanguage, jurisdictionId, gender, birthYear, birthMonth, birthDay, path, targetCourseId, ability, reasons, timeCommit, challenge, connection, companionType, compTopics, voiceKey, pickedCompanion]);
 
   // The language being learned, derived from the speaker selection.
   // English speaker → learning Shona. Shona speaker → learning English.
@@ -571,6 +597,45 @@ export default function OnboardingScreen() {
           </View>
         )}
 
+        {step === 'companion_pick' && (
+          <View style={styles.block}>
+            <ProgressHeader current={stepIndex} total={total} title="Pick your companion" sub="You can swap any time. Locks on first chat." />
+            {PRESET_LIST
+              .filter((preset) => {
+                // Reuse the existing age-gate logic. We have year/month/day
+                // pieces; construct the ISO string the same way the rest of
+                // the app does.
+                if (!preset.ageGate) return true;
+                const dob = birthYear && birthMonth && birthDay
+                  ? `${birthYear}-${birthMonth.padStart(2,'0')}-${birthDay.padStart(2,'0')}`
+                  : null;
+                return ageGateMet(preset, dob);
+              })
+              .map((preset) => (
+                <Card
+                  key={preset.id}
+                  emoji={preset.emoji}
+                  label={preset.name}
+                  desc={preset.tagline}
+                  selected={pickedCompanion === preset.id}
+                  onPress={() => setPickedCompanion(preset.id)}
+                />
+              ))}
+            {/* Build-your-own tile */}
+            <Pressable
+              onPress={() => { router.push('/build-companion'); }}
+              style={({ pressed }) => [styles.buildOwnTile, pressed && { opacity: 0.85 }]}
+            >
+              <Text style={styles.buildOwnEmoji}>✨</Text>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.buildOwnTitle}>Build your own ($39.99)</Text>
+                <Text style={styles.buildOwnSub}>Custom name, personality, voice and look. Yours forever.</Text>
+              </View>
+            </Pressable>
+            <Nav onBack={goBack} onNext={() => goNext()} disabled={!pickedCompanion} />
+          </View>
+        )}
+
         {step === 'travel_destination' && (
           <View style={styles.block}>
             <ProgressHeader current={stepIndex} total={total} title={t('onboarding.step_travel_destination.title')} />
@@ -676,6 +741,16 @@ const styles = StyleSheet.create({
   chipSel: { borderColor: Colors.secondary, backgroundColor: 'rgba(74,144,217,0.2)' },
   chipText: { fontSize: FontSize.sm, color: 'rgba(255,255,255,0.7)', fontWeight: FontWeight.medium },
   chipTextSel: { color: '#93C5FD', fontWeight: FontWeight.bold },
+
+  buildOwnTile: {
+    flexDirection: 'row', alignItems: 'center', gap: Spacing.md,
+    backgroundColor: 'rgba(244,180,0,0.12)', borderRadius: BorderRadius.lg,
+    padding: Spacing.md, borderWidth: 1.5, borderColor: 'rgba(244,180,0,0.4)',
+    marginTop: Spacing.sm,
+  },
+  buildOwnEmoji: { fontSize: 30 },
+  buildOwnTitle: { fontSize: FontSize.md, fontWeight: FontWeight.bold, color: '#F4B400' },
+  buildOwnSub: { fontSize: FontSize.sm, color: 'rgba(255,255,255,0.65)', marginTop: 2 },
 
   dateRow: { flexDirection: 'row', gap: Spacing.sm },
   dateField: { flex: 1, gap: 4 },

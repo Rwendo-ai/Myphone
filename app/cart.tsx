@@ -208,6 +208,20 @@ function ShopTab({
       <Text style={styles.sectionSub}>
         Rwen + your first chosen companion are free. Any additional companion is $4.99 one-time or 4,990 tokens.
       </Text>
+
+      {/* Build your own — premium one-time */}
+      <Pressable
+        onPress={() => router.push('/build-companion')}
+        style={({ pressed }) => [styles.buildOwnRow, pressed && { opacity: 0.85 }]}
+      >
+        <Text style={styles.buildOwnRowEmoji}>✨</Text>
+        <View style={{ flex: 1 }}>
+          <Text style={styles.buildOwnRowTitle}>Build your own ($39.99)</Text>
+          <Text style={styles.buildOwnRowSub}>Custom name, personality, voice and look. Yours forever.</Text>
+        </View>
+        <Text style={styles.buildOwnRowChevron}>›</Text>
+      </Pressable>
+
       {!hasFreeCompanion ? (
         <Pressable
           style={({ pressed }) => [styles.bigCta, pressed && styles.bigCtaPressed]}
@@ -624,6 +638,22 @@ const styles = StyleSheet.create({
   catalogPrice: { color: Colors.gray[800], fontSize: FontSize.md, fontWeight: FontWeight.bold },
   catalogAdd: { color: Colors.primary, fontSize: FontSize.xs, fontWeight: FontWeight.bold, marginTop: 2 },
   catalogInCart: { color: '#3DA864', fontSize: FontSize.xs, fontWeight: FontWeight.bold, marginTop: 2 },
+
+  // "Build your own" — premium companion CTA inside the Shop's Companion section.
+  buildOwnRow: {
+    flexDirection: 'row', alignItems: 'center', gap: Spacing.md,
+    backgroundColor: '#FFF8E1',
+    borderRadius: BorderRadius.md,
+    padding: Spacing.md,
+    marginTop: Spacing.sm,
+    marginBottom: Spacing.sm,
+    borderWidth: 2,
+    borderColor: '#F4B400',
+  },
+  buildOwnRowEmoji: { fontSize: 28 },
+  buildOwnRowTitle: { color: Colors.gray[800], fontSize: FontSize.md, fontWeight: FontWeight.bold },
+  buildOwnRowSub: { color: Colors.gray[600], fontSize: FontSize.xs, marginTop: 2 },
+  buildOwnRowChevron: { color: Colors.gray[500], fontSize: FontSize.xl, fontWeight: FontWeight.bold },
 
   emptyState: { alignItems: 'center', paddingVertical: Spacing.xxl },
   emptyEmoji: { fontSize: 56, marginBottom: Spacing.md },

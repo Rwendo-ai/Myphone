@@ -63,6 +63,14 @@ const TOKEN_PACK_GRANTS: Record<string, number> = {
   rwendo_tokens_100_v1: 12000,
 };
 
+// Build-a-Companion product. Each purchase marks the user's most recent
+// draft (status='draft', newest updated_at) as paid. If no draft exists,
+// we record a "build credit" by inserting an empty paid row the user can
+// fill in later (rare path — they purchased without building first).
+const COMPANION_BUILD_PRODUCT_IDS = new Set<string>([
+  'rwendo_companion_build_v1',
+]);
+
 const TIER_PRODUCT_TO_ENTITLEMENT: Record<string, { entitlement: string; monthlyTokens: number }> = {
   rwendo_text_monthly_v1:         { entitlement: 'tier_text',         monthlyTokens: 200 },
   rwendo_voice_monthly_v1:        { entitlement: 'tier_voice',        monthlyTokens: 200 },
@@ -147,6 +155,10 @@ Deno.serve(async (req: Request) => {
       if (productId && TOKEN_PACK_GRANTS[productId] !== undefined) {
         await grantTokenPack(supabase, userId, productId, TOKEN_PACK_GRANTS[productId]);
         return json({ ok: true, action: 'token_pack_granted' });
+      }
+      if (productId && COMPANION_BUILD_PRODUCT_IDS.has(productId)) {
+        const draftId = await markMostRecentDraftPaid(supabase, userId, event.id);
+        return json({ ok: true, action: draftId ? 'custom_companion_paid' : 'build_credit_pending', draftId });
       }
       if (productId && TIER_PRODUCT_TO_ENTITLEMENT[productId]) {
         const cfg = TIER_PRODUCT_TO_ENTITLEMENT[productId];
@@ -265,6 +277,58 @@ async function upsertEntitlement(
       updated_at: new Date().toISOString(),
     }, { onConflict: 'user_id,entitlement' });
   if (error) throw new Error(`upsert entitlement failed: ${error.message}`);
+}
+
+async function markMostRecentDraftPaid(
+  // deno-lint-ignore no-explicit-any
+  supabase: any,
+  userId: string,
+  rcEventId: string,
+): Promise<string | null> {
+  // Find the user's most-recently-updated draft and flip it to paid.
+  // If none, insert a placeholder paid row the user can fill in later
+  // (rare path — bought before building).
+  const { data: drafts, error: findErr } = await supabase
+    .from('custom_companions')
+    .select('id')
+    .eq('user_id', userId)
+    .eq('status', 'draft')
+    .order('updated_at', { ascending: false })
+    .limit(1);
+  if (findErr) throw new Error(`markMostRecentDraftPaid find failed: ${findErr.message}`);
+
+  if (drafts && drafts.length > 0) {
+    const id = drafts[0].id as string;
+    const { error: updateErr } = await supabase
+      .from('custom_companions')
+      .update({ status: 'paid', paid_at: new Date().toISOString(), rc_event_id: rcEventId })
+      .eq('id', id);
+    if (updateErr) throw new Error(`markMostRecentDraftPaid update failed: ${updateErr.message}`);
+    return id;
+  }
+
+  // No draft. Insert a placeholder paid row to honour the build credit.
+  const { data: inserted, error: insertErr } = await supabase
+    .from('custom_companions')
+    .insert({
+      user_id:           userId,
+      name:              'New Companion',
+      tagline:           '',
+      emoji:             '✨',
+      avatar_color:      '#1A3C6E',
+      relationship_type: 'friend',
+      personality:       {},
+      topics:            [],
+      voice_id:          null,
+      system_prompt:     null,
+      status:            'paid',
+      paid_at:           new Date().toISOString(),
+      rc_event_id:       rcEventId,
+    })
+    .select('id')
+    .single();
+  if (insertErr) throw new Error(`markMostRecentDraftPaid placeholder insert failed: ${insertErr.message}`);
+  return inserted?.id ?? null;
 }
 
 async function expireEntitlement(
