@@ -44,7 +44,9 @@
 
 export type ProductCategory =
   | 'tier_subscription'
-  | 'token_pack';
+  | 'token_pack'
+  | 'course_subscription'
+  | 'companion_unlock';
 
 /** The five paid tiers, in ascending order. The numeric rank lets
  *  entitlement checks do `userTier >= requiredTier`. */
@@ -88,6 +90,14 @@ export interface Product {
   monthlyTokenAllowanceCents?: number;
   /** For token packs, how many tokens the pack grants. */
   tokens?: number;
+  /** For course subscriptions — which course this product unlocks. */
+  courseId?: string;
+  /** For companion unlocks — which companion preset this unlocks. */
+  companionId?: string;
+  /** XP redemption price — costs the user N XP instead of $X. Used by
+   *  the XP-redemption flow (currently course subs only — companions
+   *  can be redeemed for tokens instead). */
+  xpPrice?: number;
   /** Marketing flag. */
   recommended?: boolean;
 }
@@ -251,10 +261,103 @@ const TIER_YEARLY: Product[] = [
   },
 ];
 
+// ─── Course subscriptions ──────────────────────────────────────────────────
+//
+// Each course is a $9.99/mo subscription (v5 pricing, 2026-05-14). The
+// subscription unlocks the full course beyond the free trial (m01-m02) AND
+// includes ~2000 XP-equivalent of in-course AI tutor (Tendai) usage per
+// month — toolbox Q&A inside lessons + the Phase 8 end-of-lesson session.
+//
+// Free trial: every user gets the first 2 modules of any course for free
+// without AI access. Subscribing unlocks the rest.
+//
+// XP redemption: a course can also be unlocked for one month at the cost
+// of 9,990 XP (no real-money required) — handled by an XP-redemption flow,
+// not by RC. The xpPrice field signals availability of that path.
+//
+// One product per courseId. Keep list in sync with data/courses/index.ts.
+
+const COURSE_CATALOG: Array<{ courseId: string; displayName: string; emoji?: string }> = [
+  // Language courses
+  { courseId: 'language-shona',      displayName: 'Shona',       emoji: '🇿🇼' },
+  { courseId: 'language-english',    displayName: 'English',     emoji: '🇬🇧' },
+  { courseId: 'language-french',     displayName: 'French',      emoji: '🇫🇷' },
+  { courseId: 'language-chinese',    displayName: 'Mandarin',    emoji: '🇨🇳' },
+  { courseId: 'language-tagalog',    displayName: 'Tagalog',     emoji: '🇵🇭' },
+  { courseId: 'language-hindi',      displayName: 'Hindi',       emoji: '🇮🇳' },
+  { courseId: 'language-spanish',    displayName: 'Spanish',     emoji: '🇪🇸' },
+  { courseId: 'language-portuguese', displayName: 'Portuguese',  emoji: '🇵🇹' },
+  { courseId: 'language-japanese',   displayName: 'Japanese',    emoji: '🇯🇵' },
+  { courseId: 'language-korean',     displayName: 'Korean',      emoji: '🇰🇷' },
+  { courseId: 'language-ndebele',    displayName: 'isiNdebele',  emoji: '🇿🇼' },
+  // Build Yourself
+  { courseId: 'know-yourself',            displayName: 'Knowing Yourself',          emoji: '🌱' },
+  { courseId: 'hard-conversations-work',  displayName: 'Hard Conversations',        emoji: '🗣️' },
+  { courseId: 'parenting-under-pressure', displayName: 'Parenting Under Pressure',  emoji: '🌳' },
+  { courseId: 'money-and-meaning',        displayName: 'Money & Meaning',            emoji: '🧭' },
+  { courseId: 'grief-honestly',           displayName: 'Grief Honestly',             emoji: '🌊' },
+  { courseId: 'sleep-repaired',           displayName: 'Sleep Repaired',             emoji: '🌙' },
+  { courseId: 'lost-confidence',          displayName: 'Lost Confidence',            emoji: '🧱' },
+  { courseId: 'caring-aging-parent',      displayName: 'Caring for an Aging Parent', emoji: '🪴' },
+];
+
+const COURSE_SUBSCRIPTIONS: Product[] = COURSE_CATALOG.map(({ courseId, displayName, emoji }) => ({
+  id:           `course_${courseId}_monthly`,
+  storeId:      `rwendo_course_${courseId}_monthly_v1`,
+  entitlement:  `course_${courseId}`,
+  category:     'course_subscription',
+  displayName:  `${emoji ?? ''} ${displayName}`.trim(),
+  description:  '$9.99/month. Full course + AI tutor included.',
+  baseAud:      9.99,
+  xpReward:     100,
+  periodDays:   30,
+  courseId,
+  xpPrice:      9990, // Alternative: redeem 9,990 XP for one month.
+}));
+
+// ─── Companion unlocks ─────────────────────────────────────────────────────
+//
+// Rwen + the user's first-chosen companion are free. Every additional
+// companion is a $4.99 AUD one-time unlock (or 4,990 tokens via the
+// token-redemption flow — handled server-side, not via RC).
+//
+// Six unlock products. A given user only needs to buy 5 of them — the
+// 6th is whichever they "claimed" first as their free companion. The
+// first-chosen-companion lock happens server-side when they first send
+// a message to that companion.
+//
+// Keep list in sync with data/companions/presets.ts.
+
+const COMPANION_CATALOG: Array<{ companionId: string; displayName: string; emoji?: string }> = [
+  { companionId: 'tendai', displayName: 'Tendai', emoji: '🇿🇼' },
+  { companionId: 'maya',   displayName: 'Maya',   emoji: '🌺' },
+  { companionId: 'kai',    displayName: 'Kai',    emoji: '🌊' },
+  { companionId: 'sam',    displayName: 'Sam',    emoji: '☀️' },
+  { companionId: 'lumi',   displayName: 'Lumi',   emoji: '✨' },
+  { companionId: 'aria',   displayName: 'Aria',   emoji: '🎵' },
+];
+
+const COMPANION_UNLOCKS: Product[] = COMPANION_CATALOG.map(({ companionId, displayName, emoji }) => ({
+  id:           `companion_${companionId}`,
+  storeId:      `rwendo_companion_${companionId}_v1`,
+  entitlement:  `companion_${companionId}`,
+  category:     'companion_unlock',
+  displayName:  `${emoji ?? ''} ${displayName}`.trim(),
+  description:  '$4.99 one-time. Unlocks this companion across text, voice, and lipsync.',
+  baseAud:      4.99,
+  xpReward:     50,
+  companionId,
+}));
+
 // ─── Aggregates / lookups ──────────────────────────────────────────────────
 
 export const ALL_PRODUCTS: Product[] = [
   ...TOKEN_PACKS,
+  ...COURSE_SUBSCRIPTIONS,
+  ...COMPANION_UNLOCKS,
+  // Legacy subscription tiers — defined but no longer surfaced in any UI.
+  // The full tier-removal refactor (canUseAiFeature → token-balance check)
+  // happens in a follow-up turn.
   ...TIER_MONTHLY,
   ...TIER_YEARLY,
 ];
@@ -308,4 +411,20 @@ export function getYearlyTiers(): Product[] {
 
 export function getTokenPacks(): Product[] {
   return TOKEN_PACKS;
+}
+
+export function getCourseSubscriptions(): Product[] {
+  return COURSE_SUBSCRIPTIONS;
+}
+
+export function getCourseSubscription(courseId: string): Product | undefined {
+  return COURSE_SUBSCRIPTIONS.find((p) => p.courseId === courseId);
+}
+
+export function getCompanionUnlocks(): Product[] {
+  return COMPANION_UNLOCKS;
+}
+
+export function getCompanionUnlock(companionId: string): Product | undefined {
+  return COMPANION_UNLOCKS.find((p) => p.companionId === companionId);
 }

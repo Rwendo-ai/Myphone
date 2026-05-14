@@ -7,25 +7,26 @@
  * call will use ~5 tokens/min" etc. without a round-trip — but if the
  * server table is updated, the server prevails.
  *
- * Keep this in sync with the seed data in the
- * `payment_gateway_tables_v1` migration.
+ * Naming (v5, 2026-05-14): four feature tiers — text, voice, lipsync,
+ * lipsync_plus. The lipsync tier was previously split into lipsync_low /
+ * lipsync_high; renamed to match customer-facing terminology.
  */
 
-export type AiFeatureKey = 'text' | 'voice' | 'lipsync_low' | 'lipsync_high';
+export type AiFeatureKey = 'text' | 'voice' | 'lipsync' | 'lipsync_plus';
 
 /** Token cost per use. Voice/lipsync costs are per-minute estimates. */
 export const AI_FEATURE_COST: Record<AiFeatureKey, number> = {
   text:         1,
   voice:        5,
-  lipsync_low:  20,
-  lipsync_high: 50,
+  lipsync:      20,
+  lipsync_plus: 50,
 };
 
 export const AI_FEATURE_LABEL: Record<AiFeatureKey, string> = {
   text:         'Text',
   voice:        'Voice',
-  lipsync_low:  'Lipsync · Low',
-  lipsync_high: 'Lipsync · High',
+  lipsync:      'Lipsync',
+  lipsync_plus: 'Lipsync Plus',
 };
 
 /** UX helper — return e.g. "5 tokens / min" for voice. */

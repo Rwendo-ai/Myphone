@@ -6,7 +6,12 @@ import { router } from 'expo-router';
 import { useEntitlements } from '../hooks/useEntitlements';
 import { useCart } from '../lib/CartContext';
 import { presentPaywall } from '../lib/purchases';
-import { getTokenPacks, type Product } from '../data/products';
+import {
+  getTokenPacks,
+  getCourseSubscriptions,
+  getCompanionUnlocks,
+  type Product,
+} from '../data/products';
 import { Colors } from '../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../constants/theme';
 
@@ -37,6 +42,8 @@ export default function CartScreen() {
   const [busy, setBusy] = useState(false);
 
   const tokenPacks = useMemo(() => getTokenPacks(), []);
+  const courseSubs = useMemo(() => getCourseSubscriptions(), []);
+  const companions = useMemo(() => getCompanionUnlocks(), []);
 
   const handleCheckout = async () => {
     if (busy || cart.count === 0) return;
@@ -98,7 +105,7 @@ export default function CartScreen() {
         {tab === 'items' ? (
           <ItemsTab cart={cart} tokenPacks={tokenPacks} onCheckout={handleCheckout} busy={busy} />
         ) : (
-          <ShopTab tokenPacks={tokenPacks} />
+          <ShopTab tokenPacks={tokenPacks} courseSubs={courseSubs} companions={companions} />
         )}
 
         <View style={{ height: Spacing.xxl }} />
@@ -117,13 +124,32 @@ function TabButton({ label, active, onPress }: { label: string; active: boolean;
 
 // ─── Shop tab ──────────────────────────────────────────────────────────────
 
-function ShopTab({ tokenPacks }: { tokenPacks: Product[] }) {
+function ShopTab({
+  tokenPacks,
+  courseSubs,
+  companions,
+}: {
+  tokenPacks: Product[];
+  courseSubs: Product[];
+  companions: Product[];
+}) {
   const cart = useCart();
+
+  // Course + companion dropdown open state
+  const [coursesOpen, setCoursesOpen]       = useState(false);
+  const [companionsOpen, setCompanionsOpen] = useState(false);
+
+  // Stub: first-course + first-companion are server-persisted (next session).
+  // For now, the empty-state buttons are wired to open the same dropdown.
+  const hasFreeCourse    = false;
+  const hasFreeCompanion = false;
+
   return (
     <View>
+      {/* Tokens */}
       <Text style={styles.sectionTitle}>Add companion tokens</Text>
       <Text style={styles.sectionSub}>
-        Tap a pack to add it to your cart. Tokens never expire.
+        Tap a pack to add it to your cart. Tokens pay for all AI use — text, voice, lipsync, lipsync plus. Never expire.
       </Text>
       <View style={styles.squareGrid}>
         {tokenPacks.map((p) => (
@@ -135,7 +161,126 @@ function ShopTab({ tokenPacks }: { tokenPacks: Product[] }) {
           />
         ))}
       </View>
+
+      {/* Courses */}
+      <Text style={[styles.sectionTitle, { marginTop: Spacing.xl }]}>Subscribe to a course</Text>
+      <Text style={styles.sectionSub}>
+        $9.99/month per course. Unlocks all lessons + the in-course AI tutor (Tendai). First 2 units of any course are free without AI.
+      </Text>
+      {!hasFreeCourse ? (
+        <Pressable
+          style={({ pressed }) => [styles.bigCta, pressed && styles.bigCtaPressed]}
+          onPress={() => setCoursesOpen((v) => !v)}
+        >
+          <Text style={styles.bigCtaIcon}>🎓</Text>
+          <View style={{ flex: 1 }}>
+            <Text style={styles.bigCtaTitle}>Start your free trial</Text>
+            <Text style={styles.bigCtaSub}>Pick any course — first 2 units free, no card needed.</Text>
+          </View>
+          <Text style={styles.bigCtaChevron}>{coursesOpen ? '▴' : '▾'}</Text>
+        </Pressable>
+      ) : (
+        <Pressable
+          style={({ pressed }) => [styles.ctaRow, pressed && styles.ctaRowPressed]}
+          onPress={() => setCoursesOpen((v) => !v)}
+        >
+          <Text style={styles.ctaRowTitle}>Buy another course</Text>
+          <Text style={styles.ctaRowChevron}>{coursesOpen ? '▴' : '▾'}</Text>
+        </Pressable>
+      )}
+      {coursesOpen && (
+        <View style={styles.dropdown}>
+          {courseSubs.map((p) => (
+            <CatalogRow
+              key={p.id}
+              product={p}
+              inCart={cart.has(p.id)}
+              priceLabel={`A$${p.baseAud.toFixed(2)} / mo`}
+              altLabel={p.xpPrice ? `or ${p.xpPrice.toLocaleString()} XP` : undefined}
+              onPress={() => cart.add(p.id)}
+            />
+          ))}
+        </View>
+      )}
+
+      {/* Companions */}
+      <Text style={[styles.sectionTitle, { marginTop: Spacing.xl }]}>Unlock a companion</Text>
+      <Text style={styles.sectionSub}>
+        Rwen + your first chosen companion are free. Any additional companion is $4.99 one-time or 4,990 tokens.
+      </Text>
+      {!hasFreeCompanion ? (
+        <Pressable
+          style={({ pressed }) => [styles.bigCta, pressed && styles.bigCtaPressed]}
+          onPress={() => setCompanionsOpen((v) => !v)}
+        >
+          <Text style={styles.bigCtaIcon}>✨</Text>
+          <View style={{ flex: 1 }}>
+            <Text style={styles.bigCtaTitle}>Choose your companion</Text>
+            <Text style={styles.bigCtaSub}>One free with token purchase. Locks on first chat.</Text>
+          </View>
+          <Text style={styles.bigCtaChevron}>{companionsOpen ? '▴' : '▾'}</Text>
+        </Pressable>
+      ) : (
+        <Pressable
+          style={({ pressed }) => [styles.ctaRow, pressed && styles.ctaRowPressed]}
+          onPress={() => setCompanionsOpen((v) => !v)}
+        >
+          <Text style={styles.ctaRowTitle}>Buy another companion</Text>
+          <Text style={styles.ctaRowChevron}>{companionsOpen ? '▴' : '▾'}</Text>
+        </Pressable>
+      )}
+      {companionsOpen && (
+        <View style={styles.dropdown}>
+          {companions.map((p) => (
+            <CatalogRow
+              key={p.id}
+              product={p}
+              inCart={cart.has(p.id)}
+              priceLabel={`A$${p.baseAud.toFixed(2)}`}
+              altLabel="or 4,990 tokens"
+              onPress={() => cart.add(p.id)}
+            />
+          ))}
+        </View>
+      )}
     </View>
+  );
+}
+
+function CatalogRow({
+  product,
+  inCart,
+  priceLabel,
+  altLabel,
+  onPress,
+}: {
+  product: Product;
+  inCart: boolean;
+  priceLabel: string;
+  altLabel?: string;
+  onPress: () => void;
+}) {
+  return (
+    <Pressable
+      style={({ pressed }) => [
+        styles.catalogRow,
+        inCart && styles.catalogRowInCart,
+        pressed && !inCart && styles.catalogRowPressed,
+      ]}
+      onPress={onPress}
+      disabled={inCart}
+    >
+      <View style={{ flex: 1 }}>
+        <Text style={styles.catalogTitle}>{product.displayName}</Text>
+        {altLabel && <Text style={styles.catalogAlt}>{altLabel}</Text>}
+      </View>
+      <View style={styles.catalogRight}>
+        <Text style={styles.catalogPrice}>{priceLabel}</Text>
+        <Text style={inCart ? styles.catalogInCart : styles.catalogAdd}>
+          {inCart ? 'In cart ✓' : 'Add'}
+        </Text>
+      </View>
+    </Pressable>
   );
 }
 
@@ -416,6 +561,69 @@ const styles = StyleSheet.create({
   squarePrice: { color: Colors.gray[800], fontSize: 22, fontWeight: FontWeight.bold },
   squareAddLabel: { color: Colors.gray[500], fontSize: 10, marginTop: 4 },
   squareInCartLabel: { color: '#3DA864', fontSize: 10, fontWeight: FontWeight.bold, marginTop: 4 },
+
+  // Big CTA card for "Start your free trial" / "Choose your companion".
+  bigCta: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: Colors.primary,
+    borderRadius: BorderRadius.md,
+    paddingVertical: Spacing.md,
+    paddingHorizontal: Spacing.md,
+    gap: Spacing.md,
+    shadowColor: Colors.black,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  bigCtaPressed: { opacity: 0.85 },
+  bigCtaIcon: { fontSize: 28 },
+  bigCtaTitle: { color: Colors.white, fontSize: FontSize.md, fontWeight: FontWeight.bold },
+  bigCtaSub: { color: Colors.white, opacity: 0.85, fontSize: FontSize.xs, marginTop: 2 },
+  bigCtaChevron: { color: Colors.white, fontSize: FontSize.lg },
+
+  // Smaller "Buy another" toggle once user has their free pick.
+  ctaRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: Colors.white,
+    borderRadius: BorderRadius.md,
+    paddingVertical: Spacing.md,
+    paddingHorizontal: Spacing.md,
+    borderWidth: 1,
+    borderColor: Colors.gray[200],
+  },
+  ctaRowPressed: { opacity: 0.7 },
+  ctaRowTitle: { color: Colors.gray[800], fontSize: FontSize.md, fontWeight: FontWeight.bold },
+  ctaRowChevron: { color: Colors.gray[500], fontSize: FontSize.lg },
+
+  // Dropdown container — list of catalog products.
+  dropdown: {
+    marginTop: Spacing.sm,
+    backgroundColor: Colors.gray[50],
+    borderRadius: BorderRadius.md,
+    padding: Spacing.sm,
+  },
+  catalogRow: {
+    backgroundColor: Colors.white,
+    borderRadius: BorderRadius.sm,
+    padding: Spacing.md,
+    marginBottom: 6,
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: Colors.gray[200],
+  },
+  catalogRowInCart: { backgroundColor: '#EDF7EF', borderColor: '#3DA864' },
+  catalogRowPressed: { opacity: 0.7 },
+  catalogTitle: { color: Colors.gray[800], fontSize: FontSize.md, fontWeight: FontWeight.bold },
+  catalogAlt: { color: Colors.gray[500], fontSize: FontSize.xs, marginTop: 2 },
+  catalogRight: { alignItems: 'flex-end' },
+  catalogPrice: { color: Colors.gray[800], fontSize: FontSize.md, fontWeight: FontWeight.bold },
+  catalogAdd: { color: Colors.primary, fontSize: FontSize.xs, fontWeight: FontWeight.bold, marginTop: 2 },
+  catalogInCart: { color: '#3DA864', fontSize: FontSize.xs, fontWeight: FontWeight.bold, marginTop: 2 },
 
   emptyState: { alignItems: 'center', paddingVertical: Spacing.xxl },
   emptyEmoji: { fontSize: 56, marginBottom: Spacing.md },
