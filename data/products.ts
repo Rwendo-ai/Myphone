@@ -329,12 +329,13 @@ const COURSE_SUBSCRIPTIONS: Product[] = COURSE_CATALOG.map(({ courseId, displayN
 // Keep list in sync with data/companions/presets.ts.
 
 const COMPANION_CATALOG: Array<{ companionId: string; displayName: string; emoji?: string }> = [
-  { companionId: 'tendai', displayName: 'Tendai', emoji: '🇿🇼' },
-  { companionId: 'maya',   displayName: 'Maya',   emoji: '🌺' },
-  { companionId: 'kai',    displayName: 'Kai',    emoji: '🌊' },
-  { companionId: 'sam',    displayName: 'Sam',    emoji: '☀️' },
-  { companionId: 'lumi',   displayName: 'Lumi',   emoji: '✨' },
-  { companionId: 'aria',   displayName: 'Aria',   emoji: '🎵' },
+  { companionId: 'tendai', displayName: 'Tendai',         emoji: '🇿🇼' },
+  { companionId: 'maya',   displayName: 'Maya',           emoji: '🌺' },
+  { companionId: 'kai',    displayName: 'Kai',            emoji: '🌊' },
+  { companionId: 'sam',    displayName: 'Sam',            emoji: '☀️' },
+  { companionId: 'lumi',   displayName: 'Lumi',           emoji: '✨' },
+  { companionId: 'aria',   displayName: 'Aria (18+)',     emoji: '🎵' },
+  { companionId: 'zeke',   displayName: 'Zeke · Crypto (13+)', emoji: '⛓️' },
 ];
 
 const COMPANION_UNLOCKS: Product[] = COMPANION_CATALOG.map(({ companionId, displayName, emoji }) => ({
