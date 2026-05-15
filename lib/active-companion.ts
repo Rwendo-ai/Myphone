@@ -12,6 +12,7 @@
 
 import { supabase } from './supabase';
 import { COMPANION_PRESETS, type CompanionPreset } from '../data/companions/presets';
+import { resolveCompanion, type ResolvedCompanion } from './companion-customization';
 
 /**
  * Fetch the active companion's preset ID for a user.
@@ -40,6 +41,23 @@ export function resolvePreset(presetId: string | null): CompanionPreset {
     return COMPANION_PRESETS[presetId];
   }
   return COMPANION_PRESETS.rwen;
+}
+
+/**
+ * Async resolver that goes one layer further than `resolvePreset` — pulls
+ * the user's customization row from Supabase too, returning the composed
+ * { preset, display_name, archetype, voice_id } object the chat screen
+ * actually displays. Falls back to Rwen-with-defaults if the preset id is
+ * unknown or the user has no customization row.
+ *
+ * Use this in the chat header + voice session config. `resolvePreset` (sync)
+ * is retained for callers that only need the system prompt + tier gate.
+ */
+export async function resolveActiveCompanion(
+  userId: string,
+  presetId: string | null,
+): Promise<ResolvedCompanion> {
+  return resolveCompanion(userId, presetId ?? 'rwen');
 }
 
 /**

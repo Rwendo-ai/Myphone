@@ -71,9 +71,18 @@ export interface CustomCompanionDraft {
   simli_face_id?: string | null;
 }
 
-/** Curated stock voices for the wizard. ElevenLabs voice IDs, with a
- *  short human-readable label and personality blurb. Real voice previews
- *  ship in a follow-up turn — for now the user picks by description. */
+/**
+ * Curated stock voices for the wizard. ElevenLabs voice IDs, with a
+ * short human-readable label and personality blurb. Real voice previews
+ * ship in a follow-up turn — for now the user picks by description.
+ *
+ * @deprecated New callers should import from `lib/voices.ts` (VOICE_LIBRARY)
+ * which is the single source of truth for stock voices across the app.
+ * This array is preserved for backward compatibility with the existing
+ * build-companion.tsx wizard. New pickers (e.g. CompanionProfileSheet)
+ * should use VOICE_LIBRARY directly. When the wizard is next refactored,
+ * swap this for VOICE_LIBRARY and remove this shim.
+ */
 export interface StockVoice {
   voice_id: string;
   label: string;

@@ -24,6 +24,12 @@ import { Theme, THEMES, DEFAULT_THEME } from '../constants/themes';
  * legacy English-speaker default; runtime should prefer
  * `useSettings().speaker.voices` so a Shona speaker sees Shona-curated voices.
  * Kept here for one release while callers migrate.
+ *
+ * @deprecated New callers should import from `lib/voices.ts` (VOICE_LIBRARY).
+ * This 4-slot object is preserved for the legacy `rwenVoice` setter pattern
+ * (slot keys like `'male_warm'`) used by `lib/voice.ts:speakText`. The
+ * companion customization layer (lib/companion-customization.ts) bypasses
+ * this and stores raw ElevenLabs voice IDs from VOICE_LIBRARY directly.
  */
 export const RWEN_VOICES = {
   male_warm:    { id: 'JBFqnCBsd6RMkjVDRZzb', name: 'George',  description: 'Warm storyteller' },
