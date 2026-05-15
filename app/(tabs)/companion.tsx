@@ -5,6 +5,7 @@ import { useLocalSearchParams } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import RwenImage from '../../components/rwen/RwenImage';
 import ScreenHeaderBar from '../../components/ScreenHeaderBar';
+import CompanionPickerSheet from '../../components/CompanionPickerSheet';
 import { useAuth } from '../../lib/AuthContext';
 import { useSettings } from '../../lib/SettingsContext';
 import { useProgress } from '../../hooks/useProgress';
@@ -35,8 +36,12 @@ export default function CompanionScreen() {
   // Claude system prompt can be primed with it.
   const { lessonContext } = useLocalSearchParams<{ lessonContext?: string }>();
   const { user } = useAuth();
-  const { learnedLanguage, rwenVoice, theme, speaker, activeCompanionPresetId } = useSettings();
+  const { learnedLanguage, rwenVoice, theme, speaker, activeCompanionPresetId, setActiveCompanionPresetId } = useSettings();
   const { username } = useProgress();
+
+  // Companion picker — the dropdown sheet that opens when the user taps
+  // the companion name in the header.
+  const [pickerOpen, setPickerOpen] = useState(false);
 
   const [messages,      setMessages]      = useState<DisplayMessage[]>([]);
   const [input,         setInput]         = useState('');
@@ -287,19 +292,28 @@ export default function CompanionScreen() {
       )}
       <ScreenHeaderBar variant="light" />
 
-      {/* Header */}
+      {/* Header — tap the avatar + name area to open the companion picker. */}
       <View style={[styles.header, { backgroundColor: theme.gradient[0] }]}>
-        <RwenImage pose={rwenState as any} size={48} />
-        <View style={styles.headerText}>
-          <Text style={styles.headerTitle}>{t('header.title')}</Text>
-          <Text style={styles.headerSub}>
-            {convoActive && isListening ? t('header.status_listening') :
-             convoActive && loading     ? t('header.status_thinking') :
-             convoActive               ? t('header.status_speaking') :
-             loading                   ? t('header.status_loading')    :
-             t('header.status_idle', { lang: learnedLanguage.name })}
-          </Text>
-        </View>
+        <Pressable
+          style={styles.headerCompanionTap}
+          onPress={() => setPickerOpen(true)}
+          hitSlop={4}
+        >
+          <RwenImage pose={rwenState as any} size={48} />
+          <View style={styles.headerText}>
+            <View style={styles.headerTitleRow}>
+              <Text style={styles.headerTitle}>{t('header.title')}</Text>
+              <Text style={styles.headerChevron}>▾</Text>
+            </View>
+            <Text style={styles.headerSub}>
+              {convoActive && isListening ? t('header.status_listening') :
+               convoActive && loading     ? t('header.status_thinking') :
+               convoActive               ? t('header.status_speaking') :
+               loading                   ? t('header.status_loading')    :
+               t('header.status_idle', { lang: learnedLanguage.name })}
+            </Text>
+          </View>
+        </Pressable>
 
         {/* Clear-the-current-window button — wipes only the on-screen messages.
             Saved history (DB) and the next session's memory are untouched. The
@@ -493,6 +507,16 @@ export default function CompanionScreen() {
           </View>
         )}
       </KeyboardAvoidingView>
+
+      {user && (
+        <CompanionPickerSheet
+          visible={pickerOpen}
+          onClose={() => setPickerOpen(false)}
+          userId={user.id}
+          activePresetId={activeCompanionPresetId ?? 'rwen'}
+          onPickPreset={(id) => setActiveCompanionPresetId(id)}
+        />
+      )}
     </SafeAreaView>
   );
 }
@@ -505,8 +529,20 @@ const styles = StyleSheet.create({
     gap: Spacing.md, paddingHorizontal: Spacing.lg,
     paddingTop: Spacing.xxl, paddingBottom: Spacing.md,
   },
+  headerCompanionTap: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.md,
+    flex: 1,
+  },
   headerText:  { flex: 1 },
+  headerTitleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
   headerTitle: { fontSize: FontSize.lg, fontWeight: FontWeight.bold, color: Colors.white },
+  headerChevron: { fontSize: 14, color: 'rgba(255,255,255,0.7)', lineHeight: 14, marginTop: 2 },
   headerSub:   { fontSize: FontSize.xs, color: 'rgba(255,255,255,0.6)' },
   convoBtn: {
     width: 44, height: 44, borderRadius: BorderRadius.full,
