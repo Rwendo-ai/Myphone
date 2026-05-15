@@ -39,7 +39,8 @@ When adding a new .md file:
 | [supabase-migrations/005-three-pack-architecture.sql](./supabase-migrations/005-three-pack-architecture.sql) | v3 schema migration | 2026-04-30 |
 | [supabase/functions/README.md](../supabase/functions/README.md) | Edge function deployment instructions | 2026-05-01 |
 | [LIPSYNC-INTEGRATION.md](./LIPSYNC-INTEGRATION.md) | Lipsync engines, asset library, pricing reality check | 2026-05-14 |
-| [PIPECAT-ARCHITECTURE.md](./PIPECAT-ARCHITECTURE.md) | Pipecat worker on Contabo VPS + Daily.co transport (replaces ElevenLabs Conv AI for premium tier) | 2026-05-16 |
+| [SIMLI-DIRECT-INTEGRATION.md](./SIMLI-DIRECT-INTEGRATION.md) | **v1 lipsync path** — Conv AI stays the brain; Simli WebRTC tapped as a side-car | 2026-05-16 |
+| [PIPECAT-ARCHITECTURE.md](./PIPECAT-ARCHITECTURE.md) | **v2 future option** — Pipecat worker that replaces Conv AI with STT+LLM+TTS parts. Not used in v1; worker/ scaffolding retained for future cost reduction | 2026-05-16 |
 | [SELF-HOSTING-STRATEGY.md](./SELF-HOSTING-STRATEGY.md) | Open-source replacement landscape (TTS/STT/Lipsync/LLM) on Contabo | 2026-05-15 |
 | [CUSTOM-COMPANION-WIZARD-V2.md](./CUSTOM-COMPANION-WIZARD-V2.md) | $39.99 bespoke-companion wizard spec (8 steps, 10 images + 3 videos) | 2026-05-16 |
 

@@ -50,6 +50,15 @@ export interface ConvAIHandlers {
   onUserTranscript?: (text: string) => void;
   /** Called once the agent's full reply text is available. */
   onAgentResponse?: (text: string) => void;
+  /**
+   * Called for every PCM frame the agent sends back (the audio that gets
+   * played to the user). 16-bit signed PCM, 16 kHz, mono.
+   *
+   * Used by `useSimliAvatar` to forward Conv AI's voice output into the
+   * Simli lipsync pipeline. Conv AI keeps doing local playback as well —
+   * this is a non-destructive tap.
+   */
+  onAudioFrame?: (pcm: ArrayBuffer) => void;
 }
 
 export interface ConvAIControls {
@@ -248,7 +257,17 @@ export function useConvAISession(handlers: ConvAIHandlers = {}): ConvAIControls 
         },
         onAudio: (pcm) => {
           setAgentSpeaking(true);
+          // Local playback through the user's speakers (existing path).
           try { playPCMData(pcm); } catch (e) { console.warn('playPCMData', e); }
+          // Non-destructive tap for lipsync: hand the same PCM frame to
+          // any listener wired up by the consumer (e.g. useSimliAvatar).
+          // Conv AI emits 16-bit signed PCM at 16 kHz mono — which is
+          // exactly what Simli's /compose/webrtc/p2p binary channel
+          // expects. Watch for format drift if EL ever changes their
+          // Conv AI audio output.
+          try { handlersRef.current.onAudioFrame?.(pcm as ArrayBuffer); } catch (e) {
+            console.warn('[ConvAI] onAudioFrame handler threw:', e);
+          }
         },
         onInterruption: () => {
           // The server stops sending audio. Any chunks already in the native

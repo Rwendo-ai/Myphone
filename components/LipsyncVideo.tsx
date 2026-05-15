@@ -36,12 +36,15 @@ import { Video, ResizeMode } from 'expo-av';
 import { Colors } from '../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../constants/theme';
 
-// Daily.co's <DailyMediaView> is loaded via require() inside
-// RemoteTrackPane so this file doesn't hard-depend on the native module
-// during v1 ambient launch (where Pipecat isn't wired). When the SDK
-// isn't installed and `remoteVideoTrack` is null, the require never
-// fires — Metro happily bundles the rest.
-type MediaStreamTrackLike = unknown;
+// react-native-webrtc's <RTCView> is loaded via require() inside
+// SimliVideoPane so this file doesn't hard-depend on the native module
+// during v1 ambient launch (where the Simli WebRTC integration isn't
+// wired). When the SDK isn't installed and `simliStream` is null, the
+// require never fires — Metro happily bundles the rest.
+//
+// Simli flow lives in lib/simli-webrtc.ts + hooks/useSimliAvatar.ts.
+// Conv AI stays the brain; Simli is fed Conv AI's PCM frames.
+type MediaStreamLike = { toURL: () => string };
 
 export type LipsyncTier = 'voice' | 'lipsync' | 'lipsync_custom' | 'lipsync_plus';
 
@@ -70,41 +73,29 @@ interface Props {
   /** Height of the pane in dp. Defaults to 360. */
   height?: number;
   /**
-   * Daily.co remote video MediaStreamTrack for the bot's avatar.
-   * When present, we render it via <DailyMediaView> — this is the
-   * Pipecat path used by premium-tier sessions
-   * (`hooks/usePipecatSession.ts`).
+   * Live Simli MediaStream (from `useSimliAvatar().remoteStream`).
+   * When present, we render the video track via <RTCView> from
+   * react-native-webrtc — this is the live lipsync path used by
+   * the premium tier.
    *
-   * When null/undefined, we fall back to the v1 ambient behaviour
+   * When null/undefined, falls back to the v1 ambient behaviour
    * below (static portrait / idling video / "SDK pending" overlay).
    * V1 ambient launch always uses this null path.
-   *
-   * `audioTrack` is paired so DailyMediaView can render them in one
-   * surface — Daily expects both via its single component.
    */
-  remoteVideoTrack?: MediaStreamTrackLike | null;
-  remoteAudioTrack?: MediaStreamTrackLike | null;
+  simliStream?: MediaStreamLike | null;
 }
 
 export default function LipsyncVideo({
   tier,
   assets,
   height = 360,
-  remoteVideoTrack,
-  remoteAudioTrack,
+  simliStream,
 }: Props) {
-  // Premium / Pipecat path — when a live remote track is supplied,
-  // it always wins regardless of tier (a 'voice' session won't have
-  // video, so the prop will simply be null and we drop through to
-  // the normal fallback).
-  if (remoteVideoTrack) {
-    return (
-      <RemoteTrackPane
-        videoTrack={remoteVideoTrack}
-        audioTrack={remoteAudioTrack ?? null}
-        height={height}
-      />
-    );
+  // Live Simli path — when a stream is supplied, it always wins
+  // regardless of tier (a 'voice' session won't have a stream, so the
+  // prop will be null and we drop through to the static fallback).
+  if (simliStream) {
+    return <SimliVideoPane stream={simliStream} height={height} />;
   }
 
   if (tier === 'voice') {
@@ -117,42 +108,31 @@ export default function LipsyncVideo({
   return <LowTierPane assets={assets} height={height} custom={tier === 'lipsync_custom'} />;
 }
 
-// ─── Pipecat path — render a live Daily video track ────────────────────────
+// ─── Live Simli path — render the avatar video via RTCView ────────────────
 //
-// Loads `@daily-co/react-native-daily-js` lazily so this file still bundles
-// when the native module isn't yet installed (the v1 ambient build). If
-// someone passes a remoteVideoTrack without the SDK installed we render a
-// clear error overlay rather than crashing.
+// Loads `react-native-webrtc` lazily so this file still bundles when the
+// native module isn't installed (the v1 ambient build). If someone passes
+// `simliStream` without the SDK installed we render a clear error overlay
+// rather than crashing.
 
-function RemoteTrackPane({
-  videoTrack,
-  audioTrack,
-  height,
-}: {
-  videoTrack: MediaStreamTrackLike;
-  audioTrack: MediaStreamTrackLike | null;
-  height: number;
-}) {
-  // Loose `any` typing — we only need the component to render; pulling
-  // in React's ComponentType would force a value-side React import that
-  // the rest of this file doesn't need (jsx-runtime handles JSX itself).
-  let DailyMediaView: any = null;
+function SimliVideoPane({ stream, height }: { stream: MediaStreamLike; height: number }) {
+  let RTCView: any = null;
   let loadError: string | null = null;
   try {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
-    DailyMediaView = require('@daily-co/react-native-daily-js').DailyMediaView;
+    RTCView = require('react-native-webrtc').RTCView;
   } catch (e) {
-    loadError = e instanceof Error ? e.message : 'Daily SDK not installed';
+    loadError = e instanceof Error ? e.message : 'react-native-webrtc not installed';
   }
 
-  if (!DailyMediaView) {
+  if (!RTCView) {
     return (
       <View style={[styles.pane, { height, backgroundColor: Colors.gray[800] }]}>
-        <Text style={styles.overlayTitle}>Daily SDK not installed</Text>
+        <Text style={styles.overlayTitle}>WebRTC SDK not installed</Text>
         <Text style={styles.overlaySub}>
           {loadError ?? ''}
           {'\n'}
-          See docs/PIPECAT-CLIENT-INSTALL.md.
+          See docs/SIMLI-DIRECT-INTEGRATION.md for install + rebuild steps.
         </Text>
       </View>
     );
@@ -160,12 +140,10 @@ function RemoteTrackPane({
 
   return (
     <View style={[styles.pane, { height, backgroundColor: Colors.black }]}>
-      <DailyMediaView
-        videoTrack={videoTrack as any}
-        audioTrack={audioTrack as any}
-        // Bot video — never mirror.
-        mirror={false}
+      <RTCView
+        streamURL={stream.toURL()}
         objectFit="cover"
+        mirror={false}
         style={StyleSheet.absoluteFillObject}
       />
     </View>

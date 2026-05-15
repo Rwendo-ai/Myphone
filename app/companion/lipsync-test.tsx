@@ -1,24 +1,20 @@
 /**
- * Standalone test screen for the Pipecat lipsync path.
+ * Standalone test screen for the Simli-direct lipsync path.
  *
- * Lets us validate `usePipecatSession` end-to-end without touching the
- * main companion tab (which still uses the v1 ambient/ConvAI path).
+ * Lets us validate the Simli WebRTC connection + Conv AI audio bridge
+ * end-to-end without touching the main companion tab.
  *
- * Wired via expo-router — there is no entry in the tab bar. To reach
- * this screen during dev:
- *
+ * To reach during dev:
  *   import { router } from 'expo-router';
  *   router.push('/companion/lipsync-test');
  *
- * The cleanest way is a hidden long-press on the Profile tab (or any
- * dev-only button you wire later). For now you can also paste
- *   rwendo://companion/lipsync-test
- * into the Expo Go / dev-client deep link prompt.
- *
  * Prerequisites:
- *   1. `npm i ...` from docs/PIPECAT-CLIENT-INSTALL.md
- *   2. EAS dev-client rebuild
- *   3. Worker reachable at $PIPECAT_BOT_URL with Daily/Deepgram/etc keys
+ *   1. `npm i react-native-webrtc @config-plugins/react-native-webrtc react-native-get-random-values`
+ *   2. EAS dev-client rebuild (react-native-webrtc is a native module)
+ *   3. Pick a companion archetype with a populated simli_face_id
+ *      (Sarah at 793e6f73-… works today).
+ *
+ * See docs/SIMLI-DIRECT-INTEGRATION.md for the full picture.
  */
 
 import React, { useEffect, useMemo, useState } from 'react';
@@ -33,32 +29,38 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 
-import { usePipecatSession } from '../../hooks/usePipecatSession';
+import { useConvAISession } from '../../hooks/useConvAISession';
+import { useSimliAvatar }  from '../../hooks/useSimliAvatar';
 import LipsyncVideo from '../../components/LipsyncVideo';
 import {
   loadActiveArchetypes,
   type CompanionArchetype,
 } from '../../lib/companion-customization';
-import type { LipsyncTier } from '../../lib/pipecat-session';
 import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
 
-const TIER_OPTIONS: { id: LipsyncTier; label: string; sub: string }[] = [
-  { id: 'voice',          label: 'Voice',          sub: 'audio only — no avatar video' },
-  { id: 'lipsync',        label: 'Lipsync',        sub: 'archetype face + Simli' },
-  { id: 'lipsync_custom', label: 'Lipsync Custom', sub: 'user-uploaded face + Simli' },
-];
-
 export default function LipsyncTestScreen() {
-  const [tier, setTier]           = useState<LipsyncTier>('lipsync');
-  const [archetypes, setArchetypes] = useState<CompanionArchetype[]>([]);
-  const [companionId, setCompanionId] = useState<string | null>(null);
+  const [archetypes, setArchetypes]               = useState<CompanionArchetype[]>([]);
+  const [companionId, setCompanionId]             = useState<string | null>(null);
   const [loadingArchetypes, setLoadingArchetypes] = useState(true);
-  const [transcript, setTranscript] = useState<{ role: 'user' | 'bot'; text: string }[]>([]);
+  const [transcript, setTranscript]               = useState<{ role: 'user' | 'rwen'; text: string }[]>([]);
+  const [simliError, setSimliError]               = useState<string | null>(null);
 
-  const session = usePipecatSession({
+  // Avatar (Simli) — needs the chosen archetype's face_id.
+  const selectedArchetype = useMemo(
+    () => archetypes.find((a) => a.id === companionId) ?? null,
+    [archetypes, companionId],
+  );
+  const simli = useSimliAvatar({
+    faceId:  selectedArchetype?.simli_face_id ?? null,
+    onError: (e) => setSimliError(e.message),
+  });
+
+  // Voice (ElevenLabs Conv AI) — forwards every audio frame to Simli.
+  const voice = useConvAISession({
     onUserTranscript: (text) => setTranscript((p) => [...p, { role: 'user', text }]),
-    onAgentResponse:  (text) => setTranscript((p) => [...p, { role: 'bot',  text }]),
+    onAgentResponse:  (text) => setTranscript((p) => [...p, { role: 'rwen', text }]),
+    onAudioFrame:     (pcm)  => simli.pushAudio(pcm),
   });
 
   // Load archetypes once.
@@ -67,241 +69,175 @@ export default function LipsyncTestScreen() {
     loadActiveArchetypes()
       .then((list) => {
         if (cancelled) return;
-        setArchetypes(list);
-        if (list.length > 0 && !companionId) setCompanionId(list[0].id);
+        // Only show archetypes that have a Simli face_id — the rest can't lipsync.
+        const ready = list.filter((a) => !!a.simli_face_id);
+        setArchetypes(ready);
+        if (ready.length > 0) setCompanionId(ready[0].id);
       })
       .finally(() => { if (!cancelled) setLoadingArchetypes(false); });
     return () => { cancelled = true; };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const selectedArchetype = useMemo(
-    () => archetypes.find((a) => a.id === companionId) ?? null,
-    [archetypes, companionId],
-  );
+  // Bring up Simli once Conv AI is active (otherwise we'd have no audio
+  // to drive the lipsync with anyway).
+  useEffect(() => {
+    if (voice.state === 'active' && simli.state === 'idle' && selectedArchetype?.simli_face_id) {
+      simli.start().catch((e) => setSimliError(e?.message ?? 'simli start failed'));
+    }
+    if (voice.state === 'idle' && simli.state !== 'idle' && simli.state !== 'closed') {
+      simli.stop();
+    }
+  }, [voice.state, simli, selectedArchetype]);
 
-  const canStart =
-    session.state === 'idle' && !!companionId && !loadingArchetypes;
-
-  const onStart = async () => {
-    if (!companionId) return;
-    await session.start({
-      tier,
-      companion_id: companionId,
-      source: 'archetype', // this test screen only does archetypes
-    });
+  const handleStart = async () => {
+    setSimliError(null);
+    setTranscript([]);
+    await voice.start();
   };
 
+  const handleStop = () => {
+    voice.stop();
+    simli.stop();
+  };
+
+  const active = voice.state === 'active';
+
   return (
-    <SafeAreaView style={styles.root} edges={['top', 'bottom']}>
+    <SafeAreaView style={styles.safe} edges={['top']}>
       <View style={styles.header}>
-        <Pressable onPress={() => router.back()} hitSlop={12}>
-          <Text style={styles.back}>← Back</Text>
+        <Pressable onPress={() => router.back()} hitSlop={10}>
+          <Text style={styles.headerClose}>×</Text>
         </Pressable>
-        <Text style={styles.title}>Pipecat Lipsync Test</Text>
-        <View style={{ width: 50 }} />
+        <Text style={styles.headerTitle}>Lipsync Test (Simli-direct)</Text>
+        <View style={{ width: 24 }} />
       </View>
 
-      {session.state === 'active' ? (
-        // ── Active session view ──────────────────────────────────────
-        <View style={styles.activeWrap}>
-          <LipsyncVideo
-            tier={tier}
-            assets={{
-              name: selectedArchetype?.name ?? 'Companion',
-              imageUrl: selectedArchetype?.image_url ?? null,
-              idlingVideoUrl: selectedArchetype?.idling_video_url ?? null,
-              simliFaceId: selectedArchetype?.simli_face_id ?? null,
-            }}
-            height={420}
-            remoteVideoTrack={session.remoteVideoTrack}
-            remoteAudioTrack={session.remoteAudioTrack}
-          />
-
-          <ScrollView style={styles.transcript} contentContainerStyle={{ padding: Spacing.md }}>
-            {transcript.length === 0 ? (
-              <Text style={styles.transcriptHint}>
-                Speak — transcripts appear here once the worker is wired to
-                publish them. (Worker currently writes turns directly to
-                Supabase; this view only shows what Daily forwards.)
-              </Text>
-            ) : (
-              transcript.map((line, i) => (
-                <Text
-                  key={i}
-                  style={[styles.transcriptLine, line.role === 'user' && styles.transcriptUser]}
-                >
-                  <Text style={styles.transcriptRole}>
-                    {line.role === 'user' ? 'You: ' : 'Bot: '}
-                  </Text>
-                  {line.text}
-                </Text>
-              ))
-            )}
-          </ScrollView>
-        </View>
-      ) : (
-        // ── Configuration view ───────────────────────────────────────
-        <ScrollView contentContainerStyle={styles.configBody}>
-          <Text style={styles.sectionLabel}>Tier</Text>
-          {TIER_OPTIONS.map((opt) => (
-            <Pressable
-              key={opt.id}
-              style={[styles.row, tier === opt.id && styles.rowActive]}
-              onPress={() => setTier(opt.id)}
-              disabled={session.state !== 'idle'}
-            >
-              <View style={[styles.radio, tier === opt.id && styles.radioActive]} />
-              <View style={{ flex: 1 }}>
-                <Text style={styles.rowLabel}>{opt.label}</Text>
-                <Text style={styles.rowSub}>{opt.sub}</Text>
-              </View>
-            </Pressable>
-          ))}
-
-          <Text style={[styles.sectionLabel, { marginTop: Spacing.lg }]}>Companion</Text>
-          {loadingArchetypes ? (
-            <ActivityIndicator color={Colors.primary} />
-          ) : archetypes.length === 0 ? (
-            <Text style={styles.empty}>No active archetypes — seed the table first.</Text>
-          ) : (
-            archetypes.map((a) => (
+      <ScrollView contentContainerStyle={styles.body}>
+        {/* Companion picker */}
+        <Text style={styles.sectionTitle}>Companion</Text>
+        {loadingArchetypes ? (
+          <ActivityIndicator color={Colors.secondary} />
+        ) : archetypes.length === 0 ? (
+          <Text style={styles.muted}>
+            No archetypes with a Simli face_id are active yet. Register one via
+            scripts/register-simli-faces.ts then re-load this screen.
+          </Text>
+        ) : (
+          <View style={styles.archetypeRow}>
+            {archetypes.map((a) => (
               <Pressable
                 key={a.id}
-                style={[styles.row, companionId === a.id && styles.rowActive]}
-                onPress={() => setCompanionId(a.id)}
-                disabled={session.state !== 'idle'}
+                onPress={() => !active && setCompanionId(a.id)}
+                style={[styles.archetypeChip, companionId === a.id && styles.archetypeChipActive, active && styles.archetypeChipDisabled]}
               >
-                <View style={[styles.radio, companionId === a.id && styles.radioActive]} />
-                <View style={{ flex: 1 }}>
-                  <Text style={styles.rowLabel}>{a.name}</Text>
-                  <Text style={styles.rowSub}>
-                    {a.simli_face_id ? `simli=${a.simli_face_id.substring(0, 8)}…` : 'no simli face'}
-                    {' · '}
-                    {a.voice_id ? `voice=${a.voice_id.substring(0, 8)}…` : 'no voice'}
-                  </Text>
-                </View>
+                <Text style={[styles.archetypeChipText, companionId === a.id && styles.archetypeChipTextActive]}>
+                  {a.name}
+                </Text>
               </Pressable>
-            ))
-          )}
+            ))}
+          </View>
+        )}
 
-          <Pressable
-            style={[styles.cta, !canStart && styles.ctaDisabled]}
-            onPress={onStart}
-            disabled={!canStart}
-          >
-            {session.state === 'connecting' ? (
-              <ActivityIndicator color={Colors.white} />
-            ) : (
-              <Text style={styles.ctaText}>Start Session</Text>
-            )}
-          </Pressable>
-        </ScrollView>
-      )}
+        {/* Video pane */}
+        <Text style={styles.sectionTitle}>Avatar</Text>
+        <LipsyncVideo
+          tier="lipsync"
+          assets={{
+            name:           selectedArchetype?.name ?? 'Companion',
+            imageUrl:       selectedArchetype?.image_url ?? null,
+            idlingVideoUrl: selectedArchetype?.idling_video_url ?? null,
+            simliFaceId:    selectedArchetype?.simli_face_id ?? null,
+          }}
+          simliStream={simli.remoteStream}
+          height={360}
+        />
 
-      {/* ── Footer: status + end-session ──────────────────────────────── */}
-      <View style={styles.footer}>
-        <View style={{ flex: 1 }}>
-          <Text style={styles.status}>
-            state: <Text style={styles.statusValue}>{session.state}</Text>
-            {session.agentSpeaking ? '  ·  speaking' : ''}
-            {session.sessionId ? `  ·  ${session.sessionId.substring(0, 8)}` : ''}
-          </Text>
-          {session.error ? (
-            <Pressable onPress={session.clearError}>
-              <Text style={styles.error}>error: {session.error} (tap to dismiss)</Text>
+        {/* Controls */}
+        <View style={styles.controls}>
+          {!active ? (
+            <Pressable
+              onPress={handleStart}
+              disabled={!selectedArchetype?.simli_face_id || voice.state === 'connecting'}
+              style={[styles.cta, !selectedArchetype?.simli_face_id && styles.ctaDisabled]}
+            >
+              {voice.state === 'connecting' ? (
+                <ActivityIndicator color={Colors.white} />
+              ) : (
+                <Text style={styles.ctaText}>Start session</Text>
+              )}
             </Pressable>
-          ) : null}
+          ) : (
+            <Pressable onPress={handleStop} style={[styles.cta, styles.ctaStop]}>
+              <Text style={styles.ctaText}>End session</Text>
+            </Pressable>
+          )}
         </View>
 
-        {session.state !== 'idle' && (
-          <Pressable
-            style={styles.endBtn}
-            onPress={() => session.stop()}
-            disabled={session.state === 'closing'}
-          >
-            <Text style={styles.endBtnText}>End Session</Text>
-          </Pressable>
+        {/* Status */}
+        <View style={styles.statusBox}>
+          <Text style={styles.statusLine}>voice: {voice.state}{voice.agentSpeaking ? ' (speaking)' : ''}</Text>
+          <Text style={styles.statusLine}>simli: {simli.state}</Text>
+          {voice.error && <Text style={styles.statusErr}>voice error: {voice.error}</Text>}
+          {simliError    && <Text style={styles.statusErr}>simli error: {simliError}</Text>}
+        </View>
+
+        {/* Transcript */}
+        {transcript.length > 0 && (
+          <View style={styles.transcript}>
+            <Text style={styles.sectionTitle}>Transcript</Text>
+            {transcript.map((t, i) => (
+              <View key={i} style={[styles.bubble, t.role === 'user' ? styles.bubbleUser : styles.bubbleRwen]}>
+                <Text style={styles.bubbleText}>{t.text}</Text>
+              </View>
+            ))}
+          </View>
         )}
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  root: { flex: 1, backgroundColor: Colors.white },
+  safe: { flex: 1, backgroundColor: Colors.gray[50] },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: Spacing.lg,
-    paddingVertical: Spacing.md,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderColor: Colors.gray[200],
+    flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
+    paddingHorizontal: Spacing.lg, paddingVertical: Spacing.sm,
+    borderBottomWidth: 1, borderBottomColor: Colors.gray[200], backgroundColor: Colors.white,
   },
-  back: { color: Colors.primary, fontSize: FontSize.md },
-  title: { fontSize: FontSize.lg, fontWeight: FontWeight.bold, color: Colors.gray[800] },
-  configBody: { padding: Spacing.lg, paddingBottom: Spacing.xxl },
-  sectionLabel: {
-    fontSize: FontSize.sm,
-    fontWeight: FontWeight.semibold,
-    color: Colors.gray[500],
-    textTransform: 'uppercase',
-    marginBottom: Spacing.sm,
+  headerClose: { fontSize: 28, color: Colors.gray[600], lineHeight: 28 },
+  headerTitle: { fontSize: FontSize.md, fontWeight: FontWeight.bold, color: Colors.gray[900] },
+
+  body: { padding: Spacing.lg, gap: Spacing.md },
+  sectionTitle: { fontSize: FontSize.sm, fontWeight: FontWeight.bold, color: Colors.gray[600], marginTop: Spacing.sm },
+  muted:        { fontSize: FontSize.sm, color: Colors.gray[500] },
+
+  archetypeRow: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm },
+  archetypeChip: {
+    paddingHorizontal: Spacing.md, paddingVertical: 6,
+    borderRadius: BorderRadius.full, backgroundColor: Colors.white,
+    borderWidth: 1, borderColor: Colors.gray[200],
   },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: Spacing.md,
-    paddingHorizontal: Spacing.md,
-    backgroundColor: Colors.gray[50],
-    borderRadius: BorderRadius.md,
-    marginBottom: Spacing.sm,
-    gap: Spacing.md,
-  },
-  rowActive: { backgroundColor: '#E8F0FE', borderWidth: 1, borderColor: Colors.secondary },
-  radio: {
-    width: 20, height: 20, borderRadius: 10,
-    borderWidth: 2, borderColor: Colors.gray[400],
-  },
-  radioActive: { borderColor: Colors.secondary, backgroundColor: Colors.secondary },
-  rowLabel: { fontSize: FontSize.md, fontWeight: FontWeight.semibold, color: Colors.gray[800] },
-  rowSub: { fontSize: FontSize.sm, color: Colors.gray[500], marginTop: 2 },
-  empty: { color: Colors.gray[500], fontStyle: 'italic' },
+  archetypeChipActive:   { backgroundColor: Colors.secondary, borderColor: Colors.secondary },
+  archetypeChipDisabled: { opacity: 0.5 },
+  archetypeChipText:        { fontSize: FontSize.sm, color: Colors.gray[700], fontWeight: FontWeight.medium },
+  archetypeChipTextActive:  { color: Colors.white },
+
+  controls: { marginTop: Spacing.md },
   cta: {
-    marginTop: Spacing.xl,
-    backgroundColor: Colors.primary,
-    paddingVertical: Spacing.md,
-    borderRadius: BorderRadius.md,
-    alignItems: 'center',
+    backgroundColor: Colors.secondary, paddingVertical: Spacing.md,
+    borderRadius: BorderRadius.lg, alignItems: 'center',
   },
+  ctaStop:     { backgroundColor: Colors.error },
   ctaDisabled: { opacity: 0.4 },
-  ctaText: { color: Colors.white, fontSize: FontSize.md, fontWeight: FontWeight.bold },
-  activeWrap: { flex: 1, padding: Spacing.md, gap: Spacing.md },
-  transcript: {
-    flex: 1, backgroundColor: Colors.gray[50],
-    borderRadius: BorderRadius.md,
-  },
-  transcriptHint: { color: Colors.gray[500], fontStyle: 'italic' },
-  transcriptLine: { fontSize: FontSize.md, color: Colors.gray[800], marginBottom: Spacing.xs },
-  transcriptUser: { color: Colors.gray[600] },
-  transcriptRole: { fontWeight: FontWeight.semibold },
-  footer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: Spacing.md,
-    padding: Spacing.md,
-    borderTopWidth: StyleSheet.hairlineWidth,
-    borderColor: Colors.gray[200],
-  },
-  status: { fontSize: FontSize.sm, color: Colors.gray[600] },
-  statusValue: { fontWeight: FontWeight.bold, color: Colors.gray[800] },
-  error: { fontSize: FontSize.sm, color: Colors.error, marginTop: 2 },
-  endBtn: {
-    backgroundColor: Colors.error,
-    paddingHorizontal: Spacing.lg,
-    paddingVertical: Spacing.sm,
-    borderRadius: BorderRadius.md,
-  },
-  endBtnText: { color: Colors.white, fontSize: FontSize.md, fontWeight: FontWeight.bold },
+  ctaText:     { color: Colors.white, fontSize: FontSize.md, fontWeight: FontWeight.bold },
+
+  statusBox: { backgroundColor: Colors.white, borderRadius: BorderRadius.lg, padding: Spacing.md, gap: 4, borderWidth: 1, borderColor: Colors.gray[200] },
+  statusLine: { fontSize: FontSize.xs, fontFamily: undefined, color: Colors.gray[700] },
+  statusErr:  { fontSize: FontSize.xs, color: Colors.error, marginTop: 4 },
+
+  transcript: { gap: Spacing.sm, marginTop: Spacing.md },
+  bubble:     { maxWidth: '85%', padding: Spacing.sm, borderRadius: BorderRadius.lg },
+  bubbleUser: { alignSelf: 'flex-end',  backgroundColor: Colors.secondary },
+  bubbleRwen: { alignSelf: 'flex-start', backgroundColor: Colors.white, borderWidth: 1, borderColor: Colors.gray[200] },
+  bubbleText: { fontSize: FontSize.sm, color: Colors.gray[800] },
 });
