@@ -1,0 +1,33 @@
+# Rwendo Pipecat worker — local dev + Contabo VPS deployment.
+#
+# Local dev:
+#   docker compose up --build
+#   # then tunnel for the Edge Function to reach the bot:
+#   cloudflared tunnel --url http://localhost:7860
+#   # paste the tunnel URL into Supabase secrets as BOT_PUBLIC_URL
+#
+# Contabo VPS:
+#   docker compose up -d
+#   # put Caddy or nginx in front for TLS — see docs/PIPECAT-ARCHITECTURE.md
+
+services:
+  bot:
+    build: .
+    container_name: rwendo-bot
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "7860:7860"
+    # Pipecat does CPU-only inference on the box (it only orchestrates
+    # SaaS APIs for STT/LLM/TTS/avatar). 1 vCPU + 1GB RAM per concurrent
+    # session is plenty. Cap memory so a runaway bot can't OOM the host.
+    mem_limit: 4g
+    cpus: "2.0"
+    # Health check so docker reports unhealthy if the server crashes.
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:7860/health').read()"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s

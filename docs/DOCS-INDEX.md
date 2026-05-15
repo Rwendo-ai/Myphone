@@ -38,6 +38,10 @@ When adding a new .md file:
 | [PACK-AUTHORING-JURISDICTION.md](./PACK-AUTHORING-JURISDICTION.md) | Self-contained recipe for authoring a new jurisdiction pack | 2026-04-30 |
 | [supabase-migrations/005-three-pack-architecture.sql](./supabase-migrations/005-three-pack-architecture.sql) | v3 schema migration | 2026-04-30 |
 | [supabase/functions/README.md](../supabase/functions/README.md) | Edge function deployment instructions | 2026-05-01 |
+| [LIPSYNC-INTEGRATION.md](./LIPSYNC-INTEGRATION.md) | Lipsync engines, asset library, pricing reality check | 2026-05-14 |
+| [PIPECAT-ARCHITECTURE.md](./PIPECAT-ARCHITECTURE.md) | Pipecat worker on Contabo VPS + Daily.co transport (replaces ElevenLabs Conv AI for premium tier) | 2026-05-16 |
+| [SELF-HOSTING-STRATEGY.md](./SELF-HOSTING-STRATEGY.md) | Open-source replacement landscape (TTS/STT/Lipsync/LLM) on Contabo | 2026-05-15 |
+| [CUSTOM-COMPANION-WIZARD-V2.md](./CUSTOM-COMPANION-WIZARD-V2.md) | $39.99 bespoke-companion wizard spec (8 steps, 10 images + 3 videos) | 2026-05-16 |
 
 ---
 
