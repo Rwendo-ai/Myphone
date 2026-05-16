@@ -6,6 +6,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useTranslation } from 'react-i18next';
 import RwenImage from '../../components/rwen/RwenImage';
 import ScreenHeaderBar from '../../components/ScreenHeaderBar';
+import { useOTARefresh } from '../../hooks/useOTARefresh';
 import { useAuth } from '../../lib/AuthContext';
 import { useSettings } from '../../lib/SettingsContext';
 import { useProgress } from '../../hooks/useProgress';
@@ -30,6 +31,7 @@ export default function HomeScreen() {
   const { activePack, learnedLanguage, theme, speaker, courses, activeCourseId } = useSettings();
   const { xp, streakDays, username, completedLessons, refresh } = useProgress();
   const { goal: dailyXpGoal } = useDailyXpGoal();
+  const ota = useOTARefresh();
 
   useFocusEffect(useCallback(() => { refresh(); }, [refresh]));
 
@@ -73,7 +75,7 @@ export default function HomeScreen() {
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>
       <ScreenHeaderBar variant="light" />
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView showsVerticalScrollIndicator={false} refreshControl={ota.refreshControl}>
 
         {/* Hero section */}
         <LinearGradient colors={theme.gradient} style={styles.hero}>

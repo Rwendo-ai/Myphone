@@ -5,6 +5,7 @@ import { useCallback, useState } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useTranslation } from 'react-i18next';
 import RwenImage from '../../components/rwen/RwenImage';
+import { useOTARefresh } from '../../hooks/useOTARefresh';
 import { useAuth } from '../../lib/AuthContext';
 import { deleteAccount } from '../../lib/progress';
 import { useProgress } from '../../hooks/useProgress';
@@ -110,6 +111,7 @@ export default function ProfileScreen() {
   const { rwenVoice, setRwenVoice, learnedLanguage, spokenLanguage, theme, setThemeId, avatarUrl, setAvatarUrl, speaker, jurisdiction, voiceEngine, setVoiceEngine, setSpeakerPack } = useSettings();
   const { goal: dailyXpGoal } = useDailyXpGoal();
   const { enabled: remindersOn, setEnabled: setRemindersOn } = useDailyReminders();
+  const ota = useOTARefresh();
   const [uploadingAvatar, setUploadingAvatar] = useState(false);
 
   const handleAvatarPress = async () => {
@@ -202,7 +204,7 @@ export default function ProfileScreen() {
 
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView showsVerticalScrollIndicator={false} refreshControl={ota.refreshControl}>
 
         {/* Profile hero */}
         <LinearGradient colors={theme.gradient} style={styles.hero}>

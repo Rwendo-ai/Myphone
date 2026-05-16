@@ -10,7 +10,7 @@
  * upsert a row when the user picks one, surface upgrade CTAs for paid tiers.
  */
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   View,
@@ -20,15 +20,24 @@ import {
   Pressable,
   ActivityIndicator,
   Alert,
+  Image,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router, useFocusEffect } from 'expo-router';
+import { useOTARefresh } from '../../hooks/useOTARefresh';
 import { useAuth } from '../../lib/AuthContext';
 import { useSettings, RWEN_VOICES, type RwenVoiceKey } from '../../lib/SettingsContext';
 import { supabase } from '../../lib/supabase';
 import { canUseAiFeature } from '../../lib/entitlements';
 import { PRESET_LIST, type CompanionPreset } from '../../data/companions/presets';
 import { ageGateMet } from '../../lib/active-companion';
+import {
+  loadOwnedCompanions,
+  loadArchetype,
+  type CompanionCustomization,
+  type CompanionArchetype,
+} from '../../lib/companion-customization';
+import CompanionProfileSheet, { type ProfileMode } from '../../components/CompanionProfileSheet';
 import ScreenHeaderBar from '../../components/ScreenHeaderBar';
 import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
@@ -50,6 +59,18 @@ export default function CompanionsScreen() {
   const [userDob, setUserDob] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
+  // Customization layer — per-user override of name/face/voice on each preset.
+  // owned[presetId] = the user_companion_customizations row if they "own" it
+  // (every user auto-owns Rwen via the grant_rwen_on_user_create trigger).
+  // archetypeFaces[archetypeId] = the resolved face row so we can render a
+  // small thumbnail next to each preset card.
+  const [owned, setOwned] = useState<Record<string, CompanionCustomization>>({});
+  const [archetypeFaces, setArchetypeFaces] = useState<Record<string, CompanionArchetype>>({});
+  const [editingPreset, setEditingPreset] = useState<{ presetId: string; mode: ProfileMode } | null>(null);
+
+  // Pull-to-refresh — shared with every other tab via useOTARefresh.
+  const ota = useOTARefresh();
+
   // Map preset's tierGate (legacy 5-value enum) to the v3 tier ladder
   // feature key. canUseAiFeature then checks whether the user's tier
   // meets the minimum.
@@ -66,9 +87,8 @@ export default function CompanionsScreen() {
   const loadCompanions = React.useCallback(async () => {
     if (!user) return;
     setLoading(true);
-    // Pull companions and the user's DOB in parallel — DOB drives age-gating
-    // for presets like Aria (18+).
-    const [{ data, error }, profileResult] = await Promise.all([
+    // Pull companions, DOB, AND customizations in parallel.
+    const [{ data, error }, profileResult, customizations] = await Promise.all([
       supabase
         .from('companions')
         .select('id, preset_id, name, voice_id, is_active')
@@ -78,6 +98,7 @@ export default function CompanionsScreen() {
         .select('date_of_birth')
         .eq('id', user.id)
         .maybeSingle(),
+      loadOwnedCompanions(user.id),
     ]);
     if (error) {
       console.error('companions list error:', error);
@@ -86,6 +107,21 @@ export default function CompanionsScreen() {
     }
     setCompanions((data ?? []) as CompanionRow[]);
     setUserDob(profileResult.data?.date_of_birth ?? null);
+
+    // Index customizations by preset_id; fetch archetype thumbnails
+    // for any preset whose customization has a face_archetype_id set.
+    const ownedMap: Record<string, CompanionCustomization> = {};
+    for (const c of customizations) ownedMap[c.preset_id] = c;
+    setOwned(ownedMap);
+
+    const faceIds = Array.from(
+      new Set(customizations.map((c) => c.face_archetype_id).filter(Boolean) as string[]),
+    );
+    const fetched = await Promise.all(faceIds.map((id) => loadArchetype(id)));
+    const faceMap: Record<string, CompanionArchetype> = {};
+    fetched.forEach((a) => { if (a) faceMap[a.id] = a; });
+    setArchetypeFaces(faceMap);
+
     setLoading(false);
   }, [user]);
 
@@ -169,7 +205,11 @@ export default function CompanionsScreen() {
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>
       <ScreenHeaderBar variant="light" />
-      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        style={styles.container}
+        showsVerticalScrollIndicator={false}
+        refreshControl={ota.refreshControl}
+      >
         <View style={styles.header}>
           <Text style={styles.headerTitle}>{t('companions_tab.header_title')}</Text>
           <Text style={styles.headerSub}>{t('companions_tab.header_sub')}</Text>
@@ -198,32 +238,38 @@ export default function CompanionsScreen() {
                   user simply sees a smaller list — no "locked" badge, no
                   message, no awareness the gated preset exists. */}
               {PRESET_LIST.filter((preset) => ageGateMet(preset, userDob)).map((preset) => {
-                const isActive = activeRow?.preset_id === preset.id;
-                const locked = !tierGateMet(preset.tierGate);
+                const isActive    = activeRow?.preset_id === preset.id;
+                const locked      = !tierGateMet(preset.tierGate);
+                const customization = owned[preset.id];
+                const ownsThis    = !!customization;
+                const displayName = customization?.custom_name?.trim() || preset.name;
+                const faceId      = customization?.face_archetype_id ?? null;
+                const face        = faceId ? archetypeFaces[faceId] : null;
+
                 return (
                   <Pressable
                     key={preset.id}
                     style={[
                       styles.presetCard,
                       isActive && styles.presetCardActive,
-                      locked && styles.presetCardLocked,
+                      locked && !ownsThis && styles.presetCardLocked,
                     ]}
                     onPress={() => handleActivate(preset)}
                   >
-                    <Text style={styles.presetEmoji}>{preset.emoji}</Text>
+                    {/* Avatar — show the chosen archetype face if the user
+                        has customised one, else fall back to the preset emoji. */}
+                    {face?.image_url ? (
+                      <Image source={{ uri: face.image_url }} style={styles.presetAvatar} />
+                    ) : (
+                      <Text style={styles.presetEmoji}>{preset.emoji}</Text>
+                    )}
+
                     <View style={{ flex: 1 }}>
                       <View style={styles.presetTitleRow}>
-                        <Text style={styles.presetName}>{preset.name}</Text>
+                        <Text style={styles.presetName}>{displayName}</Text>
                         {isActive && <Text style={styles.presetActiveBadge}>{t('companions_tab.active_badge')}</Text>}
-                        {locked && <Text style={styles.presetLockedBadge}>{t('companions_tab.locked_prefix')} {preset.tierGate}</Text>}
+                        {locked && !ownsThis && <Text style={styles.presetLockedBadge}>{t('companions_tab.locked_prefix')} {preset.tierGate}</Text>}
                       </View>
-                      {/* Tagline + description come from i18n so they render
-                          in the user's chosen language. The preset.tagline /
-                          preset.description fields in data/companions/presets
-                          are the English source-of-truth — i18n keys mirror
-                          them under companion_presets.<id>.tagline. If a
-                          translation key is missing, i18next falls back to
-                          the English value automatically. */}
                       <Text style={styles.presetTagline}>
                         {t(`companion_presets.${preset.id}.tagline`, { defaultValue: preset.tagline })}
                       </Text>
@@ -231,6 +277,19 @@ export default function CompanionsScreen() {
                         {t(`companion_presets.${preset.id}.description`, { defaultValue: preset.description })}
                       </Text>
                     </View>
+
+                    {/* Edit pencil — only for presets the user owns and that
+                        aren't Rwen (Rwen is shared/identity-locked). Opens
+                        CompanionProfileSheet in 'edit' mode. */}
+                    {ownsThis && preset.id !== 'rwen' && (
+                      <Pressable
+                        style={styles.editBtn}
+                        onPress={() => setEditingPreset({ presetId: preset.id, mode: 'edit' })}
+                        hitSlop={10}
+                      >
+                        <Text style={styles.editIcon}>✎</Text>
+                      </Pressable>
+                    )}
                   </Pressable>
                 );
               })}
@@ -239,21 +298,12 @@ export default function CompanionsScreen() {
             <Text style={styles.sectionTitle}>{t('companions_tab.section_customise')}</Text>
             <Pressable
               style={styles.upgradeCard}
-              onPress={() =>
-                Alert.alert(
-                  t('companions_tab.soul_alert_title'),
-                  'Custom companion (edit-soul) is unlocked with the Ultra tier (A$29.99/mo or A$239/year). Tap See plans to choose a plan.',
-                  [
-                    { text: 'Not now', style: 'cancel' },
-                    { text: 'See plans', onPress: () => router.push('/cart') },
-                  ],
-                )
-              }
+              onPress={() => router.push('/build-companion')}
             >
               <Text style={styles.upgradeIcon}>✨</Text>
               <View style={{ flex: 1 }}>
-                <Text style={styles.upgradeTitle}>{t('companions_tab.upgrade_title')}</Text>
-                <Text style={styles.upgradeSub}>{t('companions_tab.upgrade_sub')}</Text>
+                <Text style={styles.upgradeTitle}>Build your own companion</Text>
+                <Text style={styles.upgradeSub}>$39.99 — name, face, voice, soul. Yours forever.</Text>
               </View>
               <Text style={styles.upgradeChevron}>›</Text>
             </Pressable>
@@ -262,6 +312,20 @@ export default function CompanionsScreen() {
           </>
         )}
       </ScrollView>
+
+      {/* Customisation sheet — opens when the user taps the ✎ on an owned
+          preset card. Saving fires a reload so the card immediately shows
+          the new name + face. */}
+      {editingPreset && user && (
+        <CompanionProfileSheet
+          visible={!!editingPreset}
+          onClose={() => setEditingPreset(null)}
+          onSaved={() => { setEditingPreset(null); loadCompanions(); }}
+          userId={user.id}
+          presetId={editingPreset.presetId}
+          mode={editingPreset.mode}
+        />
+      )}
     </SafeAreaView>
   );
 }
@@ -327,6 +391,18 @@ const styles = StyleSheet.create({
     opacity: 0.85,
   },
   presetEmoji: { fontSize: 36 },
+  presetAvatar: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    backgroundColor: Colors.gray[200],
+  },
+  editBtn: {
+    width: 36, height: 36, borderRadius: 18,
+    backgroundColor: Colors.gray[100],
+    alignItems: 'center', justifyContent: 'center',
+  },
+  editIcon: { fontSize: 14, color: Colors.gray[600] },
   presetTitleRow: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm, flexWrap: 'wrap' },
   presetName: { fontSize: FontSize.md, fontWeight: FontWeight.bold, color: Colors.gray[900] },
   presetActiveBadge: { fontSize: FontSize.xs, fontWeight: FontWeight.bold, color: Colors.success },

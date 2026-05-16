@@ -22,6 +22,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 
 import ScreenHeaderBar from '../../components/ScreenHeaderBar';
+import { useOTARefresh } from '../../hooks/useOTARefresh';
 import { useSettings } from '../../lib/SettingsContext';
 import { useAuth } from '../../lib/AuthContext';
 import { supabase } from '../../lib/supabase';
@@ -53,6 +54,7 @@ export default function TravelScreen() {
   const { destination, override, setOverride } = useActiveTravelDestination(activeCourseId);
   const [pickerOpen, setPickerOpen] = useState(false);
   const allDestinations = listAllDestinations();
+  const ota = useOTARefresh();
 
   // Connections age gate — same pattern as the Aria romance preset.
   // Conservative: missing DOB / not loaded yet → treat as under-18 so the
@@ -125,7 +127,7 @@ export default function TravelScreen() {
         <IntroBubble id="travel.country_picker" onDismiss={countryPickerIntro.markSeen} />
       )}
       <ScreenHeaderBar variant="light" />
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView showsVerticalScrollIndicator={false} refreshControl={ota.refreshControl}>
         <LinearGradient colors={['#1A3C6E', '#0D2140']} style={styles.hero}>
           <View style={styles.heroBadgeRow}>
             <View style={styles.modeBadge}><Text style={styles.modeBadgeText}>TRAVEL MODE</Text></View>

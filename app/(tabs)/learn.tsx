@@ -11,6 +11,7 @@ import { useDailyXpGoal } from '../../lib/preferences';
 import { CoursePack, CoursePackId } from '../../types/packs';
 import { DEV_UNLOCK_ALL } from '../../constants/dev';
 import ScreenHeaderBar from '../../components/ScreenHeaderBar';
+import { useOTARefresh } from '../../hooks/useOTARefresh';
 import {
   isCourseInstalled,
   courseDiskBytes,
@@ -62,6 +63,7 @@ export default function LearnScreen() {
   } = useSettings();
   const speakerId = speaker.id;
   const { xp, streakDays, completedLessons, refresh } = useProgress();
+  const ota = useOTARefresh();
   const { goal: dailyXpGoal } = useDailyXpGoal();
 
   // Every authored educational course is rendered; the visual treatment splits
@@ -232,7 +234,7 @@ export default function LearnScreen() {
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>
       <ScreenHeaderBar variant="light" />
-      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+      <ScrollView style={styles.container} showsVerticalScrollIndicator={false} refreshControl={ota.refreshControl}>
         <View style={styles.header}>
           <View>
             <Text style={styles.greeting}>{greeting}</Text>
