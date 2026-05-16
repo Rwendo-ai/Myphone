@@ -334,8 +334,11 @@ export default function CompanionScreen() {
 
       {/* Header — tap the avatar + name area to open the companion picker.
           Rwen stays as RwenImage (her 3D chameleon art); every other
-          companion shows the resolved face thumbnail if one's been
-          customised, falling back to the preset emoji while assets load. */}
+          companion shows a STATIC thumbnail Image — we deliberately do
+          NOT use the looping video here. Two reasons: (a) Bowen 2026-05-16:
+          "the image that appears is static" was confirmed as the right
+          choice for the header; (b) running a 48px Video element here
+          is a major contributor to chat-tab lag. */}
       <View style={[styles.header, { backgroundColor: theme.gradient[0] }]}>
         <Pressable
           style={styles.headerCompanionTap}
@@ -350,6 +353,7 @@ export default function CompanionScreen() {
               emoji={resolved?.preset?.emoji}
               tintColor="rgba(255,255,255,0.15)"
               size={48}
+              /* No videoUrl passed → AmbientFace renders Image, not Video. */
             />
           )}
           <View style={styles.headerText}>
@@ -403,13 +407,32 @@ export default function CompanionScreen() {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 24}
       >
-        {/* Bowen's call (2026-05-16): drop the full-bleed AmbientFace
-            backdrop. The companion's face shows up at the top of the
-            screen header (small avatar swap for Rwen's chameleon) and
-            inside the voice-mode panel as a small looping square. The
-            chat background is plain again so messages read cleanly.
-            useCompanionRenderer keeps its realtime subscription so the
-            atlas renderer can flip in later without a redeploy. */}
+        {/* Backdrop — Bowen's spec:
+            - Text mode: static picture of the companion as the chat
+              backdrop, messages on top so they read cleanly with the
+              avatar visible behind.
+            - Voice mode: backdrop stays the picture (chat still
+              readable) and the looping video pops out in a large
+              centered window (rendered later, see liveVoiceActive
+              block below).
+            Rwen has no archetype face so she gets her theme colour. */}
+        {(activeCompanionPresetId ?? 'rwen') !== 'rwen' && resolved?.archetype?.image_url && (
+          <Image
+            source={{ uri: resolved.archetype.image_url }}
+            style={StyleSheet.absoluteFillObject}
+            resizeMode="cover"
+            blurRadius={liveVoiceActive ? 8 : 0}
+          />
+        )}
+        {/* Soft scrim so message bubbles read above a busy portrait. */}
+        {(activeCompanionPresetId ?? 'rwen') !== 'rwen' && resolved?.archetype?.image_url && (
+          <View
+            style={[
+              StyleSheet.absoluteFillObject,
+              { backgroundColor: `rgba(0,0,0,${liveVoiceActive ? 0.5 : 0.35})` },
+            ]}
+          />
+        )}
 
         {/* Messages */}
         <ScrollView
@@ -440,24 +463,6 @@ export default function CompanionScreen() {
             handlers above, so the user sees one unified timeline. */}
         {liveVoiceActive ? (
           <View style={styles.composerRow}>
-            {/* Small looping video square — Bowen's call: voice mode
-                shows a face square, not a full-bleed backdrop. Rwen
-                stays as her RwenImage; everyone else shows their
-                customised face video. Falls back to thumbnail or emoji
-                while assets load. */}
-            <View style={styles.liveVoiceFaceWrap}>
-              {(activeCompanionPresetId ?? 'rwen') === 'rwen' ? (
-                <RwenImage pose="idle" size={96} />
-              ) : (
-                <AmbientFace
-                  videoUrl={resolved?.archetype?.idling_video_url ?? null}
-                  imageUrl={resolved?.archetype?.thumbnail_url ?? resolved?.archetype?.image_url ?? null}
-                  emoji={resolved?.preset?.emoji}
-                  size={96}
-                  borderRadius={16}
-                />
-              )}
-            </View>
             <View style={styles.liveVoicePanel}>
               {/* Orb — left side. Tap while agent is speaking to interrupt. */}
               <Pressable
@@ -587,6 +592,31 @@ export default function CompanionScreen() {
         )}
       </KeyboardAvoidingView>
 
+      {/* Voice-mode pop-out — large floating window with the looping
+          face video. Chat continues to render behind (visible through
+          the dim scrim). Bowen's spec: "video appear over the top of
+          the text … avatar front and center, no need to read text
+          other than for context between conversations."
+          Pointer-events 'none' so taps fall through to the orb/hangup
+          controls in the composer panel below. */}
+      {liveVoiceActive && (
+        <View pointerEvents="none" style={styles.voiceVideoOverlay}>
+          <View style={styles.voiceVideoWindow}>
+            {(activeCompanionPresetId ?? 'rwen') === 'rwen' ? (
+              <RwenImage pose="idle" size={260} />
+            ) : (
+              <AmbientFace
+                videoUrl={resolved?.archetype?.idling_video_url ?? null}
+                imageUrl={resolved?.archetype?.image_url ?? null}
+                emoji={resolved?.preset?.emoji}
+                size={260}
+                borderRadius={24}
+              />
+            )}
+          </View>
+        </View>
+      )}
+
       {user && (
         <CompanionPickerSheet
           visible={pickerOpen}
@@ -648,9 +678,8 @@ const styles = StyleSheet.create({
     paddingVertical: 4, borderRadius: BorderRadius.full,
   },
   stopListenText: { color: Colors.white, fontSize: FontSize.xs, fontWeight: FontWeight.bold },
-  // Plain background — full-bleed AmbientFace was dropped per Bowen's
-  // call. Chat reads cleanly without the dark scrim.
-  messages:        { flex: 1, backgroundColor: Colors.accent },
+  // Transparent so the picture backdrop (and scrim) show through.
+  messages:        { flex: 1, backgroundColor: 'transparent' },
   messagesContent: { padding: Spacing.lg, gap: Spacing.sm },
   bubble:      { maxWidth: '82%', borderRadius: BorderRadius.lg, padding: Spacing.md },
   rwenBubble:  {
@@ -759,13 +788,27 @@ const styles = StyleSheet.create({
     lineHeight: 22,
   },
 
-  // Small looping video square above the live-voice panel — gives the
-  // companion a visual presence during voice mode without taking over
-  // the whole screen.
-  liveVoiceFaceWrap: {
+  // Voice-mode pop-out — large floating face window. Centred over the
+  // chat; pointer-events: none so the orb/hangup below stay tappable.
+  voiceVideoOverlay: {
+    position: 'absolute',
+    top: 0, left: 0, right: 0, bottom: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingBottom: Spacing.sm,
+  },
+  voiceVideoWindow: {
+    width: 280,
+    height: 280,
+    borderRadius: 24,
+    overflow: 'hidden',
+    backgroundColor: Colors.black,
+    shadowColor: Colors.black,
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.5,
+    shadowRadius: 24,
+    elevation: 12,
+    borderWidth: 2,
+    borderColor: 'rgba(255,255,255,0.18)',
   },
   // Inline live-voice panel — replaces the composer when a session is active.
   liveVoicePanel: {

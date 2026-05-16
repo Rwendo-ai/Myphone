@@ -222,6 +222,8 @@ export default function CompanionPickerSheet({
 
       {profileSheet && (
         <CompanionProfileSheet
+          /* Key per open so state never carries over between presets. */
+          key={`${profileSheet.presetId}-${profileSheet.mode}`}
           visible={!!profileSheet}
           onClose={() => setProfileSheet(null)}
           onSaved={handleProfileSaved}

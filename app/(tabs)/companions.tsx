@@ -340,6 +340,12 @@ export default function CompanionsScreen() {
           the new name + face. */}
       {editingPreset && user && (
         <CompanionProfileSheet
+          /* Key by presetId+mode so React unmounts the previous instance
+             on every open. Belt-and-suspenders against stale state
+             (Bowen reported "customise Tendai" when claiming Maya —
+             couldn't reproduce in code review, but a fresh mount per
+             open eliminates the whole class of bug). */
+          key={`${editingPreset.presetId}-${editingPreset.mode}`}
           visible={!!editingPreset}
           onClose={() => setEditingPreset(null)}
           onSaved={() => { setEditingPreset(null); loadCompanions(); }}
