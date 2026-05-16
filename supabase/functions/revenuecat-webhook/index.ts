@@ -158,6 +158,17 @@ Deno.serve(async (req: Request) => {
       }
       if (productId && COMPANION_BUILD_PRODUCT_IDS.has(productId)) {
         const draftId = await markMostRecentDraftPaid(supabase, userId, event.id);
+        // If the user finished the wizard with a real photo (not the
+        // emoji+color fallback), kick off atlas generation now that
+        // we know the purchase cleared. The job sits at 'pending'
+        // until a GPU worker picks it up; meanwhile the chat tab
+        // renders AmbientFace via the useCompanionRenderer fallback
+        // (see docs/stack/lipsync-atlas.md Section 11).
+        if (draftId) {
+          await enqueueAtlasIfPhoto(supabase, draftId, userId).catch((e) =>
+            console.warn('[revenuecat-webhook] atlas enqueue failed (non-fatal):', e),
+          );
+        }
         return json({ ok: true, action: draftId ? 'custom_companion_paid' : 'build_credit_pending', draftId });
       }
       if (productId && TIER_PRODUCT_TO_ENTITLEMENT[productId]) {
@@ -329,6 +340,59 @@ async function markMostRecentDraftPaid(
     .single();
   if (insertErr) throw new Error(`markMostRecentDraftPaid placeholder insert failed: ${insertErr.message}`);
   return inserted?.id ?? null;
+}
+
+/**
+ * If the just-paid draft has an uploaded portrait, kick off lipsync-atlas
+ * generation. Idempotent — coalesces against any pending/running job for
+ * the same companion (matches enqueue-atlas Edge Function behaviour).
+ *
+ * No-op when the user picked the emoji+color avatar (no photo to atlas).
+ *
+ * See docs/stack/lipsync-atlas.md Section 11 for the full pipeline.
+ */
+async function enqueueAtlasIfPhoto(
+  // deno-lint-ignore no-explicit-any
+  supabase: any,
+  customCompanionId: string,
+  userId: string,
+): Promise<void> {
+  const { data: comp, error: compErr } = await supabase
+    .from('custom_companions')
+    .select('avatar_image_url')
+    .eq('id', customCompanionId)
+    .maybeSingle();
+  if (compErr || !comp) return;
+  if (!comp.avatar_image_url) return;  // emoji avatar, nothing to atlas
+
+  // Coalesce — skip if a job is already pending/running for this companion.
+  const { data: existing } = await supabase
+    .from('atlas_generation_jobs')
+    .select('id')
+    .eq('companion_kind', 'custom')
+    .eq('companion_id', customCompanionId)
+    .in('status', ['pending', 'running'])
+    .maybeSingle();
+  if (existing) return;
+
+  const generator = 'musetalk-v1.2';
+  const { error: insertErr } = await supabase
+    .from('atlas_generation_jobs')
+    .insert({
+      companion_kind: 'custom',
+      companion_id:   customCompanionId,
+      user_id:        userId,
+      status:         'pending',
+      generator,
+      portrait_url:   comp.avatar_image_url,
+    });
+  if (insertErr) {
+    throw new Error(`atlas job insert failed: ${insertErr.message}`);
+  }
+  await supabase
+    .from('custom_companions')
+    .update({ atlas_status: 'pending', atlas_generator: generator })
+    .eq('id', customCompanionId);
 }
 
 async function expireEntitlement(

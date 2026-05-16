@@ -9,6 +9,7 @@ import ScreenHeaderBar from '../../components/ScreenHeaderBar';
 import CompanionPickerSheet from '../../components/CompanionPickerSheet';
 import AmbientFace from '../../components/AmbientFace';
 import { resolveCompanion, type ResolvedCompanion } from '../../lib/companion-customization';
+import { useCompanionRenderer } from '../../hooks/useCompanionRenderer';
 import { useAuth } from '../../lib/AuthContext';
 import { useSettings } from '../../lib/SettingsContext';
 import { useProgress } from '../../hooks/useProgress';
@@ -90,6 +91,25 @@ export default function CompanionScreen() {
       .catch((e) => console.warn('[companion] resolveCompanion failed:', e));
     return () => { cancelled = true; };
   }, [user, activeCompanionPresetId]);
+
+  // Renderer decision — atlas vs ambient vs three_d. AtlasCompositor
+  // doesn't exist yet (waiting on the GPU worker), so for now 'atlas'
+  // and 'ambient' both fall through to AmbientFace. The hook still
+  // subscribes to atlas_status via realtime so the day the worker
+  // lands, every existing session silently upgrades to AtlasCompositor
+  // without a redeploy.
+  const rendererState = useCompanionRenderer({
+    kind:        'archetype',
+    companionId: resolved?.archetype?.id ?? null,
+    presetId:    activeCompanionPresetId,
+  });
+
+  // Diagnostic log so we can see in dev when atlas_status flips —
+  // also keeps the destructured value in use for TS.
+  useEffect(() => {
+    if (rendererState.loading) return;
+    console.log(`[companion] renderer=${rendererState.renderer} atlasStatus=${rendererState.atlasStatus}`);
+  }, [rendererState.loading, rendererState.renderer, rendererState.atlasStatus]);
 
   const [messages,      setMessages]      = useState<DisplayMessage[]>([]);
   const [input,         setInput]         = useState('');
@@ -399,11 +419,16 @@ export default function CompanionScreen() {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 24}
       >
-        {/* Ambient face — the v1 launch product. A looping idle video of
-            the active companion plays softly behind the chat. Crossfade
-            inside AmbientFace hides the loop seam regardless of how cleanly
-            Kling generated the source. Falls back to a static image or the
-            preset's emoji when assets aren't ready. */}
+        {/* Face renderer — useCompanionRenderer picks the right engine
+            based on the companion's atlas_status. Today AtlasCompositor
+            doesn't exist yet, so we route every renderer except 'three_d'
+            (Rwen — Three.js, not built yet either) to AmbientFace. The
+            day a worker bakes atlases and the row flips to atlas_status='ready',
+            the realtime subscription in the hook will trigger a re-render
+            and we'll swap engines in-place — no redeploy needed.
+
+            For now: every companion gets the AmbientFace (looping Kling
+            idle video, or static portrait, or preset emoji). */}
         <AmbientFace
           videoUrl={resolved?.archetype?.idling_video_url ?? null}
           imageUrl={resolved?.archetype?.image_url ?? null}
@@ -411,6 +436,12 @@ export default function CompanionScreen() {
           tintColor={theme.gradient[1] ?? Colors.accent}
           scrimOpacity={0.42}
         />
+        {/* AtlasCompositor goes here when it exists:
+              {rendererState.renderer === 'atlas' && rendererState.atlasUrl && (
+                <AtlasCompositor atlasUrl={rendererState.atlasUrl} ... />
+              )}
+            For now `rendererState` is consumed only for its realtime
+            subscription side-effect — keeps the hook warm and ready. */}
 
         {/* Messages — background transparent so AmbientFace shows through.
             Swipe down at the top of the list to check for + apply an
