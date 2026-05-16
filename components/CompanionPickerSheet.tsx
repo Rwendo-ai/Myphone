@@ -53,13 +53,15 @@ interface Props {
 }
 
 /**
- * Tier-gating helper. For now we mirror the existing `tierGate` field on
- * the preset — free presets ('free' | 'text_ai') are claimable; everything
- * else needs paid entitlement. When entitlements are wired through, swap
- * this for a check against the user's actual subscription.
+ * Tier display — flat model (Bowen's call 2026-05-16):
+ *   - Rwen is the only truly FREE companion (auto-granted on signup)
+ *   - Every other preset is PREMIUM, regardless of its underlying
+ *     tierGate enum value
+ *   - The user gets one Premium pick for free via claimFreePreset.
+ *     Additional Premiums require a paywall purchase (TODO).
  */
-function isFreeClaimable(preset: CompanionPreset): boolean {
-  return preset.tierGate === 'free' || preset.tierGate === 'text_ai';
+function isFreeForEveryone(preset: CompanionPreset): boolean {
+  return preset.id === 'rwen';
 }
 
 export default function CompanionPickerSheet({
@@ -109,12 +111,10 @@ export default function CompanionPickerSheet({
       onClose();
       return;
     }
-    if (isFreeClaimable(preset) && freePickAvailable) {
-      setProfileSheet({ presetId: preset.id, mode: 'claim' });
-      return;
-    }
-    // Locked — surface a soft hint. (Full paywall integration is a follow-up.)
-    setProfileSheet({ presetId: preset.id, mode: 'claim' }); // will hit limit gate
+    // Not owned → open profile sheet in claim mode. If the user has
+    // already used their one free Premium pick, claimFreePreset will
+    // return reason='limit' and ProfileSheet surfaces the paywall hint.
+    setProfileSheet({ presetId: preset.id, mode: 'claim' });
   };
 
   const handleRowEdit = (preset: CompanionPreset) => {
@@ -151,7 +151,7 @@ export default function CompanionPickerSheet({
                   const cust     = owned.find((r) => r.preset_id === preset.id) ?? null;
                   const face     = cust?.face_archetype_id ? archetypeMap[cust.face_archetype_id] : null;
                   const display  = cust?.custom_name?.trim() || preset.name;
-                  const claimable = !isOwned && isFreeClaimable(preset) && freePickAvailable;
+                  const isFree   = isFreeForEveryone(preset);  // Rwen only
 
                   return (
                     <View key={preset.id} style={[styles.row, isActive && styles.rowActive]}>
@@ -170,11 +170,21 @@ export default function CompanionPickerSheet({
                           <View style={styles.rowTitleLine}>
                             <Text style={styles.rowTitle}>{display}</Text>
                             {isActive && <Text style={styles.activeBadge}>active</Text>}
+                            {/* Flat tier badge — Rwen=FREE, everyone else=PREMIUM.
+                                Matches the companions tab so the same companion
+                                doesn't show two different tier labels. */}
+                            {isFree ? (
+                              <Text style={styles.tierBadgeFree}>FREE</Text>
+                            ) : (
+                              <Text style={styles.tierBadgePremium}>PREMIUM</Text>
+                            )}
                           </View>
                           <Text style={styles.rowSub} numberOfLines={1}>
                             {isOwned ? preset.tagline :
-                             claimable ? 'Free — claim & customise' :
-                             'Premium — coming with paid tier'}
+                             isFree  ? 'Everyone gets Rwen' :
+                                       freePickAvailable
+                                         ? 'Tap to claim — your one Premium pick'
+                                         : 'Premium — additional unlocks require purchase'}
                           </Text>
                         </View>
                       </Pressable>
@@ -307,6 +317,30 @@ const styles = StyleSheet.create({
     paddingVertical: 2,
     borderRadius: 4,
     overflow: 'hidden',
+  },
+  // Flat tier badges — matched 1:1 with app/(tabs)/companions.tsx so
+  // the same preset never shows two different tier labels.
+  tierBadgeFree: {
+    fontSize: 10,
+    fontWeight: FontWeight.bold,
+    color: Colors.success,
+    backgroundColor: Colors.success + '18',
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 4,
+    overflow: 'hidden',
+    letterSpacing: 0.5,
+  },
+  tierBadgePremium: {
+    fontSize: 10,
+    fontWeight: FontWeight.bold,
+    color: Colors.xp,
+    backgroundColor: Colors.xp + '18',
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 4,
+    overflow: 'hidden',
+    letterSpacing: 0.5,
   },
   rowSub:      { fontSize: FontSize.xs, color: Colors.gray[500], marginTop: 2 },
   editBtn: {
