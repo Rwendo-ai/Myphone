@@ -35,54 +35,72 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [onboardingComplete, setOnboardingComplete] = useState(false);
 
   const checkOnboarding = async (userId: string) => {
-    const { data } = await supabase
-      .from('profiles')
-      .select('onboarding_complete')
-      .eq('id', userId)
-      .single();
-    setOnboardingComplete(data?.onboarding_complete ?? false);
+    // .maybeSingle() not .single() — .single() throws on zero rows. A new
+    // user can briefly have no profiles row before the on-auth trigger
+    // inserts one; using single() would propagate the throw all the way
+    // up through the awaited chain in the useEffect below and leave
+    // setLoading(false) unreachable, freezing the app on the splash.
+    // Also wrap in try/catch as belt-and-suspenders so RLS/network/etc.
+    // errors degrade to "treat as not-onboarded" instead of blocking auth.
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('onboarding_complete')
+        .eq('id', userId)
+        .maybeSingle();
+      if (error) {
+        console.warn('[auth] checkOnboarding error:', error.message);
+        setOnboardingComplete(false);
+        return;
+      }
+      setOnboardingComplete(data?.onboarding_complete ?? false);
+    } catch (e) {
+      console.warn('[auth] checkOnboarding threw:', e);
+      setOnboardingComplete(false);
+    }
   };
 
   useEffect(() => {
     let cancelled = false;
 
-    // Initial session resolution. CRITICAL: we keep `loading=true` until
-    // BOTH the session is known AND (if a user exists) the onboarding
-    // flag is fetched. Previously these ran in parallel and the
-    // NavigationGuard in app/_layout.tsx would see loading=false with
-    // onboardingComplete still at its initial `false`, bouncing the
-    // user back to /onboarding on every cold start. Fix: await
-    // checkOnboarding before flipping loading off.
+    // Initial session resolution. We keep `loading=true` until BOTH
+    // the session is known AND (if a user exists) the onboarding flag
+    // is fetched. Wrapped in try/finally so an unexpected throw can
+    // never leave the app stuck on the splash screen.
     (async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (cancelled) return;
-      setSession(session);
-      setUser(session?.user ?? null);
-      if (session?.user) await checkOnboarding(session.user.id);
-      if (cancelled) return;
-      setLoading(false);
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (cancelled) return;
+        setSession(session);
+        setUser(session?.user ?? null);
+        if (session?.user) await checkOnboarding(session.user.id);
+      } catch (e) {
+        console.warn('[auth] initial session resolution failed:', e);
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
     })();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      // While an auth state change is being processed (sign-in / refresh /
-      // user-update), block the navigation guard from making decisions
-      // with stale onboardingComplete. Same race as the initial-load fix
-      // above — without this, signing in via Google would briefly land
-      // with the still-default onboardingComplete=false and bounce the
-      // user to onboarding.
-      if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED' || event === 'USER_UPDATED') {
-        setLoading(true);
+      try {
+        // Block the navigation guard from making decisions with stale
+        // onboardingComplete during an auth state change. Without this,
+        // signing in via Google briefly lands with the still-default
+        // onboardingComplete=false and bounces the user to onboarding.
+        if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED' || event === 'USER_UPDATED') {
+          setLoading(true);
+        }
+        setSession(session);
+        setUser(session?.user ?? null);
+        if (session?.user) await checkOnboarding(session.user.id);
+      } catch (e) {
+        console.warn('[auth] onAuthStateChange handler failed:', e);
+      } finally {
+        if (!cancelled) setLoading(false);
       }
-      setSession(session);
-      setUser(session?.user ?? null);
-      if (session?.user) await checkOnboarding(session.user.id);
-      if (cancelled) return;
-      setLoading(false);
 
       // Login XP — server enforces once-per-hour throttle.
       if (event === 'SIGNED_IN' && session?.user) {
-        // Lazy-import to avoid a circular dep risk between AuthContext and
-        // anything that ends up reading auth state during module init.
         import('./xp-events').then(({ awardXp }) => {
           awardXp('login').catch(() => {/* best-effort */});
         });
