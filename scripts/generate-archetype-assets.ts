@@ -3,7 +3,9 @@
  *
  * For each archetype:
  *   1. Generate portrait via fal.ai Flux 1.1 Pro (3:4 aspect, ~$0.04)
- *   2. Generate 6s idling video via fal.ai Kling 1.6 image-to-video (~$0.95)
+ *   2. Generate 10s idling video via fal.ai Kling 1.6 image-to-video (~$1.85)
+ *      Longer duration + tighter motion prompt + AmbientFace crossfade
+ *      together give us seamless loops without per-clip post-processing.
  *   3. Upload both to Supabase Storage:
  *        companion-assets/archetypes/<id>/portrait.jpg
  *        companion-assets/archetypes/<id>/idling.mp4
@@ -51,8 +53,22 @@ interface Archetype {
   motionPrompt?: string;
 }
 
+// Tighter than v1 — Kling 1.6 drifts even when you ask for "no motion",
+// so we explicitly cap *every* axis it tries to animate, request very
+// rare blinks (2-3 in a 10s window) instead of the constant blinking it
+// defaults to, and tell it to return to the starting pose. The
+// AmbientFace component does a final crossfade in playback so loop
+// seams are hidden no matter what — but a tighter source means the
+// crossfade has less work to do.
 const DEFAULT_MOTION =
-  'subtle natural breathing, soft natural blinking, no head movement, no expression change, mouth remains closed and neutral, calm static portrait, cinematic film grain';
+  'Extremely subtle ambient motion only. Barely perceptible breathing. ' +
+  'Very rare blinks — at most one blink every 4-5 seconds, both eyes fully ' +
+  'closing and reopening together. NO head movement, NO head tilt, NO yaw, ' +
+  'NO shoulder movement. NO smile change. NO expression change at all. ' +
+  'Mouth remains firmly closed throughout, lips pressed together, no tongue, ' +
+  'no teeth visible at any point. Pose, gaze direction and framing identical ' +
+  'from first frame to last — return to the exact same neutral starting pose ' +
+  'so the clip loops cleanly. Calm static portrait, cinematic film grain.';
 
 const ARCHETYPES: Archetype[] = [
   // ─── Core 10 ────────────────────────────────────────────────────────────
@@ -275,13 +291,22 @@ async function generateIdlingVideo(arch: Archetype, imageUrl: string, args: Args
     return 'https://example.com/dry-run-idling.mp4';
   }
   // Kling 1.6 Standard image-to-video on fal.ai. Aspect inherits from the
-  // source image. 5-second duration is the standard option (closest to
-  // the 6s target).
+  // source image. We use 10s duration (the longer of Kling's two options)
+  // because a longer loop is less visually obvious — the crossfade in
+  // AmbientFace then hides whatever drift remains. The added cost over
+  // 5s is small (~$0.40 vs $0.95) for a noticeable quality win.
   const result = await fal.subscribe('fal-ai/kling-video/v1.6/standard/image-to-video', {
     input: {
       image_url: imageUrl,
       prompt:    arch.motionPrompt ?? DEFAULT_MOTION,
-      duration:  '5',
+      duration:  '10',
+      // Negative prompt — kept here as a fal-supported field. Kling
+      // listens to negative prompts and they materially reduce drift.
+      negative_prompt:
+        'head movement, head tilt, head turn, smiling, teeth, open mouth, ' +
+        'tongue, talking, speaking, lip movement, mouth opening, eyebrow ' +
+        'raise, eye widening, looking around, dramatic motion, exaggerated ' +
+        'expression, camera movement, zoom, pan',
     },
     logs: false,
   });
@@ -329,7 +354,7 @@ async function processArchetype(arch: Archetype, args: Args) {
   // 2. Idling video (optional)
   let storedVideoUrl: string | null = null;
   if (!args.portraitsOnly) {
-    console.log(`  generating 5s idling video via Kling 1.6 (will take ~30-60s)…`);
+    console.log(`  generating 10s idling video via Kling 1.6 (will take ~60-120s)…`);
     const videoUrl = await generateIdlingVideo(arch, portraitUrl, args);
     console.log(`  video generated: ${videoUrl.substring(0, 80)}…`);
 

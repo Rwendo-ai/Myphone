@@ -6,6 +6,8 @@ import { useTranslation } from 'react-i18next';
 import RwenImage from '../../components/rwen/RwenImage';
 import ScreenHeaderBar from '../../components/ScreenHeaderBar';
 import CompanionPickerSheet from '../../components/CompanionPickerSheet';
+import AmbientFace from '../../components/AmbientFace';
+import { resolveCompanion, type ResolvedCompanion } from '../../lib/companion-customization';
 import { useAuth } from '../../lib/AuthContext';
 import { useSettings } from '../../lib/SettingsContext';
 import { useProgress } from '../../hooks/useProgress';
@@ -42,6 +44,19 @@ export default function CompanionScreen() {
   // Companion picker — the dropdown sheet that opens when the user taps
   // the companion name in the header.
   const [pickerOpen, setPickerOpen] = useState(false);
+
+  // Active companion's resolved view (preset + name/face/voice overrides).
+  // Drives the AmbientFace backdrop and could later drive the header.
+  const [resolved, setResolved] = useState<ResolvedCompanion | null>(null);
+
+  useEffect(() => {
+    if (!user) return;
+    let cancelled = false;
+    resolveCompanion(user.id, activeCompanionPresetId ?? 'rwen')
+      .then((r) => { if (!cancelled) setResolved(r); })
+      .catch((e) => console.warn('[companion] resolveCompanion failed:', e));
+    return () => { cancelled = true; };
+  }, [user, activeCompanionPresetId]);
 
   const [messages,      setMessages]      = useState<DisplayMessage[]>([]);
   const [input,         setInput]         = useState('');
@@ -351,7 +366,20 @@ export default function CompanionScreen() {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 24}
       >
-        {/* Messages */}
+        {/* Ambient face — the v1 launch product. A looping idle video of
+            the active companion plays softly behind the chat. Crossfade
+            inside AmbientFace hides the loop seam regardless of how cleanly
+            Kling generated the source. Falls back to a static image or the
+            preset's emoji when assets aren't ready. */}
+        <AmbientFace
+          videoUrl={resolved?.archetype?.idling_video_url ?? null}
+          imageUrl={resolved?.archetype?.image_url ?? null}
+          emoji={resolved?.preset?.emoji}
+          tintColor={theme.gradient[1] ?? Colors.accent}
+          scrimOpacity={0.42}
+        />
+
+        {/* Messages — background transparent so AmbientFace shows through. */}
         <ScrollView
           ref={scrollRef}
           style={styles.messages}
@@ -569,7 +597,9 @@ const styles = StyleSheet.create({
     paddingVertical: 4, borderRadius: BorderRadius.full,
   },
   stopListenText: { color: Colors.white, fontSize: FontSize.xs, fontWeight: FontWeight.bold },
-  messages:        { flex: 1, backgroundColor: Colors.accent },
+  // Transparent so the AmbientFace below shows through. The scrim
+  // inside AmbientFace handles chat readability.
+  messages:        { flex: 1, backgroundColor: 'transparent' },
   messagesContent: { padding: Spacing.lg, gap: Spacing.sm },
   bubble:      { maxWidth: '82%', borderRadius: BorderRadius.lg, padding: Spacing.md },
   rwenBubble:  {
