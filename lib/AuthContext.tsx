@@ -44,21 +44,42 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      if (session?.user) checkOnboarding(session.user.id);
-      setLoading(false);
-    });
+    let cancelled = false;
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+    // Initial session resolution. CRITICAL: we keep `loading=true` until
+    // BOTH the session is known AND (if a user exists) the onboarding
+    // flag is fetched. Previously these ran in parallel and the
+    // NavigationGuard in app/_layout.tsx would see loading=false with
+    // onboardingComplete still at its initial `false`, bouncing the
+    // user back to /onboarding on every cold start. Fix: await
+    // checkOnboarding before flipping loading off.
+    (async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (cancelled) return;
       setSession(session);
       setUser(session?.user ?? null);
-      if (session?.user) checkOnboarding(session.user.id);
-      // Login XP. Server enforces once-per-hour throttle so logging in
-      // and out repeatedly only counts once per hour. Safe to fire on
-      // every SIGNED_IN event (initial sign-in + each subsequent
-      // restore-from-storage on app open).
+      if (session?.user) await checkOnboarding(session.user.id);
+      if (cancelled) return;
+      setLoading(false);
+    })();
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      // While an auth state change is being processed (sign-in / refresh /
+      // user-update), block the navigation guard from making decisions
+      // with stale onboardingComplete. Same race as the initial-load fix
+      // above — without this, signing in via Google would briefly land
+      // with the still-default onboardingComplete=false and bounce the
+      // user to onboarding.
+      if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED' || event === 'USER_UPDATED') {
+        setLoading(true);
+      }
+      setSession(session);
+      setUser(session?.user ?? null);
+      if (session?.user) await checkOnboarding(session.user.id);
+      if (cancelled) return;
+      setLoading(false);
+
+      // Login XP — server enforces once-per-hour throttle.
       if (event === 'SIGNED_IN' && session?.user) {
         // Lazy-import to avoid a circular dep risk between AuthContext and
         // anything that ends up reading auth state during module init.
@@ -68,7 +89,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      cancelled = true;
+      subscription.unsubscribe();
+    };
   }, []);
 
   const signUp = async (email: string, password: string, username: string) => {
