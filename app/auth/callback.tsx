@@ -10,8 +10,14 @@
  * pulls the tokens out of the URL, calls supabase.auth.setSession, and
  * lets NavigationGuard route the now-authed user to onboarding or home.
  *
- * Without this route, expo-router 404s the deep link with an "Unmatched
- * Route" page and the sign-in never completes.
+ * IMPORTANT — we use Linking.useURL() rather than getInitialURL().
+ * getInitialURL only returns the URL the app was FIRST launched with —
+ * useless when the user signs out and signs back in while the app is
+ * still running, because the new OAuth redirect URL arrives as a
+ * runtime deep link event, not as an initial-launch URL. The previous
+ * version of this file used getInitialURL and silently lost the tokens
+ * on every sign-in attempt after the first one, surfacing as
+ * "Sign-in completed but no session was returned. Try again."
  */
 
 import { useEffect, useState } from 'react';
@@ -25,40 +31,49 @@ import { Spacing, FontSize, FontWeight } from '../../constants/theme';
 
 export default function AuthCallbackScreen() {
   const [error, setError] = useState<string | null>(null);
+  const [processing, setProcessing] = useState(false);
+  // useURL() tracks BOTH the initial-launch URL AND any deep links that
+  // arrive while the app is running. Without this, sign-out-and-sign-back-
+  // in fails because the second OAuth redirect comes as a runtime event,
+  // not an initial-launch URL.
+  const url = Linking.useURL();
 
   useEffect(() => {
+    if (!url || processing) return;
+    const tokens = parseTokensFromUrl(url);
+    if (!tokens.access_token || !tokens.refresh_token) {
+      // Wait — maybe the URL just hasn't arrived yet (useURL initially
+      // returns null, then the actual URL). Only surface the error if
+      // we get a URL that DOES land on the callback route but doesn't
+      // carry tokens.
+      if (url.includes('auth/callback')) {
+        setError('Sign-in completed but no session was returned. Try again.');
+      }
+      return;
+    }
+
+    setProcessing(true);
     (async () => {
       try {
-        // Pull the full URL the app was opened with — that's where the
-        // tokens live (in the # fragment).
-        const initialUrl = await Linking.getInitialURL();
-        const url = initialUrl ?? '';
-        const tokens = parseTokensFromUrl(url);
-
-        if (!tokens.access_token || !tokens.refresh_token) {
-          setError('Sign-in completed but no session was returned. Try again.');
-          return;
-        }
-
         const { error: setErr } = await supabase.auth.setSession({
-          access_token: tokens.access_token,
-          refresh_token: tokens.refresh_token,
+          access_token: tokens.access_token!,
+          refresh_token: tokens.refresh_token!,
         });
         if (setErr) {
           setError(setErr.message);
+          setProcessing(false);
           return;
         }
-
-        // Auth state listener in AuthContext picks up the new session and
-        // NavigationGuard routes us to onboarding (first time) or home
-        // (returning user). We just need to leave this route so the guard
-        // can take over.
+        // AuthContext picks up the new session via onAuthStateChange and
+        // NavigationGuard routes to onboarding/home. We just need to
+        // leave this route.
         router.replace('/');
       } catch (e) {
         setError(e instanceof Error ? e.message : 'Sign-in failed');
+        setProcessing(false);
       }
     })();
-  }, []);
+  }, [url, processing]);
 
   return (
     <LinearGradient colors={[Colors.primary, '#0D2140']} style={styles.container}>
