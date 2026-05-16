@@ -278,16 +278,21 @@ export default function CompanionsScreen() {
                       </Text>
                     </View>
 
-                    {/* Edit pencil — only for presets the user owns and that
-                        aren't Rwen (Rwen is shared/identity-locked). Opens
-                        CompanionProfileSheet in 'edit' mode. */}
-                    {ownsThis && preset.id !== 'rwen' && (
+                    {/* Edit pencil — visible on every non-Rwen preset.
+                        Opens CompanionProfileSheet in 'edit' mode if the
+                        user already owns the preset, or 'claim' mode
+                        otherwise (claim + customize happens in one flow).
+                        Rwen is identity-locked so she never gets a pencil. */}
+                    {preset.id !== 'rwen' && (
                       <Pressable
                         style={styles.editBtn}
-                        onPress={() => setEditingPreset({ presetId: preset.id, mode: 'edit' })}
+                        onPress={() => setEditingPreset({
+                          presetId: preset.id,
+                          mode:     ownsThis ? 'edit' : 'claim',
+                        })}
                         hitSlop={10}
                       >
-                        <Text style={styles.editIcon}>✎</Text>
+                        <Text style={styles.editIcon}>{ownsThis ? '✎' : '＋'}</Text>
                       </Pressable>
                     )}
                   </Pressable>
