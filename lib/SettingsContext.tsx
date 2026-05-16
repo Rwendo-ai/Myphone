@@ -81,12 +81,11 @@ interface Settings {
    *  a switch — e.g. from the Companions management tab. */
   setActiveCompanionPresetId: (id: string | null) => void;
   /**
-   * Thumbnail of the active companion's chosen archetype face (~10 KB).
-   * Read this synchronously instead of calling resolveCompanion from
-   * UI surfaces that re-render often (the tab-bar center button, chat
-   * header avatar, etc.). Updated by the chat tab when it resolves
-   * the active companion; falls back to null for Rwen or while
-   * loading.
+   * Thumbnail of the active companion's customised face (~10 KB), or null
+   * if the companion has no archetype face attached. The tab-bar center
+   * button reads this synchronously to avoid Supabase round-trips on
+   * every tab navigation. Written by the chat tab whenever it resolves
+   * the active companion.
    */
   activeCompanionThumbUrl: string | null;
   setActiveCompanionThumbUrl: (url: string | null) => void;

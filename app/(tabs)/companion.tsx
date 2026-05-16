@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, TextInput, Pressable, ScrollView, KeyboardAvoid
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Video, ResizeMode } from 'expo-av';
 import { useState, useRef, useEffect, useCallback } from 'react';
-import { useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams, useFocusEffect } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { useOTARefresh } from '../../hooks/useOTARefresh';
 import RwenImage from '../../components/rwen/RwenImage';
@@ -10,7 +10,6 @@ import ScreenHeaderBar from '../../components/ScreenHeaderBar';
 import CompanionPickerSheet from '../../components/CompanionPickerSheet';
 import AmbientFace from '../../components/AmbientFace';
 import { resolveCompanion, type ResolvedCompanion } from '../../lib/companion-customization';
-import { useCompanionRenderer } from '../../hooks/useCompanionRenderer';
 import { useAuth } from '../../lib/AuthContext';
 import { useSettings } from '../../lib/SettingsContext';
 import { useProgress } from '../../hooks/useProgress';
@@ -56,40 +55,32 @@ export default function CompanionScreen() {
   // Drives the AmbientFace backdrop and could later drive the header.
   const [resolved, setResolved] = useState<ResolvedCompanion | null>(null);
 
-  useEffect(() => {
-    if (!user) return;
-    let cancelled = false;
-    resolveCompanion(user.id, activeCompanionPresetId ?? 'rwen')
-      .then((r) => {
-        if (cancelled) return;
-        setResolved(r);
-        // Publish the active companion's thumbnail to SettingsContext
-        // so cheap UI surfaces (tab-bar center button) can read it
-        // synchronously without re-running resolveCompanion themselves.
-        setActiveCompanionThumbUrl(r.archetype?.thumbnail_url ?? r.archetype?.image_url ?? null);
-      })
-      .catch((e) => console.warn('[companion] resolveCompanion failed:', e));
-    return () => { cancelled = true; };
-  }, [user, activeCompanionPresetId, setActiveCompanionThumbUrl]);
+  // Re-resolve the active companion every time this tab gains focus.
+  // Bowen reported the chat-tab header + backdrop were sticking to the
+  // OLD face after he changed the customisation on the companions tab.
+  // Fix: re-fetch on focus so navigating back to chat always shows
+  // the latest. Also writes the thumbnail into SettingsContext so the
+  // tab-bar center button has a synchronous source of truth.
+  useFocusEffect(
+    useCallback(() => {
+      if (!user) return;
+      let cancelled = false;
+      resolveCompanion(user.id, activeCompanionPresetId ?? 'rwen')
+        .then((r) => {
+          if (cancelled) return;
+          setResolved(r);
+          setActiveCompanionThumbUrl(r.archetype?.thumbnail_url ?? r.archetype?.image_url ?? null);
+        })
+        .catch((e) => console.warn('[companion] resolveCompanion failed:', e));
+      return () => { cancelled = true; };
+    }, [user, activeCompanionPresetId, setActiveCompanionThumbUrl]),
+  );
 
-  // Renderer decision — atlas vs ambient vs three_d. AtlasCompositor
-  // doesn't exist yet (waiting on the GPU worker), so for now 'atlas'
-  // and 'ambient' both fall through to AmbientFace. The hook still
-  // subscribes to atlas_status via realtime so the day the worker
-  // lands, every existing session silently upgrades to AtlasCompositor
-  // without a redeploy.
-  const rendererState = useCompanionRenderer({
-    kind:        'archetype',
-    companionId: resolved?.archetype?.id ?? null,
-    presetId:    activeCompanionPresetId,
-  });
-
-  // Diagnostic log so we can see in dev when atlas_status flips —
-  // also keeps the destructured value in use for TS.
-  useEffect(() => {
-    if (rendererState.loading) return;
-    console.log(`[companion] renderer=${rendererState.renderer} atlasStatus=${rendererState.atlasStatus}`);
-  }, [rendererState.loading, rendererState.renderer, rendererState.atlasStatus]);
+  // (Removed useCompanionRenderer for now — it subscribed to a
+  // Supabase realtime channel on every face change, and the atlas
+  // pipeline it was watching for doesn't exist yet. The constantly-
+  // re-opening channel was a suspected lag contributor. Re-add when
+  // AtlasCompositor actually ships.)
 
   const [messages,      setMessages]      = useState<DisplayMessage[]>([]);
   const [input,         setInput]         = useState('');
@@ -415,17 +406,29 @@ export default function CompanionScreen() {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 24}
       >
-        {/* Backdrop in text mode — full-bleed static Image only. The
-            looping video moves to its own pop-out container below when
-            voice mode is active. Keeping text-mode backdrop as a still
-            picture is much cheaper (no decoder, no battery drain). */}
-        {resolved?.archetype?.image_url && (
+        {/* Backdrop — single full-bleed looping video. This is the
+            version Bowen confirmed worked. We're back to it after the
+            picture+popout experiment broke things. The remaining issue
+            (visible loop seam) is fixed by regenerating clips with a
+            first+last-image generator (Kling Pro, Luma, Runway) so the
+            video loops perfectly in the file itself. See update to
+            scripts/generate-archetype-assets.ts. */}
+        {resolved?.archetype?.idling_video_url ? (
+          <Video
+            source={{ uri: resolved.archetype.idling_video_url }}
+            style={StyleSheet.absoluteFillObject}
+            resizeMode={ResizeMode.COVER}
+            isLooping
+            shouldPlay
+            isMuted
+          />
+        ) : resolved?.archetype?.image_url ? (
           <Image
             source={{ uri: resolved.archetype.image_url }}
             style={StyleSheet.absoluteFillObject}
             resizeMode="cover"
           />
-        )}
+        ) : null}
 
         {/* Messages */}
         <ScrollView
@@ -584,28 +587,6 @@ export default function CompanionScreen() {
           </View>
         )}
       </KeyboardAvoidingView>
-
-      {/* Voice-mode pop-out — large floating window with the looping
-          face video. Sits in front of the chat text (which stays
-          visible behind it for context). pointer-events: none so
-          taps go through to the orb / hangup controls below.
-          Only mounted while voice is active, so the Video element
-          only exists during a conversation — no battery cost while
-          you're texting. */}
-      {liveVoiceActive && resolved?.archetype?.idling_video_url && (
-        <View pointerEvents="none" style={styles.voiceVideoOverlay}>
-          <View style={styles.voiceVideoWindow}>
-            <Video
-              source={{ uri: resolved.archetype.idling_video_url }}
-              style={StyleSheet.absoluteFillObject}
-              resizeMode={ResizeMode.COVER}
-              isLooping
-              shouldPlay
-              isMuted
-            />
-          </View>
-        </View>
-      )}
 
       {user && (
         <CompanionPickerSheet
