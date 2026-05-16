@@ -41,7 +41,7 @@ export default function CompanionScreen() {
   // Claude system prompt can be primed with it.
   const { lessonContext } = useLocalSearchParams<{ lessonContext?: string }>();
   const { user } = useAuth();
-  const { learnedLanguage, rwenVoice, theme, speaker, activeCompanionPresetId, setActiveCompanionPresetId } = useSettings();
+  const { learnedLanguage, rwenVoice, theme, speaker, activeCompanionPresetId, setActiveCompanionPresetId, setActiveCompanionThumbUrl } = useSettings();
   const { username } = useProgress();
 
   // Companion picker — the dropdown sheet that opens when the user taps
@@ -60,10 +60,17 @@ export default function CompanionScreen() {
     if (!user) return;
     let cancelled = false;
     resolveCompanion(user.id, activeCompanionPresetId ?? 'rwen')
-      .then((r) => { if (!cancelled) setResolved(r); })
+      .then((r) => {
+        if (cancelled) return;
+        setResolved(r);
+        // Publish the active companion's thumbnail to SettingsContext
+        // so cheap UI surfaces (tab-bar center button) can read it
+        // synchronously without re-running resolveCompanion themselves.
+        setActiveCompanionThumbUrl(r.archetype?.thumbnail_url ?? r.archetype?.image_url ?? null);
+      })
       .catch((e) => console.warn('[companion] resolveCompanion failed:', e));
     return () => { cancelled = true; };
-  }, [user, activeCompanionPresetId]);
+  }, [user, activeCompanionPresetId, setActiveCompanionThumbUrl]);
 
   // Renderer decision — atlas vs ambient vs three_d. AtlasCompositor
   // doesn't exist yet (waiting on the GPU worker), so for now 'atlas'
@@ -408,27 +415,17 @@ export default function CompanionScreen() {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 24}
       >
-        {/* Backdrop — single looping video. This is the version Bowen
-            confirmed worked. The crossfade/popout/scrim experiments
-            crashed on some devices; reverted. The only outstanding
-            issue is the loop seam — addressed offline by post-processing
-            existing clips, see docs/SEAMLESS-IDLE-LOOPS.md. */}
-        {resolved?.archetype?.idling_video_url ? (
-          <Video
-            source={{ uri: resolved.archetype.idling_video_url }}
-            style={StyleSheet.absoluteFillObject}
-            resizeMode={ResizeMode.COVER}
-            isLooping
-            shouldPlay
-            isMuted
-          />
-        ) : resolved?.archetype?.image_url ? (
+        {/* Backdrop in text mode — full-bleed static Image only. The
+            looping video moves to its own pop-out container below when
+            voice mode is active. Keeping text-mode backdrop as a still
+            picture is much cheaper (no decoder, no battery drain). */}
+        {resolved?.archetype?.image_url && (
           <Image
             source={{ uri: resolved.archetype.image_url }}
             style={StyleSheet.absoluteFillObject}
             resizeMode="cover"
           />
-        ) : null}
+        )}
 
         {/* Messages */}
         <ScrollView
@@ -587,6 +584,28 @@ export default function CompanionScreen() {
           </View>
         )}
       </KeyboardAvoidingView>
+
+      {/* Voice-mode pop-out — large floating window with the looping
+          face video. Sits in front of the chat text (which stays
+          visible behind it for context). pointer-events: none so
+          taps go through to the orb / hangup controls below.
+          Only mounted while voice is active, so the Video element
+          only exists during a conversation — no battery cost while
+          you're texting. */}
+      {liveVoiceActive && resolved?.archetype?.idling_video_url && (
+        <View pointerEvents="none" style={styles.voiceVideoOverlay}>
+          <View style={styles.voiceVideoWindow}>
+            <Video
+              source={{ uri: resolved.archetype.idling_video_url }}
+              style={StyleSheet.absoluteFillObject}
+              resizeMode={ResizeMode.COVER}
+              isLooping
+              shouldPlay
+              isMuted
+            />
+          </View>
+        </View>
+      )}
 
       {user && (
         <CompanionPickerSheet
@@ -804,5 +823,30 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: FontWeight.bold,
     lineHeight: 22,
+  },
+
+  // Voice-mode pop-out — large rounded floating face window. Centred
+  // over the chat; pointer-events: none on the wrapper so the orb /
+  // hangup controls below stay tappable. Only renders while voice is
+  // active, so the Video element only mounts when needed.
+  voiceVideoOverlay: {
+    position: 'absolute',
+    top: 0, left: 0, right: 0, bottom: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  voiceVideoWindow: {
+    width: 280,
+    height: 280,
+    borderRadius: 24,
+    overflow: 'hidden',
+    backgroundColor: Colors.black,
+    shadowColor: Colors.black,
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.5,
+    shadowRadius: 24,
+    elevation: 12,
+    borderWidth: 2,
+    borderColor: 'rgba(255,255,255,0.18)',
   },
 });

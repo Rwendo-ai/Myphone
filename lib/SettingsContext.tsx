@@ -80,6 +80,16 @@ interface Settings {
   /** Set the active preset locally. Use after the DB has been updated to reflect
    *  a switch — e.g. from the Companions management tab. */
   setActiveCompanionPresetId: (id: string | null) => void;
+  /**
+   * Thumbnail of the active companion's chosen archetype face (~10 KB).
+   * Read this synchronously instead of calling resolveCompanion from
+   * UI surfaces that re-render often (the tab-bar center button, chat
+   * header avatar, etc.). Updated by the chat tab when it resolves
+   * the active companion; falls back to null for Rwen or while
+   * loading.
+   */
+  activeCompanionThumbUrl: string | null;
+  setActiveCompanionThumbUrl: (url: string | null) => void;
 
   // ── voice mode engine ────────────────────────────────────────────────────
   /**
@@ -139,6 +149,8 @@ const SettingsContext = createContext<Settings>({
 
   activeCompanionPresetId: null,
   setActiveCompanionPresetId: () => {},
+  activeCompanionThumbUrl: null,
+  setActiveCompanionThumbUrl: () => {},
 
   voiceEngine: 'conv_ai',
   setVoiceEngine: () => {},
@@ -186,6 +198,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
 
   // active companion (chat persona)
   const [activeCompanionPresetId, setActiveCompanionPresetId] = useState<string | null>(null);
+  const [activeCompanionThumbUrl, setActiveCompanionThumbUrl] = useState<string | null>(null);
 
   // voice mode engine — Conv AI is the new default; turn-based is a fallback.
   const [voiceEngine, setVoiceEngine] = useState<'conv_ai' | 'turn_based'>('conv_ai');
@@ -295,6 +308,8 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
       // active companion
       activeCompanionPresetId,
       setActiveCompanionPresetId,
+      activeCompanionThumbUrl,
+      setActiveCompanionThumbUrl,
       // voice engine
       voiceEngine,
       setVoiceEngine,

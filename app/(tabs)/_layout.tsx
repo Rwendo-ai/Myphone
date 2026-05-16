@@ -1,5 +1,5 @@
 import { Tabs } from 'expo-router';
-import { Pressable, View, StyleSheet, Text } from 'react-native';
+import { Pressable, View, StyleSheet, Text, Image } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import RwenImage from '../../components/rwen/RwenImage';
 import { Colors } from '../../constants/colors';
@@ -7,16 +7,13 @@ import { useSettings } from '../../lib/SettingsContext';
 import { COMPANION_PRESETS } from '../../data/companions/presets';
 
 function CompanionTabButton({ onPress }: { onPress?: () => void }) {
-  const { activeCompanionPresetId } = useSettings();
-  // Reverted: this button is no place for a Supabase round-trip on
-  // every tab navigation. Bowen reported a fatal crash on tap. The
-  // previous version that called resolveCompanion inside a useEffect
-  // is gone; we're back to showing the preset's emoji (or RwenImage
-  // for Rwen). The customised face still shows on the chat-tab header
-  // avatar (where the resolve call lives at the screen level, fired
-  // once on mount). Tradeoff: tab button shows the preset emoji even
-  // when the user's customised it. Acceptable until we have a
-  // SettingsContext-cached thumbnail to use synchronously.
+  // Read the active companion's thumbnail synchronously from
+  // SettingsContext. The chat tab is the single producer — it calls
+  // resolveCompanion once on mount and writes the resulting
+  // archetype.thumbnail_url into the context. The tab button (which
+  // re-renders on every tab navigation) reads it without doing its
+  // own async work — no Supabase round-trip on tap, no crash risk.
+  const { activeCompanionPresetId, activeCompanionThumbUrl } = useSettings();
   const presetId = activeCompanionPresetId ?? 'rwen';
   const preset = COMPANION_PRESETS[presetId];
 
@@ -25,7 +22,10 @@ function CompanionTabButton({ onPress }: { onPress?: () => void }) {
       <View style={styles.rwenButton}>
         {presetId === 'rwen' || !preset ? (
           <RwenImage pose="idle" size={52} />
+        ) : activeCompanionThumbUrl ? (
+          <Image source={{ uri: activeCompanionThumbUrl }} style={styles.companionThumb} />
         ) : (
+          // No face customised (or hasn't loaded yet) — fall back to preset emoji.
           <View style={styles.companionEmojiWrap}>
             <Text style={styles.companionEmoji}>{preset.emoji}</Text>
           </View>
@@ -144,5 +144,11 @@ const styles = StyleSheet.create({
   },
   companionEmoji: {
     fontSize: 30,
+  },
+  companionThumb: {
+    width: 52,
+    height: 52,
+    borderRadius: 26,
+    backgroundColor: Colors.gray[200],
   },
 });
