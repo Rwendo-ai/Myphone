@@ -17,15 +17,35 @@
  *   npm i react-native-webrtc @config-plugins/react-native-webrtc react-native-get-random-values
  */
 
-// react-native-webrtc is a peer dep — not installed yet. Imports below
-// will fail at module-load time until the package is installed and the
-// dev-client rebuilt. That's expected; SIMLI-DIRECT-INTEGRATION.md
-// documents the install steps.
+// react-native-webrtc is a soft / lazy dependency. We resolve it via
+// require() inside `loadWebRTC()` only when `connect()` is actually
+// called — that way Metro can bundle this file in builds where the
+// package isn't installed (e.g. v1 preview/TestFlight where lipsync
+// is disabled). If someone instantiates SimliConnection without the
+// package present, connect() throws a clear error at runtime.
 //
-// We import the types ambient — when the package lands, real impls bind.
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore — peer dependency, installed later
-import { RTCPeerConnection, MediaStream } from 'react-native-webrtc';
+// See docs/SIMLI-DIRECT-INTEGRATION.md for install + dev-client rebuild.
+
+type RTCPeerConnectionCtor = new (config?: unknown) => any;
+let _RTCPeerConnection: RTCPeerConnectionCtor | null = null;
+let _webrtcLoadError:   string | null = null;
+
+function loadWebRTC(): RTCPeerConnectionCtor {
+  if (_RTCPeerConnection) return _RTCPeerConnection;
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const mod = require('react-native-webrtc');
+    if (!mod?.RTCPeerConnection) throw new Error('react-native-webrtc exports missing');
+    _RTCPeerConnection = mod.RTCPeerConnection as RTCPeerConnectionCtor;
+    return _RTCPeerConnection;
+  } catch (e) {
+    _webrtcLoadError = e instanceof Error ? e.message : String(e);
+    throw new Error(
+      `react-native-webrtc not available: ${_webrtcLoadError}. ` +
+      `Install per docs/SIMLI-DIRECT-INTEGRATION.md and rebuild the dev client.`,
+    );
+  }
+}
 
 const SIMLI_BASE = 'https://api.simli.ai';
 const SIMLI_WS   = 'wss://api.simli.ai';
@@ -42,7 +62,9 @@ export type SimliState = 'idle' | 'connecting' | 'connected' | 'closing' | 'clos
 
 export interface SimliEvents {
   onState?:        (s: SimliState) => void;
-  onRemoteStream?: (stream: MediaStream) => void;
+  // MediaStream typed as `any` since react-native-webrtc isn't statically
+  // imported. The runtime object is a real RN MediaStream when delivered.
+  onRemoteStream?: (stream: any) => void;
   onError?:        (err: Error) => void;
 }
 
@@ -55,7 +77,7 @@ export class SimliConnection {
   private events: SimliEvents;
 
   private state:  SimliState = 'idle';
-  private pc:     RTCPeerConnection | null = null;
+  private pc:     any | null = null;        // RTCPeerConnection at runtime
   private ws:     WebSocket | null = null;
   private token:  string | null = null;
   private closedExplicitly = false;
@@ -152,7 +174,8 @@ export class SimliConnection {
     return token;
   }
 
-  private createPeerConnection(): RTCPeerConnection {
+  private createPeerConnection(): any {
+    const RTCPeerConnection = loadWebRTC();
     const pc = new RTCPeerConnection({
       // Default Google STUN — for v1. Can fetch /compose/ice later.
       iceServers: [{ urls: 'stun:stun.l.google.com:19302' }],
@@ -170,7 +193,7 @@ export class SimliConnection {
     });
 
     pc.addEventListener('track', (ev: any) => {
-      const stream: MediaStream | undefined = ev.streams?.[0];
+      const stream: any | undefined = ev.streams?.[0];
       if (stream) this.events.onRemoteStream?.(stream);
     });
 

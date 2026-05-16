@@ -1,8 +1,9 @@
-import { View, Text, StyleSheet, TextInput, Pressable, ScrollView, KeyboardAvoidingView, Platform, ActivityIndicator, Alert, Animated, Easing } from 'react-native';
+import { View, Text, StyleSheet, TextInput, Pressable, ScrollView, KeyboardAvoidingView, Platform, ActivityIndicator, Alert, Animated, Easing, RefreshControl } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 import { useTranslation } from 'react-i18next';
+import * as Updates from 'expo-updates';
 import RwenImage from '../../components/rwen/RwenImage';
 import ScreenHeaderBar from '../../components/ScreenHeaderBar';
 import CompanionPickerSheet from '../../components/CompanionPickerSheet';
@@ -44,6 +45,38 @@ export default function CompanionScreen() {
   // Companion picker — the dropdown sheet that opens when the user taps
   // the companion name in the header.
   const [pickerOpen, setPickerOpen] = useState(false);
+
+  // Pull-to-refresh — same gesture every consumer app trains the user on.
+  // Swiping down at the top of the chat checks the EAS Update channel
+  // for a newer JS bundle; if there is one we fetch + reload so the
+  // user is immediately running the new code. No "open the app twice"
+  // dance, no settings button to find.
+  //
+  // Updates.isEnabled is false in dev (when Metro is the source of
+  // truth), so we no-op there to avoid scary logs while Bowen is
+  // working locally.
+  const [refreshing, setRefreshing] = useState(false);
+  const onPullToRefresh = useCallback(async () => {
+    setRefreshing(true);
+    try {
+      if (!Updates.isEnabled) {
+        // Local dev — Metro owns the bundle; just give the spinner
+        // a beat so the gesture feels acknowledged.
+        await new Promise((r) => setTimeout(r, 400));
+        return;
+      }
+      const check = await Updates.checkForUpdateAsync();
+      if (check.isAvailable) {
+        await Updates.fetchUpdateAsync();
+        // reloadAsync restarts the app with the new bundle immediately.
+        await Updates.reloadAsync();
+      }
+    } catch (e) {
+      console.warn('[update] pull-to-refresh failed:', e);
+    } finally {
+      setRefreshing(false);
+    }
+  }, []);
 
   // Active companion's resolved view (preset + name/face/voice overrides).
   // Drives the AmbientFace backdrop and could later drive the header.
@@ -379,13 +412,25 @@ export default function CompanionScreen() {
           scrimOpacity={0.42}
         />
 
-        {/* Messages — background transparent so AmbientFace shows through. */}
+        {/* Messages — background transparent so AmbientFace shows through.
+            Swipe down at the top of the list to check for + apply an
+            EAS Update (see onPullToRefresh above). */}
         <ScrollView
           ref={scrollRef}
           style={styles.messages}
           contentContainerStyle={styles.messagesContent}
           showsVerticalScrollIndicator={false}
           onContentSizeChange={() => scrollRef.current?.scrollToEnd({ animated: true })}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onPullToRefresh}
+              tintColor="#ffffff"
+              colors={['#ffffff']}
+              title="Checking for updates…"
+              titleColor="#ffffff"
+            />
+          }
         >
           {messages.map((msg) => (
             <View key={msg.id} style={[styles.bubble, msg.role === 'user' ? styles.userBubble : styles.rwenBubble]}>
