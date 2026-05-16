@@ -40,7 +40,14 @@ export interface CompanionCustomization {
 export interface CompanionArchetype {
   id: string;
   name: string;
+  /** Small (256×256, ~10 KB) thumbnail. Used by every face-picker UI.
+   *  Falls back to image_url if null. */
+  thumbnail_url: string | null;
+  /** Full-res (1024×1024, ~500 KB) portrait. Only loaded by AmbientFace
+   *  when this archetype is the active companion's face. */
   image_url: string | null;
+  /** 10s idle MP4 (~5 MB). Same usage rule as image_url — only loaded
+   *  when AmbientFace renders this archetype as the active backdrop. */
   idling_video_url: string | null;
   voice_id: string | null;
   simli_face_id: string | null;
@@ -110,7 +117,7 @@ export async function loadArchetype(
 ): Promise<CompanionArchetype | null> {
   const { data, error } = await supabase
     .from('companion_archetypes')
-    .select('id, name, image_url, idling_video_url, voice_id, simli_face_id, tavus_replica_id, is_active, display_order')
+    .select('id, name, thumbnail_url, image_url, idling_video_url, voice_id, simli_face_id, tavus_replica_id, is_active, display_order')
     .eq('id', archetypeId)
     .maybeSingle();
   if (error) {
@@ -124,7 +131,7 @@ export async function loadArchetype(
 export async function loadActiveArchetypes(): Promise<CompanionArchetype[]> {
   const { data, error } = await supabase
     .from('companion_archetypes')
-    .select('id, name, image_url, idling_video_url, voice_id, simli_face_id, tavus_replica_id, is_active, display_order')
+    .select('id, name, thumbnail_url, image_url, idling_video_url, voice_id, simli_face_id, tavus_replica_id, is_active, display_order')
     .eq('is_active', true)
     .order('display_order', { ascending: true });
   if (error) {

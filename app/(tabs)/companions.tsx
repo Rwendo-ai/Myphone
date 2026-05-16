@@ -263,10 +263,16 @@ export default function CompanionsScreen() {
                     ]}
                     onPress={() => handleActivate(preset)}
                   >
-                    {/* Avatar — show the chosen archetype face if the user
-                        has customised one, else fall back to the preset emoji. */}
-                    {face?.image_url ? (
-                      <Image source={{ uri: face.image_url }} style={styles.presetAvatar} />
+                    {/* Avatar — show the chosen archetype's thumbnail (small,
+                        ~10 KB) if the user has customised one, else fall back
+                        to the preset emoji. The full 1024×1024 portrait only
+                        loads when AmbientFace renders this archetype on the
+                        chat-tab backdrop. */}
+                    {face?.thumbnail_url || face?.image_url ? (
+                      <Image
+                        source={{ uri: face.thumbnail_url ?? face.image_url! }}
+                        style={styles.presetAvatar}
+                      />
                     ) : (
                       <Text style={styles.presetEmoji}>{preset.emoji}</Text>
                     )}

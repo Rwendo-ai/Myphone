@@ -25,6 +25,7 @@ import {
   Pressable,
   ScrollView,
   ActivityIndicator,
+  Image,
   Alert,
 } from 'react-native';
 import { Colors } from '../constants/colors';
@@ -222,16 +223,28 @@ export default function CompanionProfileSheet({
                     <Text style={styles.faceEmoji}>{preset.emoji}</Text>
                     <Text style={styles.faceName}>Emoji</Text>
                   </Pressable>
-                  {archetypes.map((a) => (
-                    <Pressable
-                      key={a.id}
-                      style={[styles.faceTile, faceId === a.id && styles.faceTileSelected]}
-                      onPress={() => setFaceId(a.id)}
-                    >
-                      <Text style={styles.faceEmoji}>🧑</Text>
-                      <Text style={styles.faceName} numberOfLines={1}>{a.name}</Text>
-                    </Pressable>
-                  ))}
+                  {archetypes.map((a) => {
+                    // Prefer the ~10 KB thumbnail; if for some reason it's
+                    // missing (legacy row pre-thumbnail-generation), fall
+                    // back to the full 500 KB image_url. The 1024px portrait
+                    // and idle MP4 only load when AmbientFace renders the
+                    // active companion's backdrop.
+                    const thumb = a.thumbnail_url ?? a.image_url;
+                    return (
+                      <Pressable
+                        key={a.id}
+                        style={[styles.faceTile, faceId === a.id && styles.faceTileSelected]}
+                        onPress={() => setFaceId(a.id)}
+                      >
+                        {thumb ? (
+                          <Image source={{ uri: thumb }} style={styles.faceTileImage} />
+                        ) : (
+                          <Text style={styles.faceEmoji}>🧑</Text>
+                        )}
+                        <Text style={styles.faceName} numberOfLines={1}>{a.name}</Text>
+                      </Pressable>
+                    );
+                  })}
                 </ScrollView>
               )}
 
@@ -373,6 +386,12 @@ const styles = StyleSheet.create({
   },
   faceTileSelected: { borderColor: Colors.secondary, backgroundColor: Colors.white },
   faceEmoji: { fontSize: 32 },
+  faceTileImage: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: Colors.gray[200],
+  },
   faceName: { fontSize: FontSize.xs, color: Colors.gray[700], marginTop: 4, textAlign: 'center' },
 
   voiceHeaderRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },

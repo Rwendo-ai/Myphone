@@ -159,8 +159,14 @@ export default function CompanionPickerSheet({
                         style={styles.rowMain}
                         onPress={() => handleRowPress(preset)}
                       >
-                        {face?.image_url ? (
-                          <Image source={{ uri: face.image_url }} style={styles.avatar} />
+                        {/* Avatar — prefer the small thumbnail (~10 KB)
+                            over the full portrait. AmbientFace handles the
+                            full-res load when this becomes the active face. */}
+                        {face?.thumbnail_url || face?.image_url ? (
+                          <Image
+                            source={{ uri: face.thumbnail_url ?? face.image_url! }}
+                            style={styles.avatar}
+                          />
                         ) : (
                           <View style={[styles.avatarFallback]}>
                             <Text style={styles.avatarEmoji}>{preset.emoji}</Text>
