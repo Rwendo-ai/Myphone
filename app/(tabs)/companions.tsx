@@ -239,12 +239,20 @@ export default function CompanionsScreen() {
                   message, no awareness the gated preset exists. */}
               {PRESET_LIST.filter((preset) => ageGateMet(preset, userDob)).map((preset) => {
                 const isActive    = activeRow?.preset_id === preset.id;
-                const locked      = !tierGateMet(preset.tierGate);
                 const customization = owned[preset.id];
                 const ownsThis    = !!customization;
                 const displayName = customization?.custom_name?.trim() || preset.name;
                 const faceId      = customization?.face_archetype_id ?? null;
                 const face        = faceId ? archetypeFaces[faceId] : null;
+
+                // Tier display: Rwen is always free (everyone owns her).
+                // Everything else is Premium — even if the underlying
+                // tierGate is 'text_ai' or 'voice' in code, the product
+                // surface treats all non-Rwen presets as a single
+                // "Premium" SKU. Free users get exactly one Premium pick
+                // (via the claimFreePreset flow); additional picks
+                // require a paid unlock (paywall TODO).
+                const isFree = preset.id === 'rwen';
 
                 return (
                   <Pressable
@@ -252,7 +260,6 @@ export default function CompanionsScreen() {
                     style={[
                       styles.presetCard,
                       isActive && styles.presetCardActive,
-                      locked && !ownsThis && styles.presetCardLocked,
                     ]}
                     onPress={() => handleActivate(preset)}
                   >
@@ -268,7 +275,11 @@ export default function CompanionsScreen() {
                       <View style={styles.presetTitleRow}>
                         <Text style={styles.presetName}>{displayName}</Text>
                         {isActive && <Text style={styles.presetActiveBadge}>{t('companions_tab.active_badge')}</Text>}
-                        {locked && !ownsThis && <Text style={styles.presetLockedBadge}>{t('companions_tab.locked_prefix')} {preset.tierGate}</Text>}
+                        {isFree ? (
+                          <Text style={styles.tierBadgeFree}>FREE</Text>
+                        ) : (
+                          <Text style={styles.tierBadgePremium}>PREMIUM</Text>
+                        )}
                       </View>
                       <Text style={styles.presetTagline}>
                         {t(`companion_presets.${preset.id}.tagline`, { defaultValue: preset.tagline })}
@@ -412,6 +423,29 @@ const styles = StyleSheet.create({
   presetName: { fontSize: FontSize.md, fontWeight: FontWeight.bold, color: Colors.gray[900] },
   presetActiveBadge: { fontSize: FontSize.xs, fontWeight: FontWeight.bold, color: Colors.success },
   presetLockedBadge: { fontSize: FontSize.xs, color: Colors.gray[500] },
+  // Flat tier display — Rwen is the only free one; everyone else is Premium.
+  tierBadgeFree: {
+    fontSize: 10,
+    fontWeight: FontWeight.bold,
+    color: Colors.success,
+    backgroundColor: Colors.success + '18',
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 4,
+    overflow: 'hidden',
+    letterSpacing: 0.5,
+  },
+  tierBadgePremium: {
+    fontSize: 10,
+    fontWeight: FontWeight.bold,
+    color: Colors.xp,
+    backgroundColor: Colors.xp + '18',
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 4,
+    overflow: 'hidden',
+    letterSpacing: 0.5,
+  },
   presetTagline: { fontSize: FontSize.sm, color: Colors.gray[700], marginTop: 2 },
   presetDesc: { fontSize: FontSize.xs, color: Colors.gray[500], marginTop: 4, lineHeight: 16 },
 

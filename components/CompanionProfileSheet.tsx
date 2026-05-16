@@ -128,7 +128,7 @@ export default function CompanionProfileSheet({
         if (!claim.ok) {
           const msg =
             claim.reason === 'limit'
-              ? "You can claim one free companion beyond Rwen. To unlock more, upgrade your plan."
+              ? "You've already claimed your one Premium companion. Each additional Premium companion requires a separate purchase — paywall coming soon. (You can still rename, change face, or change voice on the one you already own.)"
               : claim.reason === 'unknown_preset'
                 ? "That companion isn't available."
                 : 'Something went wrong claiming this companion. Try again in a moment.';
