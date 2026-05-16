@@ -1,25 +1,52 @@
 import { Tabs } from 'expo-router';
-import { Pressable, View, StyleSheet, Text } from 'react-native';
+import { Pressable, View, StyleSheet, Text, Image } from 'react-native';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import RwenImage from '../../components/rwen/RwenImage';
 import { Colors } from '../../constants/colors';
 import { useSettings } from '../../lib/SettingsContext';
+import { useAuth } from '../../lib/AuthContext';
 import { COMPANION_PRESETS } from '../../data/companions/presets';
+import { resolveCompanion } from '../../lib/companion-customization';
 
 function CompanionTabButton({ onPress }: { onPress?: () => void }) {
   const { activeCompanionPresetId } = useSettings();
-  // Default to Rwen if no preset chosen yet (or it's the Rwen preset).
+  const { user } = useAuth();
   const presetId = activeCompanionPresetId ?? 'rwen';
   const preset = COMPANION_PRESETS[presetId];
+
+  // Resolve the user's customization for this preset — if they've set
+  // a face, we show that thumbnail on the tab button instead of the
+  // preset's hardcoded emoji. Bowen 2026-05-16: "the emojie that is the
+  // big center button is now stuck on books even though it should be
+  // my companion face."
+  //
+  // We deliberately use thumbnail_url (~10 KB) not image_url here —
+  // this button rerenders on every tab change, no need for the full
+  // 500 KB portrait.
+  const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!user || presetId === 'rwen') { setThumbnailUrl(null); return; }
+    let cancelled = false;
+    resolveCompanion(user.id, presetId)
+      .then((r) => {
+        if (cancelled) return;
+        setThumbnailUrl(r.archetype?.thumbnail_url ?? r.archetype?.image_url ?? null);
+      })
+      .catch(() => {});
+    return () => { cancelled = true; };
+  }, [user, presetId]);
 
   return (
     <Pressable onPress={onPress} style={styles.rwenButtonWrapper}>
       <View style={styles.rwenButton}>
         {presetId === 'rwen' || !preset ? (
-          // Rwen has bespoke 3D-rendered art; the others use emoji until
-          // we ship per-companion avatar art (Phase 4).
           <RwenImage pose="idle" size={52} />
+        ) : thumbnailUrl ? (
+          <Image source={{ uri: thumbnailUrl }} style={styles.companionThumb} />
         ) : (
+          // No face customised yet — show the preset emoji as fallback.
           <View style={styles.companionEmojiWrap}>
             <Text style={styles.companionEmoji}>{preset.emoji}</Text>
           </View>
@@ -138,5 +165,11 @@ const styles = StyleSheet.create({
   },
   companionEmoji: {
     fontSize: 30,
+  },
+  companionThumb: {
+    width: 52,
+    height: 52,
+    borderRadius: 26,
+    backgroundColor: Colors.gray[200],
   },
 });

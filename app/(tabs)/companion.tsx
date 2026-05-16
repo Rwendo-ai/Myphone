@@ -332,14 +332,26 @@ export default function CompanionScreen() {
       )}
       <ScreenHeaderBar variant="light" />
 
-      {/* Header — tap the avatar + name area to open the companion picker. */}
+      {/* Header — tap the avatar + name area to open the companion picker.
+          Rwen stays as RwenImage (her 3D chameleon art); every other
+          companion shows the resolved face thumbnail if one's been
+          customised, falling back to the preset emoji while assets load. */}
       <View style={[styles.header, { backgroundColor: theme.gradient[0] }]}>
         <Pressable
           style={styles.headerCompanionTap}
           onPress={() => setPickerOpen(true)}
           hitSlop={4}
         >
-          <RwenImage pose={rwenState as any} size={48} />
+          {(activeCompanionPresetId ?? 'rwen') === 'rwen' ? (
+            <RwenImage pose={rwenState as any} size={48} />
+          ) : (
+            <AmbientFace
+              imageUrl={resolved?.archetype?.thumbnail_url ?? resolved?.archetype?.image_url ?? null}
+              emoji={resolved?.preset?.emoji}
+              tintColor="rgba(255,255,255,0.15)"
+              size={48}
+            />
+          )}
           <View style={styles.headerText}>
             <View style={styles.headerTitleRow}>
               <Text style={styles.headerTitle}>{t('header.title')}</Text>
@@ -391,33 +403,15 @@ export default function CompanionScreen() {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 24}
       >
-        {/* Face renderer — useCompanionRenderer picks the right engine
-            based on the companion's atlas_status. Today AtlasCompositor
-            doesn't exist yet, so we route every renderer except 'three_d'
-            (Rwen — Three.js, not built yet either) to AmbientFace. The
-            day a worker bakes atlases and the row flips to atlas_status='ready',
-            the realtime subscription in the hook will trigger a re-render
-            and we'll swap engines in-place — no redeploy needed.
+        {/* Bowen's call (2026-05-16): drop the full-bleed AmbientFace
+            backdrop. The companion's face shows up at the top of the
+            screen header (small avatar swap for Rwen's chameleon) and
+            inside the voice-mode panel as a small looping square. The
+            chat background is plain again so messages read cleanly.
+            useCompanionRenderer keeps its realtime subscription so the
+            atlas renderer can flip in later without a redeploy. */}
 
-            For now: every companion gets the AmbientFace (looping Kling
-            idle video, or static portrait, or preset emoji). */}
-        <AmbientFace
-          videoUrl={resolved?.archetype?.idling_video_url ?? null}
-          imageUrl={resolved?.archetype?.image_url ?? null}
-          emoji={resolved?.preset?.emoji}
-          tintColor={theme.gradient[1] ?? Colors.accent}
-          scrimOpacity={0.42}
-        />
-        {/* AtlasCompositor goes here when it exists:
-              {rendererState.renderer === 'atlas' && rendererState.atlasUrl && (
-                <AtlasCompositor atlasUrl={rendererState.atlasUrl} ... />
-              )}
-            For now `rendererState` is consumed only for its realtime
-            subscription side-effect — keeps the hook warm and ready. */}
-
-        {/* Messages — background transparent so AmbientFace shows through.
-            Swipe down at the top of the list to check for + apply an
-            EAS Update (see onPullToRefresh above). */}
+        {/* Messages */}
         <ScrollView
           ref={scrollRef}
           style={styles.messages}
@@ -446,6 +440,24 @@ export default function CompanionScreen() {
             handlers above, so the user sees one unified timeline. */}
         {liveVoiceActive ? (
           <View style={styles.composerRow}>
+            {/* Small looping video square — Bowen's call: voice mode
+                shows a face square, not a full-bleed backdrop. Rwen
+                stays as her RwenImage; everyone else shows their
+                customised face video. Falls back to thumbnail or emoji
+                while assets load. */}
+            <View style={styles.liveVoiceFaceWrap}>
+              {(activeCompanionPresetId ?? 'rwen') === 'rwen' ? (
+                <RwenImage pose="idle" size={96} />
+              ) : (
+                <AmbientFace
+                  videoUrl={resolved?.archetype?.idling_video_url ?? null}
+                  imageUrl={resolved?.archetype?.thumbnail_url ?? resolved?.archetype?.image_url ?? null}
+                  emoji={resolved?.preset?.emoji}
+                  size={96}
+                  borderRadius={16}
+                />
+              )}
+            </View>
             <View style={styles.liveVoicePanel}>
               {/* Orb — left side. Tap while agent is speaking to interrupt. */}
               <Pressable
@@ -636,9 +648,9 @@ const styles = StyleSheet.create({
     paddingVertical: 4, borderRadius: BorderRadius.full,
   },
   stopListenText: { color: Colors.white, fontSize: FontSize.xs, fontWeight: FontWeight.bold },
-  // Transparent so the AmbientFace below shows through. The scrim
-  // inside AmbientFace handles chat readability.
-  messages:        { flex: 1, backgroundColor: 'transparent' },
+  // Plain background — full-bleed AmbientFace was dropped per Bowen's
+  // call. Chat reads cleanly without the dark scrim.
+  messages:        { flex: 1, backgroundColor: Colors.accent },
   messagesContent: { padding: Spacing.lg, gap: Spacing.sm },
   bubble:      { maxWidth: '82%', borderRadius: BorderRadius.lg, padding: Spacing.md },
   rwenBubble:  {
@@ -747,6 +759,14 @@ const styles = StyleSheet.create({
     lineHeight: 22,
   },
 
+  // Small looping video square above the live-voice panel — gives the
+  // companion a visual presence during voice mode without taking over
+  // the whole screen.
+  liveVoiceFaceWrap: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingBottom: Spacing.sm,
+  },
   // Inline live-voice panel — replaces the composer when a session is active.
   liveVoicePanel: {
     flexDirection: 'row',
