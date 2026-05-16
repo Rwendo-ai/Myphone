@@ -39,7 +39,12 @@ export default function CompanionScreen() {
   // Claude system prompt can be primed with it.
   const { lessonContext } = useLocalSearchParams<{ lessonContext?: string }>();
   const { user } = useAuth();
-  const { learnedLanguage, rwenVoice, theme, speaker, activeCompanionPresetId, setActiveCompanionPresetId, setActiveCompanionThumbUrl } = useSettings();
+  const {
+    learnedLanguage, rwenVoice, theme, speaker,
+    activeCompanionPresetId, setActiveCompanionPresetId,
+    activeCompanionThumbUrl, activeCompanionImageUrl, activeCompanionVideoUrl,
+    setActiveCompanionVisuals,
+  } = useSettings();
   const { username } = useProgress();
 
   // Companion picker — the dropdown sheet that opens when the user taps
@@ -55,11 +60,12 @@ export default function CompanionScreen() {
   const [resolved, setResolved] = useState<ResolvedCompanion | null>(null);
 
   // Re-resolve the active companion every time this tab gains focus.
-  // Bowen reported the chat-tab header + backdrop were sticking to the
-  // OLD face after he changed the customisation on the companions tab.
-  // Fix: re-fetch on focus so navigating back to chat always shows
-  // the latest. Also writes the thumbnail into SettingsContext so the
-  // tab-bar center button has a synchronous source of truth.
+  // Writes the full visual bundle (thumb + image + video) into
+  // SettingsContext so the tab button, header avatar, backdrop, and
+  // voice popup all read synchronously from one source of truth.
+  // The chat-tab UI itself now reads from context too (not from
+  // `resolved`), so ProfileSheet's instant context update propagates
+  // here without needing to leave and re-enter the tab.
   useFocusEffect(
     useCallback(() => {
       if (!user) return;
@@ -68,11 +74,15 @@ export default function CompanionScreen() {
         .then((r) => {
           if (cancelled) return;
           setResolved(r);
-          setActiveCompanionThumbUrl(r.archetype?.thumbnail_url ?? r.archetype?.image_url ?? null);
+          setActiveCompanionVisuals({
+            thumbUrl: r.archetype?.thumbnail_url ?? r.archetype?.image_url ?? null,
+            imageUrl: r.archetype?.image_url ?? null,
+            videoUrl: r.archetype?.idling_video_url ?? null,
+          });
         })
         .catch((e) => console.warn('[companion] resolveCompanion failed:', e));
       return () => { cancelled = true; };
-    }, [user, activeCompanionPresetId, setActiveCompanionThumbUrl]),
+    }, [user, activeCompanionPresetId, setActiveCompanionVisuals]),
   );
 
   // (Removed useCompanionRenderer for now — it subscribed to a
@@ -346,12 +356,14 @@ export default function CompanionScreen() {
           {(activeCompanionPresetId ?? 'rwen') === 'rwen' ? (
             <RwenImage pose={rwenState as any} size={48} />
           ) : (
+            /* Reads activeCompanionThumbUrl from SettingsContext (not
+               from async resolved state) so ProfileSheet's instant
+               context update propagates without leaving the tab. */
             <AmbientFace
-              imageUrl={resolved?.archetype?.thumbnail_url ?? resolved?.archetype?.image_url ?? null}
+              imageUrl={activeCompanionThumbUrl ?? activeCompanionImageUrl}
               emoji={resolved?.preset?.emoji}
               tintColor="rgba(255,255,255,0.15)"
               size={48}
-              /* No videoUrl passed → AmbientFace renders Image, not Video. */
             />
           )}
           <View style={styles.headerText}>
@@ -405,15 +417,15 @@ export default function CompanionScreen() {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 24}
       >
-        {/* Backdrop — STATIC IMAGE ONLY (Bowen 2026-05-16: "I want a
-            picture not video"). Drops the Video decoder entirely from
-            the chat tab. Massive perf win: no buffering, no decoding,
-            no battery drain. The looping video is reserved for voice
-            mode (separate pop-out, to be re-added carefully later
-            once the chat-tab is provably stable). */}
-        {resolved?.archetype?.image_url && (
+        {/* Backdrop — static Image of the active companion. Reads
+            from SettingsContext (not from async resolved state) so
+            propagation from CompanionProfileSheet is instant — no
+            need to leave and re-enter the tab. The looping video
+            shows up only in voice mode as a separate popup overlay
+            below. */}
+        {activeCompanionImageUrl && (
           <Image
-            source={{ uri: resolved.archetype.image_url }}
+            source={{ uri: activeCompanionImageUrl }}
             style={StyleSheet.absoluteFillObject}
             resizeMode="cover"
           />

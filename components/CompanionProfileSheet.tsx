@@ -31,7 +31,7 @@ import {
 import { Colors } from '../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../constants/theme';
 import { speakText, stopSpeaking } from '../lib/voice';
-import { RWEN_VOICES, type RwenVoiceKey } from '../lib/SettingsContext';
+import { RWEN_VOICES, type RwenVoiceKey, useSettings } from '../lib/SettingsContext';
 import { VOICE_LIBRARY, type VoiceOption } from '../lib/voices';
 import {
   loadCustomization,
@@ -58,6 +58,12 @@ export default function CompanionProfileSheet({
   visible, onClose, onSaved, userId, presetId, mode,
 }: Props) {
   const preset: CompanionPreset | undefined = getPreset(presetId);
+  // Pull the active-companion writer + currently-active preset id from
+  // SettingsContext. After a successful save, if THIS sheet's preset
+  // is the active one, we publish the new visual bundle so the tab
+  // button, chat header, backdrop, and voice popup all update
+  // instantly — no matter which entry point opened the sheet.
+  const { activeCompanionPresetId, setActiveCompanionVisuals } = useSettings();
 
   // Local edit state.
   const [archetypes, setArchetypes] = useState<CompanionArchetype[]>([]);
@@ -143,6 +149,22 @@ export default function CompanionProfileSheet({
         face_archetype_id: faceId,
         voice_id:          voiceId,
       });
+
+      // If this preset is the one currently active in the chat tab,
+      // publish the new visual bundle to SettingsContext immediately
+      // so the tab button + chat header + backdrop + voice popup all
+      // propagate without waiting for the chat tab to re-focus and
+      // re-resolve. Bowen 2026-05-17: changing the picture from the
+      // chat-tab dropdown should reflect there without leaving and
+      // returning to the tab.
+      if (preset.id === (activeCompanionPresetId ?? 'rwen')) {
+        setActiveCompanionVisuals({
+          thumbUrl: selectedFace?.thumbnail_url ?? selectedFace?.image_url ?? null,
+          imageUrl: selectedFace?.image_url ?? null,
+          videoUrl: selectedFace?.idling_video_url ?? null,
+        });
+      }
+
       onSaved?.(preset.id);
       onClose();
     } catch (e: any) {

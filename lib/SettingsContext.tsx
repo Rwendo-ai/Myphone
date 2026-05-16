@@ -1,4 +1,5 @@
-import { createContext, useContext, useState, ReactNode, useMemo } from 'react';
+import { createContext, useContext, useState, ReactNode, useMemo, useEffect, useCallback } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LanguagePack } from '../types/pack';
 import { Language } from '../types/language';
 import {
@@ -81,13 +82,26 @@ interface Settings {
    *  a switch — e.g. from the Companions management tab. */
   setActiveCompanionPresetId: (id: string | null) => void;
   /**
-   * Thumbnail of the active companion's customised face (~10 KB), or null
-   * if the companion has no archetype face attached. The tab-bar center
-   * button reads this synchronously to avoid Supabase round-trips on
-   * every tab navigation. Written by the chat tab whenever it resolves
-   * the active companion.
+   * Active companion's resolved visual bundle, persisted to AsyncStorage
+   * so the tab button, chat-tab header avatar, full chat backdrop, and
+   * voice-mode popup all read synchronously without waiting on a
+   * Supabase round-trip on every render. Written when:
+   *   - CompanionProfileSheet saves a customisation (instant propagation
+   *     no matter which entry point opened the sheet)
+   *   - the chat tab focuses and re-resolves the active companion
+   * All three fields are null when the user has no archetype face
+   * attached (e.g. Rwen) — UI falls back to preset emoji.
    */
   activeCompanionThumbUrl: string | null;
+  activeCompanionImageUrl: string | null;
+  activeCompanionVideoUrl: string | null;
+  setActiveCompanionVisuals: (v: {
+    thumbUrl: string | null;
+    imageUrl: string | null;
+    videoUrl: string | null;
+  }) => void;
+  /** @deprecated Use setActiveCompanionVisuals. Kept for the chat-tab
+   *  focus-effect call site until that's migrated. */
   setActiveCompanionThumbUrl: (url: string | null) => void;
 
   // ── voice mode engine ────────────────────────────────────────────────────
@@ -149,6 +163,9 @@ const SettingsContext = createContext<Settings>({
   activeCompanionPresetId: null,
   setActiveCompanionPresetId: () => {},
   activeCompanionThumbUrl: null,
+  activeCompanionImageUrl: null,
+  activeCompanionVideoUrl: null,
+  setActiveCompanionVisuals: () => {},
   setActiveCompanionThumbUrl: () => {},
 
   voiceEngine: 'conv_ai',
@@ -197,7 +214,58 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
 
   // active companion (chat persona)
   const [activeCompanionPresetId, setActiveCompanionPresetId] = useState<string | null>(null);
-  const [activeCompanionThumbUrl, setActiveCompanionThumbUrl] = useState<string | null>(null);
+
+  // Visual bundle for the active companion — persisted to AsyncStorage
+  // as a single JSON object so the tab button, chat-tab header avatar,
+  // backdrop and voice-mode popup all read synchronously without
+  // waiting on Supabase. Cold start hydrates from storage once; the
+  // CompanionProfileSheet writes the new bundle the moment a
+  // customisation saves, so propagation is instant regardless of
+  // which entry point opened the sheet.
+  const [activeCompanionThumbUrl, _setThumbUrl] = useState<string | null>(null);
+  const [activeCompanionImageUrl, _setImageUrl] = useState<string | null>(null);
+  const [activeCompanionVideoUrl, _setVideoUrl] = useState<string | null>(null);
+
+  const VISUALS_KEY = 'rwendo:active_companion_visuals';
+
+  const setActiveCompanionVisuals = useCallback((v: {
+    thumbUrl: string | null;
+    imageUrl: string | null;
+    videoUrl: string | null;
+  }) => {
+    _setThumbUrl(v.thumbUrl);
+    _setImageUrl(v.imageUrl);
+    _setVideoUrl(v.videoUrl);
+    // Fire-and-forget persistence as one atomic JSON write.
+    AsyncStorage.setItem(VISUALS_KEY, JSON.stringify(v)).catch(() => {});
+  }, []);
+
+  // Back-compat shim — chat tab still uses setActiveCompanionThumbUrl
+  // in its focus effect. Routes through setActiveCompanionVisuals so
+  // persistence behaviour stays consistent.
+  const setActiveCompanionThumbUrl = useCallback((url: string | null) => {
+    setActiveCompanionVisuals({
+      thumbUrl: url,
+      imageUrl: activeCompanionImageUrl,
+      videoUrl: activeCompanionVideoUrl,
+    });
+  }, [setActiveCompanionVisuals, activeCompanionImageUrl, activeCompanionVideoUrl]);
+
+  // Hydrate from storage once on mount so the tab button has its
+  // image before the chat tab even mounts.
+  useEffect(() => {
+    AsyncStorage.getItem(VISUALS_KEY).then((raw) => {
+      if (!raw) return;
+      try {
+        const v = JSON.parse(raw);
+        if (v && typeof v === 'object') {
+          if (v.thumbUrl ?? null) _setThumbUrl(v.thumbUrl);
+          if (v.imageUrl ?? null) _setImageUrl(v.imageUrl);
+          if (v.videoUrl ?? null) _setVideoUrl(v.videoUrl);
+        }
+      } catch { /* corrupted — ignore */ }
+    }).catch(() => {});
+  }, []);
 
   // voice mode engine — Conv AI is the new default; turn-based is a fallback.
   const [voiceEngine, setVoiceEngine] = useState<'conv_ai' | 'turn_based'>('conv_ai');
@@ -308,6 +376,9 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
       activeCompanionPresetId,
       setActiveCompanionPresetId,
       activeCompanionThumbUrl,
+      activeCompanionImageUrl,
+      activeCompanionVideoUrl,
+      setActiveCompanionVisuals,
       setActiveCompanionThumbUrl,
       // voice engine
       voiceEngine,
