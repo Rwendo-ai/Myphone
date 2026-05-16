@@ -1,6 +1,5 @@
 import { View, Text, StyleSheet, TextInput, Pressable, ScrollView, KeyboardAvoidingView, Platform, ActivityIndicator, Alert, Animated, Easing, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Video, ResizeMode } from 'expo-av';
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { useLocalSearchParams, useFocusEffect } from 'expo-router';
 import { useTranslation } from 'react-i18next';
@@ -406,29 +405,19 @@ export default function CompanionScreen() {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 24}
       >
-        {/* Backdrop — single full-bleed looping video. This is the
-            version Bowen confirmed worked. We're back to it after the
-            picture+popout experiment broke things. The remaining issue
-            (visible loop seam) is fixed by regenerating clips with a
-            first+last-image generator (Kling Pro, Luma, Runway) so the
-            video loops perfectly in the file itself. See update to
-            scripts/generate-archetype-assets.ts. */}
-        {resolved?.archetype?.idling_video_url ? (
-          <Video
-            source={{ uri: resolved.archetype.idling_video_url }}
-            style={StyleSheet.absoluteFillObject}
-            resizeMode={ResizeMode.COVER}
-            isLooping
-            shouldPlay
-            isMuted
-          />
-        ) : resolved?.archetype?.image_url ? (
+        {/* Backdrop — STATIC IMAGE ONLY (Bowen 2026-05-16: "I want a
+            picture not video"). Drops the Video decoder entirely from
+            the chat tab. Massive perf win: no buffering, no decoding,
+            no battery drain. The looping video is reserved for voice
+            mode (separate pop-out, to be re-added carefully later
+            once the chat-tab is provably stable). */}
+        {resolved?.archetype?.image_url && (
           <Image
             source={{ uri: resolved.archetype.image_url }}
             style={StyleSheet.absoluteFillObject}
             resizeMode="cover"
           />
-        ) : null}
+        )}
 
         {/* Messages */}
         <ScrollView
@@ -806,28 +795,4 @@ const styles = StyleSheet.create({
     lineHeight: 22,
   },
 
-  // Voice-mode pop-out — large rounded floating face window. Centred
-  // over the chat; pointer-events: none on the wrapper so the orb /
-  // hangup controls below stay tappable. Only renders while voice is
-  // active, so the Video element only mounts when needed.
-  voiceVideoOverlay: {
-    position: 'absolute',
-    top: 0, left: 0, right: 0, bottom: 0,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  voiceVideoWindow: {
-    width: 280,
-    height: 280,
-    borderRadius: 24,
-    overflow: 'hidden',
-    backgroundColor: Colors.black,
-    shadowColor: Colors.black,
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.5,
-    shadowRadius: 24,
-    elevation: 12,
-    borderWidth: 2,
-    borderColor: 'rgba(255,255,255,0.18)',
-  },
 });

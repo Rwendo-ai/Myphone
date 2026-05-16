@@ -53,7 +53,7 @@ interface CompanionRow {
 export default function CompanionsScreen() {
   const { t } = useTranslation('common');
   const { user } = useAuth();
-  const { entitlementContext, setActiveCompanionPresetId, setRwenVoice } = useSettings();
+  const { entitlementContext, activeCompanionPresetId, setActiveCompanionPresetId, setRwenVoice, setActiveCompanionThumbUrl } = useSettings();
 
   const [companions, setCompanions] = useState<CompanionRow[]>([]);
   const [userDob, setUserDob] = useState<string | null>(null);
@@ -340,15 +340,33 @@ export default function CompanionsScreen() {
           the new name + face. */}
       {editingPreset && user && (
         <CompanionProfileSheet
-          /* Key by presetId+mode so React unmounts the previous instance
-             on every open. Belt-and-suspenders against stale state
-             (Bowen reported "customise Tendai" when claiming Maya —
-             couldn't reproduce in code review, but a fresh mount per
-             open eliminates the whole class of bug). */
           key={`${editingPreset.presetId}-${editingPreset.mode}`}
           visible={!!editingPreset}
           onClose={() => setEditingPreset(null)}
-          onSaved={() => { setEditingPreset(null); loadCompanions(); }}
+          onSaved={async () => {
+            const savedPresetId = editingPreset.presetId;
+            setEditingPreset(null);
+            await loadCompanions();
+            // If the user just customised the currently-ACTIVE
+            // companion, push the new face's thumbnail straight into
+            // SettingsContext. The tab-bar center button and any
+            // other context-reading surface update immediately —
+            // no need to navigate to chat first.
+            if (savedPresetId === activeCompanionPresetId) {
+              try {
+                const { loadCustomization, loadArchetype } = await import('../../lib/companion-customization');
+                const cust = await loadCustomization(user.id, savedPresetId);
+                if (cust?.face_archetype_id) {
+                  const arch = await loadArchetype(cust.face_archetype_id);
+                  setActiveCompanionThumbUrl(arch?.thumbnail_url ?? arch?.image_url ?? null);
+                } else {
+                  setActiveCompanionThumbUrl(null);
+                }
+              } catch (e) {
+                console.warn('[companions] thumb refresh failed:', e);
+              }
+            }
+          }}
           userId={user.id}
           presetId={editingPreset.presetId}
           mode={editingPreset.mode}
