@@ -1,52 +1,31 @@
 import { Tabs } from 'expo-router';
-import { Pressable, View, StyleSheet, Text, Image } from 'react-native';
-import { useEffect, useState } from 'react';
+import { Pressable, View, StyleSheet, Text } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import RwenImage from '../../components/rwen/RwenImage';
 import { Colors } from '../../constants/colors';
 import { useSettings } from '../../lib/SettingsContext';
-import { useAuth } from '../../lib/AuthContext';
 import { COMPANION_PRESETS } from '../../data/companions/presets';
-import { resolveCompanion } from '../../lib/companion-customization';
 
 function CompanionTabButton({ onPress }: { onPress?: () => void }) {
   const { activeCompanionPresetId } = useSettings();
-  const { user } = useAuth();
+  // Reverted: this button is no place for a Supabase round-trip on
+  // every tab navigation. Bowen reported a fatal crash on tap. The
+  // previous version that called resolveCompanion inside a useEffect
+  // is gone; we're back to showing the preset's emoji (or RwenImage
+  // for Rwen). The customised face still shows on the chat-tab header
+  // avatar (where the resolve call lives at the screen level, fired
+  // once on mount). Tradeoff: tab button shows the preset emoji even
+  // when the user's customised it. Acceptable until we have a
+  // SettingsContext-cached thumbnail to use synchronously.
   const presetId = activeCompanionPresetId ?? 'rwen';
   const preset = COMPANION_PRESETS[presetId];
-
-  // Resolve the user's customization for this preset — if they've set
-  // a face, we show that thumbnail on the tab button instead of the
-  // preset's hardcoded emoji. Bowen 2026-05-16: "the emojie that is the
-  // big center button is now stuck on books even though it should be
-  // my companion face."
-  //
-  // We deliberately use thumbnail_url (~10 KB) not image_url here —
-  // this button rerenders on every tab change, no need for the full
-  // 500 KB portrait.
-  const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (!user || presetId === 'rwen') { setThumbnailUrl(null); return; }
-    let cancelled = false;
-    resolveCompanion(user.id, presetId)
-      .then((r) => {
-        if (cancelled) return;
-        setThumbnailUrl(r.archetype?.thumbnail_url ?? r.archetype?.image_url ?? null);
-      })
-      .catch(() => {});
-    return () => { cancelled = true; };
-  }, [user, presetId]);
 
   return (
     <Pressable onPress={onPress} style={styles.rwenButtonWrapper}>
       <View style={styles.rwenButton}>
         {presetId === 'rwen' || !preset ? (
           <RwenImage pose="idle" size={52} />
-        ) : thumbnailUrl ? (
-          <Image source={{ uri: thumbnailUrl }} style={styles.companionThumb} />
         ) : (
-          // No face customised yet — show the preset emoji as fallback.
           <View style={styles.companionEmojiWrap}>
             <Text style={styles.companionEmoji}>{preset.emoji}</Text>
           </View>
@@ -165,11 +144,5 @@ const styles = StyleSheet.create({
   },
   companionEmoji: {
     fontSize: 30,
-  },
-  companionThumb: {
-    width: 52,
-    height: 52,
-    borderRadius: 26,
-    backgroundColor: Colors.gray[200],
   },
 });

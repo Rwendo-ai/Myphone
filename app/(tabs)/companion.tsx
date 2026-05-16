@@ -1,5 +1,6 @@
-import { View, Text, StyleSheet, TextInput, Pressable, ScrollView, KeyboardAvoidingView, Platform, ActivityIndicator, Alert, Animated, Easing } from 'react-native';
+import { View, Text, StyleSheet, TextInput, Pressable, ScrollView, KeyboardAvoidingView, Platform, ActivityIndicator, Alert, Animated, Easing, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Video, ResizeMode } from 'expo-av';
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 import { useTranslation } from 'react-i18next';
@@ -407,32 +408,27 @@ export default function CompanionScreen() {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 24}
       >
-        {/* Backdrop — Bowen's spec:
-            - Text mode: static picture of the companion as the chat
-              backdrop, messages on top so they read cleanly with the
-              avatar visible behind.
-            - Voice mode: backdrop stays the picture (chat still
-              readable) and the looping video pops out in a large
-              centered window (rendered later, see liveVoiceActive
-              block below).
-            Rwen has no archetype face so she gets her theme colour. */}
-        {(activeCompanionPresetId ?? 'rwen') !== 'rwen' && resolved?.archetype?.image_url && (
+        {/* Backdrop — single looping video. This is the version Bowen
+            confirmed worked. The crossfade/popout/scrim experiments
+            crashed on some devices; reverted. The only outstanding
+            issue is the loop seam — addressed offline by post-processing
+            existing clips, see docs/SEAMLESS-IDLE-LOOPS.md. */}
+        {resolved?.archetype?.idling_video_url ? (
+          <Video
+            source={{ uri: resolved.archetype.idling_video_url }}
+            style={StyleSheet.absoluteFillObject}
+            resizeMode={ResizeMode.COVER}
+            isLooping
+            shouldPlay
+            isMuted
+          />
+        ) : resolved?.archetype?.image_url ? (
           <Image
             source={{ uri: resolved.archetype.image_url }}
             style={StyleSheet.absoluteFillObject}
             resizeMode="cover"
-            blurRadius={liveVoiceActive ? 8 : 0}
           />
-        )}
-        {/* Soft scrim so message bubbles read above a busy portrait. */}
-        {(activeCompanionPresetId ?? 'rwen') !== 'rwen' && resolved?.archetype?.image_url && (
-          <View
-            style={[
-              StyleSheet.absoluteFillObject,
-              { backgroundColor: `rgba(0,0,0,${liveVoiceActive ? 0.5 : 0.35})` },
-            ]}
-          />
-        )}
+        ) : null}
 
         {/* Messages */}
         <ScrollView
@@ -591,31 +587,6 @@ export default function CompanionScreen() {
           </View>
         )}
       </KeyboardAvoidingView>
-
-      {/* Voice-mode pop-out — large floating window with the looping
-          face video. Chat continues to render behind (visible through
-          the dim scrim). Bowen's spec: "video appear over the top of
-          the text … avatar front and center, no need to read text
-          other than for context between conversations."
-          Pointer-events 'none' so taps fall through to the orb/hangup
-          controls in the composer panel below. */}
-      {liveVoiceActive && (
-        <View pointerEvents="none" style={styles.voiceVideoOverlay}>
-          <View style={styles.voiceVideoWindow}>
-            {(activeCompanionPresetId ?? 'rwen') === 'rwen' ? (
-              <RwenImage pose="idle" size={260} />
-            ) : (
-              <AmbientFace
-                videoUrl={resolved?.archetype?.idling_video_url ?? null}
-                imageUrl={resolved?.archetype?.image_url ?? null}
-                emoji={resolved?.preset?.emoji}
-                size={260}
-                borderRadius={24}
-              />
-            )}
-          </View>
-        </View>
-      )}
 
       {user && (
         <CompanionPickerSheet
@@ -788,28 +759,6 @@ const styles = StyleSheet.create({
     lineHeight: 22,
   },
 
-  // Voice-mode pop-out — large floating face window. Centred over the
-  // chat; pointer-events: none so the orb/hangup below stay tappable.
-  voiceVideoOverlay: {
-    position: 'absolute',
-    top: 0, left: 0, right: 0, bottom: 0,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  voiceVideoWindow: {
-    width: 280,
-    height: 280,
-    borderRadius: 24,
-    overflow: 'hidden',
-    backgroundColor: Colors.black,
-    shadowColor: Colors.black,
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.5,
-    shadowRadius: 24,
-    elevation: 12,
-    borderWidth: 2,
-    borderColor: 'rgba(255,255,255,0.18)',
-  },
   // Inline live-voice panel — replaces the composer when a session is active.
   liveVoicePanel: {
     flexDirection: 'row',
