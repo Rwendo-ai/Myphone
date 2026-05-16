@@ -3,9 +3,10 @@
  *
  * For each archetype:
  *   1. Generate portrait via fal.ai Flux 1.1 Pro (3:4 aspect, ~$0.04)
- *   2. Generate 10s idling video via fal.ai Kling 1.6 image-to-video (~$1.85)
- *      Longer duration + tighter motion prompt + AmbientFace crossfade
- *      together give us seamless loops without per-clip post-processing.
+ *   2. Generate 10s idling video via fal.ai Kling 1.6 **Pro** with
+ *      tail_image_url = image_url so first/last frame are identical →
+ *      perfectly seamless loop in the file (~$0.95 per clip; ~$28 for
+ *      all 30 archetypes). No crossfade needed in playback.
  *   3. Upload both to Supabase Storage:
  *        companion-assets/archetypes/<id>/portrait.jpg
  *        companion-assets/archetypes/<id>/idling.mp4
@@ -287,21 +288,26 @@ async function generatePortrait(arch: Archetype, args: Args): Promise<string> {
 
 async function generateIdlingVideo(arch: Archetype, imageUrl: string, args: Args): Promise<string> {
   if (args.dryRun) {
-    console.log(`  [dry-run] would call fal-ai/kling-video/v1.6/standard/image-to-video for ${arch.name}`);
+    console.log(`  [dry-run] would call fal-ai/kling-video/v1.6/pro/image-to-video for ${arch.name}`);
     return 'https://example.com/dry-run-idling.mp4';
   }
-  // Kling 1.6 Standard image-to-video on fal.ai. Aspect inherits from the
-  // source image. We use 10s duration (the longer of Kling's two options)
-  // because a longer loop is less visually obvious — the crossfade in
-  // AmbientFace then hides whatever drift remains. The added cost over
-  // 5s is small (~$0.40 vs $0.95) for a noticeable quality win.
-  const result = await fal.subscribe('fal-ai/kling-video/v1.6/standard/image-to-video', {
+  // Kling 1.6 PRO image-to-video. Two reasons this beats the previous
+  // Standard model for our use case:
+  //   1. tail_image_url — Pro accepts both a start frame and an end
+  //      frame. We pass the SAME portrait for both so the generator
+  //      mathematically converges back to the starting pose at the
+  //      end of the clip. Result: the video loops perfectly in the
+  //      file itself, no playback crossfade needed.
+  //   2. Pro's motion consistency is materially better than Standard
+  //      on small ambient idles — less limb drift, less identity drift.
+  // Cost ~$0.95 / 10s clip vs ~$0.45 for Standard. We pay $15 extra
+  // to redo all 30 archetypes once and stop chasing loop seams.
+  const result = await fal.subscribe('fal-ai/kling-video/v1.6/pro/image-to-video', {
     input: {
-      image_url: imageUrl,
-      prompt:    arch.motionPrompt ?? DEFAULT_MOTION,
-      duration:  '10',
-      // Negative prompt — kept here as a fal-supported field. Kling
-      // listens to negative prompts and they materially reduce drift.
+      image_url:      imageUrl,
+      tail_image_url: imageUrl,  // same as start → perfect loop
+      prompt:         arch.motionPrompt ?? DEFAULT_MOTION,
+      duration:       '10',
       negative_prompt:
         'head movement, head tilt, head turn, smiling, teeth, open mouth, ' +
         'tongue, talking, speaking, lip movement, mouth opening, eyebrow ' +
