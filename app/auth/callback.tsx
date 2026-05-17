@@ -94,10 +94,8 @@ export default function AuthCallbackScreen() {
     })();
   }, [url, processedUrl]);
 
-  // ── Effect 2: navigate as soon as session is set. ───────────────────
-  // Watching session directly means we don't have to coordinate with
-  // the processing effect — whichever path sets the session (this
-  // callback or lib/oauth.ts) will trigger the redirect.
+  // ── Effect 2: navigate when AuthContext session is set. ────────────
+  // Primary path when onAuthStateChange fires properly.
   useEffect(() => {
     if (navigated) return;
     if (!session) return;
@@ -105,20 +103,52 @@ export default function AuthCallbackScreen() {
     router.replace('/');
   }, [session, navigated]);
 
-  // ── Effect 3: surface a clear error if session never arrives. ───────
-  // Independent timeout so a wedged auth listener doesn't leave the
-  // user on the spinner forever.
+  // ── Effect 3: POLL supabase.auth.getSession() as a backup. ─────────
+  // Bowen 2026-05-18: on Bowen's device the onAuthStateChange listener
+  // doesn't fire after exchangeCodeForSession even though the session
+  // is correctly persisted to AsyncStorage (force-close + reopen lands
+  // him signed in). Polling getSession bypasses the listener entirely.
+  // We start polling after URL processing kicks off, and stop the
+  // moment we find a session OR the user navigates away.
   useEffect(() => {
     if (navigated) return;
-    if (session) return;
     if (!processedUrl) return;
-    const t = setTimeout(() => {
-      if (!navigated && !session) {
-        setError(`Sign-in didn't complete in ${TIMEOUT_MS / 1000}s. Try again.`);
+    let cancelled = false;
+    let pollCount = 0;
+    const POLL_INTERVAL_MS = 300;
+    const MAX_POLLS = 33;  // ~10 seconds total
+
+    const tick = async () => {
+      if (cancelled || navigated) return;
+      pollCount++;
+      try {
+        const { data } = await supabase.auth.getSession();
+        if (cancelled || navigated) return;
+        if (data?.session) {
+          setNavigated(true);
+          router.replace('/');
+          return;
+        }
+      } catch (e) {
+        console.warn('[auth-callback] getSession poll:', e);
       }
-    }, TIMEOUT_MS);
-    return () => clearTimeout(t);
-  }, [processedUrl, session, navigated]);
+      if (pollCount >= MAX_POLLS) {
+        if (!cancelled && !navigated) {
+          setError(`Sign-in didn't complete after ${(MAX_POLLS * POLL_INTERVAL_MS / 1000).toFixed(0)}s. Try again.`);
+        }
+        return;
+      }
+      setTimeout(tick, POLL_INTERVAL_MS);
+    };
+
+    // Small initial delay so exchangeCodeForSession has a moment to
+    // write the session to storage before the first poll.
+    const initial = setTimeout(tick, 200);
+    return () => {
+      cancelled = true;
+      clearTimeout(initial);
+    };
+  }, [processedUrl, navigated]);
 
   return (
     <LinearGradient colors={[Colors.primary, '#0D2140']} style={styles.container}>
