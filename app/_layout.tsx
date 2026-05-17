@@ -78,8 +78,19 @@ function NavigationGuard() {
     const inAuthGroup  = segments[0] === '(auth)';
     const inLegalGroup = segments[0] === '(legal)';
     const onOnboarding = segments[1] === 'onboarding';
+    // The OAuth callback route (app/auth/callback.tsx) sits OUTSIDE
+    // the (auth) group on purpose — it's a deep-link target, not a
+    // user-navigable screen. The guard must NOT redirect away from
+    // it while session is still null: the callback IS the screen
+    // that turns session from null → set. Bowen 2026-05-18: this is
+    // the actual root cause of the "back to Get Started" / "Sign-in
+    // cancelled" / "stuck on Finishing sign-in" trio — every redirect
+    // arriving at /auth/callback was getting bounced to /welcome
+    // before the URL could be processed.
+    const onAuthCallback = segments[0] === 'auth' && segments[1] === 'callback';
 
     if (inLegalGroup) return;
+    if (onAuthCallback) return;
 
     if (!session) {
       if (!inAuthGroup) router.replace('/welcome');
