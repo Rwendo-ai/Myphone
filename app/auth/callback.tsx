@@ -1,30 +1,27 @@
 /**
  * OAuth callback route.
  *
- * Receives `rwendo://auth/callback#access_token=…&refresh_token=…` from
- * Supabase. Calls supabase.auth.setSession with the tokens, waits for
- * AuthContext's listener to actually pick up the new session, then
- * hands control to NavigationGuard via router.replace('/').
+ * Receives `rwendo://auth/callback?code=…` (PKCE — Supabase mobile
+ * default) or `#access_token=…&refresh_token=…` (implicit — legacy).
+ * Processes the URL into a session, then navigates home as soon as
+ * AuthContext reports session !== null.
  *
- * Two specific Android-on-RN pitfalls this file works around:
+ * Two effects, deliberately independent:
+ *   1. Process URL once (exchangeCodeForSession or setSession).
+ *   2. Navigate when session becomes set — single source of truth.
  *
- *   1. The deep link arrival is racy.
- *      `Linking.useURL()` is React-friendly but sometimes misses the
- *      first runtime URL event (the hook reads its initial value, and
- *      a URL arriving mid-mount may not trigger a re-render until the
- *      second event). Belt-and-suspenders: we also subscribe via
- *      `Linking.addEventListener('url', …)`, which is the lower-level
- *      reliable source.
+ * No coordination via refs between (1) and (2). Whichever path
+ * sets the session wins (lib/oauth.ts intercept or our processing
+ * here). This avoids the previous race where a useRef flag set
+ * after session change couldn't trigger a re-render.
  *
- *   2. setSession completes before AuthContext's listener has flushed
- *      React state. If we navigate immediately, NavigationGuard runs
- *      with the stale session=null and bounces the user to /welcome.
- *      Fix: read `session` from useAuth and only navigate once the
- *      context confirms it's actually set. A short timeout fallback
- *      surfaces an error rather than letting the user spin forever.
+ * NavigationGuard in app/_layout.tsx has an explicit exemption for
+ * this route — it must NOT redirect away from /auth/callback while
+ * session is null (which it always is when the deep link first
+ * arrives). Bowen 2026-05-18.
  */
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { View, Text, ActivityIndicator, StyleSheet, Pressable } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Linking from 'expo-linking';
@@ -34,27 +31,21 @@ import { useAuth } from '../../lib/AuthContext';
 import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight } from '../../constants/theme';
 
-const WAIT_FOR_CONTEXT_MS = 6000;  // how long to wait for AuthContext to pick up the session
+const TIMEOUT_MS = 10_000;
 
 export default function AuthCallbackScreen() {
   const [error, setError] = useState<string | null>(null);
+  const [processedUrl, setProcessedUrl] = useState<string | null>(null);
+  const [navigated, setNavigated] = useState(false);
   const { session } = useAuth();
 
-  // Tracks whether we've already kicked off setSession for the current
-  // URL — prevents duplicate calls when both useURL and the
-  // addEventListener backstop fire for the same redirect.
-  const handledUrlRef = useRef<string | null>(null);
-  const setSessionDoneRef = useRef(false);
-  const navigatedRef = useRef(false);
-
-  // The URL we're processing. Updated by both the useURL hook AND the
-  // addEventListener backstop.
+  // Capture URL from BOTH sources — useURL() is React-friendly but
+  // can miss the first runtime event on Android; addEventListener
+  // is the lower-level guarantee. Whichever fires first wins.
   const useUrlValue = Linking.useURL();
   const [eventUrl, setEventUrl] = useState<string | null>(null);
   const url = eventUrl ?? useUrlValue;
 
-  // Backstop subscription — catches URL events that useURL() doesn't
-  // surface fast enough on Android.
   useEffect(() => {
     const sub = Linking.addEventListener('url', (ev) => {
       if (ev?.url) setEventUrl(ev.url);
@@ -62,72 +53,72 @@ export default function AuthCallbackScreen() {
     return () => sub.remove();
   }, []);
 
-  // Process the redirect URL once.
+  // ── Effect 1: process the URL exactly once. ─────────────────────────
   useEffect(() => {
     if (!url) return;
-    if (handledUrlRef.current === url) return;
+    if (processedUrl === url) return;
 
     const params = parseUrlParams(url);
-    // Two possible OAuth response shapes:
-    //   - Implicit flow: #access_token=…&refresh_token=…
-    //   - PKCE flow:     ?code=…&state=…
-    // Supabase v2 defaults to PKCE on most setups. We handle both.
     const hasTokens = !!(params.access_token && params.refresh_token);
     const hasCode   = !!params.code;
 
     if (!hasTokens && !hasCode) {
-      if (url.includes('auth/callback') && !setSessionDoneRef.current) {
-        // Surface the actual URL so we can see what's arriving on
-        // device when this branch fires.
+      // Don't error on non-auth URLs (initial-launch URLs that have
+      // nothing to do with auth would otherwise spuriously surface
+      // here).
+      if (url.includes('auth/callback')) {
         setError(`Sign-in completed but no tokens or code in URL.\n\nURL: ${url.substring(0, 200)}`);
       }
       return;
     }
 
-    handledUrlRef.current = url;
+    setProcessedUrl(url);
     (async () => {
       try {
         if (hasCode) {
           const { error: exErr } = await supabase.auth.exchangeCodeForSession(params.code!);
-          if (exErr) { setError(`PKCE exchange failed: ${exErr.message}`); return; }
+          // If lib/oauth.ts already consumed the code (Android double-
+          // delivery path) exchange fails. That's fine — session is
+          // already set; effect 2 will navigate. Log only.
+          if (exErr) console.warn('[auth-callback] exchange:', exErr.message);
         } else {
           const { error: setErr } = await supabase.auth.setSession({
             access_token: params.access_token!,
             refresh_token: params.refresh_token!,
           });
-          if (setErr) { setError(setErr.message); return; }
+          if (setErr) console.warn('[auth-callback] setSession:', setErr.message);
         }
-        setSessionDoneRef.current = true;
-        // Wait for AuthContext to confirm before navigating (effect below).
       } catch (e) {
-        setError(e instanceof Error ? e.message : 'Sign-in failed');
+        console.warn('[auth-callback] processing threw:', e);
       }
     })();
-  }, [url]);
+  }, [url, processedUrl]);
 
-  // Navigate once AuthContext confirms the session is set. Falls
-  // back to a timeout error if the context never updates (should
-  // only happen if the auth listener is wedged).
+  // ── Effect 2: navigate as soon as session is set. ───────────────────
+  // Watching session directly means we don't have to coordinate with
+  // the processing effect — whichever path sets the session (this
+  // callback or lib/oauth.ts) will trigger the redirect.
   useEffect(() => {
-    if (navigatedRef.current) return;
-    if (!setSessionDoneRef.current) return;
+    if (navigated) return;
+    if (!session) return;
+    setNavigated(true);
+    router.replace('/');
+  }, [session, navigated]);
 
-    if (session) {
-      navigatedRef.current = true;
-      router.replace('/');
-      return;
-    }
-
-    // Session not set yet — wait, then surface an error so the user
-    // isn't stuck on the spinner forever.
+  // ── Effect 3: surface a clear error if session never arrives. ───────
+  // Independent timeout so a wedged auth listener doesn't leave the
+  // user on the spinner forever.
+  useEffect(() => {
+    if (navigated) return;
+    if (session) return;
+    if (!processedUrl) return;
     const t = setTimeout(() => {
-      if (navigatedRef.current) return;
-      if (!session) {
-        setError('Sign-in completed but the session didn\'t persist. Tap below to try again.');
+      if (!navigated && !session) {
+        setError(`Sign-in didn't complete in ${TIMEOUT_MS / 1000}s. Try again.`);
       }
-    }, WAIT_FOR_CONTEXT_MS);
+    }, TIMEOUT_MS);
     return () => clearTimeout(t);
-  }, [session]);
+  }, [processedUrl, session, navigated]);
 
   return (
     <LinearGradient colors={[Colors.primary, '#0D2140']} style={styles.container}>
@@ -154,13 +145,7 @@ function parseUrlParams(url: string): {
   refresh_token?: string;
   code?: string;
   state?: string;
-  error?: string;
-  error_description?: string;
 } {
-  // Supabase redirects use either:
-  //   #access_token=…&refresh_token=… (implicit flow)
-  //   ?code=…&state=…                  (PKCE flow)
-  // Parse BOTH the fragment and the query so we catch either shape.
   const out: Record<string, string> = {};
   const grab = (segment: string) => {
     for (const p of segment.split('&')) {
@@ -171,7 +156,9 @@ function parseUrlParams(url: string): {
   const hashIdx  = url.indexOf('#');
   const queryIdx = url.indexOf('?');
   if (hashIdx  >= 0) grab(url.slice(hashIdx  + 1));
-  if (queryIdx >= 0 && (hashIdx < 0 || queryIdx < hashIdx)) grab(url.slice(queryIdx + 1, hashIdx >= 0 ? hashIdx : url.length));
+  if (queryIdx >= 0 && (hashIdx < 0 || queryIdx < hashIdx)) {
+    grab(url.slice(queryIdx + 1, hashIdx >= 0 ? hashIdx : url.length));
+  }
   return out;
 }
 
