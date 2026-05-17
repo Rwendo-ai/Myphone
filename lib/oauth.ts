@@ -82,20 +82,25 @@ export async function signInWithGoogle(): Promise<OAuthResult> {
     // routes the deep link to the running app before WebBrowser can
     // intercept it — WebBrowser then returns 'cancel' even though
     // /auth/callback has actually already set the session. Both paths
-    // can also race when the intercept does work, so wrap setSession
-    // in try/catch and let waitForSession() below be the source of
-    // truth.
+    // can also race when the intercept does work, so wrap the auth
+    // calls in try/catch and let waitForSession() below be the source
+    // of truth.
     if (result.type === 'success') {
       const params = parseHashOrQuery(result.url);
-      if (params.access_token && params.refresh_token) {
-        try {
+      // Supabase v2 defaults to PKCE on mobile — the redirect URL will
+      // carry `code=…` not `access_token=…`. Handle both shapes; the
+      // /auth/callback route does the same.
+      try {
+        if (params.code) {
+          await supabase.auth.exchangeCodeForSession(params.code);
+        } else if (params.access_token && params.refresh_token) {
           await supabase.auth.setSession({
             access_token: params.access_token,
             refresh_token: params.refresh_token,
           });
-        } catch {
-          // /auth/callback may have set it first — that's fine.
         }
+      } catch {
+        // /auth/callback may have set it first — that's fine.
       }
     }
 
@@ -153,18 +158,21 @@ export async function signInWithCryptoWallet(): Promise<OAuthResult> {
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
 function parseHashOrQuery(url: string): Record<string, string> {
-  // Supabase OAuth redirects typically use the URL fragment (#) for tokens.
-  // Try both fragment and query just in case the deep-link normalisation
-  // flips the order.
+  // Supabase implicit-flow puts tokens in the hash (#access_token=…),
+  // PKCE puts the code in the query (?code=…). Parse BOTH so we can
+  // detect either shape from a single helper.
   const out: Record<string, string> = {};
-  const hashIdx = url.indexOf('#');
+  const grab = (segment: string) => {
+    for (const p of segment.split('&')) {
+      const [k, v] = p.split('=');
+      if (k) out[decodeURIComponent(k)] = decodeURIComponent(v ?? '');
+    }
+  };
+  const hashIdx  = url.indexOf('#');
   const queryIdx = url.indexOf('?');
-  const splitIdx = hashIdx >= 0 ? hashIdx : queryIdx;
-  if (splitIdx < 0) return out;
-  const pairs = url.slice(splitIdx + 1).split('&');
-  for (const p of pairs) {
-    const [k, v] = p.split('=');
-    if (k) out[decodeURIComponent(k)] = decodeURIComponent(v ?? '');
+  if (hashIdx  >= 0) grab(url.slice(hashIdx  + 1));
+  if (queryIdx >= 0 && (hashIdx < 0 || queryIdx < hashIdx)) {
+    grab(url.slice(queryIdx + 1, hashIdx >= 0 ? hashIdx : url.length));
   }
   return out;
 }

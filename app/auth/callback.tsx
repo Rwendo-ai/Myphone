@@ -67,14 +67,19 @@ export default function AuthCallbackScreen() {
     if (!url) return;
     if (handledUrlRef.current === url) return;
 
-    const tokens = parseTokensFromUrl(url);
-    if (!tokens.access_token || !tokens.refresh_token) {
-      // The URL has reached us but doesn't carry tokens — only flag
-      // an error when it's actually on the callback route (avoids a
-      // spurious error on initial-launch URLs that have nothing to
-      // do with auth).
+    const params = parseUrlParams(url);
+    // Two possible OAuth response shapes:
+    //   - Implicit flow: #access_token=…&refresh_token=…
+    //   - PKCE flow:     ?code=…&state=…
+    // Supabase v2 defaults to PKCE on most setups. We handle both.
+    const hasTokens = !!(params.access_token && params.refresh_token);
+    const hasCode   = !!params.code;
+
+    if (!hasTokens && !hasCode) {
       if (url.includes('auth/callback') && !setSessionDoneRef.current) {
-        setError('Sign-in completed but no session was returned. Try again.');
+        // Surface the actual URL so we can see what's arriving on
+        // device when this branch fires.
+        setError(`Sign-in completed but no tokens or code in URL.\n\nURL: ${url.substring(0, 200)}`);
       }
       return;
     }
@@ -82,18 +87,18 @@ export default function AuthCallbackScreen() {
     handledUrlRef.current = url;
     (async () => {
       try {
-        const { error: setErr } = await supabase.auth.setSession({
-          access_token: tokens.access_token!,
-          refresh_token: tokens.refresh_token!,
-        });
-        if (setErr) {
-          setError(setErr.message);
-          return;
+        if (hasCode) {
+          const { error: exErr } = await supabase.auth.exchangeCodeForSession(params.code!);
+          if (exErr) { setError(`PKCE exchange failed: ${exErr.message}`); return; }
+        } else {
+          const { error: setErr } = await supabase.auth.setSession({
+            access_token: params.access_token!,
+            refresh_token: params.refresh_token!,
+          });
+          if (setErr) { setError(setErr.message); return; }
         }
         setSessionDoneRef.current = true;
-        // DO NOT navigate yet — wait for AuthContext to pick up the
-        // session. The effect below watches `session` and navigates
-        // once it's confirmed.
+        // Wait for AuthContext to confirm before navigating (effect below).
       } catch (e) {
         setError(e instanceof Error ? e.message : 'Sign-in failed');
       }
@@ -144,20 +149,29 @@ export default function AuthCallbackScreen() {
   );
 }
 
-function parseTokensFromUrl(url: string): { access_token?: string; refresh_token?: string } {
-  // Supabase OAuth redirects use the URL fragment (#) for tokens. Try
-  // the fragment first, then fall back to query in case a normaliser
-  // has flipped them.
+function parseUrlParams(url: string): {
+  access_token?: string;
+  refresh_token?: string;
+  code?: string;
+  state?: string;
+  error?: string;
+  error_description?: string;
+} {
+  // Supabase redirects use either:
+  //   #access_token=…&refresh_token=… (implicit flow)
+  //   ?code=…&state=…                  (PKCE flow)
+  // Parse BOTH the fragment and the query so we catch either shape.
   const out: Record<string, string> = {};
-  const hashIdx = url.indexOf('#');
+  const grab = (segment: string) => {
+    for (const p of segment.split('&')) {
+      const [k, v] = p.split('=');
+      if (k) out[decodeURIComponent(k)] = decodeURIComponent(v ?? '');
+    }
+  };
+  const hashIdx  = url.indexOf('#');
   const queryIdx = url.indexOf('?');
-  const splitIdx = hashIdx >= 0 ? hashIdx : queryIdx;
-  if (splitIdx < 0) return out;
-  const pairs = url.slice(splitIdx + 1).split('&');
-  for (const p of pairs) {
-    const [k, v] = p.split('=');
-    if (k) out[decodeURIComponent(k)] = decodeURIComponent(v ?? '');
-  }
+  if (hashIdx  >= 0) grab(url.slice(hashIdx  + 1));
+  if (queryIdx >= 0 && (hashIdx < 0 || queryIdx < hashIdx)) grab(url.slice(queryIdx + 1, hashIdx >= 0 ? hashIdx : url.length));
   return out;
 }
 
