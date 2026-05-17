@@ -77,26 +77,55 @@ export async function signInWithGoogle(): Promise<OAuthResult> {
     }
 
     const result = await WebBrowser.openAuthSessionAsync(data.url, redirectTo);
-    if (result.type !== 'success') {
-      return { error: 'Sign-in cancelled' };
+
+    // Don't bail on 'cancel' immediately. On Android the OS sometimes
+    // routes the deep link to the running app before WebBrowser can
+    // intercept it — WebBrowser then returns 'cancel' even though
+    // /auth/callback has actually already set the session. Both paths
+    // can also race when the intercept does work, so wrap setSession
+    // in try/catch and let waitForSession() below be the source of
+    // truth.
+    if (result.type === 'success') {
+      const params = parseHashOrQuery(result.url);
+      if (params.access_token && params.refresh_token) {
+        try {
+          await supabase.auth.setSession({
+            access_token: params.access_token,
+            refresh_token: params.refresh_token,
+          });
+        } catch {
+          // /auth/callback may have set it first — that's fine.
+        }
+      }
     }
 
-    // Parse the access_token + refresh_token out of the redirect URL and
-    // hand them to Supabase. Web flows handle this automatically; in RN we
-    // do it manually.
-    const params = parseHashOrQuery(result.url);
-    if (params.access_token && params.refresh_token) {
-      const { error: setErr } = await supabase.auth.setSession({
-        access_token: params.access_token,
-        refresh_token: params.refresh_token,
-      });
-      if (setErr) return { error: setErr.message };
-    }
+    // Wait up to 5s for a session to actually materialise. Polls
+    // supabase.auth.getSession() so both the intercept path and the
+    // deep-link path are covered. Returns true on first non-null
+    // session, false on timeout.
+    const ok = await waitForSession(5000);
+    if (ok) return { error: null };
 
-    return { error: null };
+    // Genuine failure or the user really did cancel.
+    return {
+      error:
+        result.type === 'success'
+          ? "Sign-in completed but session didn't persist. Try again."
+          : 'Sign-in cancelled',
+    };
   } catch (e) {
     return { error: e instanceof Error ? e.message : 'Google sign-in failed' };
   }
+}
+
+async function waitForSession(timeoutMs: number): Promise<boolean> {
+  const deadline = Date.now() + timeoutMs;
+  while (Date.now() < deadline) {
+    const { data } = await supabase.auth.getSession();
+    if (data?.session) return true;
+    await new Promise((r) => setTimeout(r, 200));
+  }
+  return false;
 }
 
 /**
