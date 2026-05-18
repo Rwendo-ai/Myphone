@@ -78,46 +78,47 @@ export async function signInWithGoogle(): Promise<OAuthResult> {
 
     const result = await WebBrowser.openAuthSessionAsync(data.url, redirectTo);
 
-    // Don't bail on 'cancel' immediately. On Android the OS sometimes
-    // routes the deep link to the running app before WebBrowser can
-    // intercept it — WebBrowser then returns 'cancel' even though
-    // /auth/callback has actually already set the session. Both paths
-    // can also race when the intercept does work, so wrap the auth
-    // calls in try/catch and let waitForSession() below be the source
-    // of truth.
+    // DEBUG — surface every step so we can see what's actually
+    // happening on Bowen's Android. Strip this section once login works.
+    const trace: string[] = [];
+    trace.push(`webbrowser.type=${result.type}`);
     if (result.type === 'success') {
+      const truncatedUrl = result.url.length > 80 ? `${result.url.slice(0, 60)}…${result.url.slice(-15)}` : result.url;
+      trace.push(`url=${truncatedUrl}`);
       const params = parseHashOrQuery(result.url);
-      // Supabase v2 defaults to PKCE on mobile — the redirect URL will
-      // carry `code=…` not `access_token=…`. Handle both shapes; the
-      // /auth/callback route does the same.
+      trace.push(`params: code=${params.code ? 'Y' : 'N'} access_token=${params.access_token ? 'Y' : 'N'} error=${params.error ?? '-'}`);
+
       try {
         if (params.code) {
-          await supabase.auth.exchangeCodeForSession(params.code);
+          const { data: exData, error: exErr } = await supabase.auth.exchangeCodeForSession(params.code);
+          if (exErr) trace.push(`exchange-ERR: ${exErr.message.slice(0, 60)}`);
+          else       trace.push(`exchange-OK session=${exData?.session ? 'Y' : 'N'}`);
         } else if (params.access_token && params.refresh_token) {
-          await supabase.auth.setSession({
+          const { error: setErr } = await supabase.auth.setSession({
             access_token: params.access_token,
             refresh_token: params.refresh_token,
           });
+          trace.push(setErr ? `setSession-ERR: ${setErr.message.slice(0, 60)}` : 'setSession-OK');
+        } else {
+          trace.push('NO_AUTH_PARAMS');
         }
-      } catch {
-        // /auth/callback may have set it first — that's fine.
+      } catch (e) {
+        trace.push(`exception: ${e instanceof Error ? e.message.slice(0, 60) : String(e)}`);
       }
     }
 
-    // Wait up to 5s for a session to actually materialise. Polls
-    // supabase.auth.getSession() so both the intercept path and the
-    // deep-link path are covered. Returns true on first non-null
-    // session, false on timeout.
+    // Quick post-check: is the session actually there?
+    const { data: postExchange } = await supabase.auth.getSession();
+    trace.push(`post-getSession=${postExchange?.session ? 'Y' : 'N'}`);
+
     const ok = await waitForSession(5000);
+    trace.push(`waitForSession=${ok ? 'Y' : 'N(timeout)'}`);
+
     if (ok) return { error: null };
 
-    // Genuine failure or the user really did cancel.
-    return {
-      error:
-        result.type === 'success'
-          ? "Sign-in completed but session didn't persist. Try again."
-          : 'Sign-in cancelled',
-    };
+    // Surface the whole trace in the error so Bowen can paste back
+    // what's actually happening.
+    return { error: trace.join(' | ') };
   } catch (e) {
     return { error: e instanceof Error ? e.message : 'Google sign-in failed' };
   }
