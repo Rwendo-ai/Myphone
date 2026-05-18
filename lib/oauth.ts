@@ -78,46 +78,53 @@ export async function signInWithGoogle(): Promise<OAuthResult> {
 
     const result = await WebBrowser.openAuthSessionAsync(data.url, redirectTo);
 
-    // DEBUG — surface every step so we can see what's actually
-    // happening on Bowen's Android. Strip this section once login works.
+    // The actual fix Bowen's debug trace surfaced (2026-05-18): on Android
+    // Chrome Custom Tabs, WebBrowser.openAuthSessionAsync returns
+    // type='dismiss' even when the redirect URL was successfully captured.
+    // The previous code only processed result.url when type==='success',
+    // so the code was discarded every time and the session never set.
+    //
+    // Fix: parse result.url regardless of type. If it carries a code or
+    // tokens, exchange them. type==='dismiss' from a successful redirect
+    // and type==='cancel' from a user back-press look the same to us
+    // until we look at the URL.
     const trace: string[] = [];
-    trace.push(`webbrowser.type=${result.type}`);
-    if (result.type === 'success') {
-      const truncatedUrl = result.url.length > 80 ? `${result.url.slice(0, 60)}…${result.url.slice(-15)}` : result.url;
-      trace.push(`url=${truncatedUrl}`);
-      const params = parseHashOrQuery(result.url);
-      trace.push(`params: code=${params.code ? 'Y' : 'N'} access_token=${params.access_token ? 'Y' : 'N'} error=${params.error ?? '-'}`);
+    trace.push(`type=${result.type}`);
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const resultUrl = (result as any).url as string | undefined;
+    if (resultUrl) {
+      const truncated = resultUrl.length > 80 ? `${resultUrl.slice(0, 60)}…${resultUrl.slice(-15)}` : resultUrl;
+      trace.push(`url=${truncated}`);
+      const params = parseHashOrQuery(resultUrl);
+      trace.push(`p: code=${params.code ? 'Y' : 'N'} tok=${params.access_token ? 'Y' : 'N'} err=${params.error ?? '-'}`);
 
       try {
         if (params.code) {
           const { data: exData, error: exErr } = await supabase.auth.exchangeCodeForSession(params.code);
-          if (exErr) trace.push(`exchange-ERR: ${exErr.message.slice(0, 60)}`);
-          else       trace.push(`exchange-OK session=${exData?.session ? 'Y' : 'N'}`);
+          if (exErr) trace.push(`ex-ERR: ${exErr.message.slice(0, 50)}`);
+          else       trace.push(`ex-OK sess=${exData?.session ? 'Y' : 'N'}`);
         } else if (params.access_token && params.refresh_token) {
           const { error: setErr } = await supabase.auth.setSession({
             access_token: params.access_token,
             refresh_token: params.refresh_token,
           });
-          trace.push(setErr ? `setSession-ERR: ${setErr.message.slice(0, 60)}` : 'setSession-OK');
-        } else {
-          trace.push('NO_AUTH_PARAMS');
+          trace.push(setErr ? `set-ERR: ${setErr.message.slice(0, 50)}` : 'set-OK');
         }
       } catch (e) {
-        trace.push(`exception: ${e instanceof Error ? e.message.slice(0, 60) : String(e)}`);
+        trace.push(`exc: ${e instanceof Error ? e.message.slice(0, 50) : String(e)}`);
       }
+    } else {
+      trace.push('NO_URL');
     }
 
-    // Quick post-check: is the session actually there?
     const { data: postExchange } = await supabase.auth.getSession();
-    trace.push(`post-getSession=${postExchange?.session ? 'Y' : 'N'}`);
+    trace.push(`post-gs=${postExchange?.session ? 'Y' : 'N'}`);
 
     const ok = await waitForSession(5000);
-    trace.push(`waitForSession=${ok ? 'Y' : 'N(timeout)'}`);
+    trace.push(`wait=${ok ? 'Y' : 'N'}`);
 
     if (ok) return { error: null };
-
-    // Surface the whole trace in the error so Bowen can paste back
-    // what's actually happening.
     return { error: trace.join(' | ') };
   } catch (e) {
     return { error: e instanceof Error ? e.message : 'Google sign-in failed' };
