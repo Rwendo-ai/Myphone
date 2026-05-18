@@ -12,11 +12,11 @@
  * issue is fixed.
  */
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { View, Text, ActivityIndicator, StyleSheet, Pressable, ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Linking from 'expo-linking';
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../lib/AuthContext';
 import { Colors } from '../../constants/colors';
@@ -37,10 +37,33 @@ export default function AuthCallbackScreen() {
 
   useEffect(() => { log(`MOUNT`); }, []);
 
-  // ── URL capture ─────────────────────────────────────────────────────
+  // ── PRIMARY: route params from expo-router ──────────────────────────
+  // expo-router consumes the deep-link URL and parses `?code=…&state=…`
+  // into route params BEFORE Linking ever sees them. Bowen's 2026-05-18
+  // debug log proved this: MOUNT fired but no Linking events ever
+  // arrived, yet the route was still hit. So the query params live in
+  // useLocalSearchParams, not in Linking.useURL.
+  const routeParams = useLocalSearchParams<{
+    code?: string;
+    access_token?: string;
+    refresh_token?: string;
+    state?: string;
+    error?: string;
+    error_description?: string;
+  }>();
+
+  useEffect(() => {
+    const keys = Object.keys(routeParams).filter((k) => routeParams[k as keyof typeof routeParams]);
+    if (keys.length > 0) log(`routeParams: ${keys.join(',')}`);
+  }, [routeParams]);
+
+  // ── BACKUP: Linking URL (hash-fragment fallback) ───────────────────
+  // PKCE puts the code in the query (consumed by router). Implicit
+  // flow puts tokens in the hash (#), which router doesn't consume.
+  // Keep the Linking subscription as a backstop for that case.
   const useUrlValue = Linking.useURL();
   const [eventUrl, setEventUrl] = useState<string | null>(null);
-  const url = eventUrl ?? useUrlValue;
+  const linkingUrl = eventUrl ?? useUrlValue;
 
   useEffect(() => {
     const sub = Linking.addEventListener('url', (ev) => {
@@ -55,6 +78,24 @@ export default function AuthCallbackScreen() {
   useEffect(() => {
     if (useUrlValue) log(`useURL: ${shortUrl(useUrlValue)}`);
   }, [useUrlValue]);
+
+  // Coalesce: prefer route-param code, fall back to URL-derived params.
+  const params = useMemo(() => {
+    if (routeParams.code || routeParams.access_token) {
+      return {
+        code:          routeParams.code,
+        access_token:  routeParams.access_token,
+        refresh_token: routeParams.refresh_token,
+        state:         routeParams.state,
+        error:         routeParams.error,
+        error_description: routeParams.error_description,
+      };
+    }
+    return linkingUrl ? parseUrlParams(linkingUrl) : {};
+  }, [routeParams, linkingUrl]);
+
+  // Identifier for "have we processed this set of params yet?".
+  const paramsKey = params.code ?? params.access_token ?? null;
 
   // ── Initial session check on mount ──────────────────────────────────
   useEffect(() => {
@@ -72,26 +113,20 @@ export default function AuthCallbackScreen() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // ── Effect 1: process URL ───────────────────────────────────────────
+  // ── Effect 1: process params once ───────────────────────────────────
   useEffect(() => {
-    if (!url) return;
-    if (processedUrl === url) return;
+    if (!paramsKey) return;
+    if (processedUrl === paramsKey) return;
 
-    const params = parseUrlParams(url);
     const hasTokens = !!(params.access_token && params.refresh_token);
     const hasCode   = !!params.code;
     log(`parse: code=${hasCode ? 'Y' : 'N'} tokens=${hasTokens ? 'Y' : 'N'}`);
 
-    if (params.error) log(`url-error: ${params.error} ${params.error_description ?? ''}`);
+    if (params.error) log(`url-error: ${params.error} ${(params.error_description ?? '').slice(0, 40)}`);
 
-    if (!hasTokens && !hasCode) {
-      if (url.includes('auth/callback')) {
-        setError(`No tokens/code in URL.\n\nURL: ${shortUrl(url)}`);
-      }
-      return;
-    }
+    if (!hasTokens && !hasCode) return;
 
-    setProcessedUrl(url);
+    setProcessedUrl(paramsKey);
     (async () => {
       try {
         if (hasCode) {
@@ -114,7 +149,7 @@ export default function AuthCallbackScreen() {
         log(`exception: ${e instanceof Error ? e.message.slice(0, 60) : String(e)}`);
       }
     })();
-  }, [url, processedUrl]);
+  }, [paramsKey, params, processedUrl]);
 
   // ── Effect 2: navigate via AuthContext session ──────────────────────
   useEffect(() => {
