@@ -1,28 +1,19 @@
 /**
- * OAuth callback route.
+ * OAuth callback route — DEBUG BUILD.
  *
- * Receives `rwendo://auth/callback?code=…` (PKCE — Supabase mobile
- * default) or `#access_token=…&refresh_token=…` (implicit — legacy).
- * Processes the URL into a session, then navigates home as soon as
- * AuthContext reports session !== null.
+ * The auth-state listener isn't firing for Bowen and the polling
+ * fallback isn't catching the session either. The session DOES persist
+ * (force-close recovers signed-in state). So the failure is between
+ * "exchange succeeds on the wire" and "session shows up to the
+ * client".
  *
- * Two effects, deliberately independent:
- *   1. Process URL once (exchangeCodeForSession or setSession).
- *   2. Navigate when session becomes set — single source of truth.
- *
- * No coordination via refs between (1) and (2). Whichever path
- * sets the session wins (lib/oauth.ts intercept or our processing
- * here). This avoids the previous race where a useRef flag set
- * after session change couldn't trigger a re-render.
- *
- * NavigationGuard in app/_layout.tsx has an explicit exemption for
- * this route — it must NOT redirect away from /auth/callback while
- * session is null (which it always is when the deep link first
- * arrives). Bowen 2026-05-18.
+ * This build surfaces every internal step on screen so we can SEE
+ * what's going on rather than guess. Strip the debug panel once the
+ * issue is fixed.
  */
 
 import { useEffect, useState } from 'react';
-import { View, Text, ActivityIndicator, StyleSheet, Pressable } from 'react-native';
+import { View, Text, ActivityIndicator, StyleSheet, Pressable, ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Linking from 'expo-linking';
 import { router } from 'expo-router';
@@ -31,29 +22,57 @@ import { useAuth } from '../../lib/AuthContext';
 import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight } from '../../constants/theme';
 
-const TIMEOUT_MS = 10_000;
-
 export default function AuthCallbackScreen() {
   const [error, setError] = useState<string | null>(null);
   const [processedUrl, setProcessedUrl] = useState<string | null>(null);
   const [navigated, setNavigated] = useState(false);
   const { session } = useAuth();
 
-  // Capture URL from BOTH sources — useURL() is React-friendly but
-  // can miss the first runtime event on Android; addEventListener
-  // is the lower-level guarantee. Whichever fires first wins.
+  // ── Visible debug log ───────────────────────────────────────────────
+  const [debug, setDebug] = useState<string[]>([]);
+  const log = (s: string) => {
+    const ts = new Date().toISOString().slice(14, 23);  // mm:ss.SSS
+    setDebug((d) => [...d.slice(-25), `${ts} ${s}`]);
+  };
+
+  useEffect(() => { log(`MOUNT`); }, []);
+
+  // ── URL capture ─────────────────────────────────────────────────────
   const useUrlValue = Linking.useURL();
   const [eventUrl, setEventUrl] = useState<string | null>(null);
   const url = eventUrl ?? useUrlValue;
 
   useEffect(() => {
     const sub = Linking.addEventListener('url', (ev) => {
-      if (ev?.url) setEventUrl(ev.url);
+      if (ev?.url) {
+        log(`event-url: ${shortUrl(ev.url)}`);
+        setEventUrl(ev.url);
+      }
     });
     return () => sub.remove();
   }, []);
 
-  // ── Effect 1: process the URL exactly once. ─────────────────────────
+  useEffect(() => {
+    if (useUrlValue) log(`useURL: ${shortUrl(useUrlValue)}`);
+  }, [useUrlValue]);
+
+  // ── Initial session check on mount ──────────────────────────────────
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const { data } = await supabase.auth.getSession();
+      if (cancelled || navigated) return;
+      log(`mount-getSession: ${data?.session ? 'HAS session' : 'null'}`);
+      if (data?.session) {
+        setNavigated(true);
+        router.replace('/');
+      }
+    })();
+    return () => { cancelled = true; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // ── Effect 1: process URL ───────────────────────────────────────────
   useEffect(() => {
     if (!url) return;
     if (processedUrl === url) return;
@@ -61,13 +80,13 @@ export default function AuthCallbackScreen() {
     const params = parseUrlParams(url);
     const hasTokens = !!(params.access_token && params.refresh_token);
     const hasCode   = !!params.code;
+    log(`parse: code=${hasCode ? 'Y' : 'N'} tokens=${hasTokens ? 'Y' : 'N'}`);
+
+    if (params.error) log(`url-error: ${params.error} ${params.error_description ?? ''}`);
 
     if (!hasTokens && !hasCode) {
-      // Don't error on non-auth URLs (initial-launch URLs that have
-      // nothing to do with auth would otherwise spuriously surface
-      // here).
       if (url.includes('auth/callback')) {
-        setError(`Sign-in completed but no tokens or code in URL.\n\nURL: ${url.substring(0, 200)}`);
+        setError(`No tokens/code in URL.\n\nURL: ${shortUrl(url)}`);
       }
       return;
     }
@@ -76,47 +95,43 @@ export default function AuthCallbackScreen() {
     (async () => {
       try {
         if (hasCode) {
-          const { error: exErr } = await supabase.auth.exchangeCodeForSession(params.code!);
-          // If lib/oauth.ts already consumed the code (Android double-
-          // delivery path) exchange fails. That's fine — session is
-          // already set; effect 2 will navigate. Log only.
-          if (exErr) console.warn('[auth-callback] exchange:', exErr.message);
+          log(`exchange-start: code=${params.code!.slice(0, 6)}…`);
+          const { data, error: exErr } = await supabase.auth.exchangeCodeForSession(params.code!);
+          if (exErr) {
+            log(`exchange-ERR: ${exErr.message.slice(0, 60)}`);
+          } else {
+            log(`exchange-OK: session=${data?.session ? 'YES' : 'NO'}`);
+          }
         } else {
+          log(`setSession-start`);
           const { error: setErr } = await supabase.auth.setSession({
             access_token: params.access_token!,
             refresh_token: params.refresh_token!,
           });
-          if (setErr) console.warn('[auth-callback] setSession:', setErr.message);
+          log(setErr ? `setSession-ERR: ${setErr.message.slice(0, 60)}` : `setSession-OK`);
         }
       } catch (e) {
-        console.warn('[auth-callback] processing threw:', e);
+        log(`exception: ${e instanceof Error ? e.message.slice(0, 60) : String(e)}`);
       }
     })();
   }, [url, processedUrl]);
 
-  // ── Effect 2: navigate when AuthContext session is set. ────────────
-  // Primary path when onAuthStateChange fires properly.
+  // ── Effect 2: navigate via AuthContext session ──────────────────────
   useEffect(() => {
     if (navigated) return;
     if (!session) return;
+    log(`useAuth.session set → navigate`);
     setNavigated(true);
     router.replace('/');
   }, [session, navigated]);
 
-  // ── Effect 3: POLL supabase.auth.getSession() as a backup. ─────────
-  // Bowen 2026-05-18: on Bowen's device the onAuthStateChange listener
-  // doesn't fire after exchangeCodeForSession even though the session
-  // is correctly persisted to AsyncStorage (force-close + reopen lands
-  // him signed in). Polling getSession bypasses the listener entirely.
-  // We start polling after URL processing kicks off, and stop the
-  // moment we find a session OR the user navigates away.
+  // ── Effect 3: poll getSession() ─────────────────────────────────────
   useEffect(() => {
     if (navigated) return;
     if (!processedUrl) return;
     let cancelled = false;
     let pollCount = 0;
-    const POLL_INTERVAL_MS = 300;
-    const MAX_POLLS = 33;  // ~10 seconds total
+    const MAX = 33;
 
     const tick = async () => {
       if (cancelled || navigated) return;
@@ -125,57 +140,78 @@ export default function AuthCallbackScreen() {
         const { data } = await supabase.auth.getSession();
         if (cancelled || navigated) return;
         if (data?.session) {
+          log(`poll #${pollCount}: HAS session → navigate`);
           setNavigated(true);
           router.replace('/');
           return;
         }
-      } catch (e) {
-        console.warn('[auth-callback] getSession poll:', e);
-      }
-      if (pollCount >= MAX_POLLS) {
-        if (!cancelled && !navigated) {
-          setError(`Sign-in didn't complete after ${(MAX_POLLS * POLL_INTERVAL_MS / 1000).toFixed(0)}s. Try again.`);
+        if (pollCount === 1 || pollCount % 5 === 0) {
+          log(`poll #${pollCount}: null`);
         }
+      } catch (e) {
+        log(`poll #${pollCount}: err ${e instanceof Error ? e.message.slice(0, 40) : ''}`);
+      }
+      if (pollCount >= MAX) {
+        log(`poll timeout @ ${pollCount}`);
+        setError(`Session never appeared after ${pollCount} polls.`);
         return;
       }
-      setTimeout(tick, POLL_INTERVAL_MS);
+      setTimeout(tick, 300);
     };
-
-    // Small initial delay so exchangeCodeForSession has a moment to
-    // write the session to storage before the first poll.
-    const initial = setTimeout(tick, 200);
-    return () => {
-      cancelled = true;
-      clearTimeout(initial);
-    };
+    setTimeout(tick, 150);
+    return () => { cancelled = true; };
   }, [processedUrl, navigated]);
+
+  // Manual override — if the session is somehow set but our effects
+  // didn't catch it, the user can tap "Continue" to force the redirect.
+  const handleContinue = async () => {
+    const { data } = await supabase.auth.getSession();
+    if (data?.session) {
+      router.replace('/');
+    } else {
+      log('manual-continue: still no session');
+    }
+  };
 
   return (
     <LinearGradient colors={[Colors.primary, '#0D2140']} style={styles.container}>
-      {error ? (
-        <View style={styles.center}>
-          <Text style={styles.title}>Sign-in didn't complete</Text>
-          <Text style={styles.body}>{error}</Text>
-          <Pressable style={styles.btn} onPress={() => router.replace('/sign-in')}>
-            <Text style={styles.btnText}>Back to sign-in</Text>
-          </Pressable>
-        </View>
-      ) : (
-        <View style={styles.center}>
-          <ActivityIndicator color={Colors.white} size="large" />
-          <Text style={styles.body}>Finishing sign-in…</Text>
-        </View>
-      )}
+      <View style={styles.center}>
+        {error ? (
+          <>
+            <Text style={styles.title}>Sign-in didn't complete</Text>
+            <Text style={styles.body}>{error}</Text>
+            <Pressable style={styles.btn} onPress={handleContinue}>
+              <Text style={styles.btnText}>Continue anyway</Text>
+            </Pressable>
+            <Pressable style={[styles.btn, styles.btnSecondary]} onPress={() => router.replace('/sign-in')}>
+              <Text style={styles.btnText}>Back to sign-in</Text>
+            </Pressable>
+          </>
+        ) : (
+          <>
+            <ActivityIndicator color={Colors.white} size="large" />
+            <Text style={styles.body}>Finishing sign-in…</Text>
+            <Pressable style={[styles.btn, styles.btnSecondary]} onPress={handleContinue}>
+              <Text style={styles.btnText}>Continue anyway</Text>
+            </Pressable>
+          </>
+        )}
+      </View>
+
+      {/* DEBUG PANEL — strip after the bug is fixed. */}
+      <ScrollView style={styles.debugWrap} contentContainerStyle={styles.debugInner}>
+        <Text style={styles.debugHeader}>auth-callback debug log:</Text>
+        {debug.length === 0 ? (
+          <Text style={styles.debugLine}>(no events yet)</Text>
+        ) : debug.map((d, i) => (
+          <Text key={i} style={styles.debugLine}>{d}</Text>
+        ))}
+      </ScrollView>
     </LinearGradient>
   );
 }
 
-function parseUrlParams(url: string): {
-  access_token?: string;
-  refresh_token?: string;
-  code?: string;
-  state?: string;
-} {
+function parseUrlParams(url: string): Record<string, string> {
   const out: Record<string, string> = {};
   const grab = (segment: string) => {
     for (const p of segment.split('&')) {
@@ -192,9 +228,14 @@ function parseUrlParams(url: string): {
   return out;
 }
 
+function shortUrl(u: string): string {
+  if (u.length <= 70) return u;
+  return `${u.slice(0, 50)}…${u.slice(-15)}`;
+}
+
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  center: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: Spacing.lg, gap: Spacing.lg },
+  center: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: Spacing.lg, gap: Spacing.md },
   title: { fontSize: FontSize.xl, fontWeight: FontWeight.bold, color: Colors.white },
   body: { fontSize: FontSize.md, color: 'rgba(255,255,255,0.8)', textAlign: 'center' },
   btn: {
@@ -204,5 +245,16 @@ const styles = StyleSheet.create({
     borderRadius: 999,
     marginTop: Spacing.md,
   },
+  btnSecondary: { backgroundColor: 'rgba(255,255,255,0.15)' },
   btnText: { color: Colors.white, fontSize: FontSize.md, fontWeight: FontWeight.bold },
+
+  debugWrap: {
+    maxHeight: 260,
+    backgroundColor: 'rgba(0,0,0,0.55)',
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(255,255,255,0.2)',
+  },
+  debugInner: { padding: Spacing.md, paddingBottom: Spacing.lg },
+  debugHeader: { color: '#aaa', fontSize: 10, fontWeight: '700', marginBottom: 6, letterSpacing: 1 },
+  debugLine: { color: '#7fdf95', fontSize: 11, fontFamily: 'monospace', lineHeight: 16 },
 });
