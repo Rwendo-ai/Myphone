@@ -1,19 +1,18 @@
 /**
- * OAuth callback route — DEBUG BUILD.
+ * OAuth callback route — backstop only.
  *
- * The auth-state listener isn't firing for Bowen and the polling
- * fallback isn't catching the session either. The session DOES persist
- * (force-close recovers signed-in state). So the failure is between
- * "exchange succeeds on the wire" and "session shows up to the
- * client".
+ * Native Google sign-in (see lib/oauth.ts) is now the primary path
+ * and doesn't go through deep links at all. This route stays as a
+ * legacy / future-provider backstop: if any flow ever redirects to
+ * `rwendo://auth/callback?code=…`, we still handle it.
  *
- * This build surfaces every internal step on screen so we can SEE
- * what's going on rather than guess. Strip the debug panel once the
- * issue is fixed.
+ * NavigationGuard in app/_layout.tsx exempts this route from the
+ * no-session redirect (it'd otherwise bounce us to /welcome before
+ * we can process the URL).
  */
 
 import { useEffect, useMemo, useState } from 'react';
-import { View, Text, ActivityIndicator, StyleSheet, Pressable, ScrollView } from 'react-native';
+import { View, Text, ActivityIndicator, StyleSheet, Pressable } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Linking from 'expo-linking';
 import { router, useLocalSearchParams } from 'expo-router';
@@ -24,25 +23,10 @@ import { Spacing, FontSize, FontWeight } from '../../constants/theme';
 
 export default function AuthCallbackScreen() {
   const [error, setError] = useState<string | null>(null);
-  const [processedUrl, setProcessedUrl] = useState<string | null>(null);
+  const [processedKey, setProcessedKey] = useState<string | null>(null);
   const [navigated, setNavigated] = useState(false);
   const { session } = useAuth();
 
-  // ── Visible debug log ───────────────────────────────────────────────
-  const [debug, setDebug] = useState<string[]>([]);
-  const log = (s: string) => {
-    const ts = new Date().toISOString().slice(14, 23);  // mm:ss.SSS
-    setDebug((d) => [...d.slice(-25), `${ts} ${s}`]);
-  };
-
-  useEffect(() => { log(`MOUNT`); }, []);
-
-  // ── PRIMARY: route params from expo-router ──────────────────────────
-  // expo-router consumes the deep-link URL and parses `?code=…&state=…`
-  // into route params BEFORE Linking ever sees them. Bowen's 2026-05-18
-  // debug log proved this: MOUNT fired but no Linking events ever
-  // arrived, yet the route was still hit. So the query params live in
-  // useLocalSearchParams, not in Linking.useURL.
   const routeParams = useLocalSearchParams<{
     code?: string;
     access_token?: string;
@@ -52,58 +36,33 @@ export default function AuthCallbackScreen() {
     error_description?: string;
   }>();
 
-  useEffect(() => {
-    const keys = Object.keys(routeParams).filter((k) => routeParams[k as keyof typeof routeParams]);
-    if (keys.length > 0) log(`routeParams: ${keys.join(',')}`);
-  }, [routeParams]);
-
-  // ── BACKUP: Linking URL (hash-fragment fallback) ───────────────────
-  // PKCE puts the code in the query (consumed by router). Implicit
-  // flow puts tokens in the hash (#), which router doesn't consume.
-  // Keep the Linking subscription as a backstop for that case.
   const useUrlValue = Linking.useURL();
   const [eventUrl, setEventUrl] = useState<string | null>(null);
   const linkingUrl = eventUrl ?? useUrlValue;
 
   useEffect(() => {
     const sub = Linking.addEventListener('url', (ev) => {
-      if (ev?.url) {
-        log(`event-url: ${shortUrl(ev.url)}`);
-        setEventUrl(ev.url);
-      }
+      if (ev?.url) setEventUrl(ev.url);
     });
     return () => sub.remove();
   }, []);
 
-  useEffect(() => {
-    if (useUrlValue) log(`useURL: ${shortUrl(useUrlValue)}`);
-  }, [useUrlValue]);
-
-  // Coalesce: prefer route-param code, fall back to URL-derived params.
   const params = useMemo(() => {
     if (routeParams.code || routeParams.access_token) {
-      return {
-        code:          routeParams.code,
-        access_token:  routeParams.access_token,
-        refresh_token: routeParams.refresh_token,
-        state:         routeParams.state,
-        error:         routeParams.error,
-        error_description: routeParams.error_description,
-      };
+      return routeParams;
     }
     return linkingUrl ? parseUrlParams(linkingUrl) : {};
   }, [routeParams, linkingUrl]);
+  const paramsKey = (params as Record<string, string | undefined>).code
+    ?? (params as Record<string, string | undefined>).access_token
+    ?? null;
 
-  // Identifier for "have we processed this set of params yet?".
-  const paramsKey = params.code ?? params.access_token ?? null;
-
-  // ── Initial session check on mount ──────────────────────────────────
+  // Immediate session check on mount — if a session exists, navigate.
   useEffect(() => {
     let cancelled = false;
     (async () => {
       const { data } = await supabase.auth.getSession();
       if (cancelled || navigated) return;
-      log(`mount-getSession: ${data?.session ? 'HAS session' : 'null'}`);
       if (data?.session) {
         setNavigated(true);
         router.replace('/');
@@ -113,100 +72,66 @@ export default function AuthCallbackScreen() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // ── Effect 1: process params once ───────────────────────────────────
+  // Process params once.
   useEffect(() => {
-    if (!paramsKey) return;
-    if (processedUrl === paramsKey) return;
-
-    const hasTokens = !!(params.access_token && params.refresh_token);
-    const hasCode   = !!params.code;
-    log(`parse: code=${hasCode ? 'Y' : 'N'} tokens=${hasTokens ? 'Y' : 'N'}`);
-
-    if (params.error) log(`url-error: ${params.error} ${(params.error_description ?? '').slice(0, 40)}`);
-
+    if (!paramsKey || processedKey === paramsKey) return;
+    const p = params as Record<string, string | undefined>;
+    const hasTokens = !!(p.access_token && p.refresh_token);
+    const hasCode   = !!p.code;
     if (!hasTokens && !hasCode) return;
 
-    setProcessedUrl(paramsKey);
+    setProcessedKey(paramsKey);
     (async () => {
       try {
         if (hasCode) {
-          log(`exchange-start: code=${params.code!.slice(0, 6)}…`);
-          const { data, error: exErr } = await supabase.auth.exchangeCodeForSession(params.code!);
-          if (exErr) {
-            log(`exchange-ERR: ${exErr.message.slice(0, 60)}`);
-          } else {
-            log(`exchange-OK: session=${data?.session ? 'YES' : 'NO'}`);
-          }
+          const { error: exErr } = await supabase.auth.exchangeCodeForSession(p.code!);
+          if (exErr) console.warn('[auth-callback] exchange:', exErr.message);
         } else {
-          log(`setSession-start`);
           const { error: setErr } = await supabase.auth.setSession({
-            access_token: params.access_token!,
-            refresh_token: params.refresh_token!,
+            access_token: p.access_token!,
+            refresh_token: p.refresh_token!,
           });
-          log(setErr ? `setSession-ERR: ${setErr.message.slice(0, 60)}` : `setSession-OK`);
+          if (setErr) console.warn('[auth-callback] setSession:', setErr.message);
         }
       } catch (e) {
-        log(`exception: ${e instanceof Error ? e.message.slice(0, 60) : String(e)}`);
+        console.warn('[auth-callback] processing threw:', e);
       }
     })();
-  }, [paramsKey, params, processedUrl]);
+  }, [paramsKey, params, processedKey]);
 
-  // ── Effect 2: navigate via AuthContext session ──────────────────────
+  // Navigate when session is set (via either AuthContext or our processing).
   useEffect(() => {
     if (navigated) return;
     if (!session) return;
-    log(`useAuth.session set → navigate`);
     setNavigated(true);
     router.replace('/');
   }, [session, navigated]);
 
-  // ── Effect 3: poll getSession() ─────────────────────────────────────
+  // Poll getSession as a backup — the auth state listener is unreliable.
   useEffect(() => {
     if (navigated) return;
-    if (!processedUrl) return;
+    if (!processedKey) return;
     let cancelled = false;
-    let pollCount = 0;
-    const MAX = 33;
-
+    let polls = 0;
     const tick = async () => {
       if (cancelled || navigated) return;
-      pollCount++;
-      try {
-        const { data } = await supabase.auth.getSession();
-        if (cancelled || navigated) return;
-        if (data?.session) {
-          log(`poll #${pollCount}: HAS session → navigate`);
-          setNavigated(true);
-          router.replace('/');
-          return;
-        }
-        if (pollCount === 1 || pollCount % 5 === 0) {
-          log(`poll #${pollCount}: null`);
-        }
-      } catch (e) {
-        log(`poll #${pollCount}: err ${e instanceof Error ? e.message.slice(0, 40) : ''}`);
+      polls++;
+      const { data } = await supabase.auth.getSession();
+      if (cancelled || navigated) return;
+      if (data?.session) {
+        setNavigated(true);
+        router.replace('/');
+        return;
       }
-      if (pollCount >= MAX) {
-        log(`poll timeout @ ${pollCount}`);
-        setError(`Session never appeared after ${pollCount} polls.`);
+      if (polls >= 33) {
+        setError("Sign-in didn't complete. Tap below to retry.");
         return;
       }
       setTimeout(tick, 300);
     };
-    setTimeout(tick, 150);
+    setTimeout(tick, 200);
     return () => { cancelled = true; };
-  }, [processedUrl, navigated]);
-
-  // Manual override — if the session is somehow set but our effects
-  // didn't catch it, the user can tap "Continue" to force the redirect.
-  const handleContinue = async () => {
-    const { data } = await supabase.auth.getSession();
-    if (data?.session) {
-      router.replace('/');
-    } else {
-      log('manual-continue: still no session');
-    }
-  };
+  }, [processedKey, navigated]);
 
   return (
     <LinearGradient colors={[Colors.primary, '#0D2140']} style={styles.container}>
@@ -215,10 +140,7 @@ export default function AuthCallbackScreen() {
           <>
             <Text style={styles.title}>Sign-in didn't complete</Text>
             <Text style={styles.body}>{error}</Text>
-            <Pressable style={styles.btn} onPress={handleContinue}>
-              <Text style={styles.btnText}>Continue anyway</Text>
-            </Pressable>
-            <Pressable style={[styles.btn, styles.btnSecondary]} onPress={() => router.replace('/sign-in')}>
+            <Pressable style={styles.btn} onPress={() => router.replace('/sign-in')}>
               <Text style={styles.btnText}>Back to sign-in</Text>
             </Pressable>
           </>
@@ -226,22 +148,9 @@ export default function AuthCallbackScreen() {
           <>
             <ActivityIndicator color={Colors.white} size="large" />
             <Text style={styles.body}>Finishing sign-in…</Text>
-            <Pressable style={[styles.btn, styles.btnSecondary]} onPress={handleContinue}>
-              <Text style={styles.btnText}>Continue anyway</Text>
-            </Pressable>
           </>
         )}
       </View>
-
-      {/* DEBUG PANEL — strip after the bug is fixed. */}
-      <ScrollView style={styles.debugWrap} contentContainerStyle={styles.debugInner}>
-        <Text style={styles.debugHeader}>auth-callback debug log:</Text>
-        {debug.length === 0 ? (
-          <Text style={styles.debugLine}>(no events yet)</Text>
-        ) : debug.map((d, i) => (
-          <Text key={i} style={styles.debugLine}>{d}</Text>
-        ))}
-      </ScrollView>
     </LinearGradient>
   );
 }
@@ -263,14 +172,9 @@ function parseUrlParams(url: string): Record<string, string> {
   return out;
 }
 
-function shortUrl(u: string): string {
-  if (u.length <= 70) return u;
-  return `${u.slice(0, 50)}…${u.slice(-15)}`;
-}
-
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  center: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: Spacing.lg, gap: Spacing.md },
+  center: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: Spacing.lg, gap: Spacing.lg },
   title: { fontSize: FontSize.xl, fontWeight: FontWeight.bold, color: Colors.white },
   body: { fontSize: FontSize.md, color: 'rgba(255,255,255,0.8)', textAlign: 'center' },
   btn: {
@@ -280,16 +184,5 @@ const styles = StyleSheet.create({
     borderRadius: 999,
     marginTop: Spacing.md,
   },
-  btnSecondary: { backgroundColor: 'rgba(255,255,255,0.15)' },
   btnText: { color: Colors.white, fontSize: FontSize.md, fontWeight: FontWeight.bold },
-
-  debugWrap: {
-    maxHeight: 260,
-    backgroundColor: 'rgba(0,0,0,0.55)',
-    borderTopWidth: 1,
-    borderTopColor: 'rgba(255,255,255,0.2)',
-  },
-  debugInner: { padding: Spacing.md, paddingBottom: Spacing.lg },
-  debugHeader: { color: '#aaa', fontSize: 10, fontWeight: '700', marginBottom: 6, letterSpacing: 1 },
-  debugLine: { color: '#7fdf95', fontSize: 11, fontFamily: 'monospace', lineHeight: 16 },
 });

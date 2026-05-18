@@ -130,6 +130,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // Reset RevenueCat to anonymous so the next sign-in starts clean.
     // Imported lazily to avoid a require cycle through purchases.ts.
     import('./purchases').then(({ logoutPurchases }) => logoutPurchases().catch(() => {}));
+    // Sign out from Google's native SDK too so the account picker
+    // shows up again on the next sign-in. Best-effort; missing module
+    // (older APK) silently ignored.
+    import('./oauth').then(({ signOutGoogle }) => signOutGoogle().catch(() => {}));
     await supabase.auth.signOut();
     setOnboardingComplete(false);
   };

@@ -1,18 +1,32 @@
 /**
- * OAuth sign-in helpers — Google now, Apple + Crypto stubs for later.
+ * OAuth sign-in helpers — native Google now, Apple + Crypto stubs for later.
  *
- * Google uses Supabase's hosted OAuth flow opened in `expo-web-browser`.
- * The redirect lands at a `rwendo://auth/callback` deep link that triggers
- * the auth state listener.
+ * Google uses Google's NATIVE sign-in SDK
+ * (@react-native-google-signin/google-signin), not a browser-based OAuth
+ * flow. This sidesteps the entire Android Chrome-Custom-Tabs + deep-link
+ * mess we spent 2026-05-18 chasing: WebBrowser was returning type='dismiss'
+ * with no URL on Bowen's Android, and the redirect URL with the auth
+ * code was never reaching the app via either WebBrowser intercept or
+ * the OS deep-link path.
  *
- * Native-module guarding: `expo-web-browser` and `expo-auth-session` both
- * require native code linked into the APK at EAS build time. If the user is
- * running an older dev APK that pre-dates the install, importing these
- * modules at top level crashes the entire auth screen with "Cannot find
- * native module 'ExpoWebBrowser'". To prevent that, we require the deps
- * lazily inside the sign-in handler — auth screens render cleanly, and
- * tapping Google in an older APK surfaces a clear actionable error rather
- * than a crash.
+ * The native flow:
+ *   1. GoogleSignin.signIn() opens Google's own SDK dialog (no browser)
+ *   2. User picks account, returns an `idToken`
+ *   3. We hand the idToken to Supabase via signInWithIdToken
+ *   4. Supabase verifies the token and creates the session
+ *
+ * No redirects, no deep links, no WebBrowser. Works reliably.
+ *
+ * SETUP REQUIRED (see docs/GOOGLE-SIGN-IN-SETUP.md):
+ *   - Android OAuth client in Google Cloud Console with the app's
+ *     package name + SHA-1 from EAS Build
+ *   - npm install (picks up @react-native-google-signin/google-signin)
+ *   - eas build --profile preview --platform android (native module)
+ *   - Install the new APK
+ *
+ * Native-module guarding: lazy-require so an older APK that pre-dates
+ * the install doesn't crash the auth screen — instead Google sign-in
+ * surfaces a "rebuild required" error.
  */
 
 import { Platform } from 'react-native';
@@ -22,165 +36,98 @@ interface OAuthResult {
   error: string | null;
 }
 
-/**
- * Whether each provider is wired and ready to surface in the UI. Apple +
- * Crypto stay false until the dashboard work is done; flipping these to
- * true is the only code change needed once setup is complete.
- */
 export const OAUTH_READY = {
   google: true,
   apple: false,
   crypto: false,
 };
 
-/**
- * Begin Google sign-in. Lazy-imports the native modules so that an older
- * dev APK without them surfaces a friendly error rather than crashing on
- * screen mount.
- */
+// Web Client ID from Supabase Authentication → Providers → Google.
+// This is the SAME Client ID Supabase uses to verify the Google ID
+// token on the server side. It's safe to commit (it's a public ID;
+// the secret stays in Supabase).
+const WEB_CLIENT_ID = '415469918574-lsbjav66pt8k6lmjhbvrektpbjkogphl.apps.googleusercontent.com';
+
+let configured = false;
+
+function ensureConfigured(GoogleSignin: typeof import('@react-native-google-signin/google-signin').GoogleSignin) {
+  if (configured) return;
+  GoogleSignin.configure({
+    webClientId: WEB_CLIENT_ID,
+    scopes: ['profile', 'email'],
+    offlineAccess: false,  // we only need the id_token; refresh handled by Supabase
+  });
+  configured = true;
+}
+
 export async function signInWithGoogle(): Promise<OAuthResult> {
-  // Lazy-load native deps. Wrapped in a try so a missing module surfaces a
-  // human message, not a JS crash.
-  let WebBrowser: typeof import('expo-web-browser');
-  let AuthSession: typeof import('expo-auth-session');
+  // Lazy-require so an older APK without the native module doesn't crash.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let mod: any;
   try {
-    WebBrowser = require('expo-web-browser');
-    AuthSession = require('expo-auth-session');
+    mod = require('@react-native-google-signin/google-signin');
   } catch {
     return {
       error:
-        'Google sign-in needs the latest dev build. Reinstall the APK from EAS, then try again.',
+        'Google sign-in needs the latest dev build. Rebuild and reinstall the APK from EAS, then try again.',
     };
   }
-
-  // Cleans up the auth tab on web and is a no-op on native — safe to call
-  // every time signInWithGoogle is invoked.
-  WebBrowser.maybeCompleteAuthSession();
+  const GoogleSignin = mod.GoogleSignin as typeof import('@react-native-google-signin/google-signin').GoogleSignin;
+  const statusCodes = mod.statusCodes as typeof import('@react-native-google-signin/google-signin').statusCodes;
 
   try {
-    // In dev this is `exp://...`, in a built APK it's `rwendo://auth/callback`.
-    const redirectTo = AuthSession.makeRedirectUri({
-      scheme: 'rwendo',
-      path: 'auth/callback',
-    });
+    ensureConfigured(GoogleSignin);
+    await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
 
-    const { data, error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        redirectTo,
-        skipBrowserRedirect: true, // we open the browser ourselves
-      },
-    });
-
-    if (error || !data?.url) {
-      return { error: error?.message ?? 'No OAuth URL returned' };
-    }
-
-    const result = await WebBrowser.openAuthSessionAsync(data.url, redirectTo);
-
-    // The actual fix Bowen's debug trace surfaced (2026-05-18): on Android
-    // Chrome Custom Tabs, WebBrowser.openAuthSessionAsync returns
-    // type='dismiss' even when the redirect URL was successfully captured.
-    // The previous code only processed result.url when type==='success',
-    // so the code was discarded every time and the session never set.
-    //
-    // Fix: parse result.url regardless of type. If it carries a code or
-    // tokens, exchange them. type==='dismiss' from a successful redirect
-    // and type==='cancel' from a user back-press look the same to us
-    // until we look at the URL.
-    const trace: string[] = [];
-    trace.push(`type=${result.type}`);
-
+    // signIn returns { type, data: { idToken, user } } in v16+.
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const resultUrl = (result as any).url as string | undefined;
-    if (resultUrl) {
-      const truncated = resultUrl.length > 80 ? `${resultUrl.slice(0, 60)}…${resultUrl.slice(-15)}` : resultUrl;
-      trace.push(`url=${truncated}`);
-      const params = parseHashOrQuery(resultUrl);
-      trace.push(`p: code=${params.code ? 'Y' : 'N'} tok=${params.access_token ? 'Y' : 'N'} err=${params.error ?? '-'}`);
-
-      try {
-        if (params.code) {
-          const { data: exData, error: exErr } = await supabase.auth.exchangeCodeForSession(params.code);
-          if (exErr) trace.push(`ex-ERR: ${exErr.message.slice(0, 50)}`);
-          else       trace.push(`ex-OK sess=${exData?.session ? 'Y' : 'N'}`);
-        } else if (params.access_token && params.refresh_token) {
-          const { error: setErr } = await supabase.auth.setSession({
-            access_token: params.access_token,
-            refresh_token: params.refresh_token,
-          });
-          trace.push(setErr ? `set-ERR: ${setErr.message.slice(0, 50)}` : 'set-OK');
-        }
-      } catch (e) {
-        trace.push(`exc: ${e instanceof Error ? e.message.slice(0, 50) : String(e)}`);
-      }
-    } else {
-      trace.push('NO_URL');
+    const result: any = await GoogleSignin.signIn();
+    if (result.type === 'cancelled') {
+      return { error: 'Sign-in cancelled' };
+    }
+    const idToken: string | undefined = result?.data?.idToken ?? result?.idToken;
+    if (!idToken) {
+      return { error: 'Google returned no id_token. Make sure the Web Client ID is configured and an Android OAuth client exists in Google Cloud.' };
     }
 
-    const { data: postExchange } = await supabase.auth.getSession();
-    trace.push(`post-gs=${postExchange?.session ? 'Y' : 'N'}`);
+    const { error: signInErr } = await supabase.auth.signInWithIdToken({
+      provider: 'google',
+      token: idToken,
+    });
+    if (signInErr) return { error: `Supabase rejected the Google token: ${signInErr.message}` };
 
-    const ok = await waitForSession(5000);
-    trace.push(`wait=${ok ? 'Y' : 'N'}`);
-
-    if (ok) return { error: null };
-    return { error: trace.join(' | ') };
-  } catch (e) {
-    return { error: e instanceof Error ? e.message : 'Google sign-in failed' };
+    return { error: null };
+  } catch (e: unknown) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const err = e as any;
+    if (err?.code === statusCodes?.SIGN_IN_CANCELLED) return { error: 'Sign-in cancelled' };
+    if (err?.code === statusCodes?.IN_PROGRESS)        return { error: 'Sign-in already in progress' };
+    if (err?.code === statusCodes?.PLAY_SERVICES_NOT_AVAILABLE) {
+      return { error: 'Google Play Services not available on this device' };
+    }
+    return { error: err instanceof Error ? err.message : 'Google sign-in failed' };
   }
 }
 
-async function waitForSession(timeoutMs: number): Promise<boolean> {
-  const deadline = Date.now() + timeoutMs;
-  while (Date.now() < deadline) {
-    const { data } = await supabase.auth.getSession();
-    if (data?.session) return true;
-    await new Promise((r) => setTimeout(r, 200));
+export async function signOutGoogle(): Promise<void> {
+  // Sign out from Google too so the next sign-in shows the account
+  // picker again. Best-effort; failures don't block the Supabase signOut.
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const mod: any = require('@react-native-google-signin/google-signin');
+    await mod.GoogleSignin.signOut().catch(() => {});
+  } catch {
+    // Module not installed — fine.
   }
-  return false;
 }
 
-/**
- * Stub for Apple sign-in. Once the Services ID is configured and
- * `expo-apple-authentication` is installed, this becomes a real call.
- */
 export async function signInWithApple(): Promise<OAuthResult> {
   if (Platform.OS !== 'ios') {
     return { error: 'Apple sign-in is iOS-only' };
   }
-  return {
-    error: 'Apple sign-in is being set up — try email or Google for now.',
-  };
+  return { error: 'Apple sign-in is being set up — try email or Google for now.' };
 }
 
-/**
- * Stub for crypto wallet sign-in via WalletConnect.
- */
 export async function signInWithCryptoWallet(): Promise<OAuthResult> {
-  return {
-    error: 'Wallet sign-in is being set up — try email or Google for now.',
-  };
-}
-
-// ─── Helpers ────────────────────────────────────────────────────────────────
-
-function parseHashOrQuery(url: string): Record<string, string> {
-  // Supabase implicit-flow puts tokens in the hash (#access_token=…),
-  // PKCE puts the code in the query (?code=…). Parse BOTH so we can
-  // detect either shape from a single helper.
-  const out: Record<string, string> = {};
-  const grab = (segment: string) => {
-    for (const p of segment.split('&')) {
-      const [k, v] = p.split('=');
-      if (k) out[decodeURIComponent(k)] = decodeURIComponent(v ?? '');
-    }
-  };
-  const hashIdx  = url.indexOf('#');
-  const queryIdx = url.indexOf('?');
-  if (hashIdx  >= 0) grab(url.slice(hashIdx  + 1));
-  if (queryIdx >= 0 && (hashIdx < 0 || queryIdx < hashIdx)) {
-    grab(url.slice(queryIdx + 1, hashIdx >= 0 ? hashIdx : url.length));
-  }
-  return out;
+  return { error: 'Wallet sign-in is being set up — try email or Google for now.' };
 }

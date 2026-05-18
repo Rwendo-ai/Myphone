@@ -53,7 +53,13 @@
       "expo-secure-store",
       "expo-asset",
       "expo-dev-client",
-      "@config-plugins/react-native-webrtc"
+      "@config-plugins/react-native-webrtc",
+      [
+        "@react-native-google-signin/google-signin",
+        {
+          "iosUrlScheme": "com.googleusercontent.apps.415469918574-lsbjav66pt8k6lmjhbvrektpbjkogphl"
+        }
+      ]
     ],
     "assetBundlePatterns": [
       "assets/**"
