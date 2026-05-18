@@ -1,20 +1,18 @@
 /**
  * OAuth callback route — backstop only.
  *
- * Native Google sign-in (see lib/oauth.ts) is now the primary path
- * and doesn't go through deep links at all. This route stays as a
- * legacy / future-provider backstop: if any flow ever redirects to
- * `rwendo://auth/callback?code=…`, we still handle it.
+ * Native Google sign-in (see lib/oauth.ts) is the primary path and does
+ * NOT route through here. This screen exists for any future provider
+ * that uses a redirect flow (`rwendo://auth/callback?code=…`). expo-router
+ * surfaces those query params via useLocalSearchParams; we exchange them
+ * for a session and navigate home.
  *
- * NavigationGuard in app/_layout.tsx exempts this route from the
- * no-session redirect (it'd otherwise bounce us to /welcome before
- * we can process the URL).
+ * NavigationGuard exempts this route so it can run before a session exists.
  */
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { View, Text, ActivityIndicator, StyleSheet, Pressable } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import * as Linking from 'expo-linking';
 import { router, useLocalSearchParams } from 'expo-router';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../lib/AuthContext';
@@ -23,115 +21,45 @@ import { Spacing, FontSize, FontWeight } from '../../constants/theme';
 
 export default function AuthCallbackScreen() {
   const [error, setError] = useState<string | null>(null);
-  const [processedKey, setProcessedKey] = useState<string | null>(null);
-  const [navigated, setNavigated] = useState(false);
   const { session } = useAuth();
 
-  const routeParams = useLocalSearchParams<{
+  const { code, access_token, refresh_token } = useLocalSearchParams<{
     code?: string;
     access_token?: string;
     refresh_token?: string;
-    state?: string;
-    error?: string;
-    error_description?: string;
   }>();
 
-  const useUrlValue = Linking.useURL();
-  const [eventUrl, setEventUrl] = useState<string | null>(null);
-  const linkingUrl = eventUrl ?? useUrlValue;
-
-  useEffect(() => {
-    const sub = Linking.addEventListener('url', (ev) => {
-      if (ev?.url) setEventUrl(ev.url);
-    });
-    return () => sub.remove();
-  }, []);
-
-  const params = useMemo(() => {
-    if (routeParams.code || routeParams.access_token) {
-      return routeParams;
-    }
-    return linkingUrl ? parseUrlParams(linkingUrl) : {};
-  }, [routeParams, linkingUrl]);
-  const paramsKey = (params as Record<string, string | undefined>).code
-    ?? (params as Record<string, string | undefined>).access_token
-    ?? null;
-
-  // Immediate session check on mount — if a session exists, navigate.
+  // Exchange the URL params for a session. Runs once.
   useEffect(() => {
     let cancelled = false;
     (async () => {
-      const { data } = await supabase.auth.getSession();
-      if (cancelled || navigated) return;
-      if (data?.session) {
-        setNavigated(true);
-        router.replace('/');
-      }
-    })();
-    return () => { cancelled = true; };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  // Process params once.
-  useEffect(() => {
-    if (!paramsKey || processedKey === paramsKey) return;
-    const p = params as Record<string, string | undefined>;
-    const hasTokens = !!(p.access_token && p.refresh_token);
-    const hasCode   = !!p.code;
-    if (!hasTokens && !hasCode) return;
-
-    setProcessedKey(paramsKey);
-    (async () => {
       try {
-        if (hasCode) {
-          const { error: exErr } = await supabase.auth.exchangeCodeForSession(p.code!);
+        if (code) {
+          const { error: exErr } = await supabase.auth.exchangeCodeForSession(code);
           if (exErr) console.warn('[auth-callback] exchange:', exErr.message);
-        } else {
+        } else if (access_token && refresh_token) {
           const { error: setErr } = await supabase.auth.setSession({
-            access_token: p.access_token!,
-            refresh_token: p.refresh_token!,
+            access_token, refresh_token,
           });
           if (setErr) console.warn('[auth-callback] setSession:', setErr.message);
         }
       } catch (e) {
         console.warn('[auth-callback] processing threw:', e);
       }
+      // Safety timeout: if nothing has navigated us out within 10s, show
+      // a recovery button. The auth listener in AuthContext normally
+      // fires SIGNED_IN well before this.
+      setTimeout(() => {
+        if (!cancelled) setError("Sign-in didn't complete. Tap below to retry.");
+      }, 10000);
     })();
-  }, [paramsKey, params, processedKey]);
-
-  // Navigate when session is set (via either AuthContext or our processing).
-  useEffect(() => {
-    if (navigated) return;
-    if (!session) return;
-    setNavigated(true);
-    router.replace('/');
-  }, [session, navigated]);
-
-  // Poll getSession as a backup — the auth state listener is unreliable.
-  useEffect(() => {
-    if (navigated) return;
-    if (!processedKey) return;
-    let cancelled = false;
-    let polls = 0;
-    const tick = async () => {
-      if (cancelled || navigated) return;
-      polls++;
-      const { data } = await supabase.auth.getSession();
-      if (cancelled || navigated) return;
-      if (data?.session) {
-        setNavigated(true);
-        router.replace('/');
-        return;
-      }
-      if (polls >= 33) {
-        setError("Sign-in didn't complete. Tap below to retry.");
-        return;
-      }
-      setTimeout(tick, 300);
-    };
-    setTimeout(tick, 200);
     return () => { cancelled = true; };
-  }, [processedKey, navigated]);
+  }, [code, access_token, refresh_token]);
+
+  // Navigate as soon as the session shows up.
+  useEffect(() => {
+    if (session) router.replace('/');
+  }, [session]);
 
   return (
     <LinearGradient colors={[Colors.primary, '#0D2140']} style={styles.container}>
@@ -153,23 +81,6 @@ export default function AuthCallbackScreen() {
       </View>
     </LinearGradient>
   );
-}
-
-function parseUrlParams(url: string): Record<string, string> {
-  const out: Record<string, string> = {};
-  const grab = (segment: string) => {
-    for (const p of segment.split('&')) {
-      const [k, v] = p.split('=');
-      if (k) out[decodeURIComponent(k)] = decodeURIComponent(v ?? '');
-    }
-  };
-  const hashIdx  = url.indexOf('#');
-  const queryIdx = url.indexOf('?');
-  if (hashIdx  >= 0) grab(url.slice(hashIdx  + 1));
-  if (queryIdx >= 0 && (hashIdx < 0 || queryIdx < hashIdx)) {
-    grab(url.slice(queryIdx + 1, hashIdx >= 0 ? hashIdx : url.length));
-  }
-  return out;
 }
 
 const styles = StyleSheet.create({

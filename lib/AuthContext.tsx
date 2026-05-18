@@ -28,71 +28,46 @@ const AuthContext = createContext<AuthState>({
   resendSignupOtp: async () => ({ error: null }),
 });
 
+// .maybeSingle() not .single() — .single() throws on zero rows. A brand-new
+// user can briefly have no profiles row before the on-auth trigger inserts
+// one; throwing here would leave setLoading(false) unreachable and freeze
+// the app on the splash. RLS/network failures degrade to "not onboarded".
+async function fetchOnboardingFlag(userId: string): Promise<boolean> {
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('onboarding_complete')
+    .eq('id', userId)
+    .maybeSingle();
+  if (error) {
+    console.warn('[auth] fetchOnboardingFlag error:', error.message);
+    return false;
+  }
+  return data?.onboarding_complete ?? false;
+}
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [onboardingComplete, setOnboardingComplete] = useState(false);
 
-  const checkOnboarding = async (userId: string) => {
-    // .maybeSingle() not .single() — .single() throws on zero rows. A new
-    // user can briefly have no profiles row before the on-auth trigger
-    // inserts one; using single() would propagate the throw all the way
-    // up through the awaited chain in the useEffect below and leave
-    // setLoading(false) unreachable, freezing the app on the splash.
-    // Also wrap in try/catch as belt-and-suspenders so RLS/network/etc.
-    // errors degrade to "treat as not-onboarded" instead of blocking auth.
-    try {
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('onboarding_complete')
-        .eq('id', userId)
-        .maybeSingle();
-      if (error) {
-        console.warn('[auth] checkOnboarding error:', error.message);
-        setOnboardingComplete(false);
-        return;
-      }
-      setOnboardingComplete(data?.onboarding_complete ?? false);
-    } catch (e) {
-      console.warn('[auth] checkOnboarding threw:', e);
-      setOnboardingComplete(false);
-    }
-  };
-
   useEffect(() => {
     let cancelled = false;
 
-    // Initial session resolution. We keep `loading=true` until BOTH
-    // the session is known AND (if a user exists) the onboarding flag
-    // is fetched. Wrapped in try/finally so an unexpected throw can
-    // never leave the app stuck on the splash screen.
-    (async () => {
+    // Supabase v2 fires INITIAL_SESSION immediately with the persisted
+    // session (or null) — so we don't need a separate getSession() call.
+    // One listener handles boot + every subsequent auth change.
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, sess) => {
+      if (cancelled) return;
       try {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (cancelled) return;
-        setSession(session);
-        setUser(session?.user ?? null);
-        if (session?.user) await checkOnboarding(session.user.id);
-      } catch (e) {
-        console.warn('[auth] initial session resolution failed:', e);
-      } finally {
-        if (!cancelled) setLoading(false);
-      }
-    })();
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      try {
-        // Block the navigation guard from making decisions with stale
-        // onboardingComplete during an auth state change. Without this,
-        // signing in via Google briefly lands with the still-default
-        // onboardingComplete=false and bounces the user to onboarding.
-        if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED' || event === 'USER_UPDATED') {
-          setLoading(true);
+        setSession(sess);
+        setUser(sess?.user ?? null);
+        if (sess?.user) {
+          const flag = await fetchOnboardingFlag(sess.user.id);
+          if (!cancelled) setOnboardingComplete(flag);
+        } else {
+          setOnboardingComplete(false);
         }
-        setSession(session);
-        setUser(session?.user ?? null);
-        if (session?.user) await checkOnboarding(session.user.id);
       } catch (e) {
         console.warn('[auth] onAuthStateChange handler failed:', e);
       } finally {
@@ -100,7 +75,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
 
       // Login XP — server enforces once-per-hour throttle.
-      if (event === 'SIGNED_IN' && session?.user) {
+      if (event === 'SIGNED_IN' && sess?.user) {
         import('./xp-events').then(({ awardXp }) => {
           awardXp('login').catch(() => {/* best-effort */});
         });
@@ -127,35 +102,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const signOut = async () => {
-    // Reset RevenueCat to anonymous so the next sign-in starts clean.
-    // Imported lazily to avoid a require cycle through purchases.ts.
+    // Lazy-import purchases to avoid pulling the native module into the
+    // auth boot path; lazy-import oauth so an older APK without the
+    // google-signin module doesn't crash the sign-out call.
     import('./purchases').then(({ logoutPurchases }) => logoutPurchases().catch(() => {}));
-    // Sign out from Google's native SDK too so the account picker
-    // shows up again on the next sign-in. Best-effort; missing module
-    // (older APK) silently ignored.
     import('./oauth').then(({ signOutGoogle }) => signOutGoogle().catch(() => {}));
     await supabase.auth.signOut();
     setOnboardingComplete(false);
   };
 
   const verifySignupOtp = async (email: string, token: string) => {
-    // Supabase 6-digit signup OTP. The `signup` type matches the template
-    // body that contains `{{ .Token }}` (see Supabase Auth → Email Templates
-    // → Confirm signup). Other types ('email_change', 'recovery') use the
-    // same flow with their own templates.
-    const { error } = await supabase.auth.verifyOtp({
-      email,
-      token,
-      type: 'signup',
-    });
+    const { error } = await supabase.auth.verifyOtp({ email, token, type: 'signup' });
     return { error: error?.message ?? null };
   };
 
   const resendSignupOtp = async (email: string) => {
-    const { error } = await supabase.auth.resend({
-      type: 'signup',
-      email,
-    });
+    const { error } = await supabase.auth.resend({ type: 'signup', email });
     return { error: error?.message ?? null };
   };
 
