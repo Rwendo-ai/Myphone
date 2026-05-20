@@ -1,33 +1,35 @@
 /**
- * AI feature cost in tokens — client-side hint for UX.
+ * AI feature cost in tokens — client-side hint + server-side metering rates.
+ *
+ * v1 launch (2026-05-21): one unified token currency, paid-only. XP is
+ * a separate, earned currency and never pays for AI minutes.
+ *
+ *   Base rate: 1 token = A$0.01 retail (100 tokens / A$1).
+ *   Text:   1 token per 100 output characters (Claude response).
+ *   Voice: 30 tokens / min (ElevenLabs Conv AI; ~30% margin after store cut).
+ *   Lipsync: hidden in v1 — SDKs not integrated. Rates kept here for when
+ *     they ship; current real-cost numbers ($0.40–0.70/min) are above
+ *     these so they're loss-making — DO NOT enable lipsync until rates
+ *     are raised AND server-side metering is live.
  *
  * The server-side `ai_feature_cost` Supabase table is the authoritative
- * source: the AI proxy reads from it when deducting credits via the
- * `spend_tokens` RPC. This file exists so the client can show "this voice
- * call will use ~5 tokens/min" etc. without a round-trip — but if the
- * server table is updated, the server prevails.
- *
- * Naming (v5, 2026-05-14): four feature tiers — text, voice, lipsync,
- * lipsync_plus. The lipsync tier was previously split into lipsync_low /
- * lipsync_high; renamed to match customer-facing terminology.
+ * source for the `spend_tokens` RPC. This file mirrors it for client UX
+ * (e.g. "this voice minute will cost ~30 tokens" warnings).
  */
 
 export type AiFeatureKey = 'text' | 'voice' | 'lipsync' | 'lipsync_plus' | 'lipsync_custom';
 
-/** Token cost per use. Voice/lipsync costs are per-minute estimates.
- *
- * NOTE: lipsync values match the Google design-plan placeholders. Real
- * Simli (~$0.40/min) and Sync Labs (~$0.70/min) costs make these too
- * low to break even — realistic launch values are closer to:
- *   lipsync: 50, lipsync_plus: 100, lipsync_custom: 55.
- * Revisit before launch. See docs/LIPSYNC-INTEGRATION.md.
- */
-export const AI_FEATURE_COST: Record<AiFeatureKey, number> = {
-  text:           1,
-  voice:          5,
-  lipsync:        3,   // Simli engine, archetype image
-  lipsync_plus:   10,  // Sync Labs engine, archetype 6s idling video
-  lipsync_custom: 5,   // Simli engine, user-uploaded photo (custom companion)
+/** Characters per token for text billing. Charged on the AI's response
+ *  output only — input is free. Round up at the per-message boundary
+ *  (a 250-char reply costs 3 tokens, not 2.5). */
+export const TEXT_CHARS_PER_TOKEN = 100;
+
+/** Tokens per minute for time-billed features (voice + lipsync). */
+export const AI_FEATURE_TOKENS_PER_MIN: Record<Exclude<AiFeatureKey, 'text'>, number> = {
+  voice:          30,
+  lipsync:        80,  // hidden in v1 — Simli $0.40/min → ~30% margin at 80/min
+  lipsync_plus:   140, // hidden in v1 — Sync Labs $0.70/min → ~30% margin at 140/min
+  lipsync_custom: 90,  // hidden in v1 — Simli + Trinity face → ~30% margin
 };
 
 export const AI_FEATURE_LABEL: Record<AiFeatureKey, string> = {
@@ -38,9 +40,15 @@ export const AI_FEATURE_LABEL: Record<AiFeatureKey, string> = {
   lipsync_custom: 'Lipsync (Custom)',
 };
 
-/** UX helper — return e.g. "5 tokens / min" for voice. */
+/** Compute the token cost of a text response. Round up so partial
+ *  100-char blocks still cost a whole token (server side does the same). */
+export function textTokenCost(responseChars: number): number {
+  if (responseChars <= 0) return 0;
+  return Math.ceil(responseChars / TEXT_CHARS_PER_TOKEN);
+}
+
+/** UX helper — short hint for each feature. */
 export function describeFeatureCost(feature: AiFeatureKey): string {
-  const cost = AI_FEATURE_COST[feature];
-  if (feature === 'text') return `${cost} token per message`;
-  return `${cost} tokens / min`;
+  if (feature === 'text') return `1 token per ${TEXT_CHARS_PER_TOKEN} chars`;
+  return `${AI_FEATURE_TOKENS_PER_MIN[feature]} tokens / min`;
 }

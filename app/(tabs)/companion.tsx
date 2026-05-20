@@ -17,8 +17,10 @@ import { buildCompanionGreeting } from '../../lib/companion-prompts';
 import { resolvePreset } from '../../lib/active-companion';
 import { speakText, stopSpeaking, startRecording, stopRecordingAndTranscribe, isCurrentlyRecording } from '../../lib/voice';
 import { useConvAISession } from '../../hooks/useConvAISession';
+import { useEntitlements } from '../../hooks/useEntitlements';
 import { useIntroBubble } from '../../lib/intro-bubbles';
 import IntroBubble from '../../components/IntroBubble';
+import TokenBar from '../../components/TokenBar';
 import { Colors } from '../../constants/colors';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '../../constants/theme';
 
@@ -46,6 +48,9 @@ export default function CompanionScreen() {
     setActiveCompanionVisuals,
   } = useSettings();
   const { username } = useProgress();
+  // Token balance — drives the TokenBar pill below the header. Refresh
+  // after any AI interaction so the user sees their balance drop live.
+  const { balance: tokenBalance, refresh: refreshTokens } = useEntitlements();
 
   // Companion picker — the dropdown sheet that opens when the user taps
   // the companion name in the header.
@@ -423,6 +428,12 @@ export default function CompanionScreen() {
         </Pressable>
       </View>
 
+      {/* Token bar — chat-tab-only. Reads balance from useEntitlements;
+          drops as the user spends on text/voice once deduction lands. */}
+      <View style={styles.tokenBarRow}>
+        <TokenBar balance={tokenBalance} />
+      </View>
+
       <KeyboardAvoidingView
         style={styles.flex}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -647,6 +658,13 @@ const styles = StyleSheet.create({
     alignItems: 'center', justifyContent: 'center',
   },
   headerClearIcon: { fontSize: 16, color: 'rgba(255,255,255,0.85)' },
+  tokenBarRow: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    paddingHorizontal: Spacing.lg,
+    paddingTop: Spacing.xs,
+    paddingBottom: Spacing.xs,
+  },
   convoBtnActive: { backgroundColor: Colors.error + '40', borderWidth: 1, borderColor: Colors.error },
   convoBtnDisabled: { backgroundColor: 'rgba(255,255,255,0.08)', borderWidth: 1, borderColor: 'rgba(255,255,255,0.15)', borderStyle: 'dashed' },
   convoBtnText: { fontSize: 20 },
