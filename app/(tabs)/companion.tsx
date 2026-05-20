@@ -148,6 +148,17 @@ export default function CompanionScreen() {
 
   const liveVoiceActive = liveVoice.state !== 'idle';
 
+  // Surface voice-session errors as an Alert. Without this, errors that
+  // fire BEFORE the live-voice panel renders (missing env vars, mic
+  // permission denied, audio engine init failure) only update internal
+  // state and are invisible to the user — the tap looks like a no-op.
+  useEffect(() => {
+    if (!liveVoice.error) return;
+    Alert.alert('Voice session', liveVoice.error, [
+      { text: 'OK', onPress: () => liveVoice.clearError() },
+    ]);
+  }, [liveVoice.error, liveVoice]);
+
   // Tapping the voice button toggles the inline session — no screen push.
   const toggleLiveVoice = useCallback(() => {
     if (liveVoiceActive) liveVoice.stop();
