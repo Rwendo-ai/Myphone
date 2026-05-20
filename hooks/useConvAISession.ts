@@ -87,6 +87,10 @@ export function useConvAISession(handlers: ConvAIHandlers = {}): ConvAIControls 
   const sessionRef = useRef<ConvAISession | null>(null);
   const isStreamingRef = useRef(false);
   const sessionIdRef = useRef<string>('');
+  // Set true when the user taps hang-up. The WS close that follows reports
+  // code 1006 (no close frame) — that's the *expected* shape of a
+  // client-initiated tear-down, not an error worth surfacing.
+  const userClosedRef = useRef(false);
 
   // Latest handlers stay in a ref so the mic-data and event callbacks always
   // see the current consumer functions without forcing a session restart.
@@ -230,7 +234,13 @@ export function useConvAISession(handlers: ConvAIHandlers = {}): ConvAIControls 
           isStreamingRef.current = false;
           try { toggleRecording(false); } catch {}
           setAgentSpeaking(false);
-          if (code !== 1000) {
+          // Treat 1000 (clean close) AND user-initiated tear-downs (which
+          // commonly surface as 1006 "abnormal closure" because we close
+          // the socket without waiting for a server goodbye frame) as
+          // normal endings. Only true unexpected drops bubble as errors.
+          const userInitiated = userClosedRef.current;
+          userClosedRef.current = false;
+          if (!userInitiated && code !== 1000) {
             setError(`Voice session ended (${code}). ${reason || ''}`.trim());
           }
           setState('idle');
@@ -291,6 +301,7 @@ export function useConvAISession(handlers: ConvAIHandlers = {}): ConvAIControls 
   }, [user, micPerm, requestMicPerm, activeCompanionPresetId, speaker, rwenVoice, lessonContext]);
 
   const stop = useCallback(() => {
+    userClosedRef.current = true;
     setState('closing');
     isStreamingRef.current = false;
     try { toggleRecording(false); } catch {}
