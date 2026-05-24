@@ -39,6 +39,20 @@ import {
   appendConversationTurn,
 } from '../lib/conversation-memory';
 import { awardXp } from '../lib/xp-events';
+import { supabase } from '../lib/supabase';
+import { AI_FEATURE_TOKENS_PER_MIN } from '../lib/ai-cost';
+
+/** Voice billing — heartbeat every HEARTBEAT_SECONDS deducts a
+ *  proportional slice of AI_FEATURE_TOKENS_PER_MIN.voice. Smaller =
+ *  more accurate but more RPC traffic. 30s gives the user 1-minute
+ *  fairness without spamming the DB. */
+const HEARTBEAT_SECONDS = 30;
+const TOKENS_PER_HEARTBEAT = Math.ceil(
+  (AI_FEATURE_TOKENS_PER_MIN.voice * HEARTBEAT_SECONDS) / 60,
+);
+/** Minimum balance required to start a voice session — guarantees at
+ *  least one full minute. Avoids opening then immediately closing. */
+const MIN_BALANCE_TO_START = AI_FEATURE_TOKENS_PER_MIN.voice;
 
 const ELEVENLABS_KEY = process.env.EXPO_PUBLIC_ELEVENLABS_KEY ?? '';
 const ELEVENLABS_AGENT_ID = process.env.EXPO_PUBLIC_ELEVENLABS_AGENT_ID ?? '';
@@ -91,6 +105,10 @@ export function useConvAISession(handlers: ConvAIHandlers = {}): ConvAIControls 
   // code 1006 (no close frame) — that's the *expected* shape of a
   // client-initiated tear-down, not an error worth surfacing.
   const userClosedRef = useRef(false);
+  // Voice billing — set to a setInterval handle while a session is
+  // active. Each tick calls spend_tokens; if the user runs out we end
+  // the session politely.
+  const heartbeatRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   // Latest handlers stay in a ref so the mic-data and event callbacks always
   // see the current consumer functions without forcing a session restart.
@@ -112,6 +130,10 @@ export function useConvAISession(handlers: ConvAIHandlers = {}): ConvAIControls 
       try { isStreamingRef.current = false; toggleRecording(false); } catch {}
       try { sessionRef.current?.close(); } catch {}
       sessionRef.current = null;
+      if (heartbeatRef.current) {
+        clearInterval(heartbeatRef.current);
+        heartbeatRef.current = null;
+      }
       try { tearDown(); } catch {}
     };
   }, []);
@@ -122,6 +144,25 @@ export function useConvAISession(handlers: ConvAIHandlers = {}): ConvAIControls 
     if (!ELEVENLABS_KEY || !ELEVENLABS_AGENT_ID) {
       setError('Voice not configured. Check ELEVENLABS env vars.');
       return;
+    }
+
+    // Pre-flight billing — voice is always paid (no free quota). Need at
+    // least one minute's worth of tokens to start. Read user_credits
+    // directly; fall open on infra failure so a transient DB blip doesn't
+    // strand a paying user.
+    try {
+      const { data } = await supabase
+        .from('user_credits')
+        .select('balance')
+        .eq('user_id', user.id)
+        .maybeSingle();
+      const balance = data?.balance ?? 0;
+      if (balance < MIN_BALANCE_TO_START) {
+        setError(`Voice needs at least ${MIN_BALANCE_TO_START} tokens (about 1 min). Tap the token bar to top up.`);
+        return;
+      }
+    } catch {
+      // Fail open — better to allow than strand on a network glitch.
     }
 
     // Permission
@@ -229,11 +270,43 @@ export function useConvAISession(handlers: ConvAIHandlers = {}): ConvAIControls 
           try { toggleRecording(true); } catch {}
           // XP for voice-AI usage — server caps to 1/hour. Best-effort.
           awardXp('ai_voice_use').catch(() => {});
+
+          // Start billing heartbeat. Every HEARTBEAT_SECONDS, deduct
+          // TOKENS_PER_HEARTBEAT. If spend_tokens returns -1 (out of
+          // balance) we end the session politely. The first tick fires
+          // after the first interval so the user gets a small grace
+          // window — connect+say-hello already costs them a heartbeat.
+          if (heartbeatRef.current) clearInterval(heartbeatRef.current);
+          heartbeatRef.current = setInterval(async () => {
+            try {
+              const { data, error } = await supabase.rpc('spend_tokens', {
+                p_user_id:     user.id,
+                p_amount:      TOKENS_PER_HEARTBEAT,
+                p_reason:      'ai_voice',
+                p_feature_key: 'voice',
+                p_metadata:    { seconds: HEARTBEAT_SECONDS },
+              });
+              if (error) { console.warn('[ConvAI] heartbeat spend_tokens:', error.message); return; }
+              if (typeof data === 'number' && data === -1) {
+                // Out of tokens mid-call — end the session and tell the user.
+                setError('You\'re out of tokens. Top up to keep talking.');
+                userClosedRef.current = true;
+                try { sessionRef.current?.close(); } catch {}
+              }
+            } catch (e) {
+              console.warn('[ConvAI] heartbeat threw:', e);
+            }
+          }, HEARTBEAT_SECONDS * 1000);
         },
         onDisconnected: (code, reason) => {
           isStreamingRef.current = false;
           try { toggleRecording(false); } catch {}
           setAgentSpeaking(false);
+          // Stop the billing heartbeat — session is over.
+          if (heartbeatRef.current) {
+            clearInterval(heartbeatRef.current);
+            heartbeatRef.current = null;
+          }
           // Treat 1000 (clean close) AND user-initiated tear-downs (which
           // commonly surface as 1006 "abnormal closure" because we close
           // the socket without waiting for a server goodbye frame) as
@@ -307,6 +380,10 @@ export function useConvAISession(handlers: ConvAIHandlers = {}): ConvAIControls 
     try { toggleRecording(false); } catch {}
     try { sessionRef.current?.close(); } catch {}
     sessionRef.current = null;
+    if (heartbeatRef.current) {
+      clearInterval(heartbeatRef.current);
+      heartbeatRef.current = null;
+    }
     setAgentSpeaking(false);
     setState('idle');
   }, []);

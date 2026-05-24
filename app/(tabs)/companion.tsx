@@ -153,6 +153,18 @@ export default function CompanionScreen() {
 
   const liveVoiceActive = liveVoice.state !== 'idle';
 
+  // Refresh the TokenBar whenever a voice session ends, so the user sees
+  // the per-minute deduction. (During the session the bar updates lag
+  // by up to one heartbeat — refreshing on transition is enough for v1.)
+  const wasActiveRef = useRef(false);
+  useEffect(() => {
+    const isIdle = liveVoice.state === 'idle';
+    if (wasActiveRef.current && isIdle) {
+      refreshTokens().catch(() => {});
+    }
+    wasActiveRef.current = liveVoice.state === 'active';
+  }, [liveVoice.state, refreshTokens]);
+
   // Surface voice-session errors as an Alert. Without this, errors that
   // fire BEFORE the live-voice panel renders (missing env vars, mic
   // permission denied, audio engine init failure) only update internal

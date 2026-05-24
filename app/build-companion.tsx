@@ -180,7 +180,7 @@ function WelcomeStep({ onNext }: { onNext: () => void }) {
         and how they look. Auto-saved as you go — pay $39.99 at the end to unlock them forever.
       </Text>
       <Text style={styles.welcomeNote}>
-        Tokens are required for AI usage (text, voice, lipsync) — the $39.99 is for the build itself, not the usage.
+        Tokens are required for AI usage (text + voice) — the $39.99 is for the build itself, not the usage.
       </Text>
       <PrimaryBtn label="Begin" onPress={onNext} />
     </View>
@@ -512,8 +512,8 @@ function ConfirmStep({ draft, busy, onConfirm }: { draft: CustomCompanionDraft; 
     <View style={styles.block}>
       <Text style={styles.stepTitle}>One-off purchase</Text>
       <Text style={styles.stepSub}>
-        $39.99 unlocks {draft.name || 'this companion'} permanently. Tokens cover ongoing usage (1 token per text,
-        more for voice + lipsync) once they’re unlocked.
+        $39.99 unlocks {draft.name || 'this companion'} permanently. Tokens cover ongoing usage (1 token per 100
+        characters of text, 30 per voice minute) once they’re unlocked.
       </Text>
 
       <View style={styles.priceCard}>
