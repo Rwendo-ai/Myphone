@@ -5,7 +5,83 @@ import { resolvePreset } from './active-companion';
 import { buildCompanionPrompt } from './companion-prompts';
 import { appendConversationTurn } from './conversation-memory';
 import { awardXp } from './xp-events';
+import { textTokenCost } from './ai-cost';
 import type { CompanionPreset } from '../data/companions/presets';
+
+/** Free text-message daily quota — mirrors rwen-chat Edge Function. */
+const FREE_MESSAGES_PER_DAY = 5;
+
+/** Thrown when the user has no tokens AND no free messages left for today.
+ *  Callers can `catch (e) { if (e instanceof OutOfTokensError) … }` to
+ *  surface a top-up prompt instead of a generic "AI failed" error. */
+export class OutOfTokensError extends Error {
+  constructor() {
+    super("You've used today's free messages. Top up tokens to keep chatting.");
+    this.name = 'OutOfTokensError';
+  }
+}
+
+/** Snapshot of what the user can spend right now. */
+interface AffordabilitySnapshot {
+  canPay: boolean;
+  hasTokens: boolean;
+  freeRemaining: number;
+}
+
+/** Read user_credits and tell the caller whether this user can chat.
+ *  Defaults to `allowed` on any DB error so missing infra doesn't lock
+ *  the user out of the chat tab — the spend path is best-effort too. */
+async function checkAffordability(userId: string): Promise<AffordabilitySnapshot> {
+  try {
+    const { data } = await supabase
+      .from('user_credits')
+      .select('balance, free_messages_used_today, free_messages_day')
+      .eq('user_id', userId)
+      .maybeSingle();
+    if (!data) {
+      return { canPay: true, hasTokens: false, freeRemaining: FREE_MESSAGES_PER_DAY };
+    }
+    const today = new Date().toISOString().slice(0, 10);
+    const used  = data.free_messages_day === today ? (data.free_messages_used_today ?? 0) : 0;
+    const freeRemaining = Math.max(0, FREE_MESSAGES_PER_DAY - used);
+    const balance = data.balance ?? 0;
+    return { canPay: balance > 0 || freeRemaining > 0, hasTokens: balance > 0, freeRemaining };
+  } catch {
+    // DB unreachable or row missing fields — fail open so chat stays usable.
+    return { canPay: true, hasTokens: false, freeRemaining: FREE_MESSAGES_PER_DAY };
+  }
+}
+
+/** Deduct tokens for a Claude reply. Best-effort: any failure is logged
+ *  but never thrown — the user already got their reply, we shouldn't
+ *  break the chat over a billing race. Tries tokens first, falls back
+ *  to the daily free quota. */
+async function chargeForReply(userId: string, replyChars: number, snapshot: AffordabilitySnapshot): Promise<void> {
+  const cost = textTokenCost(replyChars);
+  if (cost <= 0) return;
+  try {
+    if (snapshot.hasTokens) {
+      const { data, error } = await supabase.rpc('spend_tokens', {
+        p_user_id:     userId,
+        p_amount:      cost,
+        p_reason:      'ai_text',
+        p_feature_key: 'text',
+        p_metadata:    { reply_chars: replyChars },
+      });
+      if (error) { console.warn('[claude] spend_tokens:', error.message); return; }
+      if (typeof data === 'number' && data >= 0) return;
+      // Insufficient tokens (-1) — fall through to free path.
+    }
+    if (snapshot.freeRemaining > 0) {
+      const { error } = await supabase.rpc('consume_free_message', {
+        p_user_id: userId, p_limit: FREE_MESSAGES_PER_DAY,
+      });
+      if (error) console.warn('[claude] consume_free_message:', error.message);
+    }
+  } catch (e) {
+    console.warn('[claude] chargeForReply threw:', e);
+  }
+}
 
 const CLAUDE_API_URL = 'https://api.anthropic.com/v1/messages';
 const CLAUDE_KEY = process.env.EXPO_PUBLIC_CLAUDE_KEY ?? '';
@@ -245,6 +321,13 @@ export async function sendMessage(
    *  Tendai, Aria, etc.) instead of always speaking as Rwen. */
   activeCompanionPresetId?: string | null,
 ): Promise<string> {
+  // Pre-flight billing check — if the user has neither tokens nor free
+  // messages, refuse before we burn a Claude call. Falls open on infra
+  // failure (see checkAffordability) so the chat tab never goes dark
+  // because of a DB blip.
+  const snapshot = await checkAffordability(userId);
+  if (!snapshot.canPay) throw new OutOfTokensError();
+
   // Save user message — single write path shared by text + voice + future
   // avatar/lipsync flows. See lib/conversation-memory.ts.
   await appendConversationTurn(userId, 'user', userMessage, { packContext: lessonContext });
@@ -273,16 +356,18 @@ export async function sendMessage(
   });
 
   // ── Edge Function path (Phase M) ────────────────────────────────────────
+  // The Edge Function does its own billing internally and returns the
+  // reply — no client-side charge needed on this branch.
   if (USE_EDGE_FUNCTION) {
     const { data, error } = await supabase.functions.invoke('rwen-chat', {
-      body: {
-        userMessage,
-        history,
-        systemPrompt,
-        lessonContext,
-      },
+      body: { userMessage, history, systemPrompt, lessonContext },
     });
-    if (error) throw new Error(`rwen-chat: ${error.message}`);
+    if (error) {
+      // The Edge Function returns 402 when out of tokens — bubble it as
+      // the typed error so the UI can show a top-up prompt.
+      if (/payment_required/i.test(error.message)) throw new OutOfTokensError();
+      throw new Error(`rwen-chat: ${error.message}`);
+    }
     return (data as { reply: string }).reply;
   }
 
@@ -331,6 +416,9 @@ export async function sendMessage(
 
   // Save Rwen's reply via the shared writer.
   await appendConversationTurn(userId, 'rwen', reply, { packContext: lessonContext });
+
+  // Bill the user — best-effort, never throws (see chargeForReply).
+  chargeForReply(userId, reply.length, snapshot).catch(() => {/* logged inside */});
 
   return reply;
 }

@@ -12,7 +12,7 @@ import { resolveCompanion, type ResolvedCompanion } from '../../lib/companion-cu
 import { useAuth } from '../../lib/AuthContext';
 import { useSettings } from '../../lib/SettingsContext';
 import { useProgress } from '../../hooks/useProgress';
-import { sendMessage, loadConversationHistory, ChatMessage } from '../../lib/claude';
+import { sendMessage, loadConversationHistory, ChatMessage, OutOfTokensError } from '../../lib/claude';
 import { buildCompanionGreeting } from '../../lib/companion-prompts';
 import { resolvePreset } from '../../lib/active-companion';
 import { speakText, stopSpeaking, startRecording, stopRecordingAndTranscribe, isCurrentlyRecording } from '../../lib/voice';
@@ -254,13 +254,32 @@ export default function CompanionScreen() {
           await startAutoListen();
         }
       }
+
+      // Refresh token balance so the bar drops after every reply.
+      // Best-effort — a failed refresh just means the bar lags a beat
+      // until the next interaction.
+      refreshTokens().catch(() => {});
     } catch (e) {
-      setMessages(prev => [...prev, { id: (Date.now() + 1).toString(), role: 'rwen', text: t('messages.error_generic') }]);
-      setRwenState('idle');
+      if (e instanceof OutOfTokensError) {
+        // Drop the optimistic user bubble and show a top-up nudge as
+        // Rwen's reply, with a button that opens the cart.
+        setMessages(prev => [
+          ...prev.filter(m => m.id !== userMsg.id),
+          {
+            id: `out-of-tokens-${Date.now()}`,
+            role: 'rwen',
+            text: "You've used today's free messages. Top up tokens to keep chatting — tap the token bar above.",
+          },
+        ]);
+        setRwenState('idle');
+      } else {
+        setMessages(prev => [...prev, { id: (Date.now() + 1).toString(), role: 'rwen', text: t('messages.error_generic') }]);
+        setRwenState('idle');
+      }
     } finally {
       setLoading(false);
     }
-  }, [user, mode, rwenVoice, t]);
+  }, [user, mode, rwenVoice, t, refreshTokens, speaker, learnedLanguage.name, lessonContext, activeCompanionPresetId]);
 
   // ─── Auto-listen: record until silence, then process ─────────────────────
 
