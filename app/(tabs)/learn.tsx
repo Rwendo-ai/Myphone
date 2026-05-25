@@ -18,7 +18,7 @@ import {
   installCourse,
   uninstallCourse,
 } from '../../lib/lesson-loader';
-import { canAccessCourse } from '../../lib/entitlements';
+import { canAccessCourse, STARTER_FREE_MODULES } from '../../lib/entitlements';
 
 function formatBytes(b: number): string {
   if (b < 1024) return `${b} B`;
@@ -398,9 +398,14 @@ export default function LearnScreen() {
               const completedCount = unit.lessons.filter(l => completedLessons.has(l.id)).length;
               const previousIncomplete = index > 0
                 && units[index - 1].lessons.filter(l => completedLessons.has(l.id)).length < units[index - 1].lessons.length;
-              // Unit-progression lock — bypassed for the developer so they
-              // can preview every unit without grinding through prerequisites.
-              const isLocked = previousIncomplete && !DEV_UNLOCK_ALL;
+              // The first STARTER_FREE_MODULES units of every course are
+              // ALWAYS unlocked to a fresh user — that's the "2 free
+              // modules" promise. Progression-locking only kicks in from
+              // unit 3 onward, so a brand-new account sees module 1 AND
+              // module 2 both ready to start, not just module 1 with a
+              // padlock on module 2.
+              const inFreeModules = index < STARTER_FREE_MODULES;
+              const isLocked = !inFreeModules && previousIncomplete && !DEV_UNLOCK_ALL;
               return (
                 <Pressable
                   key={unit.id}

@@ -81,6 +81,23 @@ const TIER_PRODUCT_TO_ENTITLEMENT: Record<string, { entitlement: string; monthly
   rwendo_ultra_yearly_v1:         { entitlement: 'tier_ultra',        monthlyTokens: 1500 },
 };
 
+// XP grant amount per RC product. Mirror of data/products.ts product.xpReward.
+// Keep in sync when product list changes. Pre-airdrop accounting: this is
+// the single point where a real-money purchase enters the XP ledger.
+const PURCHASE_XP_REWARDS: Record<string, number> = {
+  rwendo_tokens_10_v1:            100,
+  rwendo_tokens_50_v1:            600,
+  rwendo_tokens_100_v1:           1500,
+  rwendo_companion_build_v1:      500,
+  rwendo_text_monthly_v1:         50,
+  rwendo_voice_monthly_v1:        75,
+  rwendo_lipsync_low_monthly_v1:  150,
+  rwendo_lipsync_high_monthly_v1: 350,
+  rwendo_lipsync_high_yearly_v1:  4000,
+  rwendo_ultra_monthly_v1:        500,
+  rwendo_ultra_yearly_v1:         5000,
+};
+
 Deno.serve(async (req: Request) => {
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: CORS_HEADERS });
@@ -154,6 +171,7 @@ Deno.serve(async (req: Request) => {
     if (event.type === 'INITIAL_PURCHASE' || event.type === 'NON_RENEWING_PURCHASE') {
       if (productId && TOKEN_PACK_GRANTS[productId] !== undefined) {
         await grantTokenPack(supabase, userId, productId, TOKEN_PACK_GRANTS[productId]);
+        await grantPurchaseXp(supabase, userId, productId, event.id, 'purchase_tokens');
         return json({ ok: true, action: 'token_pack_granted' });
       }
       if (productId && COMPANION_BUILD_PRODUCT_IDS.has(productId)) {
@@ -169,6 +187,7 @@ Deno.serve(async (req: Request) => {
             console.warn('[revenuecat-webhook] atlas enqueue failed (non-fatal):', e),
           );
         }
+        await grantPurchaseXp(supabase, userId, productId, event.id, 'purchase_companion_build');
         return json({ ok: true, action: draftId ? 'custom_companion_paid' : 'build_credit_pending', draftId });
       }
       if (productId && TIER_PRODUCT_TO_ENTITLEMENT[productId]) {
@@ -177,6 +196,7 @@ Deno.serve(async (req: Request) => {
         // Grant the first month's tokens. Renewals re-grant via the
         // RENEWAL event handler below.
         await grantMonthlyAllowance(supabase, userId, productId, cfg.monthlyTokens);
+        await grantPurchaseXp(supabase, userId, productId, event.id, `purchase_${cfg.entitlement}`);
         return json({ ok: true, action: 'tier_purchased' });
       }
     }
@@ -250,6 +270,53 @@ async function grantTokenPack(
   });
   if (error) throw new Error(`grant_tokens failed: ${error.message}`);
   return data;
+}
+
+/** Insert an xp_events row + bump profiles.xp for a successful purchase.
+ *  Bypasses the award_xp RPC's throttle and auth.uid() check (webhook runs
+ *  as service_role, no caller JWT). Idempotent via event.id stored in
+ *  metadata — a re-delivered webhook event won't double-grant XP. */
+async function grantPurchaseXp(
+  // deno-lint-ignore no-explicit-any
+  supabase: any,
+  userId: string,
+  productId: string,
+  eventId: string,
+  eventType: string,
+): Promise<void> {
+  const amount = PURCHASE_XP_REWARDS[productId];
+  if (!amount || amount <= 0) return;
+
+  // Idempotency check — same eventId already counted? Skip.
+  const { data: existing } = await supabase
+    .from('xp_events')
+    .select('id')
+    .eq('user_id', userId)
+    .eq('event_type', eventType)
+    .filter('metadata->>rc_event_id', 'eq', eventId)
+    .maybeSingle();
+  if (existing) return;
+
+  const { error: insertErr } = await supabase.from('xp_events').insert({
+    user_id:    userId,
+    event_type: eventType,
+    amount,
+    metadata:   { rc_event_id: eventId, product_id: productId },
+  });
+  if (insertErr) {
+    console.warn('[revenuecat-webhook] xp grant insert failed:', insertErr.message);
+    return;
+  }
+  const { error: bumpErr } = await supabase.rpc('admin_bump_xp', {
+    p_user_id: userId,
+    p_amount:  amount,
+  });
+  if (bumpErr) {
+    // Non-fatal — the audit row landed even if the denormalised total
+    // didn't. A reconciliation job can rebuild profiles.xp from
+    // sum(xp_events.amount) later.
+    console.warn('[revenuecat-webhook] xp bump rpc failed:', bumpErr.message);
+  }
 }
 
 async function grantMonthlyAllowance(
