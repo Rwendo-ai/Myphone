@@ -89,6 +89,14 @@ const PURCHASE_XP_REWARDS: Record<string, number> = {
   rwendo_tokens_50_v1:            600,
   rwendo_tokens_100_v1:           1500,
   rwendo_companion_build_v1:      500,
+  // Companion unlocks ($4.99 each). Matches data/products.ts xpReward: 50.
+  rwendo_companion_tendai_v1:     50,
+  rwendo_companion_maya_v1:       50,
+  rwendo_companion_kai_v1:        50,
+  rwendo_companion_sam_v1:        50,
+  rwendo_companion_lumi_v1:       50,
+  rwendo_companion_aria_v1:       50,
+  rwendo_companion_zeke_v1:       50,
   rwendo_text_monthly_v1:         50,
   rwendo_voice_monthly_v1:        75,
   rwendo_lipsync_low_monthly_v1:  150,
@@ -199,6 +207,17 @@ Deno.serve(async (req: Request) => {
         await grantPurchaseXp(supabase, userId, productId, event.id, `purchase_${cfg.entitlement}`);
         return json({ ok: true, action: 'tier_purchased' });
       }
+      // Companion unlock: rwendo_companion_<preset>_v1. Marks the
+      // user_companion_customizations row as is_paid=true so the cart
+      // stops treating this preset as the free pick. Idempotent —
+      // re-delivered events upsert the same row.
+      const companionMatch = productId?.match(/^rwendo_companion_([a-z]+)_v1$/);
+      if (companionMatch) {
+        const presetId = companionMatch[1];
+        await upsertPaidCompanion(supabase, userId, presetId);
+        await grantPurchaseXp(supabase, userId, productId, event.id, 'purchase_companion_unlock');
+        return json({ ok: true, action: 'companion_unlock_purchased', presetId });
+      }
     }
 
     if (event.type === 'RENEWAL') {
@@ -270,6 +289,27 @@ async function grantTokenPack(
   });
   if (error) throw new Error(`grant_tokens failed: ${error.message}`);
   return data;
+}
+
+/** Upsert a paid companion ownership row. Idempotent — re-delivering the
+ *  same purchase event won't create duplicates. If the row already exists
+ *  (e.g. the user previously claimed the preset as their free pick), this
+ *  flips is_paid from false → true so cart stops offering it as free. */
+async function upsertPaidCompanion(
+  // deno-lint-ignore no-explicit-any
+  supabase: any,
+  userId: string,
+  presetId: string,
+): Promise<void> {
+  const { error } = await supabase
+    .from('user_companion_customizations')
+    .upsert(
+      { user_id: userId, preset_id: presetId, is_paid: true, owned_at: new Date().toISOString() },
+      { onConflict: 'user_id,preset_id' },
+    );
+  if (error) {
+    console.warn('[revenuecat-webhook] upsertPaidCompanion failed:', error.message);
+  }
 }
 
 /** Insert an xp_events row + bump profiles.xp for a successful purchase.

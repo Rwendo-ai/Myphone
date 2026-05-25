@@ -294,9 +294,12 @@ export default function OnboardingScreen() {
         { onConflict: 'user_id,pack_id' }
       );
 
-      // Persist the picked companion (companion path only). Same shape
-      // the (tabs)/companions.tsx picker uses — flip all others off,
-      // insert the new one as active.
+      // Persist the picked companion (companion path only). Two writes:
+      //   1. Legacy companions table — historical: drives chat-tab is_active.
+      //   2. user_companion_customizations via claimFreePreset — the new
+      //      ownership model. Marks is_paid=false, which consumes the
+      //      user's ONE free non-Rwen companion claim. Further picks via
+      //      the companions tab must pay (cart.tsx checks is_paid).
       if (path === 'companion' && pickedCompanion) {
         const preset = PRESET_LIST.find((p) => p.id === pickedCompanion);
         if (preset) {
@@ -312,6 +315,14 @@ export default function OnboardingScreen() {
             is_active:         true,
             trust_score:       0,
           });
+          // Best-effort — if claimFreePreset fails (e.g. user already had
+          // a claim during a previous aborted onboarding), the legacy
+          // row above still gives them their companion. Don't block
+          // onboarding completion over it.
+          const { claimFreePreset } = await import('../../lib/companion-customization');
+          await claimFreePreset(user.id, preset.id).catch((e) =>
+            console.warn('[onboarding] claimFreePreset failed:', e),
+          );
         }
       }
 

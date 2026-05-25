@@ -1,11 +1,13 @@
-import { useState, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { View, Text, StyleSheet, ScrollView, Pressable, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 
+import { useAuth } from '../lib/AuthContext';
 import { useEntitlements } from '../hooks/useEntitlements';
 import { useCart } from '../lib/CartContext';
 import { presentPaywall } from '../lib/purchases';
+import { loadOwnedCompanions } from '../lib/companion-customization';
 import {
   getTokenPacks,
   getCourseSubscriptions,
@@ -134,15 +136,34 @@ function ShopTab({
   companions: Product[];
 }) {
   const cart = useCart();
+  const { user } = useAuth();
 
   // Course + companion dropdown open state
   const [coursesOpen, setCoursesOpen]       = useState(false);
   const [companionsOpen, setCompanionsOpen] = useState(false);
 
-  // Stub: first-course + first-companion are server-persisted (next session).
-  // For now, the empty-state buttons are wired to open the same dropdown.
-  const hasFreeCourse    = false;
-  const hasFreeCompanion = false;
+  // Has the user already claimed their ONE free non-Rwen companion?
+  // is_paid=false rows excluding 'rwen' mark a consumed free claim.
+  // Once they have one, the cart shows "Buy another companion" instead
+  // of "Choose your free companion".
+  const [hasFreeCompanion, setHasFreeCompanion] = useState(false);
+  useEffect(() => {
+    if (!user) return;
+    let cancelled = false;
+    loadOwnedCompanions(user.id)
+      .then((owned) => {
+        if (cancelled) return;
+        setHasFreeCompanion(
+          owned.some((r) => !r.is_paid && r.preset_id !== 'rwen'),
+        );
+      })
+      .catch(() => {/* fail closed — keep button as 'free' on error */});
+    return () => { cancelled = true; };
+  }, [user]);
+
+  // First-course stub still — courses use a different model (subscriptions
+  // priced per-course; no notion of "first free language" yet).
+  const hasFreeCourse = false;
 
   return (
     <View>
