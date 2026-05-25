@@ -440,7 +440,25 @@ export async function sendMessage(
   // Bill the user — best-effort, never throws (see chargeForReply).
   chargeForReply(userId, reply.length, snapshot).catch(() => {/* logged inside */});
 
+  // Fire-and-forget fact extraction. Skips internally on trivial turns
+  // (either side under 20 chars). Failures are silent — the user
+  // already got their reply, memory enrichment is a bonus.
+  extractFacts(userMessage, reply).catch(() => {/* best-effort */});
+
   return reply;
+}
+
+/** Fire the extract-companion-facts Edge Function in the background.
+ *  Auth is forwarded via the Supabase JS client (user JWT in cookies).
+ *  Never throws to caller — fact extraction is a nice-to-have. */
+async function extractFacts(userMessage: string, assistantReply: string): Promise<void> {
+  try {
+    await supabase.functions.invoke('extract-companion-facts', {
+      body: { userMessage, assistantReply },
+    });
+  } catch (e) {
+    console.warn('[claude] extractFacts failed:', e);
+  }
 }
 
 /** Internal — pulls the most recent 40 conversation rows, optionally
