@@ -424,18 +424,32 @@ export async function sendMessage(
 }
 
 export async function loadConversationHistory(userId: string): Promise<ChatMessage[]> {
+  // Respect the user's "clear chat view" marker (profiles.chat_view_cleared_at).
+  // Tapping ⌫ in the chat tab sets this to now() so on a reload the screen
+  // starts fresh — but the AI memory pipeline (companion_summaries,
+  // companion_facts, recent recap) STILL reads the full conversations
+  // table, so the AI remembers everything. Visual clear, not data wipe.
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('chat_view_cleared_at')
+    .eq('id', userId)
+    .maybeSingle();
+  const clearedAt = profile?.chat_view_cleared_at ?? null;
+
   // Pull the most recent 40 rows. Sort descending in the query so the LIMIT
   // gives us the latest, then flip to ascending in JS so they render
   // oldest → newest in the chat. The previous order(asc).limit(40) returned
   // the FIRST 40 messages forever, hiding everything after that — which
   // looked exactly like "saves are broken" once history grew past 40.
-  const { data } = await supabase
+  let query = supabase
     .from('conversations')
     .select('role, content')
     .eq('user_id', userId)
     .order('created_at', { ascending: false })
     .limit(40);
+  if (clearedAt) query = query.gt('created_at', clearedAt);
 
+  const { data } = await query;
   if (!data) return [];
   return data
     .slice()
@@ -444,4 +458,15 @@ export async function loadConversationHistory(userId: string): Promise<ChatMessa
       role: row.role === 'rwen' ? 'assistant' : 'user',
       content: row.content,
     }));
+}
+
+/** Set the user's chat_view_cleared_at to now() so the chat tab shows
+ *  an empty timeline on next load. AI memory pipeline ignores this
+ *  marker, so the agent's continuity is unaffected. */
+export async function clearChatView(userId: string): Promise<{ error: string | null }> {
+  const { error } = await supabase
+    .from('profiles')
+    .update({ chat_view_cleared_at: new Date().toISOString() })
+    .eq('id', userId);
+  return { error: error?.message ?? null };
 }

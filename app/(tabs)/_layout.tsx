@@ -1,5 +1,6 @@
 import { Tabs } from 'expo-router';
 import { Pressable, View, StyleSheet, Text, Image } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import RwenImage from '../../components/rwen/RwenImage';
 import { Colors } from '../../constants/colors';
@@ -43,11 +44,19 @@ function TabIcon({ emoji, focused }: { emoji: string; focused: boolean }) {
 
 export default function TabLayout() {
   const { t } = useTranslation('common');
+  // Inflate the tab bar by the system bottom inset (Android nav gestures /
+  // 3-button bar; iPhone home indicator) so the icons aren't covered.
+  // Without this, the hardcoded height: 72 sits flush against the screen
+  // edge and the OS nav bar overlaps it.
+  const insets = useSafeAreaInsets();
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarStyle: styles.tabBar,
+        tabBarStyle: [
+          styles.tabBar,
+          { height: 72 + insets.bottom, paddingBottom: 8 + insets.bottom },
+        ],
         tabBarActiveTintColor: Colors.secondary,
         tabBarInactiveTintColor: Colors.gray[400],
         tabBarLabelStyle: styles.label,

@@ -12,7 +12,7 @@ import { resolveCompanion, type ResolvedCompanion } from '../../lib/companion-cu
 import { useAuth } from '../../lib/AuthContext';
 import { useSettings } from '../../lib/SettingsContext';
 import { useProgress } from '../../hooks/useProgress';
-import { sendMessage, loadConversationHistory, ChatMessage, OutOfTokensError } from '../../lib/claude';
+import { sendMessage, loadConversationHistory, clearChatView, ChatMessage, OutOfTokensError } from '../../lib/claude';
 import { buildCompanionGreeting } from '../../lib/companion-prompts';
 import { resolvePreset } from '../../lib/active-companion';
 import { speakText, stopSpeaking, startRecording, stopRecordingAndTranscribe, isCurrentlyRecording } from '../../lib/voice';
@@ -448,6 +448,13 @@ export default function CompanionScreen() {
                       text: t('messages.welcome', { name: username || tCommon('fallback_name') }),
                     }]);
                     historyRef.current = [];
+                    // Persist the clear so the next app launch / reload
+                    // starts fresh too. AI memory pipeline (summaries,
+                    // facts, recap) ignores this marker so the agent
+                    // still remembers prior conversations for personality
+                    // and continuity. Best-effort — a failed write just
+                    // means the messages return on next reload.
+                    if (user) clearChatView(user.id).catch(() => {});
                   },
                 },
               ],
