@@ -12,7 +12,7 @@ import { resolveCompanion, type ResolvedCompanion } from '../../lib/companion-cu
 import { useAuth } from '../../lib/AuthContext';
 import { useSettings } from '../../lib/SettingsContext';
 import { useProgress } from '../../hooks/useProgress';
-import { sendMessage, loadConversationHistory, clearChatView, ChatMessage, OutOfTokensError } from '../../lib/claude';
+import { sendMessage, loadConversationHistory, loadConversationHistoryForAI, clearChatView, ChatMessage, OutOfTokensError } from '../../lib/claude';
 import { buildCompanionGreeting } from '../../lib/companion-prompts';
 import { resolvePreset } from '../../lib/active-companion';
 import { speakText, stopSpeaking, startRecording, stopRecordingAndTranscribe, isCurrentlyRecording } from '../../lib/voice';
@@ -188,8 +188,17 @@ export default function CompanionScreen() {
   // what they just finished.
   useEffect(() => {
     if (!user || historyLoaded) return;
-    loadConversationHistory(user.id).then((history) => {
-      historyRef.current = history;
+    // Two-channel load:
+    //   display history  — respects chat_view_cleared_at (what's drawn)
+    //   AI history       — IGNORES the marker (what we pass to Claude)
+    // After a ⌫ clear + reload, the screen starts empty but Claude
+    // still sees the full prior conversation, so personality and
+    // relationship continuity survive the user's visual reset.
+    Promise.all([
+      loadConversationHistory(user.id),
+      loadConversationHistoryForAI(user.id),
+    ]).then(([displayHistory, aiHistory]) => {
+      historyRef.current = aiHistory;
 
       // Lesson-context arrival: build a fresh greeting that references the
       // lesson topic. The AI is also primed via system prompt's lessonContext
@@ -202,7 +211,7 @@ export default function CompanionScreen() {
           username || tCommon('fallback_name'),
           lessonContext,
         );
-        const baseMessages: DisplayMessage[] = history.map((m, i) => ({
+        const baseMessages: DisplayMessage[] = displayHistory.map((m, i) => ({
           id: String(i),
           role: m.role === 'assistant' ? 'rwen' : 'user',
           text: m.content,
@@ -215,10 +224,10 @@ export default function CompanionScreen() {
         // Push greeting AFTER any existing history so the user sees it as
         // the most recent message — i.e. "I just got here from a lesson".
         setMessages([...baseMessages, greetingMsg]);
-        // Persist the greeting to history so the AI sees it on next turn.
-        historyRef.current = [...history, { role: 'assistant', content: greeting }];
-      } else if (history.length > 0) {
-        setMessages(history.map((m, i) => ({
+        // Persist the greeting to AI history so it sees it on next turn.
+        historyRef.current = [...aiHistory, { role: 'assistant', content: greeting }];
+      } else if (displayHistory.length > 0) {
+        setMessages(displayHistory.map((m, i) => ({
           id: String(i),
           role: m.role === 'assistant' ? 'rwen' : 'user',
           text: m.content,
@@ -447,13 +456,16 @@ export default function CompanionScreen() {
                       role: 'rwen',
                       text: t('messages.welcome', { name: username || tCommon('fallback_name') }),
                     }]);
-                    historyRef.current = [];
-                    // Persist the clear so the next app launch / reload
-                    // starts fresh too. AI memory pipeline (summaries,
-                    // facts, recap) ignores this marker so the agent
-                    // still remembers prior conversations for personality
-                    // and continuity. Best-effort — a failed write just
-                    // means the messages return on next reload.
+                    // INTENTIONALLY do NOT wipe historyRef.current — the
+                    // AI keeps full conversation context across a clear so
+                    // it still remembers the user mid-session. Only the
+                    // on-screen messages reset.
+                    //
+                    // Persist the clear marker so the NEXT app launch
+                    // also opens with an empty screen. On reload the
+                    // chat tab reads filtered history for display
+                    // (empty) and unfiltered history for the AI context
+                    // (full) — see loadConversationHistoryForAI.
                     if (user) clearChatView(user.id).catch(() => {});
                   },
                 },

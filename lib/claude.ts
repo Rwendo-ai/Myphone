@@ -3,7 +3,11 @@ import { SpeakerPack } from '../types/packs';
 import { english as defaultSpeaker } from '../data/speakers';
 import { resolvePreset } from './active-companion';
 import { buildCompanionPrompt } from './companion-prompts';
-import { appendConversationTurn } from './conversation-memory';
+import {
+  appendConversationTurn,
+  loadRecentConversationRecap,
+  loadCompanionFacts,
+} from './conversation-memory';
 import { awardXp } from './xp-events';
 import { textTokenCost } from './ai-cost';
 import type { CompanionPreset } from '../data/companions/presets';
@@ -335,8 +339,22 @@ export async function sendMessage(
   // XP for text-AI usage. Server caps to 1/hour automatically. Best-effort.
   awardXp('ai_text_use').catch(() => {});
 
-  // Fetch full profile (cached)
-  const profile = await fetchUserProfile(userId);
+  // Load the AI's three external memory channels in parallel:
+  //   - profile        : who the user is (name, learning goals, level)
+  //   - recentRecap    : last 10 turns formatted as readable dialogue,
+  //                      independent of the in-window history array
+  //   - memoryFacts    : long-term extracted facts from companion_facts
+  //                      (e.g. "wife died 2024", "loves jazz"). Kept
+  //                      until manually removed — Rwen's relationship
+  //                      memory survives clears, reloads, sign-outs.
+  // Voice mode already loads these; text mode used to skip them, which
+  // meant the AI knew less about you in text than in voice. Now both
+  // modes read the same memory surface.
+  const [profile, recentRecap, memoryFacts] = await Promise.all([
+    fetchUserProfile(userId),
+    loadRecentConversationRecap(userId).catch(() => ''),
+    loadCompanionFacts(userId).catch(() => []),
+  ]);
 
   // The active companion's preset drives the persona. If we're in lesson
   // context (Phase 8 from a lesson), force Tendai so Rwen-the-language-friend
@@ -353,6 +371,8 @@ export async function sendMessage(
     learnedLang,
     fallbackName: profile?.display_name?.trim() || 'friend',
     lessonContext,
+    memoryFacts,
+    weeklySummary: recentRecap || undefined,
   });
 
   // ── Edge Function path (Phase M) ────────────────────────────────────────
@@ -423,31 +443,21 @@ export async function sendMessage(
   return reply;
 }
 
-export async function loadConversationHistory(userId: string): Promise<ChatMessage[]> {
-  // Respect the user's "clear chat view" marker (profiles.chat_view_cleared_at).
-  // Tapping ⌫ in the chat tab sets this to now() so on a reload the screen
-  // starts fresh — but the AI memory pipeline (companion_summaries,
-  // companion_facts, recent recap) STILL reads the full conversations
-  // table, so the AI remembers everything. Visual clear, not data wipe.
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('chat_view_cleared_at')
-    .eq('id', userId)
-    .maybeSingle();
-  const clearedAt = profile?.chat_view_cleared_at ?? null;
-
-  // Pull the most recent 40 rows. Sort descending in the query so the LIMIT
-  // gives us the latest, then flip to ascending in JS so they render
-  // oldest → newest in the chat. The previous order(asc).limit(40) returned
-  // the FIRST 40 messages forever, hiding everything after that — which
-  // looked exactly like "saves are broken" once history grew past 40.
+/** Internal — pulls the most recent 40 conversation rows, optionally
+ *  filtered by a since-timestamp. Sort descending in the query so the
+ *  LIMIT gives us the latest, then flip to ascending so the caller can
+ *  render oldest → newest. */
+async function fetchConversationRows(
+  userId: string,
+  sinceISO: string | null,
+): Promise<ChatMessage[]> {
   let query = supabase
     .from('conversations')
     .select('role, content')
     .eq('user_id', userId)
     .order('created_at', { ascending: false })
     .limit(40);
-  if (clearedAt) query = query.gt('created_at', clearedAt);
+  if (sinceISO) query = query.gt('created_at', sinceISO);
 
   const { data } = await query;
   if (!data) return [];
@@ -458,6 +468,27 @@ export async function loadConversationHistory(userId: string): Promise<ChatMessa
       role: row.role === 'rwen' ? 'assistant' : 'user',
       content: row.content,
     }));
+}
+
+/** History to RENDER in the chat tab.
+ *  Honours profiles.chat_view_cleared_at — anything before the user's
+ *  last ⌫ tap is hidden from screen so a reload starts fresh visually. */
+export async function loadConversationHistory(userId: string): Promise<ChatMessage[]> {
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('chat_view_cleared_at')
+    .eq('id', userId)
+    .maybeSingle();
+  return fetchConversationRows(userId, profile?.chat_view_cleared_at ?? null);
+}
+
+/** History to PASS TO THE AI as the messages array.
+ *  IGNORES chat_view_cleared_at — the AI keeps full conversation
+ *  continuity even after the user clears the screen. Pairs with the
+ *  companion_facts + companion_summaries pipeline for relationship
+ *  building over time. */
+export async function loadConversationHistoryForAI(userId: string): Promise<ChatMessage[]> {
+  return fetchConversationRows(userId, null);
 }
 
 /** Set the user's chat_view_cleared_at to now() so the chat tab shows
