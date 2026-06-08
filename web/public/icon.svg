@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1A3C6E"/>
+      <stop offset="100%" stop-color="#0D2140"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.7" cy="0.3" r="0.7">
+      <stop offset="0%" stop-color="#F4B860" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#F4B860" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="rfill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFD9A8"/>
+      <stop offset="100%" stop-color="#F4B860"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="url(#bg)"/>
+  <rect width="64" height="64" rx="14" fill="url(#glow)"/>
+  <text x="32" y="47"
+        font-family="ui-sans-serif,-apple-system,'Segoe UI',Roboto,Helvetica,sans-serif"
+        font-size="42"
+        font-weight="800"
+        text-anchor="middle"
+        fill="url(#rfill)">R</text>
+</svg>

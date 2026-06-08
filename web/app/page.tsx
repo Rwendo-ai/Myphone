@@ -13,7 +13,7 @@ export default async function HomePage() {
       {/* Nav */}
       <nav className="absolute top-0 left-0 right-0 z-10 px-6 py-5 flex items-center justify-between max-w-6xl mx-auto">
         <div className="flex items-center gap-2">
-          <Image src="/icon.png" alt="" width={32} height={32} className="rounded-lg" />
+          <Image src="/icon.svg" alt="" width={32} height={32} className="rounded-lg" />
           <span className="font-bold text-xl">Rwendo</span>
         </div>
         <Link
@@ -164,7 +164,7 @@ export default async function HomePage() {
       <footer className="px-6 py-10 border-t border-white/10">
         <div className="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <Image src="/icon.png" alt="" width={24} height={24} className="rounded-md" />
+            <Image src="/icon.svg" alt="" width={24} height={24} className="rounded-md" />
             <span className="text-white/60 text-sm">© 2026 Rwendo</span>
           </div>
           <div className="flex gap-6 text-sm text-white/60">
