@@ -49,7 +49,7 @@ export default async function HomePage() {
                 Start chatting — free
               </Link>
               <a
-                href="https://play.google.com/store/apps/details?id=app.rwendo.mobile"
+                href="https://play.google.com/store/apps/details?id=app.rwendo.rwendo"
                 className="px-8 py-4 border border-white/20 text-white rounded-full hover:bg-white/5 transition"
               >
                 Get the mobile app
