@@ -6,7 +6,7 @@ import { createSupabaseServer } from '@/lib/supabase-server';
 export default async function HomePage() {
   const supabase = await createSupabaseServer();
   const { data: { user } } = await supabase.auth.getUser();
-  if (user) redirect('/chat');
+  if (user) redirect('/home');
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-[#0D2140] via-[#1A3C6E] to-[#0D2140] text-white">
@@ -49,7 +49,7 @@ export default async function HomePage() {
                 Start chatting — free
               </Link>
               <a
-                href="https://play.google.com/store/apps/details?id=app.rwendo.rwendo"
+                href="https://play.google.com/store/apps/details?id=app.rwendo.mobile"
                 className="px-8 py-4 border border-white/20 text-white rounded-full hover:bg-white/5 transition"
               >
                 Get the mobile app
