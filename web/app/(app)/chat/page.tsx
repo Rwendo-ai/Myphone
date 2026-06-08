@@ -1,8 +1,6 @@
 import { redirect } from 'next/navigation';
-import Link from 'next/link';
 import { createSupabaseServer } from '@/lib/supabase-server';
-import TokenBar from '@/components/TokenBar';
-import ChatComposer from '@/components/ChatComposer';
+import ChatShell from '@/components/companion/ChatShell';
 
 export default async function ChatPage() {
   const supabase = await createSupabaseServer();
@@ -16,21 +14,8 @@ export default async function ChatPage() {
     .maybeSingle();
   const balance = credits?.balance ?? 0;
 
-  return (
-    <main className="min-h-screen flex flex-col bg-gradient-to-b from-primary to-[#0D2140]">
-      <header className="flex items-center justify-between px-4 py-3 border-b border-white/10">
-        <div>
-          <div className="font-bold text-lg">Rwen</div>
-          <div className="text-xs text-white/60">AI companion</div>
-        </div>
-        <div className="flex items-center gap-3">
-          <TokenBar balance={balance} />
-          <Link href="/profile" className="text-white/70 hover:text-white text-sm">Profile</Link>
-        </div>
-      </header>
-      <div className="flex-1 max-w-3xl w-full mx-auto">
-        <ChatComposer userId={user.id} />
-      </div>
-    </main>
-  );
+  // ChatShell is a client component that wraps the existing TokenBar +
+  // ChatComposer with the companion picker, profile sheet, and voice orb.
+  // The server still fetches the initial balance + verifies auth here.
+  return <ChatShell userId={user.id} initialBalance={balance} />;
 }

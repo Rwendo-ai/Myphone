@@ -167,9 +167,11 @@ export default async function HomePage() {
             <Image src="/icon.svg" alt="" width={24} height={24} className="rounded-md" />
             <span className="text-white/60 text-sm">© 2026 Rwendo</span>
           </div>
-          <div className="flex gap-6 text-sm text-white/60">
+          <div className="flex flex-wrap gap-6 text-sm text-white/60">
             <Link href="/sign-in" className="hover:text-white">Sign in</Link>
-            <a href="mailto:benocooney@gmail.com" className="hover:text-white">Contact</a>
+            <Link href="/privacy" className="hover:text-white">Privacy</Link>
+            <Link href="/terms" className="hover:text-white">Terms</Link>
+            <a href="mailto:hello@rwendo.app" className="hover:text-white">Contact</a>
           </div>
         </div>
       </footer>
