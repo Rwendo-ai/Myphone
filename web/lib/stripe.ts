@@ -1,8 +1,21 @@
 import Stripe from 'stripe';
 
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2024-09-30.acacia',
-});
+// Lazy singleton — instantiating at module load fails the Next build
+// because Next collects page data without env vars present. By deferring
+// until first call we keep build green AND keep prod fast (the SDK
+// constructor is cheap; cached after first use).
+let _stripe: Stripe | null = null;
+export function getStripe(): Stripe {
+  if (_stripe) return _stripe;
+  const key = process.env.STRIPE_SECRET_KEY;
+  if (!key) throw new Error('STRIPE_SECRET_KEY not set');
+  _stripe = new Stripe(key, {
+    // API version cast — the SDK occasionally bumps the expected string;
+    // our code path (Checkout sessions + webhook verify) is stable.
+    apiVersion: '2025-02-24.acacia' as Stripe.LatestApiVersion,
+  });
+  return _stripe;
+}
 
 // Token pack catalogue (mirrors mobile data/products.ts — kept in sync
 // manually for v1). The price is what the user pays; tokens is what we

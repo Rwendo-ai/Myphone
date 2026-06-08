@@ -1,5 +1,7 @@
-import { createServerClient } from '@supabase/ssr';
+import { createServerClient, type CookieOptions } from '@supabase/ssr';
 import { cookies } from 'next/headers';
+
+interface CookieToSet { name: string; value: string; options?: CookieOptions }
 
 // Server-side Supabase client (Server Components, Route Handlers, Server
 // Actions). Reads/writes the auth session via Next's cookies API so the
@@ -12,7 +14,7 @@ export async function createSupabaseServer() {
     {
       cookies: {
         getAll() { return cookieStore.getAll(); },
-        setAll(toSet) {
+        setAll(toSet: CookieToSet[]) {
           try {
             toSet.forEach(({ name, value, options }) => cookieStore.set(name, value, options));
           } catch {

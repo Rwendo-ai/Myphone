@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { stripe } from '@/lib/stripe';
+import { getStripe } from '@/lib/stripe';
 import { createSupabaseAdmin } from '@/lib/supabase-admin';
 
 // Stripe webhook — runs server-side, verifies signature, then writes to
@@ -19,7 +19,7 @@ export async function POST(req: Request) {
   const rawBody = await req.text();
   let event: import('stripe').Stripe.Event;
   try {
-    event = stripe.webhooks.constructEvent(rawBody, sig, process.env.STRIPE_WEBHOOK_SECRET!);
+    event = getStripe().webhooks.constructEvent(rawBody, sig, process.env.STRIPE_WEBHOOK_SECRET!);
   } catch (e) {
     const msg = e instanceof Error ? e.message : 'sig verify failed';
     return new NextResponse(`Webhook Error: ${msg}`, { status: 400 });

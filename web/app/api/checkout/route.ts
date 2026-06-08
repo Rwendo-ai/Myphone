@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createSupabaseServer } from '@/lib/supabase-server';
-import { stripe, findTokenPack } from '@/lib/stripe';
+import { getStripe, findTokenPack } from '@/lib/stripe';
 
 // Creates a Stripe Checkout session for a token pack. On payment success
 // Stripe sends a webhook to /api/stripe-webhook which calls grant_tokens
@@ -20,7 +20,7 @@ export async function POST(req: Request) {
 
   const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000';
 
-  const session = await stripe.checkout.sessions.create({
+  const session = await getStripe().checkout.sessions.create({
     mode: 'payment',
     payment_method_types: ['card'],
     customer_email: user.email ?? undefined,
