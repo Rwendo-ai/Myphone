@@ -4,6 +4,10 @@ import './globals.css';
 export const metadata: Metadata = {
   title: 'Rwendo — AI companion + language learning',
   description: 'Chat with caring AI companions by voice or text. Learn languages, grow yourself, on your own pace.',
+  icons: {
+    icon: '/favicon.png',
+    apple: '/icon.png',
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
