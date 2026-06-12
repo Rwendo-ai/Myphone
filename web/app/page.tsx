@@ -43,7 +43,7 @@ export default async function HomePage() {
             </p>
             <div className="flex flex-wrap gap-4">
               <Link
-                href="/sign-in"
+                href="/sign-up"
                 className="px-8 py-4 bg-secondary text-primary font-semibold rounded-full hover:opacity-90 transition shadow-lg shadow-secondary/30"
               >
                 Start chatting — free
@@ -149,10 +149,10 @@ export default async function HomePage() {
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-4xl md:text-5xl font-bold mb-6">Ready to talk?</h2>
           <p className="text-white/70 mb-10 text-lg">
-            Sign in with Google. No card needed. Rwen is waiting.
+            Google or email. No card needed. Rwen is waiting.
           </p>
           <Link
-            href="/sign-in"
+            href="/sign-up"
             className="inline-block px-10 py-4 bg-secondary text-primary font-semibold rounded-full hover:opacity-90 transition shadow-lg shadow-secondary/30"
           >
             Start chatting — free

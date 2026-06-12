@@ -48,6 +48,7 @@ which are point-in-time snapshots — this one is the running checklist.
 - ✅ **Web parity plan** — app-feature → web-status matrix, build order, drift fixes, "better than app" notes in `docs/WEB-PARITY-PLAN.md`.
 - ✅ **Web side menu** — bottom tab bar replaced with persistent desktop sidebar + mobile top-bar/drawer (`web/components/nav/SideNav.tsx`); TabBar deleted.
 - ✅ **Web sign-in completed** — email+password form + Google wired into `/sign-in` (was Google-only); fixed sign-up redirect bug when email confirmation is on (`web/lib/auth-providers.ts`).
+- ✅ **Web auth flow build-out** — dedicated `/sign-up` (username + password rules + 3 consents, Google gated on required consents), `/verify` 6-digit OTP page (paste, auto-submit, resend cooldown), `/profile/change-password` (re-auth before update). Consents recorded reliably via localStorage stash + `record_consents` flush (`web/lib/pending-consents.ts`) — better than the app's silent-failure path. Landing CTAs now point at `/sign-up`.
 
 ## ⏳ Next up (from the architecture review — see APP-ARCHITECTURE-REVIEW.md)
 

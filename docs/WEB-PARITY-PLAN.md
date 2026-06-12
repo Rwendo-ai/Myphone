@@ -34,9 +34,10 @@ As sections grow, the sidebar should gain **expandable sub-items** (e.g. Travel 
 | Landing page | ✅ Live | Hero + features + companions strip. Better-than-app opportunity: live demo chat widget on the landing page. |
 | Google OAuth | ✅ Live | Same Supabase accounts as mobile. |
 | Email + password sign-up/in | ✅ **Wired 2026-06-12** | Components existed but `/sign-in` was Google-only; now uses AuthCard + ProviderButton + EmailPasswordForm. |
-| Username + password policy at sign-up | ⬜ Gap | App enforces 8+ chars/upper/lower/digit/special + username; web form takes display name + any password. Align validation. |
-| 3 consent checkboxes + `record_consents` RPC | ⬜ **Gap (compliance)** | App records legal/info-protection/marketing consents at sign-up; web records none. Must add before web sign-ups count. |
-| 6-digit OTP verify screen | ⬜ Gap | Web relies on the email confirmation link instead. Acceptable variant, but the branded OTP screen is better UX — port it. |
+| Username + password policy at sign-up | ✅ **Shipped 2026-06-12** | Dedicated `/sign-up` page: username + live password-rule checklist (8+/upper/lower/digit/special), matching the app. |
+| 3 consent checkboxes + `record_consents` RPC | ✅ **Shipped 2026-06-12** | Better than app: consents stash in localStorage and flush via `record_consents` once a session exists (`web/lib/pending-consents.ts`), with `/onboarding` as a retry point — fixes the silent-failure P0 the app still has. Google sign-ups also require the two required boxes. |
+| 6-digit OTP verify screen | ✅ **Shipped 2026-06-12** | `/verify` — six digit boxes, paste/autofill distribution, auto-submit, 60s resend cooldown; emailed confirmation link still works as fallback. |
+| Change password | ✅ **Shipped 2026-06-12** | `/profile/change-password` — re-authenticates with current password before `updateUser` (app parity + session-theft guard). |
 | Apple / crypto wallet | ⬜ Stub both platforms | Web `auth-providers.ts` already has `signInWithApple` + crypto sentinel; flip when the app's `OAUTH_READY` flips. |
 | Onboarding wizard | 🔶 Partial | Web has 6 steps (language→ability→reasons→companion→identity→done). App has jurisdiction, gender, DOB **age gate**, path choice (learn/companion/travel), time/challenge/connection, voice pick. Web must add **jurisdiction + DOB age-gating** (legal, not optional) and the path fork. |
 
@@ -115,7 +116,7 @@ As sections grow, the sidebar should gain **expandable sub-items** (e.g. Travel 
 ## 3. Build order (recommended)
 
 1. **Lesson engine on web** — unlocks the core product loop; everything streams from existing Storage. *(big)*
-2. **Sign-up compliance pack** — consents + jurisdiction + DOB age gate on web onboarding. *(small, legally required before promoting web sign-up)*
+2. **Sign-up compliance pack** — 🔶 consents ✅ done; jurisdiction + DOB age gate on web onboarding still open. *(small, legally required before promoting web sign-up)*
 3. **Travel content suite** — phrasebook/culture/money/safari + destination picker; data already in Storage, mostly rendering work. Sidebar gets its first sub-menu. *(medium)*
 4. **Profile completeness** — themes, daily goal, export/erase, achievements, static pages. *(medium)*
 5. **Dictionary + flip/reinforcement cards** — quick wins off existing data. *(small)*

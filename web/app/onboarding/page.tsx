@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { createSupabaseBrowser } from '@/lib/supabase-browser';
+import { flushPendingConsents } from '@/lib/pending-consents';
 import { AuthCard } from '@/components/auth/AuthCard';
 
 // /onboarding — web counterpart to the mobile wizard at
@@ -98,6 +99,10 @@ export default function OnboardingPage() {
       const metaName = (data.user.user_metadata?.display_name as string | undefined) ?? '';
       if (metaName) setDisplayName(metaName);
       setAuthChecked(true);
+      // Retry point for consents stashed at sign-up (no-op when none
+      // pending or already recorded) — covers OAuth sign-ups and any
+      // RPC failure on the /verify page.
+      void flushPendingConsents(supabase);
     });
   }, []);
 
