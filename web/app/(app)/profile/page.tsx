@@ -150,12 +150,20 @@ export default async function ProfilePage() {
             <div className="text-white/80">Email</div>
             <div className="text-white/60">{user.email}</div>
           </div>
-          <div className="px-5 py-3 flex items-center justify-between">
+          <div className="px-5 py-3 flex items-center justify-between border-b border-white/5">
             <div className="text-white/80">Linked sign-in</div>
             <div className="text-white/60">
               {linkedProviders.length > 0 ? linkedProviders.join(' · ') : 'Email & password'}
             </div>
           </div>
+          <Link href="/profile/change-password" className="px-5 py-3 flex items-center justify-between hover:bg-white/5 transition border-b border-white/5">
+            <div className="text-white/80">Change password</div>
+            <div className="text-white/40">→</div>
+          </Link>
+          <Link href="/profile/export" className="px-5 py-3 flex items-center justify-between hover:bg-white/5 transition">
+            <div className="text-white/80">Export my data</div>
+            <div className="text-white/40">→</div>
+          </Link>
         </div>
 
         {/* Danger zone */}

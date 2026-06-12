@@ -62,7 +62,7 @@ export default function ChatShell({ userId, initialBalance }: Props) {
   const face        = companion?.archetype;
 
   return (
-    <main className="min-h-screen flex flex-col bg-gradient-to-b from-primary to-[#0D2140]">
+    <main className="min-h-[calc(100dvh-3.5rem)] md:min-h-dvh flex flex-col bg-gradient-to-b from-primary to-[#0D2140]">
       <header className="flex items-center justify-between px-4 py-3 border-b border-white/10">
         <button
           onClick={() => setPickerOpen(true)}
