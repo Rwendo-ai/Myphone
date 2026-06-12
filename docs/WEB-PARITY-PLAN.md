@@ -60,7 +60,7 @@ As sections grow, the sidebar should gain **expandable sub-items** (e.g. Travel 
 | Flip cards (+ audio) | ⬜ Gap | Same Storage data; audio manifests already public URLs. |
 | Reinforcement cards | ⬜ Gap | Same Storage data, 8 card variants. |
 | Course install/offline | ➖ Skip | Device caching is a native concern; web streams. (Optional later: IndexedDB cache.) |
-| Dictionary | 🔶 Write path live | Web lessons now auto-add chunks to `user_dictionary` (2026-06-12). The browse/search UI is still to build — easy win, great on desktop. |
+| Dictionary | ✅ **Shipped 2026-06-12** | `/dictionary` — searchable, course-filterable word table fed automatically by the lesson engine (web + mobile both write `user_dictionary`). In the sidebar. |
 
 ### Chat / Companion
 

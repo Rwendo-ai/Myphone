@@ -241,7 +241,9 @@ export default function OnboardingPage() {
       console.warn('[onboarding] free companion claim failed:', companionErr.message);
     }
 
-    window.location.assign('/home');
+    // Land new users in a live conversation, not a dashboard — Rwen
+    // greets them and they're using the product within seconds.
+    window.location.assign('/chat');
   }, [language, ability, reasons, jurisdiction, companionId, displayName, age, dobDay, dobMonth, dobYear]);
 
   function next() {

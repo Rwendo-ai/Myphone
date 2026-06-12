@@ -51,6 +51,7 @@ When adding a new .md file:
 | File | Description | Last Updated |
 |---|---|---|
 | [WEB-PARITY-PLAN.md](./WEB-PARITY-PLAN.md) | App→web feature parity matrix, build order, side-menu layout decision, design tokens, "better than app" notes | 2026-06-12 |
+| [WEB-MARKETING-PLAN.md](./WEB-MARKETING-PLAN.md) | Activation funnel, friction audit, channels, launch checklist, 30-day cadence | 2026-06-12 |
 | [../web/README.md](../web/README.md) | Web stack, env vars, Stripe setup, Contabo deploy guide | 2026-05 |
 
 ---

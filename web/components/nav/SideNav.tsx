@@ -23,6 +23,7 @@ const PRIMARY: NavItem[] = [
   { href: '/profile', label: 'Profile', icon: '👤' },
 ];
 const SECONDARY: NavItem[] = [
+  { href: '/dictionary', label: 'Dictionary', icon: '📖' },
   { href: '/cart', label: 'Cart', icon: '🛒' },
 ];
 

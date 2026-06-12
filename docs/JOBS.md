@@ -50,6 +50,11 @@ which are point-in-time snapshots — this one is the running checklist.
 - ✅ **Web sign-in completed** — email+password form + Google wired into `/sign-in` (was Google-only); fixed sign-up redirect bug when email confirmation is on (`web/lib/auth-providers.ts`).
 - ✅ **Web auth flow build-out** — dedicated `/sign-up` (username + password rules + 3 consents, Google gated on required consents), `/verify` 6-digit OTP page (paste, auto-submit, resend cooldown), `/profile/change-password` (re-auth before update). Consents recorded reliably via localStorage stash + `record_consents` flush (`web/lib/pending-consents.ts`) — better than the app's silent-failure path. Landing CTAs now point at `/sign-up`.
 
+- ✅ **Web onboarding compliance** — jurisdiction step + DOB age gate + age-blocked screen; compliance fields written to profiles; 18+ presets hidden from verified minors. New users now land in /chat after onboarding (activation).
+- ✅ **Web 7-phase lesson engine** — full hook→mission flow, all 5 exercise types, keyboard-first, streams mobile's Storage JSONs, XP + dictionary auto-add on completion.
+- ✅ **Web dictionary** — /dictionary searchable word table in the sidebar.
+- ✅ **Marketing plan** — `docs/WEB-MARKETING-PLAN.md`: activation funnel, friction audit, channels, launch checklist (PostHog first, then OG/meta, then landing demo chat).
+
 ## ⏳ Next up (from the architecture review — see APP-ARCHITECTURE-REVIEW.md)
 
 - ⏳ **P0 app fixes**: consent RPC silently swallowed (`sign-up.tsx`), `setSaving(false)` missing on onboarding success, ProfileLoader fetch has no `.catch`
