@@ -26,6 +26,26 @@
 // is passed in by callers (createSupabaseServer in Server Components,
 // createSupabaseBrowser in Client Components).
 import type { SupabaseClient } from '@supabase/supabase-js';
+import RAW_MANIFESTS from './course-manifests.json';
+
+// Real lesson manifests extracted from the mobile app's auto-generated
+// data/courses/<id>/manifest.ts files (regenerate by re-running the
+// extraction in scripts — see WEB-PARITY-PLAN §4 drift). Canonical
+// lesson ids + titles + real module/lesson counts; the synthesized
+// m01-l01 guesses below remain only as a fallback for courses without
+// an authored manifest.
+export interface LessonMeta {
+  id: string;
+  module: number;
+  lesson: number;
+  title: string;
+  xpReward: number;
+}
+const COURSE_MANIFESTS = RAW_MANIFESTS as Record<string, LessonMeta[]>;
+
+export function getLessonManifest(courseId: string): LessonMeta[] | undefined {
+  return COURSE_MANIFESTS[courseId];
+}
 
 export const STARTER_FREE_MODULES = 2;
 
@@ -86,24 +106,54 @@ const CATALOGUE: CourseSummary[] = [
   { id: 'caring-aging-parent',      name: 'Caring for an Aging Parent', emoji: '🤝', category: 'build-yourself', totalModules: 5, totalLessons: 25, tagline: 'Love, logistics, limits' },
 ];
 
-/** All courses, grouped by category. Server- and client-callable. */
+/** All courses, grouped by category, with totals taken from the real
+ *  manifests when one exists (the hardcoded numbers drifted — e.g.
+ *  language courses are 100 lessons / 10 modules, not 50). */
 export function getCourseCatalogue(): CourseSummary[] {
-  return CATALOGUE;
+  return CATALOGUE.map((c) => {
+    const manifest = COURSE_MANIFESTS[c.id];
+    if (!manifest || manifest.length === 0) return c;
+    return {
+      ...c,
+      totalLessons: manifest.length,
+      totalModules: new Set(manifest.map((l) => l.module)).size,
+    };
+  });
 }
 
 export function getCourseById(courseId: string): CourseSummary | undefined {
-  return CATALOGUE.find(c => c.id === courseId);
+  return getCourseCatalogue().find(c => c.id === courseId);
 }
 
 /**
- * Default module structure for a course. Synthesises module codes
- * (m01, m02, …) and lesson ids (m01-l01, m01-l02, …) up to the totals
- * carried by the catalogue entry. Real titles will be pulled from
- * Supabase Storage manifests in v2.
+ * Module structure for a course. Uses the real manifest when present —
+ * canonical lesson ids ("m01-l01-mangwanani"), real per-module counts.
+ * Falls back to synthesised m01-l01 codes for unauthored courses.
  */
 export function getModulesForCourse(courseId: string): ModuleSummary[] {
   const course = getCourseById(courseId);
   if (!course) return [];
+
+  const manifest = COURSE_MANIFESTS[courseId];
+  if (manifest && manifest.length > 0) {
+    const byModule = new Map<number, LessonMeta[]>();
+    for (const l of manifest) {
+      (byModule.get(l.module) ?? byModule.set(l.module, []).get(l.module)!).push(l);
+    }
+    return [...byModule.entries()]
+      .sort(([a], [b]) => a - b)
+      .map(([index, lessons]) => {
+        const sorted = [...lessons].sort((a, b) => a.lesson - b.lesson);
+        return {
+          index,
+          code: `m${String(index).padStart(2, '0')}`,
+          title: `Module ${index}`,
+          emoji: index <= STARTER_FREE_MODULES ? '⭐' : '📘',
+          totalLessons: sorted.length,
+          lessonIds: sorted.map((l) => l.id),
+        };
+      });
+  }
 
   const modules: ModuleSummary[] = [];
   const lessonsPerModule = Math.max(1, Math.round(course.totalLessons / course.totalModules)) || DEFAULT_LESSONS_PER_MODULE;
