@@ -42,6 +42,18 @@ which are point-in-time snapshots — this one is the running checklist.
 
 - ✅ **Knowing Yourself Modules 3-10 lesson bodies** — all 80 remaining lessons authored, uploaded to storage, and version-tagged in the manifest. Course is now 100/100 lessons. Editorial follows CHRISTIAN-FOUNDATION-SPEC end-to-end (dignity-based self-kindness; no Buddhist scaffolding; sources named honestly). Anchored on CBT/ACT/NVC/IFS/EFT/Stoic/Bowlby/Bonanno/Frankl/Brown/Clear/Fogg/Gottman/Gilbert/Csikszentmihalyi/Burkeman/Newport.
 
+## ✅ Recently completed (2026-06-12)
+
+- ✅ **End-to-end app architecture review** — full code walk landing → auth → onboarding → all tabs. Verdict + prioritized P0/P1/P2 fix list in `docs/APP-ARCHITECTURE-REVIEW.md`.
+- ✅ **Web parity plan** — app-feature → web-status matrix, build order, drift fixes, "better than app" notes in `docs/WEB-PARITY-PLAN.md`.
+- ✅ **Web side menu** — bottom tab bar replaced with persistent desktop sidebar + mobile top-bar/drawer (`web/components/nav/SideNav.tsx`); TabBar deleted.
+- ✅ **Web sign-in completed** — email+password form + Google wired into `/sign-in` (was Google-only); fixed sign-up redirect bug when email confirmation is on (`web/lib/auth-providers.ts`).
+
+## ⏳ Next up (from the architecture review — see APP-ARCHITECTURE-REVIEW.md)
+
+- ⏳ **P0 app fixes**: consent RPC silently swallowed (`sign-up.tsx`), `setSaving(false)` missing on onboarding success, ProfileLoader fetch has no `.catch`
+- ⏳ **Web build order**: 1) lesson engine on web 2) sign-up compliance (consents + jurisdiction + DOB gate) 3) travel content suite 4) profile completeness 5) dictionary + cards 6) Stripe subscriptions 7) browser voice — see `docs/WEB-PARITY-PLAN.md` §3
+
 ## 🟡 In progress
 
 - 🟡 **Translation Edge Function** — designed in `docs/REINFORCEMENT-CARDS-TRANSLATION.md`; deployment pending. Loader already speaker-aware (falls back to English when per-speaker file missing).

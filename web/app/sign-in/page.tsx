@@ -2,45 +2,49 @@
 
 import { useState } from 'react';
 import { createSupabaseBrowser } from '@/lib/supabase-browser';
+import { signInWithGoogle } from '@/lib/auth-providers';
+import { AuthCard } from '@/components/auth/AuthCard';
+import { ProviderButton } from '@/components/auth/ProviderButton';
+import { EmailPasswordForm } from '@/components/auth/EmailPasswordForm';
 
+// Sign-in / sign-up. Mirrors the mobile app's auth surface: OAuth bar at
+// the top (Google live; Apple + crypto wallet land when the mobile app's
+// OAUTH_READY flags flip), email + password below. Same Supabase
+// accounts across web, iOS, and Android.
 export default function SignInPage() {
-  const [loading, setLoading] = useState(false);
+  const [oauthLoading, setOauthLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  async function signInWithGoogle() {
-    setLoading(true);
+  async function handleGoogle() {
+    setOauthLoading(true);
     setError(null);
     const supabase = createSupabaseBrowser();
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        redirectTo: `${window.location.origin}/auth/callback?next=/home`,
-      },
-    });
+    const { error } = await signInWithGoogle(supabase);
     if (error) {
       setError(error.message);
-      setLoading(false);
+      setOauthLoading(false);
     }
     // On success the user is redirected to Google, then bounced back to /auth/callback.
   }
 
   return (
-    <main className="flex items-center justify-center min-h-screen bg-gradient-to-b from-primary to-[#0D2140] px-6">
-      <div className="w-full max-w-sm bg-white/5 border border-white/10 rounded-2xl p-8 backdrop-blur">
-        <h1 className="text-3xl font-bold mb-2 text-center">Welcome back</h1>
-        <p className="text-white/60 text-center mb-8">Sign in to chat with your companion</p>
-        <button
-          onClick={signInWithGoogle}
-          disabled={loading}
-          className="w-full py-3 bg-white text-primary font-semibold rounded-full hover:opacity-90 transition disabled:opacity-50"
-        >
-          {loading ? 'Redirecting…' : 'Continue with Google'}
-        </button>
-        {error && <p className="text-error mt-4 text-sm text-center">{error}</p>}
-        <p className="text-white/40 text-xs text-center mt-8">
-          Same account works across web, iOS, and Android.
-        </p>
+    <AuthCard title="Welcome" subtitle="Sign in or create your account">
+      <ProviderButton onClick={handleGoogle} variant="primary" loading={oauthLoading}>
+        Continue with Google
+      </ProviderButton>
+      {error && <p className="text-error mt-3 text-sm text-center" role="alert">{error}</p>}
+
+      <div className="flex items-center gap-3 my-6">
+        <div className="flex-1 border-t border-white/10" />
+        <span className="text-white/40 text-xs uppercase tracking-wider">or</span>
+        <div className="flex-1 border-t border-white/10" />
       </div>
-    </main>
+
+      <EmailPasswordForm />
+
+      <p className="text-white/40 text-xs text-center mt-8">
+        Same account works across web, iOS, and Android.
+      </p>
+    </AuthCard>
   );
 }

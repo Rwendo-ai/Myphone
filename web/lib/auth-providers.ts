@@ -56,9 +56,10 @@ export async function signUpWithEmail(
   if (error) return { error: { message: error.message }, needsOnboarding: false };
   // If email confirmation is OFF in the Supabase project, a session is
   // returned immediately and we route to onboarding. If confirmation is
-  // ON, session is null until the user clicks the email link — we still
-  // signal needsOnboarding=true so the UI can show "check your email".
-  const needsOnboarding = !!data.user;
+  // ON, session is null until the user clicks the email link — the UI
+  // shows "check your email" and the /auth/callback?next=/onboarding
+  // redirect picks the flow back up from the link.
+  const needsOnboarding = !!data.session;
   return { error: null, needsOnboarding };
 }
 

@@ -1,6 +1,6 @@
 # Rwendo — Documentation Index
 *All project documentation in one place*
-*Last updated: 2026-05-12*
+*Last updated: 2026-06-12*
 
 ---
 
@@ -42,6 +42,16 @@ When adding a new .md file:
 | [SIMLI-DIRECT-INTEGRATION.md](./SIMLI-DIRECT-INTEGRATION.md) | **v1 lipsync path (optional)** — Conv AI stays the brain; Simli WebRTC tapped as a side-car. Scaffolded for testing, only ships if quality is "clean enough". | 2026-05-16 |
 | [SELF-HOSTING-STRATEGY.md](./SELF-HOSTING-STRATEGY.md) | Open-source replacement landscape (TTS/STT/Lipsync/LLM) on Contabo — reference for later cost reduction | 2026-05-15 |
 | [CUSTOM-COMPANION-WIZARD-V2.md](./CUSTOM-COMPANION-WIZARD-V2.md) | $39.99 bespoke-companion wizard spec (8 steps, 10 images + 3 videos) | 2026-05-16 |
+| [APP-ARCHITECTURE-REVIEW.md](./APP-ARCHITECTURE-REVIEW.md) | End-to-end mobile-app code review — verdict, P0/P1/P2 fix list, shared-code plan | 2026-06-12 |
+
+---
+
+## Web (rwendo.app)
+
+| File | Description | Last Updated |
+|---|---|---|
+| [WEB-PARITY-PLAN.md](./WEB-PARITY-PLAN.md) | App→web feature parity matrix, build order, side-menu layout decision, design tokens, "better than app" notes | 2026-06-12 |
+| [../web/README.md](../web/README.md) | Web stack, env vars, Stripe setup, Contabo deploy guide | 2026-05 |
 
 ---
 
