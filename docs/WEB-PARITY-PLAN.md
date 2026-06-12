@@ -39,7 +39,7 @@ As sections grow, the sidebar should gain **expandable sub-items** (e.g. Travel 
 | 6-digit OTP verify screen | ✅ **Shipped 2026-06-12** | `/verify` — six digit boxes, paste/autofill distribution, auto-submit, 60s resend cooldown; emailed confirmation link still works as fallback. |
 | Change password | ✅ **Shipped 2026-06-12** | `/profile/change-password` — re-authenticates with current password before `updateUser` (app parity + session-theft guard). |
 | Apple / crypto wallet | ⬜ Stub both platforms | Web `auth-providers.ts` already has `signInWithApple` + crypto sentinel; flip when the app's `OAUTH_READY` flips. |
-| Onboarding wizard | 🔶 Partial | Web has 6 steps (language→ability→reasons→companion→identity→done). App has jurisdiction, gender, DOB **age gate**, path choice (learn/companion/travel), time/challenge/connection, voice pick. Web must add **jurisdiction + DOB age-gating** (legal, not optional) and the path fork. |
+| Onboarding wizard | 🔶 Mostly | ✅ 2026-06-12: jurisdiction step (AU/GB/US/EU/FR/ZW/PH with per-region minAge), real DOB input (auto-advance DD/MM/YYYY), age-blocked screen, and compliance fields written (`jurisdiction_id`, `date_of_birth`, `country_code`, `is_eu_customer`, `is_uk_customer`). Identity now runs BEFORE companion pick so Aria (18+) is truly hidden from minors. Still mobile-only: gender, path fork (learn/companion/travel), voice pick. |
 
 ### Home
 
@@ -56,11 +56,11 @@ As sections grow, the sidebar should gain **expandable sub-items** (e.g. Travel 
 |---|---|---|
 | Course catalogue + categories | ✅ Live | But hardcoded `CATALOGUE` in `courses-web.ts:64-87` — see §4 drift. |
 | Module list + progression locks | ✅ Live | |
-| **7-phase lesson engine** | ⬜ **Gap — the big one** | Web lesson page is a stub that links to chat. Lesson JSONs already stream from Supabase Storage (`lessons/<courseId>/<speakerId>/<lessonId>.json`) — web can fetch the same files. Build the 7 phases + 5 exercise types in React DOM. This is the single highest-value web build. Better-than-app: keyboard shortcuts for exercises, wider dialogue layout. |
+| **7-phase lesson engine** | ✅ **Shipped 2026-06-12** | Full hook→chunks→pattern→practice→dialogue→recall→mission engine with all 5 exercise types (`web/components/lesson/`). Streams the same Storage JSONs as mobile, server-side loaded; loader prefix-matches canonical long ids. Better than app: 1-9 keys answer options, Enter advances/checks, Backspace edits build-sentence. Completion writes `lesson_progress` + `award_xp` (deduped) + dictionary auto-add. Unauthored courses fall back to the practice-with-Rwen card. |
 | Flip cards (+ audio) | ⬜ Gap | Same Storage data; audio manifests already public URLs. |
 | Reinforcement cards | ⬜ Gap | Same Storage data, 8 card variants. |
 | Course install/offline | ➖ Skip | Device caching is a native concern; web streams. (Optional later: IndexedDB cache.) |
-| Dictionary | ⬜ Gap | `user_dictionary` table already populated by app lessons. Easy win, great on desktop. |
+| Dictionary | 🔶 Write path live | Web lessons now auto-add chunks to `user_dictionary` (2026-06-12). The browse/search UI is still to build — easy win, great on desktop. |
 
 ### Chat / Companion
 
@@ -86,7 +86,7 @@ As sections grow, the sidebar should gain **expandable sub-items** (e.g. Travel 
 | Money & market (live FX) | ⬜ Gap | Same + one FX API call. |
 | Safari & parks | ⬜ Gap | Same. |
 | Flights / hotels affiliates | ⬜ Gap | Plain links on web — easier than the app's WebViews. |
-| Connections 18+ age gate | ⬜ Blocked on DOB | Requires onboarding DOB step first (see auth section). |
+| Connections 18+ age gate | ⬜ Unblocked | DOB now collected at onboarding (2026-06-12) — gate can read `date_of_birth`/`is_minor` when Connections lands on web. |
 | My Travel | ⬜ Gap (thin in app too) | Build once, share design. |
 
 ### Profile
@@ -115,8 +115,8 @@ As sections grow, the sidebar should gain **expandable sub-items** (e.g. Travel 
 
 ## 3. Build order (recommended)
 
-1. **Lesson engine on web** — unlocks the core product loop; everything streams from existing Storage. *(big)*
-2. **Sign-up compliance pack** — 🔶 consents ✅ done; jurisdiction + DOB age gate on web onboarding still open. *(small, legally required before promoting web sign-up)*
+1. ✅ **Lesson engine on web** — shipped 2026-06-12.
+2. ✅ **Sign-up compliance pack** — consents + jurisdiction + DOB age gate all shipped 2026-06-12.
 3. **Travel content suite** — phrasebook/culture/money/safari + destination picker; data already in Storage, mostly rendering work. Sidebar gets its first sub-menu. *(medium)*
 4. **Profile completeness** — themes, daily goal, export/erase, achievements, static pages. *(medium)*
 5. **Dictionary + flip/reinforcement cards** — quick wins off existing data. *(small)*
