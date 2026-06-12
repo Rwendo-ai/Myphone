@@ -14,12 +14,23 @@ import { usePathname } from 'next/navigation';
 // feature, visually elevated with a gold-ringed avatar), Travel,
 // Profile. Cart sits in a secondary section below.
 
-interface NavItem { href: string; label: string; icon: string; hero?: boolean }
+interface NavItem { href: string; label: string; icon: string; hero?: boolean; children?: Array<{ href: string; label: string }> }
 const PRIMARY: NavItem[] = [
   { href: '/home',    label: 'Home',    icon: '🏠' },
   { href: '/learn',   label: 'Learn',   icon: '📚' },
   { href: '/chat',    label: 'Rwen',    icon: '🦎', hero: true },
-  { href: '/travel',  label: 'Travel',  icon: '✈️' },
+  {
+    href: '/travel',  label: 'Travel',  icon: '✈️',
+    // Sub-items appear while inside the section — the side menu's
+    // advantage over a 5-slot bottom bar.
+    children: [
+      { href: '/travel/phrasebook',  label: 'Phrasebook' },
+      { href: '/travel/culture',     label: 'Culture' },
+      { href: '/travel/money',       label: 'Money' },
+      { href: '/travel/safari',      label: 'Safari' },
+      { href: '/travel/connections', label: 'Connections' },
+    ],
+  },
   { href: '/profile', label: 'Profile', icon: '👤' },
 ];
 const SECONDARY: NavItem[] = [
@@ -51,18 +62,39 @@ function NavLinks({ pathname, onNavigate }: { pathname: string | null; onNavigat
         </Link>
       );
     }
+    const showChildren = active && !!item.children?.length;
     return (
-      <Link
-        key={item.href}
-        href={item.href}
-        onClick={onNavigate}
-        className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition ${
-          active ? 'bg-white/10 text-secondary' : 'text-white/70 hover:bg-white/5 hover:text-white'
-        }`}
-      >
-        <span className="text-xl w-10 text-center shrink-0">{item.icon}</span>
-        <span className="font-semibold text-sm">{item.label}</span>
-      </Link>
+      <div key={item.href}>
+        <Link
+          href={item.href}
+          onClick={onNavigate}
+          className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition ${
+            active ? 'bg-white/10 text-secondary' : 'text-white/70 hover:bg-white/5 hover:text-white'
+          }`}
+        >
+          <span className="text-xl w-10 text-center shrink-0">{item.icon}</span>
+          <span className="font-semibold text-sm">{item.label}</span>
+        </Link>
+        {showChildren && (
+          <div className="ml-12 mt-1 mb-1 flex flex-col gap-0.5 border-l border-white/10 pl-3">
+            {item.children!.map((c) => {
+              const childActive = pathname === c.href || pathname?.startsWith(c.href + '/');
+              return (
+                <Link
+                  key={c.href}
+                  href={c.href}
+                  onClick={onNavigate}
+                  className={`px-2 py-1.5 rounded-lg text-sm transition ${
+                    childActive ? 'text-secondary font-semibold' : 'text-white/60 hover:text-white hover:bg-white/5'
+                  }`}
+                >
+                  {c.label}
+                </Link>
+              );
+            })}
+          </div>
+        )}
+      </div>
     );
   };
 
