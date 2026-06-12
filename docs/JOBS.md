@@ -54,6 +54,8 @@ which are point-in-time snapshots — this one is the running checklist.
 - ✅ **Web 7-phase lesson engine** — full hook→mission flow, all 5 exercise types, keyboard-first, streams mobile's Storage JSONs, XP + dictionary auto-add on completion.
 - ✅ **Web dictionary** — /dictionary searchable word table in the sidebar.
 - ✅ **Marketing plan** — `docs/WEB-MARKETING-PLAN.md`: activation funnel, friction audit, channels, launch checklist (PostHog first, then OG/meta, then landing demo chat).
+- ✅ **Web travel suite** — hub with destination picker (`?d=` shareable override), phrasebook + audio + free preview, cultural guide, money + live FX converter, safari, Skyscanner/Booking links, 18+-gated Connections feed at /travel/connections.
+- ✅ **Web profile depth** — /profile/export (full JSON download), Danger zone live (clear history + delete account via `delete_user` RPC).
 
 ## ⏳ Next up (from the architecture review — see APP-ARCHITECTURE-REVIEW.md)
 

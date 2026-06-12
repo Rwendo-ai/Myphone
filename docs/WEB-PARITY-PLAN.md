@@ -80,13 +80,13 @@ As sections grow, the sidebar should gain **expandable sub-items** (e.g. Travel 
 | App feature | Web status | Notes |
 |---|---|---|
 | Social feed + posts + comments + follows | ✅ Live | Web actually ahead of app polish here. |
-| Destination picker + override | ⬜ Gap | `useActiveTravelDestination` logic is pure TS — port. |
-| Phrasebook (+ audio, free preview gating) | ⬜ Gap | Streams from Storage already. |
-| Cultural guide | ⬜ Gap | Same. |
-| Money & market (live FX) | ⬜ Gap | Same + one FX API call. |
-| Safari & parks | ⬜ Gap | Same. |
-| Flights / hotels affiliates | ⬜ Gap | Plain links on web — easier than the app's WebViews. |
-| Connections 18+ age gate | ⬜ Unblocked | DOB now collected at onboarding (2026-06-12) — gate can read `date_of_birth`/`is_minor` when Connections lands on web. |
+| Destination picker + override | ✅ **Shipped 2026-06-12** | Hub header picker; override rides in `?d=` so travel URLs are shareable. Defaults from the learning language. |
+| Phrasebook (+ audio, free preview gating) | ✅ **Shipped 2026-06-12** | `/travel/phrasebook` — accordion, per-phrase audio from the public bucket, 4-phrase free preview on locked categories. |
+| Cultural guide | ✅ **Shipped 2026-06-12** | `/travel/culture` — native `<details>` accordions, zero client JS. |
+| Money & market (live FX) | ✅ **Shipped 2026-06-12** | `/travel/money` — server-fetched FX (6h cache), live converter widget, cost-of-living anchors per country. |
+| Safari & parks | ✅ **Shipped 2026-06-12** | `/travel/safari` — local parks when authored, region top-10 fallback. |
+| Flights / hotels affiliates | ✅ **Shipped 2026-06-12** | External Skyscanner/Booking links on the hub grid (better than the app's WebViews). |
+| Connections 18+ age gate | ✅ **Shipped 2026-06-12** | Feed moved to `/travel/connections`, gated on DOB (conservative: unknown = minor); hub hides the card entirely for minors, like mobile. |
 | My Travel | ⬜ Gap (thin in app too) | Build once, share design. |
 
 ### Profile
@@ -98,7 +98,7 @@ As sections grow, the sidebar should gain **expandable sub-items** (e.g. Travel 
 | Voice picker + preview | ⬜ v1.1 with voice | |
 | Daily XP goal editor | ⬜ Gap | |
 | Achievements | ⬜ Gap | |
-| Privacy settings / export data / change password / erase chat | ⬜ Gap | Export + erase are **GDPR-relevant** — port soon. Same RPCs as app. |
+| Privacy settings / export data / change password / erase chat | 🔶 Mostly shipped | ✅ 2026-06-12: `/profile/export` (real JSON download incl. dictionary + XP events — more complete than the app's), erase chat history + delete account live in the Danger zone (same `delete_user` RPC as app), change password earlier. Remaining: privacy toggles (public profile / follows / DMs). |
 | Plans / subscription tiers | ⬜ Gap | Web has one-time purchases only. Stripe subscriptions for the 5-tier ladder; webhook already has the idempotency patterns to extend. |
 | Legal pages | ✅ Live | Markdown-rendered. Keep in sync with jurisdiction packs eventually. |
 | Help / About / Methodology / Companion philosophy | ⬜ Gap | Static content — render the same markdown. |
@@ -117,7 +117,7 @@ As sections grow, the sidebar should gain **expandable sub-items** (e.g. Travel 
 
 1. ✅ **Lesson engine on web** — shipped 2026-06-12.
 2. ✅ **Sign-up compliance pack** — consents + jurisdiction + DOB age gate all shipped 2026-06-12.
-3. **Travel content suite** — phrasebook/culture/money/safari + destination picker; data already in Storage, mostly rendering work. Sidebar gets its first sub-menu. *(medium)*
+3. ✅ **Travel content suite** — shipped 2026-06-12 (phrasebook+audio, culture, money+FX, safari, destination picker, flights/hotels links, 18+ connections).
 4. **Profile completeness** — themes, daily goal, export/erase, achievements, static pages. *(medium)*
 5. **Dictionary + flip/reinforcement cards** — quick wins off existing data. *(small)*
 6. **Stripe subscriptions (Plans)** — 5-tier ladder. *(medium)*
