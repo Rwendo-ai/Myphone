@@ -4,12 +4,12 @@ import { createSupabaseServer } from '@/lib/supabase-server';
 /**
  * Issue a short-lived ElevenLabs Conv AI WebSocket signed URL.
  *
- * The browser cannot hold the `xi-api-key` (it's server-only — never exposed
- * via NEXT_PUBLIC_). We mint a signed URL here using the server-side env var
- * and hand it back. ElevenLabs's signed URLs are good for ~15 min and tie a
- * single WebSocket session to our account without revealing the key.
+ * Calls the `rwen-convai-url` Supabase Edge Function which holds both the
+ * ElevenLabs API key AND the default agent id in Supabase secrets. The
+ * web server therefore needs NO ElevenLabs config — the secrets live in
+ * one place (Supabase) shared by web + mobile.
  *
- * Requires the user to be signed in so we don't burn quota on anon traffic.
+ * Requires the user to be signed in.
  */
 export async function POST() {
   const supabase = await createSupabaseServer();
@@ -18,34 +18,20 @@ export async function POST() {
     return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
   }
 
-  const apiKey = process.env.ELEVENLABS_API_KEY || process.env.ELEVENLABS_KEY;
-  const agentId = process.env.ELEVENLABS_AGENT_ID;
-  if (!apiKey || !agentId) {
+  // Pass-through call. Supabase JS auto-attaches the user's JWT in the
+  // Authorization header for verify_jwt-protected Edge Functions.
+  const { data, error } = await supabase.functions.invoke('rwen-convai-url', {
+    body: {}, // empty — Edge Function uses elevenlabs_agent_id from secrets
+  });
+  if (error) {
     return NextResponse.json(
-      { error: 'voice_not_configured', message: 'ElevenLabs env vars missing on server' },
-      { status: 503 },
+      { error: 'edge_failed', message: error.message },
+      { status: 502 },
     );
   }
-
-  try {
-    const res = await fetch(
-      `https://api.elevenlabs.io/v1/convai/conversation/get-signed-url?agent_id=${encodeURIComponent(agentId)}`,
-      { headers: { 'xi-api-key': apiKey } },
-    );
-    if (!res.ok) {
-      const t = await res.text().catch(() => '');
-      return NextResponse.json(
-        { error: 'eleven_error', status: res.status, body: t.slice(0, 500) },
-        { status: 502 },
-      );
-    }
-    const json = (await res.json()) as { signed_url?: string };
-    if (!json.signed_url) {
-      return NextResponse.json({ error: 'no_signed_url' }, { status: 502 });
-    }
-    return NextResponse.json({ signed_url: json.signed_url, agent_id: agentId });
-  } catch (e) {
-    const msg = e instanceof Error ? e.message : 'unknown';
-    return NextResponse.json({ error: 'fetch_failed', message: msg }, { status: 502 });
+  const { signed_url, agent_id } = (data ?? {}) as { signed_url?: string; agent_id?: string };
+  if (!signed_url) {
+    return NextResponse.json({ error: 'no_signed_url' }, { status: 502 });
   }
+  return NextResponse.json({ signed_url, agent_id });
 }
