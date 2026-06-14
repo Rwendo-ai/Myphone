@@ -13,6 +13,7 @@ set -euo pipefail
 
 APP_DIR="${RWENDO_APP_DIR:-/var/www/rwendo}"
 BRANCH="${RWENDO_DEPLOY_BRANCH:-master}"
+PM2_NAME="${RWENDO_PM2_NAME:-rwendo-web}"
 BIN=/usr/local/bin/rwendo-autodeploy.sh
 LOG=/var/log/rwendo-deploy.log
 
@@ -29,5 +30,22 @@ echo "  branch : $BRANCH"
 echo "  cadence: every 2 minutes"
 echo "  log    : $LOG"
 echo
-echo "Running first deploy now..."
-RWENDO_DEPLOY_BRANCH="$BRANCH" "$BIN" || true
+
+# Forced initial deploy. The poller is diff-based (no-op when local == remote),
+# so we can't lean on it for the first run — the live PM2 process may be on
+# stale code even when git is already current. Build + reload unconditionally.
+echo "Running initial build + reload (forced)..."
+cd "$APP_DIR"
+git fetch origin "$BRANCH" --quiet || true
+git checkout "$BRANCH" --quiet || true
+git pull origin "$BRANCH" --quiet || true
+cd "$APP_DIR/web"
+npm install --no-audit --no-fund
+npm run build
+if pm2 describe "$PM2_NAME" >/dev/null 2>&1; then
+  pm2 reload "$PM2_NAME" --update-env
+else
+  pm2 start npm --name "$PM2_NAME" -- start
+  pm2 save
+fi
+echo "Initial deploy complete — $BRANCH is live."
